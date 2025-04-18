@@ -401,7 +401,7 @@
           const email = document.getElementById('email').value;
           const password = document.getElementById('password').value;
           const phone = document.getElementById('phone').value;
-      
+
           if (password.length < 8) {
             showErrorModal('Password harus minimal 8 karakter.');
             return;
@@ -420,7 +420,25 @@
               return;
             }
       
-            // Step 2: Save additional user details to the database
+            // Step 2: Check for duplicate email or username
+            const { data: existingUser, error: checkError } = await supabase
+              .from('users')
+              .select('*')
+              .or(`email.eq.${email},username.eq.${username}`)
+              .single();
+      
+            if (existingUser) {
+              showErrorModal('Email atau username sudah digunakan. Silakan gunakan yang lain.');
+              return;
+            }
+      
+            if (checkError && checkError.code !== 'PGRST116') {
+              console.error('Error checking existing user:', checkError.message);
+              showErrorModal('Terjadi kesalahan saat memeriksa pengguna.');
+              return;
+            }
+      
+            // Step 3: Save additional user details to the database
             const { data: userData, error: userError } = await supabase
               .from('users')
               .insert([
@@ -434,7 +452,7 @@
       
             if (userError) {
               console.error('Database Error:', userError.message);
-              showErrorModal('Pendaftaran berhasil, tetapi gagal menyimpan data tambahan. Silakan hubungi admin.');
+              showErrorModal(`Gagal menyimpan data pengguna: ${userError.message}`);
               return;
             }
       
@@ -479,7 +497,7 @@
       <div class="modal-content">
           <span class="close" onclick="closeRegistrationSuccessModal()">&times;</span>
           <h3 style="margin-bottom: 10px;">Selamat Datang di EligiRank SMAPAT!</h3>
-          <p>Akun kamu berhasil dibuat! Kami sangat senang kamu bergabung. Silakan cek email kamu untuk verifikasi akun.</p>
+          <p>Akun kamu berhasil dibuat! Silakan cek email kamu untuk verifikasi akun.</p>
       </div>
   </div>
 
