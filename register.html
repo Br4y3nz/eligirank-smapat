@@ -351,27 +351,27 @@
           const password = document.getElementById('password').value;
           const phone = document.getElementById('phone').value;
       
-          // Enforce minimum password length
           if (password.length < 8) {
-            document.getElementById('registrationErrorModal').style.display = 'block';
-            document.querySelector('#registrationErrorModal p').textContent = 'Password harus minimal 8 karakter.';
+            showErrorModal('Password harus minimal 8 karakter.');
             return;
           }
       
-          // Sign up the user with email and password
-          const { data: authData, error: authError } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-          });
+          try {
+            // Step 1: Sign up the user with email and password
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+              email: email,
+              password: password,
+            });
       
-          if (authError) {
-            console.error('Error:', authError.message);
-            document.getElementById('registrationErrorModal').style.display = 'block';
-            document.querySelector('#registrationErrorModal p').textContent = authError.message;
-          } else {
-            // Save additional user details to the database
+            if (authError) {
+              console.error('Auth Error:', authError.message);
+              showErrorModal(`Pendaftaran gagal: ${authError.message}`);
+              return;
+            }
+      
+            // Step 2: Save additional user details to the database
             const { data: userData, error: userError } = await supabase
-              .from('users') // Ensure you have a 'users' table in your Supabase database
+              .from('users')
               .insert([
                 {
                   full_name: fullName,
@@ -382,12 +382,16 @@
               ]);
       
             if (userError) {
-              console.error('Error saving user details:', userError.message);
-              document.getElementById('registrationErrorModal').style.display = 'block';
-              document.querySelector('#registrationErrorModal p').textContent = 'Gagal menyimpan data pengguna.';
-            } else {
-              document.getElementById('registrationSuccessModal').style.display = 'block';
+              console.error('Database Error:', userError.message);
+              showErrorModal('Pendaftaran berhasil, tetapi gagal menyimpan data tambahan. Silakan hubungi admin.');
+              return;
             }
+      
+            // Success
+            showSuccessModal('Registrasi berhasil! Silakan cek email untuk verifikasi.');
+          } catch (error) {
+            console.error('Unexpected Error:', error);
+            showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
           }
         }
       
@@ -480,6 +484,18 @@
         // Set the toggle state
         themeToggle.checked = isDarkMode;
     });
+
+    function showSuccessModal(message) {
+      const modal = document.getElementById('registrationSuccessModal');
+      modal.querySelector('p').textContent = message;
+      modal.style.display = 'block';
+    }
+
+    function showErrorModal(message) {
+      const modal = document.getElementById('registrationErrorModal');
+      modal.querySelector('p').textContent = message;
+      modal.style.display = 'block';
+    }
   </script>
 </body>
 </html>
