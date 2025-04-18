@@ -362,29 +362,53 @@
                 return;
             }
 
-            // Check if the input is an email or username
-            const isEmail = emailOrUsername.includes('@');
-            const email = isEmail ? emailOrUsername : `${emailOrUsername}@yourdomain.com`; // Adjust domain if needed
+            try {
+                let email = emailOrUsername;
 
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
+                // Check if the input is a username (does not contain '@')
+                if (!emailOrUsername.includes('@')) {
+                    // Query the `users` table to get the email associated with the username
+                    const { data: user, error: userError } = await supabase
+                        .from('users')
+                        .select('email')
+                        .eq('username', emailOrUsername)
+                        .single();
 
-            if (error) {
-                console.error('Error:', error.message);
-                // Show the error modal
+                    if (userError || !user) {
+                        console.error('Error fetching user by username:', userError?.message || 'User not found');
+                        document.getElementById('loginModal').style.display = 'block';
+                        document.querySelector('#loginModal p').textContent = 'Username tidak ditemukan.';
+                        return;
+                    }
+
+                    email = user.email; // Use the email retrieved from the database
+                }
+
+                // Attempt to sign in with the email and password
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) {
+                    console.error('Error:', error.message);
+                    // Show the error modal
+                    document.getElementById('loginModal').style.display = 'block';
+                    document.querySelector('#loginModal p').textContent = 'Login gagal: ' + error.message;
+                } else {
+                    // Show the success modal
+                    const successModal = document.getElementById('successModal');
+                    successModal.style.display = 'block';
+                    document.querySelector('#successModal p').textContent = 'Login berhasil! Selamat datang kembali.';
+                    setTimeout(() => {
+                        // Redirect to dashboard or another page after 2 seconds
+                        window.location.href = 'dashboard.html';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Unexpected Error:', error);
                 document.getElementById('loginModal').style.display = 'block';
-                document.querySelector('#loginModal p').textContent = 'Login gagal: ' + error.message;
-            } else {
-                // Show the success modal
-                const successModal = document.getElementById('successModal');
-                successModal.style.display = 'block';
-                document.querySelector('#successModal p').textContent = 'Login berhasil! Selamat datang kembali.';
-                setTimeout(() => {
-                    // Redirect to dashboard or another page after 2 seconds
-                    window.location.href = 'dashboard.html';
-                }, 2000);
+                document.querySelector('#loginModal p').textContent = 'Terjadi kesalahan. Silakan coba lagi.';
             }
         }
 
