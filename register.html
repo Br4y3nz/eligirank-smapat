@@ -338,41 +338,61 @@
       </form>
       <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
-
+      
         const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
         const supabase = createClient(supabaseUrl, supabaseKey);
-
+      
         async function signUp() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Enforce minimum password length
-            if (password.length < 8) {
-                document.getElementById('registrationErrorModal').style.display = 'block';
-                document.querySelector('#registrationErrorModal p').textContent = 'Password harus minimal 8 karakter.';
-                return;
-            }
-
-            const { data, error } = await supabase.auth.signUp({
-                email: email,
-                password: password,
-            });
-
-            if (error) {
-                console.error('Error:', error.message);
-                // Show the error modal
-                document.getElementById('registrationErrorModal').style.display = 'block';
-                document.querySelector('#registrationErrorModal p').textContent = error.message;
+          const fullName = document.getElementById('fullName').value;
+          const username = document.getElementById('username').value;
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('password').value;
+          const phone = document.getElementById('phone').value;
+      
+          // Enforce minimum password length
+          if (password.length < 8) {
+            document.getElementById('registrationErrorModal').style.display = 'block';
+            document.querySelector('#registrationErrorModal p').textContent = 'Password harus minimal 8 karakter.';
+            return;
+          }
+      
+          // Sign up the user with email and password
+          const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+          });
+      
+          if (authError) {
+            console.error('Error:', authError.message);
+            document.getElementById('registrationErrorModal').style.display = 'block';
+            document.querySelector('#registrationErrorModal p').textContent = authError.message;
+          } else {
+            // Save additional user details to the database
+            const { data: userData, error: userError } = await supabase
+              .from('users') // Ensure you have a 'users' table in your Supabase database
+              .insert([
+                {
+                  full_name: fullName,
+                  username: username,
+                  email: email,
+                  phone: phone,
+                },
+              ]);
+      
+            if (userError) {
+              console.error('Error saving user details:', userError.message);
+              document.getElementById('registrationErrorModal').style.display = 'block';
+              document.querySelector('#registrationErrorModal p').textContent = 'Gagal menyimpan data pengguna.';
             } else {
-                // Show the success modal
-                document.getElementById('registrationSuccessModal').style.display = 'block';
+              document.getElementById('registrationSuccessModal').style.display = 'block';
             }
+          }
         }
-
+      
         document.getElementById('registrationForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            signUp();
+          e.preventDefault();
+          signUp();
         });
       </script>
     </div>
