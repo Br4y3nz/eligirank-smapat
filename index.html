@@ -352,7 +352,7 @@
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         async function login() {
-            const emailOrDisplayName = document.getElementById('display_name').value.trim();
+            const emailOrDisplayName = document.getElementById('display_name').value.trim(); // Trim spaces
             const password = document.getElementById('password').value.trim();
 
             if (!emailOrDisplayName || !password) {
