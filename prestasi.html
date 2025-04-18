@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
@@ -359,3 +360,366 @@
   </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Prestasi - EligiRank SMAPAT</title>
+  <link rel="stylesheet" href="css/modern-styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 1rem 2rem;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .menu-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      color: white;
+      font-size: 1.2rem;
+      padding: 0.5rem 0.75rem;
+      margin-right: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-info {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: 50px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+      width: 180px;
+      overflow: hidden;
+      display: none;
+      z-index: 1001;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: var(--transition);
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 250px;
+      height: calc(100vh - 70px);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      padding: 20px 0;
+      overflow-y: auto;
+      z-index: 999;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .sidebar.active {
+      transform: translateX(0);
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: var(--dark);
+      text-decoration: none;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+      gap: 10px;
+    }
+
+    .sidebar a i {
+      width: 20px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .sidebar a:hover {
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+      padding-left: 25px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .sidebar a.active {
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+      border-left: 3px solid var(--primary);
+    }
+
+    .main-content {
+      padding: 30px;
+      margin-top: 80px;
+      transition: margin-left 0.3s ease;
+    }
+    @media (max-width: 992px) {
+      .menu-btn {
+        display: flex;
+      }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+    }
+    @media (min-width: 992px) {
+      .sidebar {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 250px;
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+  </style>
+</head>
+<body>
+    <header class="header">
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="brand">
+            <i class="fas fa-school"></i>
+            <span>EligiRank SMAPAT | Prestasi</span>
+        </div>
+    <div class="user-info">
+      <div class="user-avatar" onclick="toggleProfileMenu(event)">
+        <i class="fas fa-user-circle"></i>
+        <div class="profile-dropdown" id="profileDropdown">
+          <a href="akun.html"><i class="fas fa-user"></i> Profile</a>
+          <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+      <span class="user-name" id="displayUsername">User Account</span>
+    </div>
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <div class="dark-mode-switch-container">
+      <label class="dark-mode-switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider round"></span>
+        <span class="dark-mode-label">Dark Mode</span>
+      </label>
+    </div>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+    <a href="prestasi.html" class="active"><i class="fas fa-award"></i> Prestasi</a>
+    <a href="organisasi.html"><i class="fas fa-sitemap"></i> Organisasi</a>
+    <a href="data-siswa.html"><i class="fas fa-users"></i> Data Siswa</a>
+    <a href="guru-staff.html"><i class="fas fa-chalkboard-teacher"></i> Guru & Staff</a>
+    <a href="akun.html"><i class="fas fa-user-cog"></i> Pengaturan Akun</a>
+  </div>
+
+  <div class="main-content">
+    <div class="card">
+      <h2><i class="fas fa-award"></i> Prestasi Siswa</h2>
+      <!-- Content will go here -->
+    </div>
+  </div>
+
+  <style>
+    /* Dark Mode Toggle Switch */
+    .dark-mode-switch-container {
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+    }
+
+    .dark-mode-label {
+      margin-left: 10px;
+      font-size: 14px;
+      color: var(--dark);
+    }
+
+    .dark-mode-switch {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .dark-mode-switch input[type="checkbox"] {
+      position: relative;
+      width: 60px;
+      height: 34px;
+      margin: 0;
+    }
+
+    .dark-mode-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Dark Mode Toggle Hover Effects */
+        .dark-mode-switch:hover .slider {
+            background: #FFEC8B;
+            box-shadow: 0 0 10px #FFD700;
+        }
+        .dark-mode-switch:hover .dark-mode-label {
+            color: #0A0A0A;
+        }
+    </style>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Toggle sidebar on menu button click
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+    }
+
+    // Toggle profile dropdown
+    function toggleProfileMenu(e) {
+      e.stopPropagation();
+      const dropdown = document.getElementById('profileDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const dropdown = document.getElementById('profileDropdown');
+      if (dropdown.classList.contains('show') && !e.target.closest('.user-avatar')) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // Load user data
+    document.addEventListener('DOMContentLoaded', function() {
+      const userData = JSON.parse(localStorage.getItem('akun')) || {};
+      const usernameDisplay = document.getElementById('displayUsername');
+      
+      if (userData.username) {
+        usernameDisplay.textContent = userData.username;
+      }
+    });
+  </script>
+</body>
+</html>
+>>>>>>> 0976f73ac7e23d0af3184a2a4ee2a9ceb87e4796

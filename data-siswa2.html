@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
@@ -758,3 +759,765 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Rapor Siswa - EligiRank SMAPAT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/modern-styles.css">
+    <link rel="stylesheet" href="css/modern-styles-dark.css" media="(prefers-color-scheme: dark)">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem 2rem;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: var(--box-shadow);
+        }
+
+        .menu-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            color: white;
+            font-size: 1.2rem;
+            padding: 0.5rem 0.75rem;
+            margin-right: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 180px;
+            overflow: hidden;
+            display: none;
+            z-index: 1001;
+        }
+
+        .profile-dropdown a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .profile-dropdown a:hover {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .user-avatar i {
+            font-size: 24px;
+            color: #666;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 70px);
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar a:hover {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            padding-left: 25px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar a.active {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            margin-top: 80px;
+            transition: var(--transition);
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        /* Student Info Styles */
+        .student-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        /* Dark Mode Table Styles */
+        [data-theme="dark"] table {
+            background-color: #111111;
+        }
+
+        [data-theme="dark"] th {
+            background-color: #B8860B;
+        }
+
+        [data-theme="dark"] td {
+            border-color: #333;
+            color: #FFD700;
+        }
+
+        [data-theme="dark"] tr:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        /* Input Styles */
+        .semester-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-back {
+            background-color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .btn-back:hover {
+            background-color: #1a1a1a;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: var(--success);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Grade Colors */
+        .grade-A { color: #2ecc71; font-weight: 500; }
+        .grade-B { color: #3498db; font-weight: 500; }
+        .grade-C { color: #f39c12; font-weight: 500; }
+        .grade-D { color: #e74c3c; font-weight: 500; }
+        .grade-E { color: #e74c3c; font-weight: 600; }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .menu-btn {
+                display: flex;
+            }
+            .sidebar {
+                left: -250px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            
+            .semester-inputs {
+                flex-wrap: wrap;
+            }
+            
+            input[type="number"] {
+                width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="brand">
+            <i class="fas fa-school" style="color:white"></i>
+            <span>EligiRank SMAPAT | Rapor Siswa</span>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" onclick="toggleProfileMenu(event)">
+                <i class="fas fa-user-circle"></i>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="akun.html"><i class="fas fa-user"></i> Profile</a>
+                    <a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+            <span class="user-name">User Account</span>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+      <div class="dark-mode-switch-container">
+        <label class="dark-mode-switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider round"></span>
+          <span class="dark-mode-label">Dark Mode</span>
+        </label>
+      </div>
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+        <a href="prestasi.html"><i class="fas fa-award"></i> Prestasi</a>
+        <a href="organisasi.html"><i class="fas fa-sitemap"></i> Organisasi</a>
+        <a href="data-siswa.html"><i class="fas fa-users"></i> Data Siswa</a>
+        <a href="guru-staff.html"><i class="fas fa-chalkboard-teacher"></i> Guru & Staff</a>
+        <a href="akun.html"><i class="fas fa-user-cog"></i> Pengaturan Akun</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <button class="btn btn-back" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+
+        <div class="card">
+            <h2><i class="fas fa-chart-line"></i> Rapor Siswa</h2>
+            
+            <div class="student-info" id="studentInfo">
+                <!-- Student information will be loaded here -->
+            </div>
+
+            <table id="report-table">
+                <thead>
+                    <tr>
+                        <th>Mata Pelajaran</th>
+                        <th>Semester 1</th>
+                        <th>Semester 2</th>
+                        <th>Semester 3</th>
+                        <th>Semester 4</th>
+                        <th>Semester 5</th>
+                        <th>Semester 6</th>
+                        <th>Rata-rata</th>
+                        <th>Predikat</th>
+                    </tr>
+                </thead>
+                <tbody id="report-body">
+                    <!-- Report data will appear here -->
+                </tbody>
+            </table>
+
+            <button class="btn" onclick="saveReport()">
+                <i class="fas fa-save"></i> Simpan Rapor
+            </button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Get student ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('id');
+        let currentStudent = null;
+
+        // Data mapel per kelas dengan nama lengkap
+        const classSubjects = {
+            "X Macca 1": [
+                "Sosiologi", "Pendidikan Agama Islam", "Kimia", 
+                "Teknologi Informasi", "Ekonomi", "Biologi", 
+                "Geografi", "Bahasa Indonesia", "PKN", 
+                "Matematika", "Fisika", "Bahasa Inggris"
+            ],
+            "X Macca 2": [
+                "Matematika", "Prakarya", "Sosiologi", 
+                "Teknologi Informasi", "Seni Budaya", "Fisika", 
+                "Bahasa Indonesia", "PKN", "Biologi", 
+                "Pendidikan Agama Islam", "Bahasa Inggris", "Kimia"
+            ],
+            "XII IPS 4": [
+                "Sosiologi", "Ekonomi", "Matematika", 
+                "Bahasa Indonesia", "Geografi", "Prakarya", 
+                "Pendidikan Agama Islam", "PKN", "Bahasa Inggris", 
+                "Seni Budaya"
+            ]
+        };
+
+        // Load student data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            if (studentId) {
+                loadStudentData();
+            } else {
+                showNotification("Data siswa tidak ditemukan", "error");
+                setTimeout(() => window.location.href = "data-siswa.html", 2000);
+            }
+        });
+
+        function loadStudentData() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            currentStudent = students.find(s => s.id === studentId);
+            
+            if (currentStudent) {
+                // Display student information
+                const studentInfo = document.getElementById('studentInfo');
+                studentInfo.innerHTML = `
+                    <div class="info-item">
+                        <div class="info-label">Nama</div>
+                        <div>${currentStudent.nama}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Kelas</div>
+                        <div>${currentStudent.kelas}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">NISN</div>
+                        <div>${currentStudent.nisn}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">NIS</div>
+                        <div>${currentStudent.nis}</div>
+                    </div>
+                `;
+
+                // Generate report for student's class
+                generateReport(currentStudent.kelas);
+            } else {
+                showNotification("Data siswa tidak ditemukan", "error");
+                setTimeout(() => window.location.href = "data-siswa.html", 2000);
+            }
+        }
+
+        function generateReport(className) {
+            const subjects = classSubjects[className] || [];
+            const tableBody = document.getElementById("report-body");
+            
+            tableBody.innerHTML = '';
+
+            subjects.forEach(subject => {
+                const row = document.createElement("tr");
+                
+                // Subject name column
+                const subjectCell = document.createElement("td");
+                subjectCell.textContent = subject;
+                row.appendChild(subjectCell);
+                
+                // Semester inputs (1-6)
+                for (let i = 1; i <= 6; i++) {
+                    const gradeCell = document.createElement("td");
+                    const gradeInput = document.createElement("input");
+                    gradeInput.type = "number";
+                    gradeInput.min = "0";
+                    gradeInput.max = "100";
+                    gradeInput.placeholder = "0-100";
+                    gradeInput.classList.add("grade-input");
+                    gradeInput.dataset.subject = subject;
+                    gradeInput.dataset.semester = i;
+                    
+                    // Load saved grade if exists
+                    if (currentStudent.grades && currentStudent.grades[subject] && currentStudent.grades[subject][i]) {
+                        gradeInput.value = currentStudent.grades[subject][i];
+                    }
+                    
+                    gradeCell.appendChild(gradeInput);
+                    row.appendChild(gradeCell);
+                    
+                    // Add input event to calculate average
+                    gradeInput.addEventListener("input", function() {
+                        calculateAverage(subject);
+                    });
+                }
+                
+                // Average column
+                const avgCell = document.createElement("td");
+                avgCell.id = `average-${subject.replace(/\s+/g, '-')}`;
+                avgCell.textContent = "-";
+                row.appendChild(avgCell);
+                
+                // Predicate column
+                const predicateCell = document.createElement("td");
+                predicateCell.id = `predicate-${subject.replace(/\s+/g, '-')}`;
+                predicateCell.textContent = "-";
+                row.appendChild(predicateCell);
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function calculateAverage(subject) {
+            const inputs = document.querySelectorAll(`input[data-subject="${subject}"]`);
+            let sum = 0;
+            let count = 0;
+            
+            inputs.forEach(input => {
+                if (input.value && !isNaN(input.value)) {
+                    sum += parseInt(input.value);
+                    count++;
+                }
+            });
+            
+            const avg = count > 0 ? Math.round(sum / count) : 0;
+            const avgCell = document.getElementById(`average-${subject.replace(/\s+/g, '-')}`);
+            avgCell.textContent = avg > 0 ? avg : "-";
+            
+            updatePredicate(subject, avg);
+        }
+
+        function updatePredicate(subject, grade) {
+            const predicateCell = document.getElementById(`predicate-${subject.replace(/\s+/g, '-')}`);
+            if (!grade || grade <= 0) {
+                predicateCell.textContent = "-";
+                predicateCell.className = "";
+                return;
+            }
+            
+            const numGrade = parseInt(grade);
+            if (numGrade >= 90) {
+                predicateCell.textContent = "A";
+                predicateCell.className = "grade-A";
+            }
+            else if (numGrade >= 80) {
+                predicateCell.textContent = "B";
+                predicateCell.className = "grade-B";
+            }
+            else if (numGrade >= 70) {
+                predicateCell.textContent = "C";
+                predicateCell.className = "grade-C";
+            }
+            else if (numGrade >= 60) {
+                predicateCell.textContent = "D";
+                predicateCell.className = "grade-D";
+            }
+            else {
+                predicateCell.textContent = "E";
+                predicateCell.className = "grade-E";
+            }
+        }
+
+        function showNotification(message, type = "success") {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.style.backgroundColor = type === "success" ? "#4cc9f0" : "#f72585";
+            
+            notification.classList.add("show");
+            setTimeout(() => {
+                notification.classList.remove("show");
+            }, 3000);
+        }
+
+        function saveReport() {
+            if (!currentStudent) return;
+            
+            const subjects = classSubjects[currentStudent.kelas] || [];
+            const grades = {};
+            let allValid = true;
+            
+            subjects.forEach(subject => {
+                grades[subject] = {};
+                const inputs = document.querySelectorAll(`input[data-subject="${subject}"]`);
+                
+                inputs.forEach(input => {
+                    const semester = input.dataset.semester;
+                    if (!input.value || input.value < 0 || input.value > 100) {
+                        allValid = false;
+                        input.style.borderColor = "#f72585";
+                    } else {
+                        input.style.borderColor = "";
+                        grades[subject][semester] = input.value;
+                    }
+                });
+            });
+            
+            if (!allValid) {
+                showNotification("Harap isi semua nilai dengan benar (0-100)!", "error");
+                return;
+            }
+            
+            // Update student data with grades
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const studentIndex = students.findIndex(s => s.id === currentStudent.id);
+            
+            if (studentIndex !== -1) {
+                students[studentIndex].grades = grades;
+                localStorage.setItem('students', JSON.stringify(students));
+                showNotification("Rapor berhasil disimpan!");
+            } else {
+                showNotification("Gagal menyimpan rapor", "error");
+            }
+        }
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Toggle profile dropdown
+        function toggleProfileMenu(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('profileDropdown');
+            const sidebar = document.getElementById('sidebar');
+            
+            // Close profile dropdown if clicking outside
+            if (dropdown.classList.contains('show') && 
+                !e.target.closest('.user-avatar')) {
+                dropdown.classList.remove('show');
+            }
+            
+            // Close sidebar if needed
+            if (window.innerWidth <= 992 && 
+                !sidebar.contains(e.target) && 
+                e.target !== document.querySelector('.menu-btn')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
+>>>>>>> 0976f73ac7e23d0af3184a2a4ee2a9ceb87e4796

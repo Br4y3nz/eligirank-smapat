@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
@@ -640,3 +641,647 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Organisasi - EligiRank SMAPAT</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/organisasi.css">
+    <style>
+        :root {
+            --primary: #4DA3D8; /* Sky blue from logo */
+            --secondary: #1E3A8A; /* Dark blue */
+            --light: #F9FAFB; /* Light grayish white background */
+            --dark: #111827; /* Almost black text */
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+
+        .search-container input {
+            background-color: white;
+            color: var(--dark);
+        }
+
+        /* Header Styles - Matched to akun.html */
+        .header {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem 2rem;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: var(--box-shadow);
+            height: 70px;
+        }
+
+        .menu-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-right: 15px;
+            padding: 0;
+        }
+
+        @media (min-width: 992px) {
+            .menu-btn {
+                display: none;
+            }
+        }
+
+        .brand {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 180px;
+            overflow: hidden;
+            display: none;
+            z-index: 1001;
+        }
+
+        .profile-dropdown a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .profile-dropdown a:hover {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        /* Sidebar Styles*/
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 70px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            overflow-y: auto;
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        @media (min-width: 992px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            padding-left: 25px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar a.active {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Main Content Styles - Matched to akun.html */
+        .main-content {
+            padding: 25px; /* Adjusted padding */
+            margin-top: 60px; /* Matches header height */
+            transition: var(--transition);
+            margin-left: 0;
+        }
+        @media (min-width: 992px) {
+            .main-content {
+                margin-left: 250px;
+            }
+        }
+
+        /* Dark Mode Variables */
+        :root {
+            --light-bg: rgba(255, 255, 255, 0.95);
+            --light-text: #111827;
+            --light-form-bg: white;
+            --light-form-border: #ddd;
+            
+            --dark-bg: #1E293B;
+            --dark-text: #F1F5F9;
+            --dark-form-bg: #1E293B;
+            --dark-form-border: #334155;
+        }
+
+        /* Dark Mode Adaptations */
+        body.dark-mode {
+            background-color: #0F172A;
+            color: var(--dark-text);
+        }
+
+        .dark-mode .sidebar {
+            background-color: var(--dark-bg);
+        }
+
+        .dark-mode .sidebar a {
+            color: var(--dark-text);
+        }
+
+        .dark-mode .sidebar a:hover {
+            background-color: #334155;
+            color: #4DA3D8;
+        }
+
+        .dark-mode .sidebar a.active {
+            background-color: #334155;
+            color: #4DA3D8;
+            border-left-color: #4DA3D8;
+        }
+
+        .dark-mode input,
+        .dark-mode select {
+            background-color: var(--dark-form-bg);
+            color: var(--dark-text);
+            border: 1px solid var(--dark-form-border);
+        }
+
+        .dark-mode label {
+            color: var(--dark-text);
+        }
+
+        .dark-mode-switch-container {
+            margin-top: auto;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .theme-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            z-index: 1;
+        }
+
+        .theme-icon.light {
+            left: 8px;
+            color: #F1F5F9;
+        }
+
+        .theme-icon.dark {
+            right: 8px;
+            color: #0F172A;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="brand">
+            <i class="fas fa-school" style="color:white"></i>
+            <span>EligiRank SMAPAT | Organisasi</span>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" onclick="toggleProfileMenu(event)">
+                <i class="fas fa-user-circle"></i>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="akun.html"><i class="fas fa-user"></i> Profile</a>
+                    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+            <span class="user-name">User Account</span>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="ranking.html"><i class="fas fa-trophy"></i> Ranking</a>
+        <a href="prestasi.html"><i class="fas fa-award"></i> Prestasi</a>
+        <a href="organisasi.html" class="active"><i class="fas fa-sitemap"></i> Organisasi</a>
+        <a href="data-siswa.html"><i class="fas fa-users"></i> Data Siswa</a>
+        <a href="guru-staff.html"><i class="fas fa-chalkboard-teacher"></i> Guru & Staff</a>
+        <a href="akun.html"><i class="fas fa-user-cog"></i> Pengaturan Akun</a>
+        
+        <div class="dark-mode-switch-container">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider round">
+                    <i class="fas fa-sun theme-icon light"></i>
+                    <i class="fas fa-moon theme-icon dark"></i>
+                </span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-sitemap"></i> Organisasi Sekolah</h1>
+            <div class="search-container" id="searchContainer">
+                <input type="text" id="searchInput" placeholder="Cari organisasi..." onkeyup="filterOrganizations()">
+                <i data-feather="search" class="search-icon"></i>
+                <i data-feather="x" class="clear-btn" onclick="clearSearch()"></i>
+            </div>
+        </div>
+
+        <style>
+            .page-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin-bottom: 30px;
+                width: 100%;
+                padding: 0 15px;
+            }
+            
+            .search-container {
+                position: relative;
+                min-width: 250px;
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                height: 40px;
+            }
+            
+            .search-container input {
+                width: 100%;
+                padding: 10px 15px 10px 40px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+                padding-right: 35px; /* Space for clear button */
+            }
+            
+            .search-container input:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 2px rgba(77, 163, 216, 0.2);
+            }
+            
+            .search-container .search-icon {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #777;
+                pointer-events: none;
+            }
+            
+            .search-container .clear-btn {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #777;
+                cursor: pointer;
+                display: none;
+            }
+            
+            .search-container .clear-btn:hover {
+                color: var(--primary);
+            }
+            
+            .search-container.has-value .clear-btn {
+                display: block;
+            }
+            
+            .highlight {
+                background-color: rgba(255, 255, 0, 0.3);
+                padding: 0 2px;
+                border-radius: 3px;
+            }
+            
+            body.dark-mode .search-container input {
+                background-color: var(--dark-form-bg);
+                color: var(--dark-text);
+                border: 1px solid var(--dark-form-border);
+            }
+            
+            body.dark-mode .search-container input::placeholder {
+                color: var(--dark-text);
+                opacity: 0.7;
+            }
+            
+            body.dark-mode .search-container .search-icon,
+            body.dark-mode .search-container .clear-btn {
+                color: var(--dark-text);
+            }
+            
+            @media (max-width: 768px) {
+                .page-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                
+                .search-container {
+                    width: 100%;
+                }
+            }
+        </style>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (sidebar) {
+                const isActive = !sidebar.classList.contains('active');
+                sidebar.classList.toggle('active', isActive);
+                menuBtn.classList.toggle('rotated', isActive);
+                
+                // Close if clicking outside on mobile
+                if (window.innerWidth <= 992 && isActive) {
+                    document.addEventListener('click', function closeSidebar(e) {
+                        if (!sidebar.contains(e.target) && 
+                            e.target !== document.querySelector('.menu-btn')) {
+                            sidebar.classList.remove('active');
+                            if (menuBtn) {
+                                menuBtn.classList.remove('rotated');
+                            }
+                            document.removeEventListener('click', closeSidebar);
+                        }
+                    });
+                }
+                // Close sidebar when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && e.target !== menuBtn) {
+                        sidebar.classList.remove('active');
+                        menuBtn.classList.remove('rotated');
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            function filterOrganizations() {
+                const input = document.getElementById('searchInput');
+                const searchContainer = document.getElementById('searchContainer');
+                const filter = input.value.toUpperCase();
+                const container = document.getElementById('organizationsList');
+                
+                if (container) {
+                    const cards = container.getElementsByClassName('organization-card');
+                    
+                    // Toggle clear button visibility
+                    if (input.value) {
+                        searchContainer.classList.add('has-value');
+                    } else {
+                        searchContainer.classList.remove('has-value');
+                        // Remove all highlights when search is empty
+                        const highlights = document.querySelectorAll('.highlight');
+                        highlights.forEach(hl => {
+                            const parent = hl.parentNode;
+                            parent.replaceChild(document.createTextNode(hl.textContent), hl);
+                            parent.normalize();
+                        });
+                        return;
+                    }
+                    
+                    for (let i = 0; i < cards.length; i++) {
+                        const card = cards[i];
+                        const nameElement = card.querySelector('.card-header h2');
+                        const name = card.getAttribute('data-name') || nameElement.textContent;
+                        
+                        if (name.toUpperCase().includes(filter)) {
+                            card.style.display = "";
+                            
+                            // Highlight matches
+                            const nameText = nameElement.textContent;
+                            const regex = new RegExp(filter, 'gi');
+                            const highlighted = nameText.replace(regex, match => 
+                                `<span class="highlight">${match}</span>`
+                            );
+                            nameElement.innerHTML = highlighted;
+                        } else {
+                            card.style.display = "none";
+                        }
+                    }
+                }
+            }
+            
+            function clearSearch() {
+                const input = document.getElementById('searchInput');
+                input.value = '';
+                input.focus();
+                filterOrganizations();
+            }
+            
+            // Dark Mode Toggle - Updated to match akun.html
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', function() {
+                if(this.checked) {
+                    document.body.classList.add('dark-mode');
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    // Apply dark mode to all elements
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.add('dark-mode');
+                    const cards = document.querySelectorAll('.card');
+                    cards.forEach(card => card.classList.add('dark-mode'));
+                    const inputs = document.querySelectorAll('input, select');
+                    inputs.forEach(input => input.classList.add('dark-mode'));
+                    const labels = document.querySelectorAll('label');
+                    labels.forEach(label => label.classList.add('dark-mode'));
+                    const searchContainer = document.getElementById('searchContainer');
+                    if (searchContainer) searchContainer.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    // Remove dark mode from all elements
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) sidebar.classList.remove('dark-mode');
+                    const cards = document.querySelectorAll('.card');
+                    cards.forEach(card => card.classList.remove('dark-mode'));
+                    const inputs = document.querySelectorAll('input, select');
+                    inputs.forEach(input => input.classList.remove('dark-mode'));
+                    const labels = document.querySelectorAll('label');
+                    labels.forEach(label => label.classList.remove('dark-mode'));
+                    const searchContainer = document.getElementById('searchContainer');
+                    if (searchContainer) searchContainer.classList.remove('dark-mode');
+                }
+                });
+            }
+
+            // Initialize theme on page load - Updated to match akun.html
+            function initializeTheme() {
+                const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (darkModeToggle) {
+                    darkModeToggle.checked = isDarkMode;
+                    
+                    // Trigger the change event to ensure all elements update
+                    const event = new Event('change');
+                    darkModeToggle.dispatchEvent(event);
+                }
+            }
+
+            // Toggle profile dropdown
+            function toggleProfileMenu(e) {
+                e.stopPropagation();
+                const dropdown = document.getElementById('profileDropdown');
+                dropdown.classList.toggle('show');
+            }
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('profileDropdown');
+                if (dropdown.classList.contains('show') && !e.target.closest('.user-avatar')) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // Load user data
+            // Load user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('akun')) || {};
+            if (userData.fullName) {
+                document.querySelector('.user-name').textContent = userData.fullName;
+            }
+
+            initializeTheme();
+        });
+    </script>
+</body>
+</html>
+>>>>>>> 0976f73ac7e23d0af3184a2a4ee2a9ceb87e4796
