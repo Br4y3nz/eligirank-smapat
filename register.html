@@ -408,41 +408,34 @@
           }
       
           try {
-            // Step 1: Sign up the user with email and password
+            // Step 1: Sign up the user with email, password, and user metadata
             const { data: authData, error: authError } = await supabase.auth.signUp({
               email: email,
               password: password,
+              options: {
+                data: {
+                  display_name: fullName, // Save display name in user_metadata
+                  phone: phone,          // Save phone in user_metadata
+                },
+              },
             });
+
+            console.log('Auth Data:', authData);
+            console.log('Auth Error:', authError);
       
-            if (authError) {
+            if (authError && !authData.user) {
+              // Only show an error if no user was created
               console.error('Auth Error:', authError.message);
               showErrorModal(`Pendaftaran gagal: ${authError.message}`);
               return;
             }
       
-            // Step 2: Check for duplicate email or username
-            const { data: existingUser, error: checkError } = await supabase
-              .from('users')
-              .select('*')
-              .or(`email.eq.${email},username.eq.${username}`)
-              .single();
-      
-            if (existingUser) {
-              showErrorModal('Email atau username sudah digunakan. Silakan gunakan yang lain.');
-              return;
-            }
-      
-            if (checkError && checkError.code !== 'PGRST116') {
-              console.error('Error checking existing user:', checkError.message);
-              showErrorModal('Terjadi kesalahan saat memeriksa pengguna.');
-              return;
-            }
-      
-            // Step 3: Save additional user details to the database
-            const { data: userData, error: userError } = await supabase
-              .from('users')
+            // Step 2: Insert additional user details into the profiles table
+            const { data: profileData, error: profileError } = await supabase
+              .from('profiles') // Ensure this table exists in your database
               .insert([
                 {
+                  id: authData.user.id, // Use the ID from auth.signUp
                   full_name: fullName,
                   username: username,
                   email: email,
@@ -450,9 +443,9 @@
                 },
               ]);
       
-            if (userError) {
-              console.error('Database Error:', userError.message);
-              showErrorModal(`Gagal menyimpan data pengguna: ${userError.message}`);
+            if (profileError) {
+              console.error('Profile Error:', profileError.message);
+              showErrorModal(`Gagal menyimpan data pengguna: ${profileError.message}`);
               return;
             }
       
