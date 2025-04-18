@@ -48,23 +48,21 @@ function showModal(message) {
 }
 
 function closeModal() {
-    // Hide both the login error modal and the success modal
-    document.getElementById('loginModal').style.display = 'none';
-    document.getElementById('successModal').style.display = 'none';
+    console.log('closeModal function triggered'); // Debugging log
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach((modal) => {
+        modal.style.display = 'none';
+    });
 }
 
 // Ensure the close button works for both modals
 window.onclick = function (event) {
-    const loginModal = document.getElementById('loginModal');
-    const successModal = document.getElementById('successModal');
-
-    if (event.target == loginModal) {
-        loginModal.style.display = 'none';
-    }
-
-    if (event.target == successModal) {
-        successModal.style.display = 'none';
-    }
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach((modal) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 };
 
 // Form validation and submission for login
@@ -89,6 +87,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         valid = false;
     }
     ``
+
     // Validate Password
     const password = this.password;
     if (!password.value.trim()) {
