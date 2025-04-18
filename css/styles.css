@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+/* General Styles */
 /* General Styles */
 :root {
     --primary: #4DA3D8; /* Sky blue from logo */
@@ -347,7 +347,7 @@ input:focus, select:focus, textarea:focus {
     background: var(--primary);
     border-radius: 3px;
 }
-=======
+/* General Styles */
 /* General Styles */
 :root {
     --primary: #4DA3D8; /* Sky blue from logo */
@@ -662,4 +662,4 @@ input:focus, select:focus, textarea:focus {
 .error-message.hide {
     display: none;
 }
->>>>>>> 0976f73ac7e23d0af3184a2a4ee2a9ceb87e4796
+/* End of resolved conflict */

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
@@ -338,9 +337,7 @@
       <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
 
-        const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabaseClient = createClient('https://yauwsxvgjmmyleheclpi.supabase.co', supabaseKey);
 
         async function signUp() {
             const email = document.getElementById('email').value;
@@ -398,8 +395,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
   <script>
-    const input = document.querySelector("#phone");
-    window.intlTelInput(input, {
+    const phoneInput = document.querySelector("#phone");
+    window.intlTelInput(phoneInput, {
       initialCountry: "id",
       preferredCountries: ["id", "us", "gb", "jp"],
       separateDialCode: true
@@ -433,7 +430,7 @@
     }
 
     // Theme switch functionality
-    const themeToggle = document.getElementById('themeToggle');
+    // Removed duplicate declaration of themeToggle
 
     // Save the theme preference to localStorage when toggled
     themeToggle.addEventListener('change', function () {

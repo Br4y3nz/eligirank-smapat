@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Sidebar Toggle Function
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
@@ -112,7 +111,6 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     event.preventDefault();
     // Registration validation logic here...
 });
-=======
 // Sidebar Toggle Function
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
@@ -226,4 +224,4 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     event.preventDefault();
     // Registration validation logic here...
 });
->>>>>>> 0976f73ac7e23d0af3184a2a4ee2a9ceb87e4796
+

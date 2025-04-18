@@ -1,4 +1,3 @@
-<<<<<<< HEAD
  const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
@@ -120,7 +119,7 @@ app.post('/api/login', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
-=======
+
  const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
@@ -242,4 +241,3 @@ app.post('/api/login', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
->>>>>>> 0976f73ac7e23d0af3184a2a4ee2a9ceb87e4796

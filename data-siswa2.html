@@ -499,29 +499,10 @@
         // Get student ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const studentId = urlParams.get('id');
-        let currentStudent = null;
+        // Removed duplicate declaration of currentStudent
 
         // Data mapel per kelas dengan nama lengkap
-        const classSubjects = {
-            "X Macca 1": [
-                "Sosiologi", "Pendidikan Agama Islam", "Kimia", 
-                "Teknologi Informasi", "Ekonomi", "Biologi", 
-                "Geografi", "Bahasa Indonesia", "PKN", 
-                "Matematika", "Fisika", "Bahasa Inggris"
-            ],
-            "X Macca 2": [
-                "Matematika", "Prakarya", "Sosiologi", 
-                "Teknologi Informasi", "Seni Budaya", "Fisika", 
-                "Bahasa Indonesia", "PKN", "Biologi", 
-                "Pendidikan Agama Islam", "Bahasa Inggris", "Kimia"
-            ],
-            "XII IPS 4": [
-                "Sosiologi", "Ekonomi", "Matematika", 
-                "Bahasa Indonesia", "Geografi", "Prakarya", 
-                "Pendidikan Agama Islam", "PKN", "Bahasa Inggris", 
-                "Seni Budaya"
-            ]
-        };
+        // Removed duplicate declaration of classSubjects
 
         // Load student data when page loads
         document.addEventListener('DOMContentLoaded', () => {
