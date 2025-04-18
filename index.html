@@ -38,6 +38,14 @@
             color: #F1F5F9;
         }
 
+        body[data-theme="light"] {
+            --icon-color: #888; /* Default icon color for light mode */
+        }
+
+        body[data-theme="dark"] {
+            --icon-color: #F1F5F9; /* Light icon color for dark mode */
+        }
+
         .header {
             display: flex;
             align-items: center;
@@ -259,7 +267,7 @@
         .input-icon i {
             position: absolute;
             left: 10px;
-            color: #888;
+            color: var(--icon-color); /* Use a CSS variable for icon color */
             font-size: 1rem;
         }
 

@@ -254,12 +254,20 @@
       left: 10px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--primary);
+      color: var(--icon-color); /* Use a CSS variable for icon color */
     }
 
     .input-icon input,
     .input-icon select {
       padding-left: 35px; /* Adjust padding to make space for the icon */
+    }
+
+    body[data-theme="light"] {
+      --icon-color: #888; /* Icon color for light mode */
+    }
+
+    body[data-theme="dark"] {
+      --icon-color: #F1F5F9; /* Icon color for dark mode */
     }
   </style>
   <!-- Add intlTelInput script -->
@@ -442,6 +450,26 @@
           e.preventDefault();
           signUp();
         });
+
+        function showSuccessModal(message) {
+          const modal = document.getElementById('registrationSuccessModal');
+          modal.querySelector('p').textContent = message;
+          modal.style.display = 'block';
+        }
+      
+        function showErrorModal(message) {
+          const modal = document.getElementById('registrationErrorModal');
+          modal.querySelector('p').textContent = message;
+          modal.style.display = 'block';
+        }
+      
+        function closeRegistrationSuccessModal() {
+          document.getElementById('registrationSuccessModal').style.display = 'none';
+        }
+      
+        function closeRegistrationErrorModal() {
+          document.getElementById('registrationErrorModal').style.display = 'none';
+        }
       </script>
     </div>
   </div>
@@ -527,18 +555,6 @@
         // Set the toggle state
         themeToggle.checked = isDarkMode;
     });
-
-    function showSuccessModal(message) {
-      const modal = document.getElementById('registrationSuccessModal');
-      modal.querySelector('p').textContent = message;
-      modal.style.display = 'block';
-    }
-
-    function showErrorModal(message) {
-      const modal = document.getElementById('registrationErrorModal');
-      modal.querySelector('p').textContent = message;
-      modal.style.display = 'block';
-    }
   </script>
 </body>
 </html>
