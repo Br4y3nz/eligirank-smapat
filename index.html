@@ -296,12 +296,12 @@
             <div class="login-header"><i class="fas fa-user"></i> Login Akun</div>
             <form id="loginForm" novalidate>
                 <div class="form-group">
-                    <label for="username">Username/Email</label>
+                    <label for="display_name">Display Name/Email</label>
                     <div class="input-icon">
                         <i class="fas fa-user-circle"></i>
-                        <input type="text" id="username" placeholder="Masukkan username/email" />
+                        <input type="text" id="display_name" placeholder="Masukkan display name/email" />
                     </div>
-                    <span id="usernameError" class="error-message" style="display: none;">Username tidak boleh kosong.</span>
+                    <span id="displayNameError" class="error-message" style="display: none;">Display Name tidak boleh kosong.</span>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -331,7 +331,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3 style="margin-bottom: 10px;">Login Gagal</h3>
-            <p>Mohon periksa kembali username/email dan password Anda.</p>
+            <p>Mohon periksa kembali display name/email dan password Anda.</p>
         </div>
     </div>
 
@@ -352,13 +352,13 @@
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         async function login() {
-            const emailOrDisplayName = document.getElementById('username').value.trim();
+            const emailOrDisplayName = document.getElementById('display_name').value.trim();
             const password = document.getElementById('password').value.trim();
 
             if (!emailOrDisplayName || !password) {
                 // Show the error modal for empty fields
                 document.getElementById('loginModal').style.display = 'block';
-                document.querySelector('#loginModal p').textContent = 'Email/Display Name dan password tidak boleh kosong.';
+                document.querySelector('#loginModal p').textContent = 'Display Name/Email dan password tidak boleh kosong.';
                 return;
             }
 
