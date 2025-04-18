@@ -93,6 +93,9 @@
     .main-content {
       margin-top: 80px;
       padding: 30px;
+      display: flex;
+      justify-content: center; /* Center the form horizontally */
+      align-items: center; /* Center the form vertically */
     }
 
     .card {
@@ -100,13 +103,15 @@
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
       padding: 25px;
-      margin-bottom: 25px;
+      margin: 0 auto; /* Center the card */
+      max-width: 400px; /* Limit the width of the form */
+      width: 100%; /* Ensure it scales on smaller screens */
       transition: var(--transition);
     }
 
     .card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
     /* Form Styles */
