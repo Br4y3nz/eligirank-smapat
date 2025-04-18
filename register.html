@@ -239,6 +239,23 @@
       color: var(--primary); /* Change color on hover */
       text-decoration: none;
     }
+
+    .input-icon {
+      position: relative;
+    }
+
+    .input-icon i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+    }
+
+    .input-icon input,
+    .input-icon select {
+      padding-left: 35px; /* Adjust padding to make space for the icon */
+    }
   </style>
   <!-- Add intlTelInput script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
@@ -266,59 +283,80 @@
       <form id="registrationForm">
         <div class="form-group" style="margin-top: 20px;">
           <label for="fullName">Nama Lengkap</label>
-          <input type="text" id="fullName" placeholder="Masukkan nama lengkap" required />
+          <div class="input-icon">
+            <i class="fas fa-user"></i>
+            <input type="text" id="fullName" placeholder="Masukkan nama lengkap" required />
+          </div>
         </div>
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" placeholder="Masukkan username" required />
+          <div class="input-icon">
+            <i class="fas fa-user-circle"></i>
+            <input type="text" id="username" placeholder="Masukkan username" required />
+          </div>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Masukkan email" required />
+          <div class="input-icon">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" placeholder="Masukkan email" required />
+          </div>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Masukkan password" required />
+          <div class="input-icon">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Masukkan password" required />
+          </div>
         </div>
         <div class="form-group">
           <label for="phone">Nomor Telepon</label>
-          <input id="phone" type="tel" pattern="[0-9]*" inputmode="numeric" required />
+          <div class="input-icon">
+            <i class="fas fa-phone"></i>
+            <input id="phone" type="tel" pattern="[0-9]*" inputmode="numeric" placeholder="Masukkan nomor telepon" required />
+          </div>
         </div>
         <div class="form-group">
           <label for="role">Peran</label>
-          <select id="role" required>
-            <option value="">Pilih peran</option>
-            <option value="student">Siswa</option>
-            <option value="teacher">Guru</option>
-          </select>
+          <div class="input-icon">
+            <i class="fas fa-user-tag"></i>
+            <select id="role" required>
+              <option value="">Pilih peran</option>
+              <option value="student">Siswa</option>
+              <option value="teacher">Guru</option>
+            </select>
+          </div>
         </div>
         <div class="form-group" id="classGroup" style="display: none;">
           <label for="class">Kelas</label>
-          <select id="class">
-            <option value="">Pilih kelas</option>
-            <option value="X Macca 1">X Macca 1</option>
-            <option value="X Macca 2">X Macca 2</option>
-            <option value="X Macca 3">X Macca 3</option>
-            <option value="X Macca 4">X Macca 4</option>
-            <option value="X Macca 5">X Macca 5</option>
-            <option value="X Macca 6">X Macca 6</option>
-            <option value="X Macca 7">X Macca 7</option>
-            <option value="XI Matinulu 1">XI Matinulu 1</option>
-            <option value="XI Matinulu 2">XI Matinulu 2</option>
-            <option value="XI Matinulu 3">XI Matinulu 3</option>
-            <option value="XI Matinulu 4">XI Matinulu 4</option>
-            <option value="XI Matinulu 5">XI Matinulu 5</option>
-            <option value="XI Matinulu 6">XI Matinulu 6</option>
-            <option value="XI Matinulu 7">XI Matinulu 7</option>
-            <option value="XII IPA 1">XII IPA 1</option>
-            <option value="XII IPA 2">XII IPA 2</option>
-            <option value="XII IPA 3">XII IPA 3</option>
-            <option value="XII IPA 4">XII IPA 4</option>
-            <option value="XII IPS 1">XII IPS 1</option>
-            <option value="XII IPS 2">XII IPS 2</option>
-            <option value="XII IPS 3">XII IPS 3</option>
-            <option value="XII IPS 4">XII IPS 4</option>
-          </select>
+          <div class="input-icon">
+            <i class="fas fa-chalkboard"></i>
+            <select id="class">
+              <option value="">Pilih kelas</option>
+              <option value="X Macca 1">X Macca 1</option>
+              <option value="X Macca 2">X Macca 2</option>
+              <option value="X Macca 3">X Macca 3</option>
+              <option value="X Macca 4">X Macca 4</option>
+              <option value="X Macca 5">X Macca 5</option>
+              <option value="X Macca 6">X Macca 6</option>
+              <option value="X Macca 7">X Macca 7</option>
+              <option value="XI Matinulu 1">XI Matinulu 1</option>
+              <option value="XI Matinulu 2">XI Matinulu 2</option>
+              <option value="XI Matinulu 3">XI Matinulu 3</option>
+              <option value="XI Matinulu 4">XI Matinulu 4</option>
+              <option value="XI Matinulu 5">XI Matinulu 5</option>
+              <option value="XI Matinulu 6">XI Matinulu 6</option>
+              <option value="XI Matinulu 7">XI Matinulu 7</option>
+              <option value="XII IPA 1">XII IPA 1</option>
+              <option value="XII IPA 2">XII IPA 2</option>
+              <option value="XII IPA 3">XII IPA 3</option>
+              <option value="XII IPA 4">XII IPA 4</option>
+              <option value="XII IPS 1">XII IPS 1</option>
+              <option value="XII IPS 2">XII IPS 2</option>
+              <option value="XII IPS 3">XII IPS 3</option>
+              <option value="XII IPS 4">XII IPS 4</option>
+            </select>
+          </div>
         </div>
         <div class="form-group" id="nisnNisGroup" style="display: none;">
           <label for="nisn">NISN</label>
