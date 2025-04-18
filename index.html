@@ -352,32 +352,32 @@
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         async function login() {
-            const emailOrUsername = document.getElementById('username').value.trim();
+            const emailOrDisplayName = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
 
-            if (!emailOrUsername || !password) {
+            if (!emailOrDisplayName || !password) {
                 // Show the error modal for empty fields
                 document.getElementById('loginModal').style.display = 'block';
-                document.querySelector('#loginModal p').textContent = 'Email/Username dan password tidak boleh kosong.';
+                document.querySelector('#loginModal p').textContent = 'Email/Display Name dan password tidak boleh kosong.';
                 return;
             }
 
             try {
-                let email = emailOrUsername;
+                let email = emailOrDisplayName;
 
-                // Check if the input is a username (does not contain '@')
-                if (!emailOrUsername.includes('@')) {
-                    // Query the `users` table to get the email associated with the username
+                // Check if the input is a display name (does not contain '@')
+                if (!emailOrDisplayName.includes('@')) {
+                    // Query the `auth.users` table to get the email associated with the display name
                     const { data: user, error: userError } = await supabase
-                        .from('users')
-                        .select('email')
-                        .eq('username', emailOrUsername)
+                        .from('auth.users')
+                        .select('email, user_metadata')
+                        .eq('user_metadata->>display_name', emailOrDisplayName)
                         .single();
 
                     if (userError || !user) {
-                        console.error('Error fetching user by username:', userError?.message || 'User not found');
+                        console.error('Error fetching user by display name:', userError?.message || 'User not found');
                         document.getElementById('loginModal').style.display = 'block';
-                        document.querySelector('#loginModal p').textContent = 'Username tidak ditemukan.';
+                        document.querySelector('#loginModal p').textContent = 'Display Name tidak ditemukan.';
                         return;
                     }
 
