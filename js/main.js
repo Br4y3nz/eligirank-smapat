@@ -208,9 +208,59 @@ async function signUp() {
   }
 }
 
-document.getElementById('registrationForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  signUp();
+document.getElementById('registrationForm').addEventListener('submit', async function (event) {
+  event.preventDefault(); // Prevent the page from refreshing
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const username = document.getElementById('username').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+
+  if (!fullName || !username || !email || !password || !phone) {
+    showErrorModal('Semua field wajib diisi.');
+    return;
+  }
+
+  if (password.length < 8) {
+    showErrorModal('Password harus minimal 8 karakter.');
+    return;
+  }
+
+  try {
+    // Step 1: Sign up the user with Supabase
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          display_name: fullName,
+          username: username,
+          phone: phone,
+        },
+      },
+    });
+
+    if (authError) {
+      console.error('Auth Error:', authError.message);
+      showErrorModal(`Pendaftaran gagal: ${authError.message}`);
+      return;
+    }
+
+    // Ensure the user is created before proceeding
+    if (!authData.user) {
+      showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
+      return;
+    }
+
+    console.log('User created:', authData.user);
+
+    // Show success modal
+    showSuccessModal('Registrasi berhasil! Silakan cek email untuk verifikasi.');
+  } catch (error) {
+    console.error('Unexpected Error:', error);
+    showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
+  }
 });
 
 <div class="theme-switch">

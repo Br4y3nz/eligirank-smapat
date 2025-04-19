@@ -373,6 +373,18 @@
       document.getElementById('registrationErrorModal').style.display = 'none';
     }
 
+    function showSuccessModal(message) {
+      const modal = document.getElementById('registrationSuccessModal');
+      modal.querySelector('p').textContent = message;
+      modal.style.display = 'block';
+    }
+
+    function showErrorModal(message) {
+      const modal = document.getElementById('registrationErrorModal');
+      modal.querySelector('p').textContent = message;
+      modal.style.display = 'block';
+    }
+
     // Theme switch functionality
     const themeToggle = document.getElementById('themeToggle');
 
