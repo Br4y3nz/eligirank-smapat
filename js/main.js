@@ -153,3 +153,55 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
 });
 
+async function signUp() {
+  const fullName = document.getElementById('fullName').value;
+  const username = document.getElementById('username').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const phone = document.getElementById('phone').value;
+
+  if (password.length < 8) {
+    showErrorModal('Password harus minimal 8 karakter.');
+    return;
+  }
+
+  try {
+    // Step 1: Sign up the user with email, password, and user metadata
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          display_name: fullName.trim(),
+          phone: phone,
+        },
+      },
+    });
+
+    if (authError) {
+      console.error('Auth Error:', authError.message);
+      showErrorModal(`Pendaftaran gagal: ${authError.message}`);
+      return;
+    }
+
+    // Ensure the user is created before proceeding
+    if (!authData.user) {
+      showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
+      return;
+    }
+
+    console.log('Auth User ID:', authData.user.id);
+
+    // Success
+    showSuccessModal('Registrasi berhasil! Silakan cek email untuk verifikasi.');
+  } catch (error) {
+    console.error('Unexpected Error:', error);
+    showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
+  }
+}
+
+document.getElementById('registrationForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  signUp();
+});
+
