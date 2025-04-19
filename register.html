@@ -478,6 +478,10 @@
           const modal = document.getElementById('registrationSuccessModal');
           modal.querySelector('p').textContent = message;
           modal.style.display = 'block';
+
+          setTimeout(() => {
+            window.location.href = 'index.html'; // Redirect to login page
+          }, 3000); // Redirect after 3 seconds
         }
       
         function showErrorModal(message) {
@@ -492,6 +496,21 @@
       
         function closeRegistrationErrorModal() {
           document.getElementById('registrationErrorModal').style.display = 'none';
+        }
+
+        const phoneInput = document.querySelector("#phone");
+        const iti = window.intlTelInput(phoneInput, {
+          initialCountry: "id",
+          preferredCountries: ["id", "us", "gb", "jp"],
+          separateDialCode: true,
+        });
+
+        function validatePhoneNumber() {
+          if (!iti.isValidNumber()) {
+            showErrorModal("Nomor telepon tidak valid.");
+            return false;
+          }
+          return true;
         }
       </script>
     </div>
