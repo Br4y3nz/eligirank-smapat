@@ -126,3 +126,30 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     // Registration validation logic here...
 });
 
+// Theme switch functionality
+const themeToggle = document.getElementById('themeToggle');
+
+// Function to apply the theme
+function applyTheme(theme) {
+  console.log(`Applying theme: ${theme}`); // Debugging log
+  const isDarkMode = theme === 'dark';
+  document.body.classList.toggle('dark-mode', isDarkMode);
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggle.checked = isDarkMode; // Sync the toggle state
+}
+
+// Save the theme preference to localStorage when toggled
+themeToggle.addEventListener('change', function () {
+  const theme = themeToggle.checked ? 'dark' : 'light';
+  console.log(`Theme toggled to: ${theme}`); // Debugging log
+  localStorage.setItem('theme', theme);
+  applyTheme(theme);
+});
+
+// Initialize the theme on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light if no theme is saved
+  console.log(`Loaded theme: ${savedTheme}`); // Debugging log
+  applyTheme(savedTheme);
+});
+
