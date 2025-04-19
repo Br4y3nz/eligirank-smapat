@@ -438,6 +438,17 @@
               return;
             }
 
+            console.log('Auth User ID:', authData.user.id);
+            console.log('Inserting into profiles:', {
+              id: authData.user.id,
+              full_name: fullName,
+              username: username,
+              email: email,
+              phone: phone,
+              is_siswa: isSiswa,
+              is_guru: isGuru,
+            });
+
             // Determine role flags
             const isSiswa = role === 'student';
             const isGuru = role === 'teacher';
@@ -459,7 +470,7 @@
       
             if (profileError) {
               console.error('Profile Error:', profileError.message);
-              showErrorModal(`Gagal menyimpan data pengguna: ${profileError.message}`);
+              showErrorModal(`Gagal menyimpan data pengguna: ${profileError.message}. Namun, email verifikasi telah dikirim. Silakan cek email kamu.`);
               return;
             }
       
