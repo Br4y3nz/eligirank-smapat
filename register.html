@@ -412,7 +412,7 @@
             showErrorModal('Silakan pilih peran (siswa atau guru).');
             return;
           }
-      
+
           try {
             // Step 1: Sign up the user with email, password, and user metadata
             const { data: authData, error: authError } = await supabase.auth.signUp({
