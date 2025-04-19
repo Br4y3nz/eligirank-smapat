@@ -401,9 +401,15 @@
           const email = document.getElementById('email').value;
           const password = document.getElementById('password').value;
           const phone = document.getElementById('phone').value;
+          const role = document.getElementById('role').value; // Get the selected role
 
           if (password.length < 8) {
             showErrorModal('Password harus minimal 8 karakter.');
+            return;
+          }
+
+          if (!role) {
+            showErrorModal('Silakan pilih peran (siswa atau guru).');
             return;
           }
       
@@ -415,7 +421,7 @@
               options: {
                 data: {
                   display_name: fullName.trim(),
-                  phone: phone, // Ensure this is included
+                  phone: phone,
                 },
               },
             });
@@ -429,6 +435,10 @@
               showErrorModal(`Pendaftaran gagal: ${authError.message}`);
               return;
             }
+
+            // Determine role flags
+            const isSiswa = role === 'student';
+            const isGuru = role === 'teacher';
       
             // Step 2: Insert additional user details into the profiles table
             const { data: profileData, error: profileError } = await supabase
@@ -440,6 +450,8 @@
                   username: username,
                   email: email,
                   phone: phone,
+                  is_siswa: isSiswa, // Set is_siswa based on the role
+                  is_guru: isGuru,   // Set is_guru based on the role
                 },
               ]);
       
