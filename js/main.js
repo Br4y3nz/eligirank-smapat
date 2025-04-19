@@ -55,6 +55,14 @@ function closeModal() {
     });
 }
 
+function closeRegistrationSuccessModal() {
+  document.getElementById('registrationSuccessModal').style.display = 'none';
+}
+
+function closeRegistrationErrorModal() {
+  document.getElementById('registrationErrorModal').style.display = 'none';
+}
+
 // Ensure the close button works for both modals
 window.onclick = function (event) {
     const modals = document.querySelectorAll('.modal');
@@ -129,28 +137,28 @@ document.getElementById('registerForm').addEventListener('submit', function(even
 // Theme switch functionality
 const themeToggle = document.getElementById('themeToggle');
 
-// Function to apply the theme
-function applyTheme(theme) {
-  console.log(`Applying theme: ${theme}`); // Debugging log
-  const isDarkMode = theme === 'dark';
-  document.body.classList.toggle('dark-mode', isDarkMode);
-  document.documentElement.setAttribute('data-theme', theme);
-  themeToggle.checked = isDarkMode; // Sync the toggle state
-}
-
 // Save the theme preference to localStorage when toggled
 themeToggle.addEventListener('change', function () {
-  const theme = themeToggle.checked ? 'dark' : 'light';
-  console.log(`Theme toggled to: ${theme}`); // Debugging log
-  localStorage.setItem('theme', theme);
-  applyTheme(theme);
+  const isDarkMode = themeToggle.checked;
+  document.body.classList.toggle('dark-mode', isDarkMode);
+  const currentTheme = isDarkMode ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+
+  // Save the theme preference to localStorage
+  localStorage.setItem('theme', currentTheme);
 });
 
 // Initialize the theme on page load
 window.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light if no theme is saved
-  console.log(`Loaded theme: ${savedTheme}`); // Debugging log
-  applyTheme(savedTheme);
+  const isDarkMode = savedTheme === 'dark';
+
+  // Apply the saved theme
+  document.body.classList.toggle('dark-mode', isDarkMode);
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  // Set the toggle state
+  themeToggle.checked = isDarkMode;
 });
 
 async function signUp() {
@@ -204,4 +212,9 @@ document.getElementById('registrationForm').addEventListener('submit', function 
   e.preventDefault();
   signUp();
 });
+
+<div class="theme-switch">
+  <input type="checkbox" id="themeToggle" />
+  <label for="themeToggle"></label>
+</div>
 
