@@ -426,13 +426,15 @@
               },
             });
 
-            console.log('Auth Data:', authData);
-            console.log('Auth Error:', authError);
-      
-            if (authError && !authData.user) {
-              // Only show an error if no user was created
+            if (authError) {
               console.error('Auth Error:', authError.message);
               showErrorModal(`Pendaftaran gagal: ${authError.message}`);
+              return;
+            }
+
+            // Ensure the user is created before proceeding
+            if (!authData.user) {
+              showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
               return;
             }
 
