@@ -296,38 +296,23 @@
       <form id="registrationForm">
         <div class="form-group" style="margin-top: 20px;">
           <label for="fullName">Nama Lengkap</label>
-          <div class="input-icon">
-            <i class="fas fa-user"></i>
-            <input type="text" id="fullName" placeholder="Masukkan nama lengkap" required />
-          </div>
+          <input type="text" id="fullName" placeholder="Masukkan nama lengkap" required />
         </div>
         <div class="form-group">
           <label for="username">Username</label>
-          <div class="input-icon">
-            <i class="fas fa-user-circle"></i>
-            <input type="text" id="username" placeholder="Masukkan username" required />
-          </div>
+          <input type="text" id="username" placeholder="Masukkan username" required />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <div class="input-icon">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="email" placeholder="Masukkan email" required />
-          </div>
+          <input type="email" id="email" placeholder="Masukkan email" required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <div class="input-icon">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="password" placeholder="Masukkan password" required />
-          </div>
+          <input type="password" id="password" placeholder="Masukkan password" required />
         </div>
         <div class="form-group">
           <label for="phone">Nomor Telepon</label>
-          <div class="input-icon">
-            <i class="fas fa-phone"></i>
-            <input id="phone" type="tel" pattern="[0-9]*" inputmode="numeric" placeholder="Masukkan nomor telepon" required />
-          </div>
+          <input type="tel" id="phone" placeholder="Masukkan nomor telepon" required />
         </div>
         <button type="submit" class="btn">Daftar</button>
         <div class="login-link" style="margin-top: 15px; text-align: center;">
@@ -339,20 +324,18 @@
 
   <!-- Modal Popup for Registration Success -->
   <div id="registrationSuccessModal" class="modal">
-      <div class="modal-content">
-          <span class="close" onclick="closeRegistrationSuccessModal()">&times;</span>
-          <h3 style="margin-bottom: 10px;">Selamat Datang di EligiRank SMAPAT!</h3>
-          <p>Akun kamu berhasil dibuat! Silakan cek email kamu untuk verifikasi akun.</p>
-      </div>
+    <div class="modal-content">
+      <span class="close" onclick="closeRegistrationSuccessModal()">&times;</span>
+      <p></p>
+    </div>
   </div>
 
   <!-- Modal Popup for Error Message -->
   <div id="registrationErrorModal" class="modal">
-      <div class="modal-content">
-          <span class="close" onclick="closeRegistrationErrorModal()">&times;</span>
-          <h3 style="margin-bottom: 10px;">Pendaftaran Gagal</h3>
-          <p>Username atau email sudah digunakan. Silakan pilih yang lain.</p>
-      </div>
+    <div class="modal-content">
+      <span class="close" onclick="closeRegistrationErrorModal()">&times;</span>
+      <p></p>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>

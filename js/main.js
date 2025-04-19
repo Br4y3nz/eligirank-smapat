@@ -63,6 +63,18 @@ function closeRegistrationErrorModal() {
   document.getElementById('registrationErrorModal').style.display = 'none';
 }
 
+function showSuccessModal(message) {
+  const modal = document.getElementById('registrationSuccessModal');
+  modal.querySelector('p').textContent = message;
+  modal.style.display = 'block';
+}
+
+function showErrorModal(message) {
+  const modal = document.getElementById('registrationErrorModal');
+  modal.querySelector('p').textContent = message;
+  modal.style.display = 'block';
+}
+
 // Ensure the close button works for both modals
 window.onclick = function (event) {
     const modals = document.querySelectorAll('.modal');
