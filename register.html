@@ -272,7 +272,6 @@
   </style>
   <!-- Add intlTelInput script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-
   <!-- Add Supabase script -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
 </head>
@@ -390,6 +389,7 @@
           const email = document.getElementById('email').value;
           const password = document.getElementById('password').value;
           const phone = document.getElementById('phone').value;
+          const role = document.getElementById('role').value;
 
           if (password.length < 8) {
             showErrorModal('Password harus minimal 8 karakter.');
@@ -556,19 +556,15 @@
     // Theme switch functionality
     const themeToggle = document.getElementById('themeToggle');
 
-    // Function to apply the theme
-    function applyTheme(theme) {
-      const isDarkMode = theme === 'dark';
-      document.body.classList.toggle('dark-mode', isDarkMode);
-      document.documentElement.setAttribute('data-theme', theme);
-      themeToggle.checked = isDarkMode; // Sync the toggle state
-    }
-
     // Save the theme preference to localStorage when toggled
     themeToggle.addEventListener('change', function () {
-      const theme = themeToggle.checked ? 'dark' : 'light';
-      localStorage.setItem('theme', theme);
-      applyTheme(theme);
+        const isDarkMode = themeToggle.checked;
+        document.body.classList.toggle('dark-mode', isDarkMode);
+        const currentTheme = isDarkMode ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        // Save the theme preference to localStorage
+        localStorage.setItem('theme', currentTheme);
     });
 
     // Initialize the theme on page load
