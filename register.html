@@ -439,15 +439,6 @@
             }
 
             console.log('Auth User ID:', authData.user.id);
-            console.log('Inserting into profiles:', {
-              id: authData.user.id,
-              full_name: fullName,
-              username: username,
-              email: email,
-              phone: phone,
-              is_siswa: isSiswa,
-              is_guru: isGuru,
-            });
 
             // Determine role flags
             const isSiswa = role === 'student';
@@ -455,10 +446,10 @@
       
             // Step 2: Insert additional user details into the profiles table
             const { data: profileData, error: profileError } = await supabase
-              .from('profiles') // Ensure this table exists in your database
+              .from('profiles')
               .insert([
                 {
-                  id: authData.user.id, // Use the ID from auth.signUp
+                  id: authData.user.id, // Ensure this matches auth.uid()
                   full_name: fullName,
                   username: username,
                   email: email,
