@@ -395,10 +395,15 @@
         themeToggle.checked = isDarkMode;
     });
 
-    const supabase = supabase.createClient(
-      'https://yauwsxvgjmmyleheclpi.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY'
-    );
+    const SupabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
+    const SupabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
+
+    const supabase = createClient(SupabaseUrl, SupabaseKey, {
+      auth: {
+        persistSession: true,
+        detectSessionInUrl: false,
+      },
+    });
 
     document.getElementById('registrationForm').addEventListener('submit', async function (event) {
       event.preventDefault(); // Prevent the page from refreshing
