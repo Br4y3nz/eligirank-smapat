@@ -391,10 +391,7 @@
       <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
       
-        const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
-        const supabase = createClient(supabaseUrl, supabaseKey);
-      
+
         async function signUp() {
           const fullName = document.getElementById('fullName').value;
           const username = document.getElementById('username').value;
@@ -579,28 +576,9 @@
         themeToggle.checked = isDarkMode;
     });
 
-const SupabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
-const SupabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
-const supabase = createClient(SupabaseUrl, SupabaseKey, {
-  auth: {
-        persistSession: true,
-        detectSessionInUrl: false,
-      },
-      global: {
-        headers: {
-          'x-client-info': 'supabase-js/2.0.0',
-        },
-        fetch: (url, options) => {
-          // Custom fetch implementation
-          return fetch(url, options);
-        },
-        fetchRetry: {
-          maxRetries: 3,
-          retryInterval: 1000,
-        },
-        autoRefreshToken: true,
-    }
-    });
+const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 
 
