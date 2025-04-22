@@ -7,36 +7,23 @@
   <title>Registrasi - EligiRank SMAPAT</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <style>
     :root {
-      --primary: #4DA3D8; /* Sky blue from logo */
-      --secondary: #1E3A8A; /* Dark blue */
-      --light: #F9FAFB;   /* Light grayish white background */
-      --dark: #111827;    /* Almost black text */
+      --primary: #4DA3D8;
+      --secondary: #1E3A8A;
+      --light: #F9FAFB;
+      --dark: #111827;
       --border-radius: 8px;
       --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
-      --success: #10B981; /* Green accent */
-      --danger: #DC2626;  /* Red accent */
-      --warning: #FACC15; /* Yellow accent */
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
     }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f5f7fa;
+      background-color: var(--light);
       color: var(--dark);
     }
 
-    /* Header Styles */
     .header {
       display: flex;
       align-items: center;
@@ -52,52 +39,15 @@
     }
 
     .theme-switch {
-      display: flex;
-      align-items: center;
-      margin-left: auto; /* Align switch to the right */
+      margin-left: auto;
     }
 
-    .theme-switch input {
-      display: none; /* Hide the default checkbox */
-    }
-
-    .theme-switch label {
-      cursor: pointer;
-      width: 40px;
-      height: 20px;
-      background-color: #ccc;
-      border-radius: 20px;
-      position: relative;
-      transition: background-color 0.3s ease;
-    }
-
-    .theme-switch label:before {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background-color: white;
-      top: 1px;
-      left: 1px;
-      transition: transform 0.3s ease;
-    }
-
-    .theme-switch input:checked + label {
-      background-color: var(--primary);
-    }
-
-    .theme-switch input:checked + label:before {
-      transform: translateX(20px); /* Move the switch */
-    }
-
-    /* Main Content Styles */
     .main-content {
       margin-top: 80px;
       padding: 30px;
       display: flex;
-      justify-content: center; /* Center the form horizontally */
-      align-items: center; /* Center the form vertically */
+      justify-content: center;
+      align-items: center;
     }
 
     .card {
@@ -105,43 +55,25 @@
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
       padding: 25px;
-      margin: 0 auto; /* Center the card */
-      max-width: 400px; /* Limit the width of the form */
-      width: 100%; /* Ensure it scales on smaller screens */
-      transition: var(--transition);
+      max-width: 400px;
+      width: 100%;
     }
 
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Form Styles */
     .form-group {
       margin-bottom: 20px;
     }
-    
+
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
     }
-    
+
     input, select {
       width: 100%;
       padding: 12px;
       border: 1px solid #ddd;
       border-radius: var(--border-radius);
-      font-family: 'Poppins', sans-serif;
-      transition: var(--transition);
-      background-color: white;
-      color: var(--dark);
-    }
-
-    input:focus {
-      border-color: var(--primary);
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
     }
 
     .btn {
@@ -149,145 +81,43 @@
       border-radius: var(--border-radius);
       border: none;
       cursor: pointer;
-      font-weight: 500;
-      transition: var(--transition);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
     }
-    
-    .btn:hover {
-      background: linear-gradient(135deg, var(--secondary), #5a67d8);
-    }
 
-    /* Responsive Styles */
-    @media (max-width: 768px) {
-      .card {
-        padding: 20px;
-      }
-    }
-
-    /* Dark mode overrides placed after the default rules */
-    body.dark-mode {
-      background-color: #111827; /* Dark background */
-      color: #f9fafb;          /* Light text */
-    }
-
-    body.dark-mode .card {
-      background: #1f2937;  /* Darker background for cards */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    }
-
-    body.dark-mode input,
-    body.dark-mode select,
-    body.dark-mode textarea {
-      background-color: #333; /* Dark background for inputs */
-      color: #f9fafb;        /* Light text for inputs */
-      border: 1px solid #555; /* Darker border for inputs */
-    }
-
-    body.dark-mode input:focus,
-    body.dark-mode select:focus,
-    body.dark-mode textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
-    }
-
-    /* Modal Styles */
     .modal {
-      display: none; /* Hidden by default */
-      position: fixed; /* Stay in place */
-      z-index: 999; /* Sit on top */
+      display: none;
+      position: fixed;
+      z-index: 999;
       left: 0;
       top: 0;
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
     }
 
     .modal-content {
-      background-color: var(--light); /* Light background for modal */
-      margin: 15% auto; /* 15% from the top and centered */
+      background-color: var(--light);
+      margin: 15% auto;
       padding: 20px;
       border-radius: 8px;
-      width: 300px; /* Fixed width for modal */
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      width: 300px;
       text-align: center;
-      position: relative; /* Allow positioning of the close button */
-    }
-
-    body.dark-mode .modal-content {
-      background-color: #1E293B; /* Dark background for modal */
-      color: #F1F5F9; /* Light text for modal */
     }
 
     .close {
-      position: absolute; /* Position the close button */
-      top: 10px; /* Distance from the top */
-      right: 10px; /* Distance from the right */
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-      color: var(--dark); /* Match the color with the theme */
-    }
-
-    body.dark-mode .close {
-      color: #F1F5F9; /* Light color for dark mode */
-    }
-
-    .close:hover,
-    .close:focus {
-      color: var(--primary); /* Change color on hover */
-      text-decoration: none;
-    }
-
-    .input-icon {
-      position: relative;
-    }
-
-    .input-icon i {
       position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--primary); /* Use the primary color for the icons */
-    }
-
-    .input-icon input,
-    .input-icon select {
-      padding-left: 35px; /* Adjust padding to make space for the icon */
-    }
-
-    body[data-theme="light"] {
-      --icon-color: #888; /* Icon color for light mode */
-    }
-
-    body[data-theme="dark"] {
-      --icon-color: #F1F5F9; /* Icon color for dark mode */
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      cursor: pointer;
     }
   </style>
-  <!-- Add intlTelInput script -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-
-  <!-- Add Supabase script -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/server.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
-
-  
 </head>
 <body>
-  <!-- Header Section -->
   <header class="header">
     <div class="brand">
-      <i class="fas fa-school" style="color:white"></i>
+      <i class="fas fa-school"></i>
       <span>EligiRank SMAPAT | Registrasi</span>
     </div>
     <div class="theme-switch">
@@ -296,208 +126,78 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <div class="main-content">
     <div class="card">
       <h2 style="text-align: center;"><i class="fas fa-user-plus"></i> Registrasi Akun</h2>
       <form id="registrationForm">
-        <div class="form-group" style="margin-top: 20px;">
-          <label for="fullName">Nama Lengkap</label>
-          <div class="input-icon">
-            <i class="fas fa-user"></i>
-            <input type="text" id="fullName" placeholder="Masukkan nama lengkap" required />
-          </div>
-        </div>
         <div class="form-group">
-          <label for="username">Username</label>
-          <div class="input-icon">
-            <i class="fas fa-user-circle"></i>
-            <input type="text" id="username" placeholder="Masukkan username" required />
-          </div>
+          <label for="fullName">Nama Lengkap</label>
+          <input type="text" id="fullName" placeholder="Masukkan nama lengkap" required />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <div class="input-icon">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="email" placeholder="Masukkan email" required />
-          </div>
+          <input type="email" id="email" placeholder="Masukkan email" required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <div class="input-icon">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="password" placeholder="Masukkan password" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="phone">Nomor Telepon</label>
-          <div class="input-icon">
-            <i class="fas fa-phone"></i>
-            <input id="phone" type="tel" pattern="[0-9]*" inputmode="numeric" placeholder="Masukkan nomor telepon" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="role">Peran</label>
-          <div class="input-icon">
-            <i class="fas fa-user-tag"></i>
-            <select id="role" required>
-              <option value="">Pilih peran</option>
-              <option value="student">Siswa</option>
-              <option value="teacher">Guru</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" id="classGroup" style="display: none;">
-          <label for="class">Kelas</label>
-          <div class="input-icon">
-            <i class="fas fa-chalkboard"></i>
-            <select id="class">
-              <option value="">Pilih kelas</option>
-              <option value="X Macca 1">X Macca 1</option>
-              <option value="X Macca 2">X Macca 2</option>
-              <option value="X Macca 3">X Macca 3</option>
-              <option value="X Macca 4">X Macca 4</option>
-              <option value="X Macca 5">X Macca 5</option>
-              <option value="X Macca 6">X Macca 6</option>
-              <option value="X Macca 7">X Macca 7</option>
-              <option value="XI Matinulu 1">XI Matinulu 1</option>
-              <option value="XI Matinulu 2">XI Matinulu 2</option>
-              <option value="XI Matinulu 3">XI Matinulu 3</option>
-              <option value="XI Matinulu 4">XI Matinulu 4</option>
-              <option value="XI Matinulu 5">XI Matinulu 5</option>
-              <option value="XI Matinulu 6">XI Matinulu 6</option>
-              <option value="XI Matinulu 7">XI Matinulu 7</option>
-              <option value="XII IPA 1">XII IPA 1</option>
-              <option value="XII IPA 2">XII IPA 2</option>
-              <option value="XII IPA 3">XII IPA 3</option>
-              <option value="XII IPA 4">XII IPA 4</option>
-              <option value="XII IPS 1">XII IPS 1</option>
-              <option value="XII IPS 2">XII IPS 2</option>
-              <option value="XII IPS 3">XII IPS 3</option>
-              <option value="XII IPS 4">XII IPS 4</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" id="nisnNisGroup" style="display: none;">
-          <label for="nisn">NISN</label>
-          <input type="text" id="nisn" placeholder="Masukkan NISN" />
-          <label for="nis">NIS</label>
-          <input type="text" id="nis" placeholder="Masukkan NIS" />
-        </div>
-        <div class="form-group" id="nipNuptkGroup" style="display: none;">
-          <label for="nip">NIP</label>
-          <input type="text" id="nip" placeholder="Masukkan NIP" />
-          <label for="nuptk">NUPTK</label>
-          <input type="text" id="nuptk" placeholder="Masukkan NUPTK" />
+          <input type="password" id="password" placeholder="Masukkan password" required />
         </div>
         <button type="submit" class="btn">Daftar</button>
-        <div class="login-link" style="margin-top: 15px; text-align: center;">
-          Sudah punya akun? <a href="index.html" style="font-weight: 600; color: var(--primary); text-decoration: none;">Login</a>
-        </div>
       </form>
-      <script type="module">
-
-
-        async function signUp() {
-          const fullName = document.getElementById('fullName').value;
-          const username = document.getElementById('username').value;
-          const email = document.getElementById('email').value;
-          const password = document.getElementById('password').value;
-          const phone = document.getElementById('phone').value;
-
-          if (password.length < 8) {
-            showErrorModal('Password harus minimal 8 karakter.');
-            return;
-          }
-
-          try {
-            const { data: authData, error: authError } = await supabase.auth.signUp({
-              email: email,
-              password: password,
-              options: {
-                data: {
-                  display_name: fullName.trim(),
-                  phone: phone,
-                },
-              },
-            });
-
-            if (authError) {
-              console.error('Auth Error:', authError.message);
-              showErrorModal(`Pendaftaran gagal: ${authError.message}`);
-              return;
-            }
-
-            console.log('User created:', authData.user);
-            showSuccessModal('Registrasi berhasil! Silakan cek email untuk verifikasi.');
-          } catch (error) {
-            console.error('Unexpected Error:', error);
-            showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
-          }
-        }
-
-        document.getElementById('registrationForm').addEventListener('submit', function (e) {
-          e.preventDefault();
-          signUp();
-        });
-      </script>
     </div>
   </div>
 
-  <!-- Modal Popup for Registration Success -->
   <div id="registrationSuccessModal" class="modal">
-      <div class="modal-content">
-          <span class="close" onclick="closeRegistrationSuccessModal()">&times;</span>
-          <h3 style="margin-bottom: 10px;">Selamat Datang di EligiRank SMAPAT!</h3>
-          <p>Akun kamu berhasil dibuat! Silakan cek email kamu untuk verifikasi akun.</p>
-      </div>
+    <div class="modal-content">
+      <span class="close" onclick="closeRegistrationSuccessModal()">&times;</span>
+      <p>Registrasi berhasil! Silakan cek email untuk verifikasi.</p>
+    </div>
   </div>
 
-  <!-- Modal Popup for Error Message -->
   <div id="registrationErrorModal" class="modal">
-      <div class="modal-content">
-          <span class="close" onclick="closeRegistrationErrorModal()">&times;</span>
-          <h3 style="margin-bottom: 10px;">Pendaftaran Gagal</h3>
-          <p>Username atau email sudah digunakan. Silakan pilih yang lain.</p>
-      </div>
+    <div class="modal-content">
+      <span class="close" onclick="closeRegistrationErrorModal()">&times;</span>
+      <p>Terjadi kesalahan. Silakan coba lagi.</p>
+    </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
-  <script>
-    const input = document.querySelector("#phone");
-    window.intlTelInput(input, {
-      initialCountry: "id",
-      preferredCountries: ["id", "us", "gb", "jp"],
-      separateDialCode: true
-    });
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js';
 
-    document.getElementById('role').addEventListener('change', function() {
-      const classGroup = document.getElementById('classGroup');
-      const nisnNisGroup = document.getElementById('nisnNisGroup');
-      const nipNuptkGroup = document.getElementById('nipNuptkGroup');
-      if (this.value === 'student') {
-        classGroup.style.display = 'block';
-        nisnNisGroup.style.display = 'block';
-        nipNuptkGroup.style.display = 'none';
-      } else if (this.value === 'teacher') {
-        classGroup.style.display = 'none';
-        nisnNisGroup.style.display = 'none';
-        nipNuptkGroup.style.display = 'block';
-      } else {
-        classGroup.style.display = 'none';
-        nisnNisGroup.style.display = 'none';
-        nipNuptkGroup.style.display = 'none';
+    const supabaseUrl = 'https://your-supabase-url.supabase.co';
+    const supabaseKey = 'your-supabase-anon-key';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    document.getElementById('registrationForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (password.length < 8) {
+        showErrorModal('Password harus minimal 8 karakter.');
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { full_name: fullName },
+          },
+        });
+
+        if (error) {
+          showErrorModal(error.message);
+        } else {
+          showSuccessModal('Registrasi berhasil! Silakan cek email untuk verifikasi.');
+        }
+      } catch (err) {
+        showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
       }
     });
-
-    function closeRegistrationSuccessModal() {
-      document.getElementById('registrationSuccessModal').style.display = 'none';
-    }
-
-    function closeRegistrationErrorModal() {
-      document.getElementById('registrationErrorModal').style.display = 'none';
-    }
 
     function showSuccessModal(message) {
       const modal = document.getElementById('registrationSuccessModal');
@@ -511,99 +211,26 @@
       modal.style.display = 'block';
     }
 
-    // Theme switch functionality
+    function closeRegistrationSuccessModal() {
+      document.getElementById('registrationSuccessModal').style.display = 'none';
+    }
+
+    function closeRegistrationErrorModal() {
+      document.getElementById('registrationErrorModal').style.display = 'none';
+    }
+
     const themeToggle = document.getElementById('themeToggle');
-
-    // Save the theme preference to localStorage when toggled
     themeToggle.addEventListener('change', function () {
-        const isDarkMode = themeToggle.checked;
-        document.body.classList.toggle('dark-mode', isDarkMode);
-        const currentTheme = isDarkMode ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-
-        // Save the theme preference to localStorage
-        localStorage.setItem('theme', currentTheme);
+      const isDarkMode = themeToggle.checked;
+      document.body.classList.toggle('dark-mode', isDarkMode);
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     });
 
-    // Initialize the theme on page load
     window.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light if no theme is saved
-        const isDarkMode = savedTheme === 'dark';
-
-        // Apply the saved theme
-        document.body.classList.toggle('dark-mode', isDarkMode);
-        document.documentElement.setAttribute('data-theme', savedTheme);
-
-        // Set the toggle state
-        themeToggle.checked = isDarkMode;
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+      themeToggle.checked = savedTheme === 'dark';
     });
-
-
-    document.getElementById('registrationForm').addEventListener('submit', async function (event) {
-      event.preventDefault(); // Prevent the page from refreshing
-
-      console.log('Form submitted'); // Debugging log
-
-      const fullName = document.getElementById('fullName').value.trim();
-      const username = document.getElementById('username').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-
-      if (!fullName || !username || !email || !password || !phone) {
-        showErrorModal('Semua field wajib diisi.');
-        return;
-      }
-
-      if (password.length < 8) {
-        showErrorModal('Password harus minimal 8 karakter.');
-        return;
-      }
-
-      try {
-        // Step 1: Sign up the user with Supabase
-        const { data: authData, error: authError } = await supabase.auth.signUp({
-          email: email,
-          password: password,
-          options: {
-            data: {
-              display_name: fullName,
-              username: username,
-              phone: phone,
-            },
-          },
-        });
-
-        if (authError) {
-          console.error('Auth Error:', authError.message);
-          showErrorModal(`Pendaftaran gagal: ${authError.message}`);
-          return;
-        }
-
-        // Ensure the user is created before proceeding
-        if (!authData.user) {
-          showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
-          return;
-        }
-
-        console.log('User created:', authData.user);
-
-        // Show success modal
-        showSuccessModal('Registrasi berhasil! Silakan cek email untuk verifikasi.');
-      } catch (error) {
-        console.error('Unexpected Error:', error);
-        showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
-      }
-    });
-
-    <div class="theme-switch">
-  <input type="checkbox" id="darkModeToggle" />
-  <label for="darkModeToggle"></label>
-  <input type="checkbox" id="themeToggle" />
-  <label for="themeToggle"></label>
-  </div>
-
-
   </script>
 </body>
 </html>
