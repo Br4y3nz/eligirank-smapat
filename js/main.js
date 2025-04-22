@@ -325,6 +325,8 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
 });
 
 <div class="theme-switch">
+  <input type="checkbox" id="darkModeToggle" />
+  <label for="darkModeToggle"></label>
   <input type="checkbox" id="themeToggle" />
   <label for="themeToggle"></label>
 </div>
