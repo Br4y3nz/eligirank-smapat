@@ -526,24 +526,6 @@
       separateDialCode: true
     });
 
-    document.getElementById('role').addEventListener('change', function() {
-      const classGroup = document.getElementById('classGroup');
-      const nisnNisGroup = document.getElementById('nisnNisGroup');
-      const nipNuptkGroup = document.getElementById('nipNuptkGroup');
-      if (this.value === 'student') {
-        classGroup.style.display = 'block';
-        nisnNisGroup.style.display = 'block';
-        nipNuptkGroup.style.display = 'none';
-      } else if (this.value === 'teacher') {
-        classGroup.style.display = 'none';
-        nisnNisGroup.style.display = 'none';
-        nipNuptkGroup.style.display = 'block';
-      } else {
-        classGroup.style.display = 'none';
-        nisnNisGroup.style.display = 'none';
-        nipNuptkGroup.style.display = 'none';
-      }
-    });
 
     function closeRegistrationSuccessModal() {
       document.getElementById('registrationSuccessModal').style.display = 'none';
