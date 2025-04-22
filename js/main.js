@@ -1,4 +1,4 @@
- // Initialize Supabase client
+// Initialize Supabase client
   const supabaseUrl = `https://yauwsxvgjmmyleheclpi.supabase.co`; // Replace with your Supabase project URL
   const supabaseKey = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY`;
   const supabase = createClient(supabaseUrl, supabaseKey);
@@ -67,23 +67,23 @@ document.addEventListener('click', function(e) {
 
 // Dark Mode Toggle Function
 function setupDarkModeToggle() {
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('change', function() {
-            if (this.checked) {
-                document.body.classList.add('dark-mode');
-                document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-                document.body.classList.remove('dark-mode');
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-        });
-    }
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('change', function () {
+      if (this.checked) {
+        document.body.classList.add('dark-mode');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    });
+  }
 }
 
 // Initialize Dark Mode on Page Load
-document.addEventListener('DOMContentLoaded', function() {
-    setupDarkModeToggle();
+document.addEventListener('DOMContentLoaded', function () {
+  setupDarkModeToggle();
 });
 
 // Modal functions
@@ -323,11 +323,3 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
   }
 });
-
-<div class="theme-switch">
-  <input type="checkbox" id="darkModeToggle" />
-  <label for="darkModeToggle"></label>
-  <input type="checkbox" id="themeToggle" />
-  <label for="themeToggle"></label>
-</div>
-

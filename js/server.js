@@ -1,13 +1,4 @@
 
-// Email configuration
-const transporter = nodemailer.createTransport({
-    service: 'Gmail', // Use your email service provider
-    auth: {
-        user: 'your-email@gmail.com', // Your email
-        pass: 'your-email-password' // Your email password or app password
-    }
-});
-
 // In-memory storage for codes (for demonstration purposes)
 let verificationCodes = {};
 
