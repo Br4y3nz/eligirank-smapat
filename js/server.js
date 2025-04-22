@@ -1,8 +1,4 @@
 
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Email configuration
 const transporter = nodemailer.createTransport({
     service: 'Gmail', // Use your email service provider
