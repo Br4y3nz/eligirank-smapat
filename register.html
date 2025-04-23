@@ -559,5 +559,29 @@
       applyTheme(savedTheme);
     });
   </script>
+
+  <!-- Add this button where you want the Google sign-up -->
+<button id="google-signup-btn">Sign up with Google</button>
+<script>
+
+  const googleSignUpBtn = document.getElementById('google-signup-btn');
+
+  googleSignUpBtn.addEventListener('click', async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+    if (error) {
+      alert('Error: ' + error.message);
+    }
+  });
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (session) {
+      console.log('Signed up as:', session.user.email);
+      // Redirect or update UI accordingly
+    }
+  });
+</script>
+
 </body>
 </html>
