@@ -464,5 +464,28 @@
             themeToggle.checked = isDarkMode;
         });
     </script>
+    <!-- Add this button where you want the Google sign-in -->
+    <button id="google-signin-btn">Sign in with Google</button>
+
+<script>
+  const googleSignInBtn = document.getElementById('google-signin-btn');
+
+  googleSignInBtn.addEventListener('click', async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+    if (error) {
+      alert('Error: ' + error.message);
+    }
+  });
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (session) {
+      console.log('Logged in as:', session.user.email);
+      // Redirect or update UI accordingly
+    }
+  });
+</script>
+
 </body>
 </html>
