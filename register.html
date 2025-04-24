@@ -282,10 +282,19 @@
       cursor: pointer;
       margin-top: 20px;
       transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
     #google-signup-btn:hover {
       background-color: #357ae8;
+    }
+
+    #google-signup-btn svg {
+      width: 20px;
+      height: 20px;
     }
   </style>
   <!-- Add intlTelInput script -->
@@ -396,8 +405,16 @@
         </div>
       </form>
 
-      <!-- Google Sign-Up Button below the form -->
-      <button id="google-signup-btn">Sign up with Google</button>
+      <!-- Google Sign-Up Button below the form with Google logo -->
+      <button id="google-signup-btn" type="button" aria-label="Sign up with Google">
+        <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.5-34.1-4.3-50.4H272v95.5h146.9c-6.3 34-25.3 62.8-54.1 82v68h87.4c51-47 80.3-116 80.3-195.1z"/>
+          <path fill="#34A853" d="M272 544.3c73.7 0 135.6-24.4 180.8-66.1l-87.4-68c-24.3 16.3-55.4 26-93.4 26-71.7 0-132.5-48.3-154.3-113.1H27.6v70.9c45.1 89.1 137.3 150.3 244.4 150.3z"/>
+          <path fill="#FBBC05" d="M117.7 323.1c-10.7-31.7-10.7-65.9 0-97.6v-70.9H27.6c-38.6 75.3-38.6 164.7 0 240l90.1-71.5z"/>
+          <path fill="#EA4335" d="M272 107.7c39.9 0 75.8 13.7 104 40.7l78-78C405.6 24.4 343.7 0 272 0 164.9 0 72.7 61.2 27.6 150.3l90.1 70.9c21.8-64.8 82.6-113.5 154.3-113.5z"/>
+        </svg>
+        Sign up with Google
+      </button>
     </div>
   </div>
 
@@ -500,17 +517,59 @@
       signUp();
     });
 
-    document.getElementById('google-signup-btn').addEventListener('click', function () {
-      signUpWithGoogle();
+    // Google Sign-Up Button Logic
+    const googleSignUpBtn = document.getElementById('google-signup-btn');
+
+    googleSignUpBtn.addEventListener('click', async () => {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) {
+        alert('Error: ' + error.message);
+      }
     });
 
-    async function signUpWithGoogle() {
-      try {
-        await supabase.auth.signIn({ provider: 'google' });
-      } catch (error) {
-        console.error('Google Sign-In Error:', error.message);
-        showErrorModal(`Gagal masuk dengan Google: ${error.message}`);
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        console.log('Signed up as:', session.user.email);
+        // Redirect or update UI accordingly
       }
+    });
+
+    // Theme switch functionality
+    const themeToggle = document.getElementById('themeToggle');
+
+    function applyTheme(theme) {
+      const isDarkMode = theme === 'dark';
+      document.body.classList.toggle('dark-mode', isDarkMode);
+      document.documentElement.setAttribute('data-theme', theme);
+      themeToggle.checked = isDarkMode; // Sync the toggle state
+    }
+
+    themeToggle.addEventListener('change', function () {
+      const theme = themeToggle.checked ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      applyTheme(theme);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light if no theme is saved
+      applyTheme(savedTheme);
+    });
+
+    const phoneInput = document.querySelector("#phone");
+    const iti = window.intlTelInput(phoneInput, {
+      initialCountry: "id",
+      preferredCountries: ["id", "us", "gb", "jp"],
+      separateDialCode: true,
+    });
+
+    function validatePhoneNumber() {
+      if (!iti.isValidNumber()) {
+        showErrorModal("Nomor telepon tidak valid.");
+        return false;
+      }
+      return true;
     }
   </script>
 </body>

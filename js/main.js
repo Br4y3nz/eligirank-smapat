@@ -323,3 +323,58 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
   }
 });
+
+// Dark mode toggle
+const themeToggle = document.getElementById('themeToggle');
+
+function applyTheme(theme) {
+  const isDarkMode = theme === 'dark';
+  document.body.classList.toggle('dark-mode', isDarkMode);
+  document.documentElement.setAttribute('data-theme', theme);
+  if (themeToggle) {
+    themeToggle.checked = isDarkMode;
+  }
+}
+
+// Initialize theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+});
+
+// Save theme preference on toggle
+if (themeToggle) {
+  themeToggle.addEventListener('change', () => {
+    const theme = themeToggle.checked ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+    applyTheme(theme);
+  });
+}
+
+// Supabase client initialization
+const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
+const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+// Google sign-in button handler
+document.addEventListener('DOMContentLoaded', () => {
+  const googleSignInBtn = document.getElementById('google-signup-btn');
+  if (googleSignInBtn) {
+    googleSignInBtn.addEventListener('click', async () => {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) {
+        alert('Error: ' + error.message);
+      }
+    });
+  }
+});
+
+// Optional: listen for auth state changes
+supabase.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    console.log('User logged in:', session.user.email);
+    // Redirect or update UI accordingly
+  }
+});
