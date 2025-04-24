@@ -275,21 +275,26 @@
       width: 100%;
       padding: 12px;
       font-size: 1rem;
-      background-color: #4285F4;
-      color: white;
-      border: none;
+      background-color: transparent;
+      color: var(--dark);
+      border: 1.5px solid var(--dark);
       border-radius: var(--border-radius);
       cursor: pointer;
       margin-top: 20px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
     }
 
+    body.dark-mode #google-signup-btn {
+      color: var(--light);
+      border-color: var(--light);
+    }
+
     #google-signup-btn:hover {
-      background-color: #357ae8;
+      background-color: rgba(0, 0, 0, 0.05);
     }
 
     #google-signup-btn svg {
