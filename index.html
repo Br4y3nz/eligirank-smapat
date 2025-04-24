@@ -498,6 +498,29 @@
             // Set the toggle state
             themeToggle.checked = isDarkMode;
         });
+
+        // Google Log In Button Logic
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+
+        googleSignInBtn.addEventListener('click', async () => {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + '/dashboard.html'
+                }
+            });
+            if (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                console.log('Logged in as:', session.user.email);
+                // Redirect or update UI accordingly
+                window.location.href = 'dashboard.html';
+            }
+        });
     </script>
 </body>
 </html>
