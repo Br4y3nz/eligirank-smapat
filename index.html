@@ -242,6 +242,55 @@
             width: 20px;
             height: 20px;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 999; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: var(--light); /* Light background for modal */
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px; /* Fixed width for modal */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative; /* Allow positioning of the close button */
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #1E293B; /* Dark background for modal */
+            color: #F1F5F9; /* Light text for modal */
+        }
+
+        .close {
+            position: absolute; /* Position the close button */
+            top: 10px; /* Distance from the top */
+            right: 10px; /* Distance from the right */
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--dark); /* Match the color with the theme */
+        }
+
+        body.dark-mode .close {
+            color: #F1F5F9; /* Light color for dark mode */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--primary); /* Change color on hover */
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -305,7 +354,7 @@
     </div>
 
     <!-- Error Modal -->
-    <div id="loginModal" class="modal">
+    <div id="loginModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3 style="margin-bottom: 10px;">Login Gagal</h3>
@@ -314,7 +363,7 @@
     </div>
 
     <!-- Success Modal -->
-    <div id="successModal" class="modal">
+    <div id="successModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3 style="margin-bottom: 10px;">Login Berhasil</h3>
@@ -398,14 +447,8 @@
         const loginForm = document.getElementById('loginForm');
         const modal = document.getElementById('loginModal');
         const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-
-        function showModal() {
-            modal.style.display = 'block';
-        }
 
         function closeModal() {
-            console.log('closeModal function triggered'); // Debugging log
             const modals = document.querySelectorAll('.modal');
             modals.forEach((modal) => {
                 modal.style.display = 'none';
@@ -413,8 +456,8 @@
         }
 
         window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
             }
         }
 
@@ -442,29 +485,5 @@
             themeToggle.checked = isDarkMode;
         });
     </script>
-    <!-- Add this button where you want the Google sign-in -->
-    <button id="google-signin-btn">Sign in with Google</button>
-
-<script>
-  const googleSignInBtn = document.getElementById('google-signin-btn');
-
-  googleSignInBtn.addEventListener('click', async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    });
-    if (error) {
-      alert('Error: ' + error.message);
-    }
-  });
-
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (session) {
-      console.log('Logged in as:', session.user.email);
-      // Redirect or update UI accordingly
-    }
-  });
-</script>
-
 </body>
 </html>
-</edit_file>
