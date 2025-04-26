@@ -405,10 +405,12 @@
                 justify-content: flex-end;
                 align-items: center;
                 position: relative;
+                min-width: 120px;
             }
             .user-avatar {
                 width: 35px;
                 height: 35px;
+                flex-shrink: 0;
             }
             .profile-dropdown {
                 top: 45px;
@@ -417,6 +419,10 @@
             }
             .user-name {
                 font-size: 0.85rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: calc(100% - 40px);
             }
             .menu-btn {
                 width: 35px;
