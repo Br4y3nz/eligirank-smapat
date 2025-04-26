@@ -378,3 +378,16 @@ body.dark-mode .card {
 .input-icon select {
     padding-left: 35px; /* Add padding to make space for the icon */
 }
+
+body.dark-mode .hero-section {
+    background-color: #1E293B; /* Dark background for hero section /
+    color: #CBD5E1; / Light text color */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    body.dark-mode .hero-section h1,
+    body.dark-mode .hero-section p,
+    body.dark-mode .hero-section blockquote {
+    color: #CBD5E1;
+    }
+    
