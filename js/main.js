@@ -315,6 +315,11 @@ function applyTheme(theme) {
   if (darkModeToggle) {
     darkModeToggle.checked = isDarkMode;
   }
+  // Also toggle dark-mode class on hero section for welcome speech dark mode
+  const heroSection = document.querySelector('.hero-section');
+  if (heroSection) {
+    heroSection.classList.toggle('dark-mode', isDarkMode);
+  }
 }
 
 // Initialize theme on page load
