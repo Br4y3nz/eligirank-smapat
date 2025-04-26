@@ -539,11 +539,44 @@
             // Initialize dark mode toggle state
             const darkModeToggle = document.getElementById('darkModeToggle');
             if (darkModeToggle) {
-                darkModeToggle.checked = document.documentElement.getAttribute('data-theme') === 'dark';
+                // Initialize toggle state based on localStorage or system preference
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    darkModeToggle.checked = savedTheme === 'dark';
+                    if (savedTheme === 'dark') {
+                        document.body.classList.add('dark-mode');
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                        const sidebar = document.getElementById('sidebar');
+                        if (sidebar) sidebar.classList.add('dark-mode');
+                        const cards = document.querySelectorAll('.card');
+                        cards.forEach(card => card.classList.add('dark-mode'));
+                        const inputs = document.querySelectorAll('input, select');
+                        inputs.forEach(input => input.classList.add('dark-mode'));
+                        const labels = document.querySelectorAll('label');
+                        labels.forEach(label => label.classList.add('dark-mode'));
+                    }
+                } else {
+                    // If no saved theme, use system preference
+                    darkModeToggle.checked = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (darkModeToggle.checked) {
+                        document.body.classList.add('dark-mode');
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                        const sidebar = document.getElementById('sidebar');
+                        if (sidebar) sidebar.classList.add('dark-mode');
+                        const cards = document.querySelectorAll('.card');
+                        cards.forEach(card => card.classList.add('dark-mode'));
+                        const inputs = document.querySelectorAll('input, select');
+                        inputs.forEach(input => input.classList.add('dark-mode'));
+                        const labels = document.querySelectorAll('label');
+                        labels.forEach(label => label.classList.add('dark-mode'));
+                    }
+                }
+
                 darkModeToggle.addEventListener('change', function () {
                     if (this.checked) {
                         document.body.classList.add('dark-mode');
                         document.documentElement.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('theme', 'dark');
                         const sidebar = document.getElementById('sidebar');
                         if (sidebar) sidebar.classList.add('dark-mode');
                         const cards = document.querySelectorAll('.card');
@@ -555,6 +588,7 @@
                     } else {
                         document.body.classList.remove('dark-mode');
                         document.documentElement.setAttribute('data-theme', 'light');
+                        localStorage.setItem('theme', 'light');
                         const sidebar = document.getElementById('sidebar');
                         if (sidebar) sidebar.classList.remove('dark-mode');
                         const cards = document.querySelectorAll('.card');
