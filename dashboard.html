@@ -442,46 +442,57 @@
             <blockquote style="font-style: italic; font-size: 1rem; max-width: 600px; margin: 0 auto;">"Pendidikan adalah senjata paling ampuh yang dapat kamu gunakan untuk mengubah dunia." - Nelson Mandela</blockquote>
         </section>
 
-        <!-- Latest Section -->
-        <section class="latest-section" style="margin-bottom: 30px;">
-            <h2 style="color: var(--primary); margin-bottom: 20px;">Informasi Terbaru</h2>
-            <div class="latest-cards slider-container" style="position: relative; overflow: hidden; max-width: 100%;">
-                <div class="slider-wrapper" style="display: flex; transition: transform 0.5s ease-in-out;">
-                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                        <h3>Pengumuman Terbaru</h3>
-                        <ul class="custom-list">
-                            <li>Sekolah dibuka kembali pada 1 Agustus</li>
-                            <li>Buku perpustakaan baru tersedia</li>
-                            <li>Jadwal pertemuan orang tua dan guru</li>
-                        </ul>
+            <!-- Latest Section -->
+            <section class="latest-section" style="margin-bottom: 30px;">
+                <h2 style="color: var(--primary); margin-bottom: 20px;">Informasi Terbaru</h2>
+                <div class="latest-cards slider-container" style="position: relative; overflow: hidden; max-width: 100%;">
+                    <div class="slider-wrapper" style="display: flex; transition: transform 0.5s ease-in-out;">
+                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                            <h3>Pengumuman Terbaru</h3>
+                            <ul class="custom-list">
+                                <li>Sekolah dibuka kembali pada 1 Agustus</li>
+                                <li>Buku perpustakaan baru tersedia</li>
+                                <li>Jadwal pertemuan orang tua dan guru</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                            <h3>Prestasi Baru</h3>
+                            <ul class="custom-list">
+                                <li>Pemenang Olimpiade Matematika diumumkan</li>
+                                <li>Hasil pameran sains dipublikasikan</li>
+                                <li>Juara hari olahraga diumumkan</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                            <h3>Blog Terbaru</h3>
+                            <ul class="custom-list">
+                                <li>Cara efektif mempersiapkan ujian</li>
+                                <li>Manfaat kegiatan ekstrakurikuler</li>
+                                <li>Tips gaya hidup sehat untuk siswa</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                            <h3>Pemberitahuan Penting</h3>
+                            <ul class="custom-list">
+                                <li>Pembaruan protokol keselamatan COVID-19</li>
+                                <li>Perubahan jadwal bus sekolah</li>
+                                <li>Menu kantin baru diperkenalkan</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                        <h3>Prestasi Baru</h3>
-                        <ul class="custom-list">
-                            <li>Pemenang Olimpiade Matematika diumumkan</li>
-                            <li>Hasil pameran sains dipublikasikan</li>
-                            <li>Juara hari olahraga diumumkan</li>
-                        </ul>
-                    </div>
-                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                        <h3>Blog Terbaru</h3>
-                        <ul class="custom-list">
-                            <li>Cara efektif mempersiapkan ujian</li>
-                            <li>Manfaat kegiatan ekstrakurikuler</li>
-                            <li>Tips gaya hidup sehat untuk siswa</li>
-                        </ul>
-                    </div>
-                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                        <h3>Pemberitahuan Penting</h3>
-                        <ul class="custom-list">
-                            <li>Pembaruan protokol keselamatan COVID-19</li>
-                            <li>Perubahan jadwal bus sekolah</li>
-                            <li>Menu kantin baru diperkenalkan</li>
-                        </ul>
+                    <!-- Slider navigation arrows -->
+                    <button class="slider-arrow prev-arrow" aria-label="Previous Slide" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="slider-arrow next-arrow" aria-label="Next Slide" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <!-- Slider dots -->
+                    <div class="slider-dots" style="text-align: center; margin-top: 10px;">
+                        <!-- Dots will be generated by JavaScript -->
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
         <!-- School Stats Section -->
         <section class="school-stats" style="margin-bottom: 30px;">
@@ -523,18 +534,31 @@
     <script src="js/main.js"></script>
     <script>
         // Load user data and update username display and welcome speech
-        document.addEventListener('DOMContentLoaded', function () {
-            const userData = JSON.parse(localStorage.getItem('akun')) || {};
+        document.addEventListener('DOMContentLoaded', async function () {
             const usernameDisplay = document.getElementById('displayUsername');
             const welcomeHeading = document.getElementById('welcomeHeading');
             const welcomeMessage = document.getElementById('welcomeMessage');
 
-            const fullName = userData.display_name || userData.fullName || userData.username || 'Guest';
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser();
+                if (error) {
+                    console.error('Error fetching user:', error.message);
+                }
 
-            usernameDisplay.textContent = fullName;
+                let fullName = 'Guest';
+                if (user) {
+                    fullName = user.user_metadata?.display_name || user.email || 'Guest';
+                }
 
-            welcomeHeading.textContent = `Selamat Datang, ${fullName}!`;
-            welcomeMessage.textContent = "Kami berkomitmen untuk mendukung perjalanan pendidikan Anda dengan layanan terbaik dan informasi terkini.";
+                usernameDisplay.textContent = fullName;
+                welcomeHeading.textContent = `Selamat Datang, ${fullName}!`;
+                welcomeMessage.textContent = "Kami berkomitmen untuk mendukung perjalanan pendidikan Anda dengan layanan terbaik dan informasi terkini.";
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                usernameDisplay.textContent = 'Guest';
+                welcomeHeading.textContent = 'Selamat Datang, Guest!';
+                welcomeMessage.textContent = "Kami berkomitmen untuk mendukung perjalanan pendidikan Anda dengan layanan terbaik dan informasi terkini.";
+            }
 
             // Load stats and recent activity
             loadDashboardStats();
@@ -574,21 +598,62 @@
             const slides = sliderWrapper ? sliderWrapper.children : [];
             let currentIndex = 0;
 
+            const prevArrow = document.querySelector('.prev-arrow');
+            const nextArrow = document.querySelector('.next-arrow');
+            const dotsContainer = document.querySelector('.slider-dots');
+
+            function createDots() {
+                if (!dotsContainer) return;
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < slides.length; i++) {
+                    const dot = document.createElement('span');
+                    dot.classList.add('slider-dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => {
+                        currentIndex = i;
+                        updateSlider();
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            function updateDots() {
+                if (!dotsContainer) return;
+                const dots = dotsContainer.children;
+                for (let i = 0; i < dots.length; i++) {
+                    dots[i].classList.toggle('active', i === currentIndex);
+                }
+            }
+
             function showSlide(index) {
                 if (!sliderWrapper) return;
                 const slideWidth = sliderWrapper.clientWidth;
                 sliderWrapper.style.transform = `translateX(-${index * slideWidth}px)`;
             }
 
+            function updateSlider() {
+                showSlide(currentIndex);
+                updateDots();
+            }
+
             function nextSlide() {
                 if (slides.length === 0) return;
                 currentIndex = (currentIndex + 1) % slides.length;
-                showSlide(currentIndex);
+                updateSlider();
+            }
+
+            function prevSlide() {
+                if (slides.length === 0) return;
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                updateSlider();
             }
 
             if (slides.length > 1) {
+                createDots();
                 setInterval(nextSlide, 5000);
                 window.addEventListener('resize', () => showSlide(currentIndex));
+                if (prevArrow) prevArrow.addEventListener('click', prevSlide);
+                if (nextArrow) nextArrow.addEventListener('click', nextSlide);
             }
 
             function applyDarkMode() {
