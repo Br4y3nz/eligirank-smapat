@@ -381,7 +381,7 @@
         @media (max-width: 480px) {
             .header {
                 padding: 0.75rem 1rem;
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 justify-content: space-between;
                 align-items: center;
                 height: auto;
@@ -389,16 +389,16 @@
             .brand {
                 font-size: 0.85rem;
                 gap: 5px;
-                flex: 1 1 100%;
+                flex: 0 0 auto;
                 justify-content: flex-start;
             }
             .brand img {
                 height: 30px;
             }
             .user-info {
-                margin-top: 8px;
+                margin-top: 0;
                 gap: 5px;
-                flex: 1 1 100%;
+                flex: 0 0 auto;
                 justify-content: flex-end;
             }
             .user-name {
