@@ -398,6 +398,7 @@
         async function login() {
             const emailOrDisplayName = document.getElementById('display_name').value.trim(); // Trim spaces
             const password = document.getElementById('password').value.trim();
+            const rememberMeChecked = document.getElementById('rememberMe').checked;
 
             if (!emailOrDisplayName || !password) {
                 // Show the error modal for empty fields
@@ -440,6 +441,12 @@
                     document.getElementById('loginModal').style.display = 'block';
                     document.querySelector('#loginModal p').textContent = 'Login gagal: ' + error.message;
                 } else {
+                    // Store remember me preference
+                    if (rememberMeChecked) {
+                        localStorage.setItem('rememberMe', 'true');
+                    } else {
+                        localStorage.removeItem('rememberMe');
+                    }
                     // Show the success modal
                     const successModal = document.getElementById('successModal');
                     successModal.style.display = 'block';
@@ -490,7 +497,7 @@
         });
 
         // Initialize the theme on page load
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
             const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light if no theme is saved
             const isDarkMode = savedTheme === 'dark';
 
@@ -500,6 +507,14 @@
 
             // Set the toggle state
             themeToggle.checked = isDarkMode;
+
+            // Check if user is already logged in or rememberMe is set
+            const { data: { session } } = await supabase.auth.getSession();
+            const rememberMe = localStorage.getItem('rememberMe');
+
+            if (session || rememberMe === 'true') {
+                window.location.href = 'dashboard.html';
+            }
         });
 
         // Google Log In Button Logic
@@ -524,6 +539,13 @@
                 window.location.href = 'dashboard.html';
             }
         });
+
+        // Logout function to clear session and rememberMe
+        async function logout() {
+            await supabase.auth.signOut();
+            localStorage.removeItem('rememberMe');
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>
