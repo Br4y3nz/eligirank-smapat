@@ -437,46 +437,48 @@
     <div class="main-content">
         <!-- Hero Section -->
         <section class="hero-section card" style="text-align: center; padding: 40px 30px; border-radius: var(--border-radius); margin-bottom: 30px;">
-            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">Selamat Datang di SMAN 4 Parepare</h1>
-            <p style="font-size: 1.2rem; font-weight: 400; margin-bottom: 20px;">Membentuk Masa Depan Melalui Pendidikan</p>
+            <h1 id="welcomeHeading" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">Selamat Datang di SMAN 4 Parepare</h1>
+            <p id="welcomeMessage" style="font-size: 1.2rem; font-weight: 400; margin-bottom: 20px;">Membentuk Masa Depan Melalui Pendidikan</p>
             <blockquote style="font-style: italic; font-size: 1rem; max-width: 600px; margin: 0 auto;">"Pendidikan adalah senjata paling ampuh yang dapat kamu gunakan untuk mengubah dunia." - Nelson Mandela</blockquote>
         </section>
 
         <!-- Latest Section -->
         <section class="latest-section" style="margin-bottom: 30px;">
             <h2 style="color: var(--primary); margin-bottom: 20px;">Informasi Terbaru</h2>
-            <div class="latest-cards" style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <div class="card" style="flex: 1 1 250px;">
-                    <h3>Pengumuman Terbaru</h3>
-                    <ul>
-                        <li>Sekolah dibuka kembali pada 1 Agustus</li>
-                        <li>Buku perpustakaan baru tersedia</li>
-                        <li>Jadwal pertemuan orang tua dan guru</li>
-                    </ul>
-                </div>
-                <div class="card" style="flex: 1 1 250px;">
-                    <h3>Prestasi Baru</h3>
-                    <ul>
-                        <li>Pemenang Olimpiade Matematika diumumkan</li>
-                        <li>Hasil pameran sains dipublikasikan</li>
-                        <li>Juara hari olahraga diumumkan</li>
-                    </ul>
-                </div>
-                <div class="card" style="flex: 1 1 250px;">
-                    <h3>Blog Terbaru</h3>
-                    <ul>
-                        <li>Cara efektif mempersiapkan ujian</li>
-                        <li>Manfaat kegiatan ekstrakurikuler</li>
-                        <li>Tips gaya hidup sehat untuk siswa</li>
-                    </ul>
-                </div>
-                <div class="card" style="flex: 1 1 250px;">
-                    <h3>Pemberitahuan Penting</h3>
-                    <ul>
-                        <li>Pembaruan protokol keselamatan COVID-19</li>
-                        <li>Perubahan jadwal bus sekolah</li>
-                        <li>Menu kantin baru diperkenalkan</li>
-                    </ul>
+            <div class="latest-cards slider-container" style="position: relative; overflow: hidden; max-width: 100%;">
+                <div class="slider-wrapper" style="display: flex; transition: transform 0.5s ease-in-out;">
+                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                        <h3>Pengumuman Terbaru</h3>
+                        <ul class="custom-list">
+                            <li>Sekolah dibuka kembali pada 1 Agustus</li>
+                            <li>Buku perpustakaan baru tersedia</li>
+                            <li>Jadwal pertemuan orang tua dan guru</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                        <h3>Prestasi Baru</h3>
+                        <ul class="custom-list">
+                            <li>Pemenang Olimpiade Matematika diumumkan</li>
+                            <li>Hasil pameran sains dipublikasikan</li>
+                            <li>Juara hari olahraga diumumkan</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                        <h3>Blog Terbaru</h3>
+                        <ul class="custom-list">
+                            <li>Cara efektif mempersiapkan ujian</li>
+                            <li>Manfaat kegiatan ekstrakurikuler</li>
+                            <li>Tips gaya hidup sehat untuk siswa</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="flex: 0 0 100%; max-width: 100%;">
+                        <h3>Pemberitahuan Penting</h3>
+                        <ul class="custom-list">
+                            <li>Pembaruan protokol keselamatan COVID-19</li>
+                            <li>Perubahan jadwal bus sekolah</li>
+                            <li>Menu kantin baru diperkenalkan</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -520,20 +522,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
     <script src="js/main.js"></script>
     <script>
-        // Load user data and update username display
+        // Load user data and update username display and welcome speech
         document.addEventListener('DOMContentLoaded', function () {
             const userData = JSON.parse(localStorage.getItem('akun')) || {};
             const usernameDisplay = document.getElementById('displayUsername');
-            // Removed usage of welcomeUsername as element does not exist in dashboard.html
-            // const welcomeUsername = document.getElementById('welcomeUsername');
+            const welcomeHeading = document.getElementById('welcomeHeading');
+            const welcomeMessage = document.getElementById('welcomeMessage');
 
-            if (userData.username) {
-                usernameDisplay.textContent = userData.username;
-                // welcomeUsername.textContent = userData.username;
-            } else {
-                usernameDisplay.textContent = 'Guest';
-                // welcomeUsername.textContent = 'Guest';
-            }
+            const fullName = userData.display_name || userData.fullName || userData.username || 'Guest';
+
+            usernameDisplay.textContent = fullName;
+
+            welcomeHeading.textContent = `Selamat Datang, ${fullName}!`;
+            welcomeMessage.textContent = "Kami berkomitmen untuk mendukung perjalanan pendidikan Anda dengan layanan terbaik dan informasi terkini.";
 
             // Load stats and recent activity
             loadDashboardStats();
@@ -566,6 +567,28 @@
                         localStorage.setItem('theme', 'light');
                     }
                 });
+            }
+
+            // Slider for latest cards
+            const sliderWrapper = document.querySelector('.slider-wrapper');
+            const slides = sliderWrapper ? sliderWrapper.children : [];
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                if (!sliderWrapper) return;
+                const slideWidth = sliderWrapper.clientWidth;
+                sliderWrapper.style.transform = `translateX(-${index * slideWidth}px)`;
+            }
+
+            function nextSlide() {
+                if (slides.length === 0) return;
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            }
+
+            if (slides.length > 1) {
+                setInterval(nextSlide, 5000);
+                window.addEventListener('resize', () => showSlide(currentIndex));
             }
 
             function applyDarkMode() {
