@@ -381,10 +381,16 @@
         @media (max-width: 480px) {
             .header {
                 padding: 0.75rem 1rem;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                height: auto;
             }
             .brand {
                 font-size: 0.85rem;
                 gap: 5px;
+                flex: 1 1 100%;
+                justify-content: flex-start;
             }
             .brand img {
                 height: 30px;
@@ -392,6 +398,8 @@
             .user-info {
                 margin-top: 8px;
                 gap: 5px;
+                flex: 1 1 100%;
+                justify-content: flex-end;
             }
             .user-name {
                 font-size: 0.85rem;
