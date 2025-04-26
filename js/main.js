@@ -65,26 +65,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Dark Mode Toggle Function
-function setupDarkModeToggle() {
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  if (darkModeToggle) {
-    darkModeToggle.addEventListener('change', function () {
-      if (this.checked) {
-        document.body.classList.add('dark-mode');
-        document.documentElement.setAttribute('data-theme', 'dark');
-      } else {
-        document.body.classList.remove('dark-mode');
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    });
-  }
-}
-
-// Initialize Dark Mode on Page Load
-document.addEventListener('DOMContentLoaded', function () {
-  setupDarkModeToggle();
-});
+// Removed duplicate dark mode toggle setup and replaced with unified theme toggle logic below
 
 // Modal functions
 function showModal(message) {
@@ -324,15 +305,15 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   }
 });
 
-// Dark mode toggle
-const themeToggle = document.getElementById('themeToggle');
+// Unified theme toggle logic with renamed variable to avoid redeclaration errors
+const darkModeToggle = document.getElementById('darkModeToggle');
 
 function applyTheme(theme) {
   const isDarkMode = theme === 'dark';
   document.body.classList.toggle('dark-mode', isDarkMode);
   document.documentElement.setAttribute('data-theme', theme);
-  if (themeToggle) {
-    themeToggle.checked = isDarkMode;
+  if (darkModeToggle) {
+    darkModeToggle.checked = isDarkMode;
   }
 }
 
@@ -343,18 +324,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Save theme preference on toggle
-if (themeToggle) {
-  themeToggle.addEventListener('change', () => {
-    const theme = themeToggle.checked ? 'dark' : 'light';
+if (darkModeToggle) {
+  darkModeToggle.addEventListener('change', () => {
+    const theme = darkModeToggle.checked ? 'dark' : 'light';
     localStorage.setItem('theme', theme);
     applyTheme(theme);
   });
 }
 
-// Supabase client initialization
-const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
-const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+// Supabase client initialization - renamed variables to avoid redeclaration errors
+const supabaseUrlClient = 'https://yauwsxvgjmmyleheclpi.supabase.co';
+const supabaseAnonKeyClient = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
+const supabaseClient = supabase.createClient(supabaseUrlClient, supabaseAnonKeyClient);
 
 // Google sign-in button handler
 document.addEventListener('DOMContentLoaded', () => {

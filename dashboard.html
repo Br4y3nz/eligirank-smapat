@@ -6,7 +6,8 @@
     <meta name="color-scheme" content="light dark" />
     <title>Dashboard - EligiRank SMAPAT</title>
     <link rel="stylesheet" href="css/modern-styles.css" />
-    <link rel="stylesheet" href="css/modern-styles-dark.css" media="(prefers-color-scheme: dark)" />
+    <!-- Removed reference to missing modern-styles-dark.css to prevent 404 error -->
+    <!-- <link rel="stylesheet" href="css/modern-styles-dark.css" media="(prefers-color-scheme: dark)" /> -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link
       rel="stylesheet"
@@ -522,14 +523,15 @@
         document.addEventListener('DOMContentLoaded', function () {
             const userData = JSON.parse(localStorage.getItem('akun')) || {};
             const usernameDisplay = document.getElementById('displayUsername');
-            const welcomeUsername = document.getElementById('welcomeUsername');
+            // Removed usage of welcomeUsername as element does not exist in dashboard.html
+            // const welcomeUsername = document.getElementById('welcomeUsername');
 
             if (userData.username) {
                 usernameDisplay.textContent = userData.username;
-                welcomeUsername.textContent = userData.username;
+                // welcomeUsername.textContent = userData.username;
             } else {
                 usernameDisplay.textContent = 'Guest';
-                welcomeUsername.textContent = 'Guest';
+                // welcomeUsername.textContent = 'Guest';
             }
 
             // Load stats and recent activity
