@@ -105,20 +105,23 @@
         .login-box {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px 25px; /* Reduced padding to bring form elements closer */
+            padding: 10px 15px; /* Further reduced padding to bring form elements closer */
             border-radius: 8px;
             box-shadow: var(--box-shadow);
             background-color: var(--light);
             color: var(--dark);
             transition: background-color 0.3s ease, color 0.3s ease;
+            backdrop-filter: none; /* placeholder for blur effect later */
+            background-color: rgba(249, 250, 251, 0.8); /* semi-transparent for background visibility */
         }
         .dark-mode .login-box {
-            background-color: #1E293B; /* Dark background for the form */
+            background-color: rgba(30, 41, 59, 0.8); /* Semi-transparent dark background for the form */
             color: #F1F5F9; /* Light text for the form */
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: none; /* placeholder for blur effect later */
         }
         .form-group {
-            margin-bottom: 12px; /* Reduced margin to bring inputs closer */
+            margin-bottom: 6px; /* Further reduced margin to bring inputs closer */
         }
         label {
             display: block;
