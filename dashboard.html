@@ -544,61 +544,51 @@
                 if (savedTheme) {
                     darkModeToggle.checked = savedTheme === 'dark';
                     if (savedTheme === 'dark') {
-                        document.body.classList.add('dark-mode');
-                        document.documentElement.setAttribute('data-theme', 'dark');
-                        const sidebar = document.getElementById('sidebar');
-                        if (sidebar) sidebar.classList.add('dark-mode');
-                        const cards = document.querySelectorAll('.card');
-                        cards.forEach(card => card.classList.add('dark-mode'));
-                        const inputs = document.querySelectorAll('input, select');
-                        inputs.forEach(input => input.classList.add('dark-mode'));
-                        const labels = document.querySelectorAll('label');
-                        labels.forEach(label => label.classList.add('dark-mode'));
+                        applyDarkMode();
                     }
                 } else {
                     // If no saved theme, use system preference
                     darkModeToggle.checked = window.matchMedia('(prefers-color-scheme: dark)').matches;
                     if (darkModeToggle.checked) {
-                        document.body.classList.add('dark-mode');
-                        document.documentElement.setAttribute('data-theme', 'dark');
-                        const sidebar = document.getElementById('sidebar');
-                        if (sidebar) sidebar.classList.add('dark-mode');
-                        const cards = document.querySelectorAll('.card');
-                        cards.forEach(card => card.classList.add('dark-mode'));
-                        const inputs = document.querySelectorAll('input, select');
-                        inputs.forEach(input => input.classList.add('dark-mode'));
-                        const labels = document.querySelectorAll('label');
-                        labels.forEach(label => label.classList.add('dark-mode'));
+                        applyDarkMode();
                     }
                 }
 
                 darkModeToggle.addEventListener('change', function () {
                     if (this.checked) {
-                        document.body.classList.add('dark-mode');
-                        document.documentElement.setAttribute('data-theme', 'dark');
+                        applyDarkMode();
                         localStorage.setItem('theme', 'dark');
-                        const sidebar = document.getElementById('sidebar');
-                        if (sidebar) sidebar.classList.add('dark-mode');
-                        const cards = document.querySelectorAll('.card');
-                        cards.forEach(card => card.classList.add('dark-mode'));
-                        const inputs = document.querySelectorAll('input, select');
-                        inputs.forEach(input => input.classList.add('dark-mode'));
-                        const labels = document.querySelectorAll('label');
-                        labels.forEach(label => label.classList.add('dark-mode'));
                     } else {
-                        document.body.classList.remove('dark-mode');
-                        document.documentElement.setAttribute('data-theme', 'light');
+                        removeDarkMode();
                         localStorage.setItem('theme', 'light');
-                        const sidebar = document.getElementById('sidebar');
-                        if (sidebar) sidebar.classList.remove('dark-mode');
-                        const cards = document.querySelectorAll('.card');
-                        cards.forEach(card => card.classList.remove('dark-mode'));
-                        const inputs = document.querySelectorAll('input, select');
-                        inputs.forEach(input => input.classList.remove('dark-mode'));
-                        const labels = document.querySelectorAll('label');
-                        labels.forEach(label => label.classList.remove('dark-mode'));
                     }
                 });
+            }
+
+            function applyDarkMode() {
+                document.body.classList.add('dark-mode');
+                document.documentElement.setAttribute('data-theme', 'dark');
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) sidebar.classList.add('dark-mode');
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => card.classList.add('dark-mode'));
+                const inputs = document.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => input.classList.add('dark-mode'));
+                const labels = document.querySelectorAll('label');
+                labels.forEach(label => label.classList.add('dark-mode'));
+            }
+
+            function removeDarkMode() {
+                document.body.classList.remove('dark-mode');
+                document.documentElement.setAttribute('data-theme', 'light');
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) sidebar.classList.remove('dark-mode');
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => card.classList.remove('dark-mode'));
+                const inputs = document.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => input.classList.remove('dark-mode'));
+                const labels = document.querySelectorAll('label');
+                labels.forEach(label => label.classList.remove('dark-mode'));
             }
         });
 
