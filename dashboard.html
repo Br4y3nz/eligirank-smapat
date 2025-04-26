@@ -434,44 +434,86 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="card">
-            <h2 style="text-align: center; color: var(--primary);">
-                <i class="fas fa-user"></i> Welcome, <span id="welcomeUsername">Loading...</span>!
-            </h2>
-            <p style="text-align: center; margin-top: 10px; color: #555;">
-                This is your dashboard. Here you can view your stats, recent activities, and more.
-            </p>
-        </div>
+        <!-- Hero Section -->
+        <section class="hero-section card" style="background: url('asset/logo-smapat.jpg') center/cover no-repeat; color: white; text-align: center; padding: 60px 30px; border-radius: var(--border-radius); margin-bottom: 30px;">
+            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">Welcome to SMAN 4 Parepare</h1>
+            <p style="font-size: 1.2rem; font-weight: 400; margin-bottom: 20px;">Empowering the Future Through Education</p>
+            <blockquote style="font-style: italic; font-size: 1rem; max-width: 600px; margin: 0 auto;">"Education is the most powerful weapon which you can use to change the world." - Nelson Mandela</blockquote>
+        </section>
 
-        <!-- Stats Widgets -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
+        <!-- Latest Section -->
+        <section class="latest-section" style="margin-bottom: 30px;">
+            <h2 style="color: var(--primary); margin-bottom: 20px;">Latest Updates</h2>
+            <div class="latest-cards" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="card" style="flex: 1 1 250px;">
+                    <h3>Recent Announcements</h3>
+                    <ul>
+                        <li>School reopening on August 1st</li>
+                        <li>New library books available</li>
+                        <li>Parent-teacher meeting scheduled</li>
+                    </ul>
                 </div>
-                <div class="stat-info">
-                    <h3>Total Siswa</h3>
-                    <p id="totalStudents">0</p>
+                <div class="card" style="flex: 1 1 250px;">
+                    <h3>New Achievements</h3>
+                    <ul>
+                        <li>Math Olympiad winners announced</li>
+                        <li>Science fair results published</li>
+                        <li>Sports day champions crowned</li>
+                    </ul>
+                </div>
+                <div class="card" style="flex: 1 1 250px;">
+                    <h3>Latest Blog</h3>
+                    <ul>
+                        <li>How to prepare for exams effectively</li>
+                        <li>Benefits of extracurricular activities</li>
+                        <li>Tips for healthy student lifestyle</li>
+                    </ul>
+                </div>
+                <div class="card" style="flex: 1 1 250px;">
+                    <h3>Important Notices</h3>
+                    <ul>
+                        <li>COVID-19 safety protocols update</li>
+                        <li>School bus schedule changes</li>
+                        <li>New cafeteria menu introduced</li>
+                    </ul>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-chalkboard-teacher"></i>
+        </section>
+
+        <!-- School Stats Section -->
+        <section class="school-stats" style="margin-bottom: 30px;">
+            <h2 style="color: var(--primary); margin-bottom: 20px;">School Statistics</h2>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-around;">
+                <div class="stat-card card" style="flex: 1 1 150px; text-align: center;">
+                    <div style="font-size: 2rem; color: var(--primary); margin-bottom: 10px;"><i class="fas fa-users"></i></div>
+                    <h3>Total Students</h3>
+                    <p id="totalStudents" style="font-size: 1.5rem; font-weight: 700;">0</p>
                 </div>
-                <div class="stat-info">
-                    <h3>Total Guru</h3>
-                    <p id="totalTeachers">0</p>
+                <div class="stat-card card" style="flex: 1 1 150px; text-align: center;">
+                    <div style="font-size: 2rem; color: var(--primary); margin-bottom: 10px;"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h3>Total Teachers</h3>
+                    <p id="totalTeachers" style="font-size: 1.5rem; font-weight: 700;">0</p>
+                </div>
+                <div class="stat-card card" style="flex: 1 1 150px; text-align: center;">
+                    <div style="font-size: 2rem; color: var(--primary); margin-bottom: 10px;"><i class="fas fa-building"></i></div>
+                    <h3>Active Organizations</h3>
+                    <p style="font-size: 1.5rem; font-weight: 700;">5</p>
+                </div>
+                <div class="stat-card card" style="flex: 1 1 150px; text-align: center;">
+                    <div style="font-size: 2rem; color: var(--primary); margin-bottom: 10px;"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Graduation Rate</h3>
+                    <p style="font-size: 1.5rem; font-weight: 700;">95%</p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Recent Activity -->
-        <div class="card">
+        <section class="recent-activity card">
             <h2><i class="fas fa-history"></i> Aktivitas Terkini</h2>
             <ul class="activity-list" id="recentActivity">
                 <!-- Activity items will be added here by JavaScript -->
             </ul>
-        </div>
+        </section>
     </div>
 
     <script src="js/main.js"></script>
