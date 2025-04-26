@@ -1,4 +1,3 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
 
 // Initialize Supabase client
 const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co'; // Replace with your Supabase project URL
