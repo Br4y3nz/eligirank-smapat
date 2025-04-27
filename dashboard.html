@@ -13,6 +13,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* The CSS below is copied from akun.html for header, sidebar, and general layout consistency */
         :root {
@@ -26,6 +27,12 @@
             --success: #10B981; /* Green accent */
             --danger: #DC2626; /* Red accent */
             --warning: #FACC15; /* Yellow accent */
+        }
+
+        .brand img {
+            height: 20px !important;
+            width: auto;
+            flex-shrink: 0;
         }
 
         * {
@@ -44,39 +51,51 @@
         .header {
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 1rem 2rem;
+            background: rgba(77, 163, 216, 0.85);
+            backdrop-filter: saturate(180%) blur(10px);
+            padding: 1rem 2.5rem;
             color: white;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            box-shadow: var(--box-shadow);
+            z-index: 1100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .header:hover {
+            background: rgba(77, 163, 216, 0.95);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
         .menu-btn {
             background: transparent;
             border: none;
             color: white;
-            font-size: 1rem;
-            width: 40px;
-            height: 40px;
-            display: none;
+            font-size: 1.1rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: var(--transition);
-            margin-right: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+            margin-right: 20px;
             padding: 0;
+            border-radius: 8px;
         }
 
         .menu-btn:hover {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.15);
+            color: #e0e7ff;
+            transform: scale(1.1);
         }
 
         .menu-btn i {
-            transition: var(--transition);
+            transition: transform 0.3s ease;
         }
 
         .menu-btn.rotated i {
@@ -84,70 +103,100 @@
         }
 
         .brand {
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1.2rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            max-width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: default;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .brand img {
+            height: 28px !important;
+            width: auto;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .brand:hover img {
+            transform: scale(1.1);
         }
 
         .user-info {
             margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: #f0f0f0;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 8px rgba(77, 163, 216, 0.7);
         }
 
         .profile-dropdown {
             position: absolute;
-            top: 50px;
+            top: 54px;
             right: 20px;
-            background: white;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: saturate(180%) blur(12px);
             border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            width: 200px;
             overflow: hidden;
             display: none;
-            z-index: 1001;
-        }
-
-        .profile-dropdown a {
-            display: block;
-            padding: 12px 20px;
-            color: var(--dark);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .profile-dropdown a:hover {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
+            z-index: 1101;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .profile-dropdown.show {
             display: block;
+            opacity: 1;
         }
 
-        .user-avatar:hover {
-            transform: scale(1.05);
+        .profile-dropdown a {
+            display: block;
+            padding: 14px 22px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .profile-dropdown a:hover {
+            background: rgba(77, 163, 216, 0.15);
+            color: var(--primary);
         }
 
         .user-avatar i {
-            font-size: 24px;
+            font-size: 26px;
             color: #666;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            user-select: none;
         }
 
         .user-name {
@@ -157,10 +206,10 @@
         /* Sidebar Styles */
         .sidebar {
             position: fixed;
-            top: 70px;
+            top: 80px;
             left: 0;
             width: 250px;
-            height: calc(100vh - 70px);
+            height: calc(100vh - 80px);
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -170,9 +219,11 @@
             z-index: 999;
             transform: translateX(-100%);
             transition: transform 0.3s ease;
+            pointer-events: none;
         }
         .sidebar.active {
             transform: translateX(0);
+            pointer-events: auto;
         }
 
         .sidebar a {
@@ -307,60 +358,60 @@
         }
 
         .theme-icon.light {
-            left: 8px;
+            right: 8px;
             color: #F1F5F9;
         }
 
         .theme-icon.dark {
-            right: 8px;
+            left: 8px;
             color: #0F172A;
         }
 
         /* Responsive Styles */
-        @media (max-width: 992px) {
-            .menu-btn {
-                display: flex;
-            }
-            .sidebar {
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-                padding: 20px 0;
-                overflow-y: auto;
-                z-index: 10000;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-            }
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 15px 10px;
-            }
-            .profile-dropdown {
-                right: 10px;
-                width: 160px;
-            }
+            @media (max-width: 992px) {
+                .menu-btn {
+                    display: flex;
+                }
+                .sidebar {
+                    position: fixed;
+                    top: 80px;
+                    left: 0;
+                    width: 250px;
+                    height: calc(100vh - 80px);
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+                    padding: 20px 0;
+                    overflow-y: auto;
+                    z-index: 9999;
+                    transform: translateX(-100%);
+                    transition: transform 0.3s ease;
+                }
+                .sidebar.active {
+                    transform: translateX(0);
+                }
+                .main-content {
+                    margin-left: 0;
+                    padding: 15px 10px;
+                }
+                .profile-dropdown {
+                    right: 10px;
+                    width: 160px;
+                }
             .header {
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 padding: 1rem 1rem;
             }
             .brand {
                 font-size: 0.9rem;
             }
             .user-info {
-                margin-top: 10px;
-                width: 100%;
+                margin-top: 0;
+                width: auto;
                 justify-content: flex-end;
             }
-        }
+            }
 
         @media (min-width: 992px) {
             .sidebar {
@@ -378,131 +429,192 @@
             }
         }
 
-        @media (max-width: 480px) {
-            .header {
-                padding: 0.75rem 1rem;
-                flex-wrap: nowrap;
-                justify-content: space-between;
-                align-items: center;
-                height: 60px;
-                width: 100%;
-                box-sizing: border-box;
-                overflow: hidden;
+            @media (max-width: 480px) {
+                .header {
+                    padding: 1rem 2rem;
+                    flex-wrap: nowrap;
+                    justify-content: space-between;
+                    align-items: center;
+                    height: auto;
+                    width: 100%;
+                    box-sizing: border-box;
+                    overflow: hidden;
+                    display: flex;
+                    color: white;
+                    background: linear-gradient(135deg, var(--primary), var(--secondary));
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    z-index: 1000;
+                    box-shadow: var(--box-shadow);
+                }
+                .brand {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    gap: 10px;
+                    flex: 1 1 auto;
+                    justify-content: flex-start;
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    line-height: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 60%;
+                    position: relative;
+                    z-index: 2;
+                }
+                .brand img {
+                    height: 30px;
+                }
+                .user-info {
+                    margin-left: auto;
+                    gap: 6px;
+                    flex: 0 0 auto;
+                    justify-content: flex-end;
+                    align-items: center;
+                    position: relative;
+                    min-width: 100px;
+                    height: 100%;
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    z-index: 1;
+                }
+                .user-avatar {
+                    width: 32px;
+                    height: 32px;
+                    flex-shrink: 0;
+                    border-radius: 50%;
+                    background: #f0f0f0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    position: relative;
+                }
+                .user-name {
+                    max-width: 100px;
+                }
+                .profile-dropdown {
+                    top: 50px;
+                    right: 20px;
+                    width: 180px;
+                    background: white;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--box-shadow);
+                    overflow: hidden;
+                    display: none;
+                    position: absolute;
+                    z-index: 1001;
+                }
+                .user-name {
+                    font-weight: 500;
+                    font-size: 0.9rem;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: calc(100% - 40px);
+                    line-height: 32px;
+                }
+                .menu-btn {
+                    width: 35px;
+                    height: 35px;
+                    font-size: 0.9rem;
+                }
+                .sidebar a {
+                    padding: 10px 15px;
+                    font-size: 0.9rem;
+                }
+                .main-content {
+                    padding: 10px 8px;
+                }
+                .hero-section {
+                    padding: 30px 15px;
+                }
+                .hero-section h1 {
+                    font-size: 1.8rem;
+                }
+                .hero-section p {
+                    font-size: 1rem;
+                }
+                .slider-arrow {
+                    width: 30px;
+                    height: 30px;
+                }
+                .slider-arrow i {
+                    font-size: 14px;
+                }
+                .slider-dots {
+                    margin-top: 8px;
+                }
+                .stat-card {
+                    flex: 1 1 100%;
+                    margin-bottom: 15px;
+                }
+                .stat-card h3 {
+                    font-size: 1rem;
+                }
+                .stat-card p {
+                    font-size: 1.2rem;
+                }
+                .recent-activity h2 {
+                    font-size: 1.2rem;
+                }
+                .activity-item p {
+                    font-size: 0.9rem;
+                }
             }
-            .brand {
-                font-size: 0.85rem;
-                gap: 5px;
-                flex: 0 0 auto;
-                justify-content: flex-start;
-            }
-            .brand img {
-                height: 30px;
-            }
-            .user-info {
-                margin-top: 0;
-                gap: 5px;
-                flex: 0 0 auto;
-                justify-content: flex-end;
-                align-items: center;
-                position: relative;
-                min-width: 120px;
-            }
-            .user-avatar {
-                width: 35px;
-                height: 35px;
-                flex-shrink: 0;
-            }
-            .profile-dropdown {
-                top: 45px;
-                right: 0;
-                width: 160px;
-            }
-            .user-name {
-                font-size: 0.85rem;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: calc(100% - 40px);
-            }
-            .menu-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 0.9rem;
-            }
-            .sidebar a {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            .main-content {
-                padding: 10px 8px;
-            }
-            .hero-section {
-                padding: 30px 15px;
-            }
-            .hero-section h1 {
-                font-size: 1.8rem;
-            }
-            .hero-section p {
-                font-size: 1rem;
-            }
-            .slider-arrow {
-                width: 30px;
-                height: 30px;
-            }
-            .slider-arrow i {
-                font-size: 14px;
-            }
-            .slider-dots {
-                margin-top: 8px;
-            }
-            .stat-card {
-                flex: 1 1 100%;
-                margin-bottom: 15px;
-            }
-            .stat-card h3 {
-                font-size: 1rem;
-            }
-            .stat-card p {
-                font-size: 1.2rem;
-            }
-            .recent-activity h2 {
-                font-size: 1.2rem;
-            }
-            .activity-item p {
-                font-size: 0.9rem;
-            }
-        }
 
         /* Dark Mode Styles */
         body.dark-mode {
             background-color: #0F172A; /* Deep navy */
             color: #F1F5F9; /* Light gray text */
         }
+        
+        /* Dark mode for profile dropdown */
+        body.dark-mode .profile-dropdown {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+        }
 
+        body.dark-mode .profile-dropdown a {
+            color: #CBD5E1;
+        }
+
+        body.dark-mode .profile-dropdown a:hover {
+            background-color: #334155;
+            color: #4DA3D8;
+        }
+        
         .dark-mode .sidebar {
             background-color: #1E293B; /* Darker background */
         }
-
+        
         .dark-mode .sidebar a {
             color: #CBD5E1; /* Light text */
         }
-
+        
         .dark-mode .sidebar a:hover {
             background-color: #334155;
             color: #4DA3D8;
         }
-
+        
         .dark-mode .sidebar a.active {
             background-color: #334155;
             color: #4DA3D8;
             border-left-color: #4DA3D8;
         }
-
+        
         .dark-mode .card {
             background-color: #1E293B; /* Dark card background */
             border: 1px solid #334155;
         }
-
+        
         .dark-mode input,
         .dark-mode select,
         .dark-mode textarea {
@@ -510,45 +622,133 @@
             color: #CBD5E1;
             border: 1px solid #475569;
         }
-
+        
         .dark-mode label {
             color: #CBD5E1;
+        }
+    </style>
+    <style>
+        /* Added login button styling */
+        .login-btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white !important;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            user-select: none;
+        }
+        .login-btn:hover {
+            background-color: #3a8edc;
+            color: white !important;
+        }
+
+        /* Slider dots styling */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 8px;
+        }
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #bbb;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .slider-dot.active {
+            background-color: var(--primary);
+        }
+
+        /* Slider arrows styling */
+        .slider-arrow {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            user-select: none;
+            padding: 0 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .slider-arrow:focus {
+            outline: none;
         }
     </style>
 </head>
 <body>
     <!-- Header Section -->
     <header class="header">
-        <button class="menu-btn" onclick="toggleSidebar()">
+        <button class="menu-btn" aria-label="Toggle menu">
             <i class="fas fa-bars"></i>
         </button>
-        <div class="brand" style="display: flex; align-items: center; gap: 10px;">
-            <img src="asset/logo-smapat.png" alt="Logo SMAN 4 Parepare" style="height: 40px; width: auto;" />
+        <div class="brand">
+            <img src="asset/logo-smapat.png" alt="Logo SMAN 4 Parepare" />
             <span>EligiRank SMAPAT | Dashboard</span>
         </div>
-        <div class="user-info">
-            <div class="user-avatar" onclick="toggleProfileMenu(event)">
+        <div class="user-info" id="userInfo">
+            <div class="user-avatar" onclick="toggleProfileMenu(event)" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-user-circle"></i>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <a href="akun.html"><i class="fas fa-user"></i> Profile</a>
-                    <a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="User profile menu">
+                    <a href="akun.html" role="menuitem"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#" id="logoutLink" role="menuitem"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
             <span class="user-name" id="displayUsername">Loading...</span>
         </div>
     </header>
+
     <script>
+        // Initialize Supabase client with localStorage persistence for session
+        const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey, {
+            auth: {
+                persistSession: true,
+                storage: localStorage
+            }
+        });
+
         async function logout(event) {
             event.preventDefault();
-            await supabase.auth.signOut();
+            await supabaseClient.auth.signOut();
             localStorage.removeItem('rememberMe');
             window.location.href = 'index.html';
         }
-        document.addEventListener('DOMContentLoaded', () => {
-            const logoutLink = document.getElementById('logoutLink');
-            if (logoutLink) {
-                logoutLink.addEventListener('click', logout);
+
+        function updateUserUI(user) {
+            const userInfoDiv = document.getElementById('userInfo');
+            if (!user && userInfoDiv) {
+                userInfoDiv.innerHTML = '<a href="index.html" class="login-btn">Login</a>';
+            } else if (user) {
+                const displayUsername = document.getElementById('displayUsername');
+                if (displayUsername) {
+                    displayUsername.textContent = user.email || 'User';
+                }
+                // Add logout event listener if logout link exists
+                const logoutLink = document.getElementById('logoutLink');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', logout);
+                }
             }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check user login status and update header accordingly
+            supabaseClient.auth.getUser().then(({ data: { user } }) => {
+                updateUserUI(user);
+            });
+
+            // Listen for auth state changes to update UI accordingly
+            supabaseClient.auth.onAuthStateChange((_event, session) => {
+                updateUserUI(session ? session.user : null);
+            });
         });
     </script>
 
@@ -577,61 +777,155 @@
     <div class="main-content">
         <!-- Hero Section -->
         <section class="hero-section card" style="text-align: center; padding: 40px 30px; border-radius: var(--border-radius); margin-bottom: 30px;">
-            <h1 id="welcomeHeading" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">Selamat Datang di SMAN 4 Parepare</h1>
-            <p id="welcomeMessage" style="font-size: 1.2rem; font-weight: 400; margin-bottom: 20px;">Membentuk Masa Depan Melalui Pendidikan</p>
-            <blockquote style="font-style: italic; font-size: 1rem; max-width: 600px; margin: 0 auto;">"Pendidikan adalah senjata paling ampuh yang dapat kamu gunakan untuk mengubah dunia." - Nelson Mandela</blockquote>
+            <h1 id="welcomeHeading" style="font-size: 2.8rem; font-weight: 700; margin-bottom: 15px; color: var(--primary);">Selamat Datang di SMAN 4 Parepare</h1>
+            <p id="welcomeMessage" style="font-size: 1.3rem; font-weight: 500; margin-bottom: 25px; max-width: 700px; margin-left: auto; margin-right: auto; color: var(--secondary);">
+                Membentuk Masa Depan Melalui Pendidikan Berkualitas dan Inovasi
+            </p>
+<div id="quotesContainer" style="font-style: italic; font-size: 1.1rem; max-width: 700px; margin: 0 auto; min-height: 60px; position: relative;">
+                <!-- Quotes will fade in/out here -->
+            </div>
+            <style>
+                #quotesContainer {
+                    font-style: italic;
+                    font-size: 1.1rem;
+                    max-width: 700px;
+                    margin: 0 auto;
+                    min-height: 60px;
+                    position: relative;
+                    overflow: hidden;
+                    color: inherit;
+                }
+                .quote {
+                    position: absolute;
+                    width: 100%;
+                    opacity: 0;
+                    animation-duration: 1s;
+                    animation-fill-mode: forwards;
+                    text-align: center;
+                    font-weight: 600;
+                    background: linear-gradient(90deg, #4DA3D8 0%, #8B5CF6 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    color: transparent;
+                    -webkit-text-stroke: 0.3px transparent;
+                }
+                .fadeIn {
+                    animation-name: fadeIn;
+                }
+                .fadeOut {
+                    animation-name: fadeOut;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            </style>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const quotes = [
+                        '“Education is the most powerful weapon which you can use to change the world.” — Nelson Mandela',
+                        '“The roots of education are bitter, but the fruit is sweet.” — Aristotle',
+                        '“Develop a passion for learning. If you do, you will never cease to grow.” — Anthony J. D\'Angelo',
+                        '“Intelligence plus character — that is the goal of true education.” — Martin Luther King Jr.',
+                        '“The beautiful thing about learning is that no one can take it away from you.” — B.B. King',
+                        '“Education is not preparation for life; education is life itself.” — John Dewey',
+                        '“Success is no accident. It is hard work, perseverance, learning, studying, sacrifice and most of all, love of what you are doing.” — Pelé',
+                        '“The function of education is to teach one to think intensively and to think critically.” — Martin Luther King Jr.',
+                        '“Learning never exhausts the mind.” — Leonardo da Vinci',
+                        '“Dream big, work hard, stay focused, and surround yourself with good people.” — Unknown'
+                    ];
+                    const container = document.getElementById('quotesContainer');
+                    let currentIndex = 0;
+                    let currentQuoteElem = null;
+    
+                    function showQuote(index) {
+                        if (currentQuoteElem) {
+                            currentQuoteElem.classList.remove('fadeIn');
+                            currentQuoteElem.classList.add('fadeOut');
+                            currentQuoteElem.addEventListener('animationend', () => {
+                                container.removeChild(currentQuoteElem);
+                                createAndShowQuote(index);
+                            }, { once: true });
+                        } else {
+                            createAndShowQuote(index);
+                        }
+                    }
+    
+                    function createAndShowQuote(index) {
+                        const quoteElem = document.createElement('div');
+                        quoteElem.className = 'quote fadeIn';
+                        quoteElem.textContent = quotes[index];
+                        container.appendChild(quoteElem);
+                        currentQuoteElem = quoteElem;
+                    }
+    
+                    function cycleQuotes() {
+                        showQuote(currentIndex);
+                         currentIndex = (currentIndex + 1) % quotes.length;
+                    }
+    
+                    cycleQuotes();
+                    setInterval(cycleQuotes, 6000);
+                });
+            </script>
         </section>
 
             <!-- Latest Section -->
             <section class="latest-section" style="margin-bottom: 30px;">
                 <h2 style="color: var(--primary); margin-bottom: 20px;">Informasi Terbaru</h2>
-                <div class="latest-cards slider-container" style="position: relative; overflow: hidden; max-width: 100%;">
-                    <div class="slider-wrapper" style="display: flex; transition: transform 0.5s ease-in-out;">
-                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                            <h3>Pengumuman Terbaru</h3>
-                            <ul class="custom-list">
-                                <li>Sekolah dibuka kembali pada 1 Agustus</li>
-                                <li>Buku perpustakaan baru tersedia</li>
-                                <li>Jadwal pertemuan orang tua dan guru</li>
-                            </ul>
+                    <div class="latest-cards slider-container" style="position: relative; overflow: hidden; max-width: 100%;">
+                        <div class="slider-wrapper" style="display: flex; transition: transform 0.5s ease-in-out; perspective: 1000px;">
+                            <div class="card" style="flex: 0 0 100%; max-width: 100%; transition: transform 0.5s ease; transform-style: preserve-3d;">
+                                <h3>Pengumuman Terbaru</h3>
+                                <ul class="custom-list">
+                                    <li>Sekolah dibuka kembali pada 1 Agustus</li>
+                                    <li>Buku perpustakaan baru tersedia</li>
+                                    <li>Jadwal pertemuan orang tua dan guru</li>
+                                </ul>
+                            </div>
+                            <div class="card" style="flex: 0 0 100%; max-width: 100%; transition: transform 0.5s ease; transform-style: preserve-3d;">
+                                <h3>Prestasi Baru</h3>
+                                <ul class="custom-list">
+                                    <li>Pemenang Olimpiade Matematika diumumkan</li>
+                                    <li>Hasil pameran sains dipublikasikan</li>
+                                    <li>Juara hari olahraga diumumkan</li>
+                                </ul>
+                            </div>
+                            <div class="card" style="flex: 0 0 100%; max-width: 100%; transition: transform 0.5s ease; transform-style: preserve-3d;">
+                                <h3>Blog Terbaru</h3>
+                                <ul class="custom-list">
+                                    <li>Cara efektif mempersiapkan ujian</li>
+                                    <li>Manfaat kegiatan ekstrakurikuler</li>
+                                    <li>Tips gaya hidup sehat untuk siswa</li>
+                                </ul>
+                            </div>
+                            <div class="card" style="flex: 0 0 100%; max-width: 100%; transition: transform 0.5s ease; transform-style: preserve-3d;">
+                                <h3>Pemberitahuan Penting</h3>
+                                <ul class="custom-list">
+                                    <li>Pembaruan protokol keselamatan COVID-19</li>
+                                    <li>Perubahan jadwal bus sekolah</li>
+                                    <li>Menu kantin baru diperkenalkan</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                            <h3>Prestasi Baru</h3>
-                            <ul class="custom-list">
-                                <li>Pemenang Olimpiade Matematika diumumkan</li>
-                                <li>Hasil pameran sains dipublikasikan</li>
-                                <li>Juara hari olahraga diumumkan</li>
-                            </ul>
-                        </div>
-                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                            <h3>Blog Terbaru</h3>
-                            <ul class="custom-list">
-                                <li>Cara efektif mempersiapkan ujian</li>
-                                <li>Manfaat kegiatan ekstrakurikuler</li>
-                                <li>Tips gaya hidup sehat untuk siswa</li>
-                            </ul>
-                        </div>
-                        <div class="card" style="flex: 0 0 100%; max-width: 100%;">
-                            <h3>Pemberitahuan Penting</h3>
-                            <ul class="custom-list">
-                                <li>Pembaruan protokol keselamatan COVID-19</li>
-                                <li>Perubahan jadwal bus sekolah</li>
-                                <li>Menu kantin baru diperkenalkan</li>
-                            </ul>
+                        <!-- Slider navigation arrows and dots container -->
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; position: relative;">
+                            <button class="slider-arrow prev-arrow" aria-label="Previous Slide" style="background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="slider-dots" style="text-align: center;">
+                                <!-- Dots will be generated by JavaScript -->
+                            </div>
+                            <button class="slider-arrow next-arrow" aria-label="Next Slide" style="background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-                    <!-- Slider navigation arrows -->
-                    <button class="slider-arrow prev-arrow" aria-label="Previous Slide" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="slider-arrow next-arrow" aria-label="Next Slide" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <!-- Slider dots -->
-                    <div class="slider-dots" style="text-align: center; margin-top: 10px;">
-                        <!-- Dots will be generated by JavaScript -->
-                    </div>
-                </div>
             </section>
 
         <!-- School Stats Section -->
@@ -661,206 +955,99 @@
             </div>
         </section>
 
-        <!-- Recent Activity -->
-        <section class="recent-activity card">
-            <h2><i class="fas fa-history"></i> Aktivitas Terkini</h2>
-            <ul class="activity-list" id="recentActivity">
-                <!-- Activity items will be added here by JavaScript -->
-            </ul>
-        </section>
-    </div>
+    <!-- Recent Activity -->
+    <section class="recent-activity card">
+        <h2><i class="fas fa-history"></i> Aktivitas Terkini</h2>
+        <ul class="activity-list" id="recentActivity">
+            <!-- Activity items will be added here by JavaScript -->
+        </ul>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Visi, Misi, dan Tujuan Section replaced with slider -->
+    <section class="visi-misi-tujuan card slider-container" style="margin-bottom: 30px; position: relative; overflow: hidden; max-width: 100%;">
+        <h2><i class="fas fa-bullseye"></i> Visi, Misi, dan Tujuan</h2>
+        <div class="slider-wrapper" style="display: flex; transition: transform 0.5s ease-in-out; perspective: 1000px;">
+            <div class="card" style="flex: 0 0 100%; max-width: 100%; transition: transform 0.5s ease; transform-style: preserve-3d;">
+                <h3>Visi</h3>
+                <p>Menuju sekolah yang berimtaq, terampil, berprestasi dan peduli lingkungan.</p>
+            </div>
+            <div class="card" style="flex: 0 0 100%; max-width: 100%; transition: transform 0.5s ease; transform-style: preserve-3d;">
+                <h3>Misi</h3>
+                <p>Menghasilkan lulusan yang beriman dan bertaqwa, terampil berwirausaha, berprestasi dan bersaing di perguruan tinggi serta peduli lingkungan.</p>
+            </div>
+            <div class="card" style="flex: 0 0 100%; max-width: 100%; transition: transform 0.5s ease; transform-style: preserve-3d;">
+                <h3>Tujuan</h3>
+                <ul style="padding-left: 20px; margin-top: 5px;">
+                    <li>Menyiapkan peserta didik yang berimtaq.</li>
+                    <li>Menyiapkan peserta didik yang terampil dalam berwirausaha.</li>
+                    <li>Menyiapkan Peserta didik berprestasi dibidang akademik dan non akademik.</li>
+                    <li>Menyiapkan peserta didik yang siap melanjutkan pendidikan ke Perguruan Tinggi Negeri yang terbaik.</li>
+                    <li>Menciptakan suasana lingkungan sekolah yang bersih, sehat, asri, nyaman dan rindang.</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Slider navigation arrows and dots container -->
+        <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; position: relative;">
+            <button class="slider-arrow prev-arrow" aria-label="Previous Slide" style="background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="slider-dots visi-misi-dots" style="text-align: center;">
+                <!-- Dots will be generated by JavaScript -->
+            </div>
+            <button class="slider-arrow next-arrow" aria-label="Next Slide" style="background: rgba(77, 163, 216, 0.7); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; z-index: 10;">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer with only about, location, social media -->
+    <footer style="background-color: var(--secondary); color: var(--light); padding: 40px 20px; margin-top: 40px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+            <div style="flex: 1 1 250px; min-width: 250px;">
+                <h3 style="margin-bottom: 15px; border-bottom: 2px solid var(--primary); padding-bottom: 8px;">Tentang SMA 4 Parepare</h3>
+                <p>
+                    SMA Negeri 4 Parepare adalah sekolah menengah atas yang berkomitmen untuk memberikan pendidikan berkualitas, berimtaq, dan berprestasi bagi generasi muda.
+                </p>
+            </div>
+            <div style="flex: 1 1 300px; min-width: 300px;">
+                <h3 style="margin-bottom: 15px; border-bottom: 2px solid var(--primary); padding-bottom: 8px;">Lokasi Kami</h3>
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3980.927927927927!2d119.6399993152603!3d-4.002222996269019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d8b8a0a1a1a1a1a%3A0x123456789abcdef!2sSMA%20Negeri%204%20Parepare!5e0!3m2!1sen!2sid!4v1680000000000!5m2!1sen!2sid" 
+                    width="100%" 
+                    height="350" 
+                    style="border:0; border-radius: 8px;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Google Map SMA Negeri 4 Parepare"></iframe>
+            </div>
+            <div style="flex: 1 1 200px; min-width: 200px;">
+                <h3 style="margin-bottom: 15px; border-bottom: 2px solid var(--primary); padding-bottom: 8px;">Sosial Media</h3>
+                <div style="display: flex; gap: 15px; font-size: 1.5rem;">
+                    <a href="https://instagram.com/sman4parepare" target="_blank" rel="noopener" aria-label="Instagram" style="color: var(--light);"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/sman4parepare" target="_blank" rel="noopener" aria-label="YouTube" style="color: var(--light);"><i class="fab fa-youtube"></i></a>
+                    <a href="https://tiktok.com/@sman4parepare" target="_blank" rel="noopener" aria-label="TikTok" style="color: var(--light);"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://facebook.com/sman4parepare" target="_blank" rel="noopener" aria-label="Facebook" style="color: var(--light);"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.9rem; color: var(--light);">
+            &copy; 2024 SMA Negeri 4 Parepare. All rights reserved.
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+
     <script>
-        // Load user data and update username display and welcome speech
-        document.addEventListener('DOMContentLoaded', async function () {
-            const usernameDisplay = document.getElementById('displayUsername');
-            const welcomeHeading = document.getElementById('welcomeHeading');
-            const welcomeMessage = document.getElementById('welcomeMessage');
-
-            try {
-                const { data: { user }, error } = await supabase.auth.getUser();
-                if (error) {
-                    console.error('Error fetching user:', error.message);
-                }
-
-                let fullName = 'Guest';
-                if (user) {
-                    fullName = user.user_metadata?.display_name || user.email || 'Guest';
-                }
-
-                usernameDisplay.textContent = fullName;
-                welcomeHeading.textContent = `Selamat Datang, ${fullName}!`;
-                welcomeMessage.textContent = "Kami berkomitmen untuk mendukung perjalanan pendidikan Anda dengan layanan terbaik dan informasi terkini.";
-            } catch (err) {
-                console.error('Unexpected error:', err);
-                usernameDisplay.textContent = 'Guest';
-                welcomeHeading.textContent = 'Selamat Datang, Guest!';
-                welcomeMessage.textContent = "Kami berkomitmen untuk mendukung perjalanan pendidikan Anda dengan layanan terbaik dan informasi terkini.";
-            }
-
-            // Load stats and recent activity
-            loadDashboardStats();
-            loadRecentActivity();
-
-            // Initialize dark mode toggle state
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {
-                // Initialize toggle state based on localStorage or system preference
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme) {
-                    darkModeToggle.checked = savedTheme === 'dark';
-                    if (savedTheme === 'dark') {
-                        applyDarkMode();
-                    }
-                } else {
-                    // If no saved theme, use system preference
-                    darkModeToggle.checked = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    if (darkModeToggle.checked) {
-                        applyDarkMode();
-                    }
-                }
-
-                darkModeToggle.addEventListener('change', function () {
-                    if (this.checked) {
-                        applyDarkMode();
-                        localStorage.setItem('theme', 'dark');
-                    } else {
-                        removeDarkMode();
-                        localStorage.setItem('theme', 'light');
-                    }
-                });
-            }
-
-            // Slider for latest cards
-            const sliderWrapper = document.querySelector('.slider-wrapper');
-            const slides = sliderWrapper ? sliderWrapper.children : [];
-            let currentIndex = 0;
-
-            const prevArrow = document.querySelector('.prev-arrow');
-            const nextArrow = document.querySelector('.next-arrow');
-            const dotsContainer = document.querySelector('.slider-dots');
-
-            function createDots() {
-                if (!dotsContainer) return;
-                dotsContainer.innerHTML = '';
-                for (let i = 0; i < slides.length; i++) {
-                    const dot = document.createElement('span');
-                    dot.classList.add('slider-dot');
-                    if (i === 0) dot.classList.add('active');
-                    dot.addEventListener('click', () => {
-                        currentIndex = i;
-                        updateSlider();
-                    });
-                    dotsContainer.appendChild(dot);
-                }
-            }
-
-            function updateDots() {
-                if (!dotsContainer) return;
-                const dots = dotsContainer.children;
-                for (let i = 0; i < dots.length; i++) {
-                    dots[i].classList.toggle('active', i === currentIndex);
-                }
-            }
-
-            function showSlide(index) {
-                if (!sliderWrapper) return;
-                const slideWidth = sliderWrapper.clientWidth;
-                sliderWrapper.style.transform = `translateX(-${index * slideWidth}px)`;
-            }
-
-            function updateSlider() {
-                showSlide(currentIndex);
-                updateDots();
-            }
-
-            function nextSlide() {
-                if (slides.length === 0) return;
-                currentIndex = (currentIndex + 1) % slides.length;
-                updateSlider();
-            }
-
-            function prevSlide() {
-                if (slides.length === 0) return;
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                updateSlider();
-            }
-
-            if (slides.length > 1) {
-                createDots();
-                setInterval(nextSlide, 9000);
-                window.addEventListener('resize', () => showSlide(currentIndex));
-                if (prevArrow) prevArrow.addEventListener('click', prevSlide);
-                if (nextArrow) nextArrow.addEventListener('click', nextSlide);
-            }
-
-            function applyDarkMode() {
-                document.body.classList.add('dark-mode');
-                document.documentElement.setAttribute('data-theme', 'dark');
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) sidebar.classList.add('dark-mode');
-                const heroSection = document.querySelector('.hero-section');
-                if (heroSection) heroSection.classList.add('dark-mode');
-                const cards = document.querySelectorAll('.card');
-                cards.forEach(card => card.classList.add('dark-mode'));
-                const inputs = document.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => input.classList.add('dark-mode'));
-                const labels = document.querySelectorAll('label');
-                labels.forEach(label => label.classList.add('dark-mode'));
-            }
-
-            function removeDarkMode() {
-                document.body.classList.remove('dark-mode');
-                document.documentElement.setAttribute('data-theme', 'light');
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) sidebar.classList.remove('dark-mode');
-                const heroSection = document.querySelector('.hero-section');
-                if (heroSection) heroSection.classList.remove('dark-mode');
-                const cards = document.querySelectorAll('.card');
-                cards.forEach(card => card.classList.remove('dark-mode'));
-                const inputs = document.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => input.classList.remove('dark-mode'));
-                const labels = document.querySelectorAll('label');
-                labels.forEach(label => label.classList.remove('dark-mode'));
-            }
-        });
-
-        // Toggle sidebar on mobile
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.querySelector('.menu-btn');
-            if (sidebar) {
-                const isActive = !sidebar.classList.contains('active');
-                sidebar.classList.toggle('active', isActive);
-                menuBtn.classList.toggle('rotated', isActive);
-
-                if (window.innerWidth <= 992 && isActive) {
-                    document.addEventListener('click', function closeSidebar(e) {
-                        if (!sidebar.contains(e.target) && e.target !== document.querySelector('.menu-btn')) {
-                            sidebar.classList.remove('active');
-                            if (menuBtn) {
-                                menuBtn.classList.remove('rotated');
-                            }
-                            document.removeEventListener('click', closeSidebar);
-                        }
-                    });
-                }
-                document.addEventListener('click', function (e) {
-                    if (!sidebar.contains(e.target) && e.target !== menuBtn) {
-                        sidebar.classList.remove('active');
-                        menuBtn.classList.remove('rotated');
-                    }
-                });
-            }
-        }
+        // Removed inline toggleSidebar function to use the one in js/main.js for consistency
 
         // Toggle profile dropdown
         function toggleProfileMenu(e) {
             e.stopPropagation();
             const dropdown = document.getElementById('profileDropdown');
-            dropdown.classList.toggle('show');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
         }
 
         // Close dropdowns when clicking outside
@@ -868,11 +1055,11 @@
             const dropdown = document.getElementById('profileDropdown');
             const sidebar = document.getElementById('sidebar');
 
-            if (dropdown.classList.contains('show') && !e.target.closest('.user-avatar')) {
+            if (dropdown && dropdown.classList.contains('show') && !e.target.closest('.user-avatar')) {
                 dropdown.classList.remove('show');
             }
 
-            if (window.innerWidth <= 992 && !sidebar.contains(e.target) && e.target !== document.querySelector('.menu-btn')) {
+            if (window.innerWidth <= 992 && sidebar && !sidebar.contains(e.target) && e.target !== document.querySelector('.menu-btn')) {
                 sidebar.classList.remove('active');
             }
         });
@@ -885,48 +1072,119 @@
             }, 500);
         }
 
-        function loadRecentActivity() {
-            const activities = [
-                {
-                    icon: 'fas fa-user-plus',
-                    text: 'Siswa baru ditambahkan: Andi Pratama',
-                    time: '5 menit yang lalu'
-                },
-                {
-                    icon: 'fas fa-trophy',
-                    text: 'Prestasi baru ditambahkan: Juara 1 Olimpiade Matematika',
-                    time: '1 jam yang lalu'
-                },
-                {
-                    icon: 'fas fa-sitemap',
-                    text: 'Organisasi baru: OSIS Periode 2023/2024',
-                    time: '2 hari yang lalu'
-                },
-                {
-                    icon: 'fas fa-chalkboard-teacher',
-                    text: 'Guru baru ditambahkan: Ibu Siti Rahayu',
-                    time: '3 hari yang lalu'
+            function loadRecentActivity() {
+                const activities = [
+                    {
+                        icon: 'fas fa-user-plus',
+                        text: 'Siswa baru ditambahkan: Andi Pratama',
+                        time: '5 menit yang lalu'
+                    },
+                    {
+                        icon: 'fas fa-trophy',
+                        text: 'Prestasi baru ditambahkan: Juara 1 Olimpiade Matematika',
+                        time: '1 jam yang lalu'
+                    },
+                    {
+                        icon: 'fas fa-sitemap',
+                        text: 'Organisasi baru: OSIS Periode 2023/2024',
+                        time: '2 hari yang lalu'
+                    },
+                    {
+                        icon: 'fas fa-chalkboard-teacher',
+                        text: 'Guru baru ditambahkan: Ibu Siti Rahayu',
+                        time: '3 hari yang lalu'
+                    }
+                ];
+    
+                const activityList = document.getElementById('recentActivity');
+                activityList.innerHTML = '';
+    
+                activities.forEach(activity => {
+                    const li = document.createElement('li');
+                    li.className = 'activity-item';
+                    li.innerHTML = `
+                        <div class="activity-icon" aria-hidden="true">
+                            <i class="${activity.icon}"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>${activity.text}</p>
+                            <span class="activity-time">${activity.time}</span>
+                        </div>
+                    `;
+                    activityList.appendChild(li);
+                });
+            }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardStats();
+            loadRecentActivity();
+
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+            darkModeToggle.addEventListener('change', () => {
+                if (darkModeToggle.checked) {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
                 }
-            ];
-
-            const activityList = document.getElementById('recentActivity');
-            activityList.innerHTML = '';
-
-            activities.forEach(activity => {
-                const li = document.createElement('li');
-                li.className = 'activity-item';
-                li.innerHTML = `
-                    <div class="activity-icon">
-                        <i class="${activity.icon}"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p>${activity.text}</p>
-                        <span class="activity-time">${activity.time}</span>
-                    </div>
-                `;
-                activityList.appendChild(li);
             });
-        }
+        });
+
+        // Slider functionality for Visi, Misi, dan Tujuan
+        document.addEventListener('DOMContentLoaded', () => {
+            const sliderContainer = document.querySelector('.visi-misi-tujuan .slider-wrapper');
+            const slides = sliderContainer.children;
+            const prevBtn = document.querySelector('.visi-misi-tujuan .prev-arrow');
+            const nextBtn = document.querySelector('.visi-misi-tujuan .next-arrow');
+            const dotsContainer = document.querySelector('.visi-misi-tujuan .visi-misi-dots');
+
+            let currentIndex = 0;
+
+            function updateSlider() {
+                const offset = -currentIndex * 100;
+                sliderContainer.style.transform = `translateX(${offset}%)`;
+                updateDots();
+            }
+
+            function updateDots() {
+                Array.from(dotsContainer.children).forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            function createDots() {
+                for (let i = 0; i < slides.length; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'slider-dot';
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => {
+                        currentIndex = i;
+                        updateSlider();
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                updateSlider();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSlider();
+            });
+
+            createDots();
+            updateSlider();
+        });
     </script>
 </body>
 </html>
