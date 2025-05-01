@@ -54,6 +54,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.supabaseClient.auth.getSession().then(({ data: sessionData }) => {
         const session = sessionData?.session;
+        console.log('Session:', session);
+        console.log('Logged-in menu element:', loggedInMenu);
+        console.log('Logged-out menu element:', loggedOutMenu);
+    
         if (session) {
             loggedInMenu.style.display = "flex";
             loggedOutMenu.style.display = "none";
