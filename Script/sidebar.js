@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loggedOutMenu.style.display = "none";
 
             window.supabaseClient
-                .from("users")
+                .from("profiles")
                 .select("username, role, avatar_url")
                 .eq("id", session.user.id)
                 .single()
