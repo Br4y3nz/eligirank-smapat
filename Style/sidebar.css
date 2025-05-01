@@ -5,10 +5,6 @@
     font-family: "Poppins", sans-serif;
 }
 
-body, html {
-    overflow-x: hidden;
-}
-
 .sidebar {
     position: fixed;
     left: 0;
@@ -138,19 +134,8 @@ body, html {
 }
 
 .sidebar li a:hover {
-    background: #ffffff;
-}
-
-#log_out:hover {
     background: #fff;
-    color: #e40e43;
-    border-radius: 12px;
 }
-
-#log_out:hover i {
-    color: #e40e43;
-}
-
 
 .sidebar li a .links_name {
     color: #fff;
@@ -206,7 +191,7 @@ body, html {
     height: 60px;
     width: 78px;
     left: 0;
-    bottom: 0;
+    bottom: -8px;
     padding: 10px 14px;
     background: #1d1b31;
     transition: all 0.5s ease;
@@ -253,9 +238,6 @@ body, html {
     height: 60px;
     line-height: 60px;
     transition: all 0.5s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .sidebar.open .profile #log_out {
@@ -269,13 +251,13 @@ body, html {
     min-height: 100vh;
     top: 0;
     left: 78px;
-    width: calc(100% - 78px);
+    width: calc(100% -78px);
     transition: all 0.5s ease;
 }
 
 .sidebar.open~.home-section {
     left: 250px;
-    width: calc(100% - 250px);
+    width: calc(100%-250px);
 }
 
 .home-section .text {
@@ -285,62 +267,3 @@ body, html {
     font-weight: 500;
     margin: 18px;
 }
-
-#logged-out-menu {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  #logged-out-menu .name {
-    color: #333;
-    font-weight: bold;
-    font-size: 16px;
-  }
-  
-  #logged-out-menu i {
-    font-size: 24px;
-    margin-right: 10px;
-  }
-
-  /* Hide the username and role container when sidebar is closed */
-.sidebar:not(.open) #user-info {
-    display: none !important;
-    }
-    
-    /* Ensure logout button is always visible and aligned */
-    #logout-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0 10px;
-    }
-    
-    /* Adjust profile-details layout when sidebar is open */
-    .sidebar.open #logged-in-menu .profile-details {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    }
-    
-    /* Adjust profile icon size */
-    #logged-in-menu .profile-details i.bx-user {
-    font-size: 28px;
-    color: #fff;
-    }
-    
-    /* Adjust username and role text styles */
-    #username {
-    font-weight: 600;
-    color: #fff;
-    font-size: 16px;
-    }
-    
-    #role {
-    font-size: 12px;
-    color: #bbb;
-    }
