@@ -85,6 +85,23 @@ googleSignUpBtn.addEventListener('click', async () => {
   });
   if (error) {
     alert('Error: ' + error.message);
+    return;
+  }
+  // After successful OAuth sign-in, get the user
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    // Upsert user profile data
+    const { error: upsertError } = await supabase.from('profiles').upsert({
+      id: user.id,
+      full_name: user.user_metadata.full_name || user.user_metadata.name || '',
+      username: user.user_metadata.username || '',
+      email: user.email,
+      phone: user.user_metadata.phone || '',
+      role_id: null,
+    });
+    if (upsertError) {
+      alert('Error saving profile data: ' + upsertError.message);
+    }
   }
 });
 
@@ -124,3 +141,4 @@ function closeRegistrationErrorModal() {
 function closeRegistrationSuccessModal() {
   document.getElementById('registrationSuccessModal').style.display = 'none';
 }
+
