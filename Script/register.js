@@ -90,13 +90,29 @@ googleSignUpBtn.addEventListener('click', async () => {
   // After successful OAuth sign-in, get the user
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
-    // Upsert user profile data
+    // Check if username and phone exist in profiles
+    const { data: profileData, error: profileFetchError } = await supabase
+      .from('profiles')
+      .select('username, phone')
+      .eq('id', user.id)
+      .single();
+
+    if (profileFetchError || !profileData || !profileData.username || !profileData.phone) {
+      // Missing username or phone, prompt user to complete profile
+      alert('Please complete your profile by providing username and phone number.');
+      // Here you can redirect to a profile completion page or show a modal/form
+      // For simplicity, redirect to a profile completion page (e.g., profile.html)
+      window.location.href = 'profile.html';
+      return;
+    }
+
+    // Upsert user profile data if profile exists and is complete
     const { error: upsertError } = await supabase.from('profiles').upsert({
       id: user.id,
       full_name: user.user_metadata.full_name || user.user_metadata.name || '',
-      username: user.user_metadata.username || '',
+      username: profileData.username,
       email: user.email,
-      phone: user.user_metadata.phone || '',
+      phone: profileData.phone,
       role_id: null,
     });
     if (upsertError) {
@@ -141,4 +157,3 @@ function closeRegistrationErrorModal() {
 function closeRegistrationSuccessModal() {
   document.getElementById('registrationSuccessModal').style.display = 'none';
 }
-
