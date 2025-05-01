@@ -94,14 +94,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", async () => {
-            const { error } = await window.supabaseClient.auth.signOut();
-            if (error) {
-                console.error("Logout error:", error);
-            } else {
-                window.location.reload();
-            }
-        });
+    logoutBtn.addEventListener("click", async () => {
+        const { error } = await window.supabaseClient.auth.signOut();
+        if (error) {
+            console.error("Logout error:", error);
+        } else {
+            // Place the line here
+            localStorage.removeItem('rememberMe');
+            window.location.reload();
+        }
+    });
+    
     }
-});
+);
