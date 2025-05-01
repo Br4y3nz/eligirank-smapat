@@ -1,0 +1,106 @@
+# Windsurf Rules for School Information Website Project
+
+## Project Context
+This is a web-based school information platform designed to:
+- Display report cards for students
+- Show detailed profiles of teachers and staff
+- Present announcements and upcoming events
+- Display academic and non-academic achievements
+- Organize and display student organization structure and details
+- Provide a dynamic ranking system with three types: cumulative (eligibility), class-based, and subject-specific rankings
+- Allow user login, registration, profile access, and account management (e.g., password reset)
+
+## Code Style and Structure
+- Use semantic and modular HTML5 structure for each page
+- Structure CSS and JS files per module/page, shared components go into a `shared` folder
+- Use clear, consistent naming with kebab-case for files and folders
+- Apply DRY principle: create reusable card components (HTML/CSS snippets) and JS logic where possible
+
+## Folder Structure
+```
+project-root/
+├── assets/
+│   ├── css/
+│   │   ├── style.css
+│   │   ├── sidebar.css
+│   │   └── cards.css
+│   ├── js/
+│   │   ├── main.js
+│   │   ├── sidebar.js
+│   │   └── cardHandlers.js
+│   └── images/
+├── components/
+│   ├── cards/
+│   │   ├── teacherCard.html
+│   │   ├── rankingCard.html
+│   │   ├── achievementCard.html
+│   │   ├── organizationCard.html
+│   │   └── profileCard.html
+│├── index.html
+│├── register.html
+│├── dashboard.html
+│├── ranking.html
+│├── prestasi.html
+│├── organisasi.html
+│├── data-siswa1.html
+│├── data-siswa2.html
+│├── guru-staff.html
+│├── akun.html
+│└── forgot-password.html
+└── README.md
+```
+
+## Front-End Tech
+- HTML5, CSS3, JavaScript
+- Tailwind CSS (optional future upgrade)
+- Component-based layout using card structures
+
+## Backend & Database
+- Use Supabase as backend and authentication provider
+- Store student, teacher, report card, event, and organization data in Supabase tables
+
+## Naming Conventions
+- kebab-case for filenames and directories
+- camelCase for variables and JS functions
+- Use `card--[type]` as CSS class naming convention
+
+## JavaScript
+- Separate scripts by concern (e.g., sidebar.js, main.js)
+- Use DOMContentLoaded for event bindings
+- Use `data-*` attributes for passing dynamic values to JS
+- Prefer modular, reusable JS logic
+
+## CSS
+- Global styles in `style.css`
+- Page/module-specific styles in separate CSS files
+- Card-specific styles in `cards.css` with modifier classes
+
+## Features to Prioritize
+- Responsive card layouts for all major components
+- Dynamic rankings fetched from Supabase
+- Leaderboard modals or redirects
+- Teacher/org details shown on click (expand or modal)
+- Authentication and user profile update
+
+## Development Workflow
+- Build and test one feature at a time
+- Use localhost testing (Live Server or similar)
+- Validate HTML/CSS via validator
+- Document progress and issues in README or Notion
+
+## Security and Performance
+- Validate all form inputs on both client and Supabase
+- Avoid hardcoding sensitive keys
+- Optimize image sizes for faster loading
+- Lazy load content when possible
+
+## Deployment
+- Optional: Deploy using GitHub Pages, Netlify, or Vercel
+- Connect to live Supabase backend
+- Monitor loading speed and optimize assets
+
+## Future Enhancements
+- Add dark mode toggle
+- Implement notifications (Supabase functions or polling)
+- Mobile app version (if needed later)
+
