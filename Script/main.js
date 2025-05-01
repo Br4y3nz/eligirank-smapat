@@ -1,8 +1,7 @@
-
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 // Initialize Supabase client
-const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co'; // Replace with your Supabase project URL
+const supabaseUrl = SUPABASE_URL;
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -58,38 +57,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sidebar Toggle Function
-  function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const menuBtn = document.querySelector('.menu-btn');
-    if (sidebar) {
-      sidebar.classList.toggle('active');
-    }
-    if (document.body) {
-      document.body.classList.toggle('no-scroll');
-    }
-    if (menuBtn) {
-      menuBtn.classList.toggle('rotated');
+  // Sidebar toggle functionality adapted from temp_sidebar_repo/script.js
+  const sidebar = document.querySelector('.sidebar');
+  const toggleBtn = document.getElementById('btn');
+  const searchBtn = document.querySelector('.bx-search');
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      menuBtnChange();
+    });
+  }
+
+  if (searchBtn && sidebar) {
+    searchBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      menuBtnChange();
+    });
+  }
+
+  function menuBtnChange() {
+    if (sidebar.classList.contains('open')) {
+      toggleBtn.classList.replace('bx-menu', 'bx-menu-alt-right');
+    } else {
+      toggleBtn.classList.replace('bx-menu-alt-right', 'bx-menu');
     }
   }
 
-  // Add event listener for menu button to toggle sidebar
-  const menuBtn = document.querySelector('.menu-btn');
-  if (menuBtn) {
-    menuBtn.addEventListener('click', toggleSidebar);
-  }
-
-  // Close Sidebar When Clicking Outside
-  document.addEventListener('click', function(e) {
-    const sidebar = document.querySelector('.sidebar');
-    const menuBtn = document.querySelector('.menu-btn');
-
-    if (sidebar && menuBtn && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-      sidebar.classList.remove('active');
-      document.body.classList.remove('no-scroll');
-      menuBtn.classList.remove('rotated');
-    }
-  });
+  menuBtnChange();
 
   // Dark Mode Toggle
   const darkModeToggle = document.getElementById('darkModeToggle');

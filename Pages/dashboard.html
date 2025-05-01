@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - EligiRank SMAPAT</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.2.0/dist/supabase.min.js"></script>
+    <link rel="stylesheet" href="Style/sidebar.css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <div class="logo_name">EligiRank SMAPAT</div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <i class="bx bx-search"></i>
+                <input type="text" id="search-input" name="search-input" placeholder="Search..." />
+                <span class="tooltip">Search</span>
+            </li>
+            <li>
+                <a href="dashboard.html">
+                    <i class="bx bx-grid-alt"></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="ranking.html">
+                    <i class="bx bx-bar-chart"></i>
+                    <span class="links_name">Ranking</span>
+                </a>
+                <span class="tooltip">Ranking</span>
+            </li>
+            <li>
+                <a href="prestasi.html">
+                    <i class="bx bx-trophy"></i>
+                    <span class="links_name">Prestasi</span>
+                </a>
+                <span class="tooltip">Prestasi</span>
+            </li>
+            <li>
+                <a href="organisasi.html">
+                    <i class="bx bx-pie-chart-alt-2"></i>
+                    <span class="links_name">Organisasi</span>
+                </a>
+                <span class="tooltip">Organisasi</span>
+            </li>
+            <li>
+                <a href="data-siswa.html">
+                    <i class="bx bx-folder"></i>
+                    <span class="links_name">Data Siswa</span>
+                </a>
+                <span class="tooltip">Data Siswa</span>
+            </li>
+            <li>
+                <a href="guru-staff.html">
+                    <i class="bx bx-group"></i>
+                    <span class="links_name">Guru & Staff</span>
+                </a>
+                <span class="tooltip">Guru & Staff</span>
+            </li>
+            <li>
+                <a href="akun.html">
+                    <i class="bx bx-cog"></i>
+                    <span class="links_name">Pengaturan</span>
+                </a>
+                <span class="tooltip">Pengaturan</span>
+            </li>
+
+            
+            <li>
+                <a href="#" id="log_in">
+                    <i class="bx bx-log-in"></i>
+                    <span class="links_name">Login</span>
+                </a>
+            </li>
+            
+            <li class="profile" id="logged-out-menu" style="display: none;">
+                <div class="profile-details">
+                    <i class="bx bx-log-in"></i>
+                    <div class="name_job">
+                        <div class="name">Login</div>
+                    </div>
+                </div>
+                <a href="index.html" id="log_in"><i class="bx bx-log-in"></i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    
+    <section class="home-section">
+        <div class="text">Dashboard</div>
+    </section>
+
+    <script src="Script/sidebar.js" type="module" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.2.0/dist/supabase.min.js"></script>
+
+</body>
+
+</html>
