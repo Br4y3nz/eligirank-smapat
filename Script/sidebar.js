@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
         sidebar.classList.toggle("open");
         updateUserMenuDisplay();
     });
-    
 
     if (!window.supabaseClient) {
         console.error("Supabase client not found on window");
@@ -57,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('Session:', session);
         console.log('Logged-in menu element:', loggedInMenu);
         console.log('Logged-out menu element:', loggedOutMenu);
-    
+
         if (session) {
             loggedInMenu.style.display = "flex";
             loggedOutMenu.style.display = "none";
