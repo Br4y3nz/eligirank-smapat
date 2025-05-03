@@ -1,3 +1,5 @@
+import supabase from '../Supabase/client.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.querySelector(".sidebar");
     const closeBtn = document.querySelector("#btn");
@@ -7,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const roleElem = document.getElementById("role");
     const profileImg = document.getElementById("profile-img");
     const logoutBtn = document.getElementById("log_out");
+
+const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
 
     if (!sidebar || !closeBtn) {
         console.error("Sidebar or close button not found in DOM");
@@ -23,6 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
             // User not logged in, show only login button
             loggedOutMenu.style.display = "block";
             loggedInMenu.style.display = "none";
+
+            // Toggle "open" class on loggedOutMenu based on sidebar open state for CSS animation
+            if (sidebar.classList.contains("open")) {
+                loggedOutMenu.classList.add("open");
+            } else {
+                loggedOutMenu.classList.remove("open");
+            }
+
             return;
         }
 
@@ -33,25 +45,35 @@ document.addEventListener("DOMContentLoaded", () => {
             if (profileImg) profileImg.style.display = "block";
             if (logoutBtn) logoutBtn.style.display = "inline-flex";
         } else {
-            // Sidebar closed: show only logout button
+            // Sidebar closed: show only profile image and logout button
             if (usernameElem) usernameElem.style.display = "none";
             if (roleElem) roleElem.style.display = "none";
-            if (profileImg) profileImg.style.display = "none";
+            if (profileImg) profileImg.style.display = "block";
             if (logoutBtn) logoutBtn.style.display = "inline-flex";
         }
     }
 
-    closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-        updateUserMenuDisplay();
-    });
+closeBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    updateUserMenuDisplay();
 
-    if (!window.supabaseClient) {
-        console.error("Supabase client not found on window");
-        return;
-    }
+    // Animate icon change with fade out/in for smooth transition
+    closeBtn.style.transition = "opacity 0.3s ease";
+    closeBtn.style.opacity = "0";
 
-    window.supabaseClient.auth.getSession().then(({ data: sessionData }) => {
+    setTimeout(() => {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.remove("bx-menu");
+            closeBtn.classList.add("bx-menu-alt-right");
+        } else {
+            closeBtn.classList.remove("bx-menu-alt-right");
+            closeBtn.classList.add("bx-menu");
+        }
+        closeBtn.style.opacity = "1";
+    }, 300);
+});
+
+    supabase.auth.getSession().then(({ data: sessionData }) => {
         const session = sessionData?.session;
         console.log('Session:', session);
         console.log('Logged-in menu element:', loggedInMenu);
@@ -61,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loggedInMenu.style.display = "flex";
             loggedOutMenu.style.display = "none";
 
-            window.supabaseClient
+            supabase
                 .from("profiles")
                 .select("username, role, avatar_url")
                 .eq("id", session.user.id)
@@ -77,7 +99,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             usernameElem.style.display = "block";
                         }
                         if (roleElem) {
-                            roleElem.textContent = data.role || "Role";
+                            // Check if user is admin by UID
+                            if (session.user.id === ADMIN_UID) {
+                                roleElem.textContent = "admin";
+                            } else {
+                                roleElem.textContent = data.role || "Role";
+                            }
                             roleElem.style.display = "block";
                         }
                         if (profileImg && data.avatar_url) {
@@ -95,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     logoutBtn.addEventListener("click", async () => {
-        const { error } = await window.supabaseClient.auth.signOut();
+        const { error } = await supabase.auth.signOut();
         if (error) {
             console.error("Logout error:", error);
         } else {
@@ -106,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Add auth state change listener to handle session expiration and sign out
-    window.supabaseClient.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
         console.log('Auth state changed:', event, session);
         if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESH_FAILED' || event === 'USER_DELETED') {
             // Clear any session-related local storage or UI state
@@ -119,3 +146,40 @@ document.addEventListener("DOMContentLoaded", () => {
     
     }
 );
+
+
+function expandSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar.classList.contains('open')) {
+        sidebar.classList.add('open');
+    }
+}
+
+// Add event listener to search icon button after DOM content loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const searchIconBtn = document.getElementById('search-icon');
+    if (searchIconBtn) {
+        searchIconBtn.addEventListener('click', () => {
+            expandSidebar();
+            // Optionally, focus the search input after expanding
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.focus();
+            }
+        });
+    }
+
+    // Prevent navigation on clicking the search link anchor
+    const searchLink = document.querySelector('a.search-link');
+    if (searchLink) {
+        searchLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            // Expand sidebar and focus search input
+            expandSidebar();
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.focus();
+            }
+        });
+    }
+});

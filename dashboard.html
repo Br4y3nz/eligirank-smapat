@@ -15,13 +15,18 @@
 <body>
     <div class="sidebar">
         <div class="logo-details">
-            <div class="logo_name">EligiRank SMAPAT</div>
-            <i class="bx bx-menu" id="btn"></i>
+            <div class="sidebar-logo" style="display: flex; align-items: center; gap: 8px;">
+                <img src="Assets/Logo-smapat.png" alt="SMA Negeri 4 Parepare Logo" style="width: 40px; height: auto;" />
+                <div class="logo_name">EligiRank SMAPAT</div>
+            </div>
+<i class="bx bx-menu-alt-left" id="btn"></i>
         </div>
         <ul class="nav-list">
-            <li>
-                <i class="bx bx-search"></i>
-                <input type="text" id="search-input" name="search-input" placeholder="Search..." />
+            <li class="search-item">
+                <a class="search-link" aria-label="Search">
+                    <i class="bx bx-search"></i>
+                    <input type="text" id="search-input" name="search-input" placeholder="Search..." />
+                </a>
                 <span class="tooltip">Search</span>
             </li>
             <li>
@@ -76,7 +81,7 @@
 
             
 
-            <li id="logged-in-menu" style="display: none;">
+            <li id="logged-in-menu" class="profile" style="display: none;">
                 <div class="profile-details">
                     <img src="Assets/Logo-smapat.png" alt="profileImg" id="profile-img" />
                     <div class="name_job">
@@ -84,23 +89,27 @@
                         <div class="job" id="role"></div>
                     </div>
                 </div>
-                <a href="index.html" id="log_out"><i class="bx bx-log-out"></i></a>
+                <i class="bx bx-log-out" id="log_out"></i>
             </li>
-            
-            <li id="logged-out-menu" style="display: none;">
-                <a href="index.html" id="log_in">
+        </ul>    
+        <div class="bottom-profile">
+            <li id="logged-out-menu" class="profile" style="display: none;">
+                <a href="index.html" id="log_in" class="profile-details">
                     <i class="bx bx-log-in"></i>
                     <span class="links_name">Login</span>
                 </a>
+                <span class="tooltip">Login</span>
             </li>
-        </ul>    
+        </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
     
-    <section class="home-section">
-        <div class="text">Dashboard</div>
-    </section>
+    <div class="main-content">
+        <section class="home-section">
+            <div class="text">Dashboard</div>
+        </section>
+    </div>
 
 </body>
 

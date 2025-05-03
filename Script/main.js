@@ -185,4 +185,29 @@ document.addEventListener('DOMContentLoaded', () => {
       modal.style.display = 'block';
     }
   }
+
+  // Toggle profile menu visibility based on authentication state
+  const loggedInMenu = document.getElementById('logged-in-menu');
+  const loggedOutMenu = document.getElementById('logged-out-menu');
+
+  // Function to update profile menu visibility
+  function updateProfileMenuVisibility(isLoggedIn) {
+    if (isLoggedIn) {
+      loggedInMenu.style.display = 'flex';
+      loggedOutMenu.style.display = 'none';
+    } else {
+      loggedInMenu.style.display = 'none';
+      loggedOutMenu.style.display = 'flex';
+    }
+  }
+
+  // Check user session or authentication state
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    updateProfileMenuVisibility(!!session);
+  });
+
+  // Listen for auth state changes to update profile menu visibility
+  supabase.auth.onAuthStateChange((event, session) => {
+    updateProfileMenuVisibility(!!session);
+  });
 });

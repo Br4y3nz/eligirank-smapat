@@ -11,17 +11,68 @@
     top: 0;
     height: 100%;
     width: 78px;
-    background: #11101D;
+    background-color: #0F172A; /* very dark navy blue */
     padding: 6px 14px;
     z-index: 1;
-    transition: all 0.5s ease;
+    transition: width 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bottom-profile {
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid #334155;
 }
 
 .sidebar.open {
     width: 250px;
 }
 
+.sidebar li a {
+    background: #2563EB; /* primary blue */
+    color: #FFFFFF; /* white */
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar li a:hover {
+    background: #1D4ED8; /* darker royal blue */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+    color: #FFFFFF;
+    border-left: 4px solid #FACC15;
+}
+
+.sidebar li a.active {
+    background: #1E40AF; /* navy blue */
+    border-left: 4px solid #FACC15; /* yellow highlight */
+    color: #FFFFFF;
+}
+
+.sidebar .profile {
+    background: #2563EB; /* primary blue */
+    color: #F1F5F9; /* off-white */
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar .profile #log_out {
+    background: #2563EB;
+    color: #F1F5F9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar .profile #log_out:hover {
+    background: #1E40AF;
+    color: #F1F5F9;
+}
+
 .sidebar .logo-details {
+    background-color: #0F172A;
+    border-bottom: 1px solid #334155;
     height: 60px;
     display: flex;
     align-items: center;
@@ -29,12 +80,86 @@
     position: relative;
 }
 
+.sidebar .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.sidebar .sidebar-logo img {
+    width: 40px;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: filter 0.5s ease;
+}
+
+.sidebar .sidebar-logo img:hover {
+    filter: brightness(1.3) saturate(1.2);
+    transition: filter 0.5s ease;
+}
+
+/* Optional: Add a shiny sweep effect using a pseudo-element */
+.sidebar .sidebar-logo {
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar .sidebar-logo::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    transition: none;
+    pointer-events: none;
+}
+
+.sidebar .sidebar-logo:hover::before {
+    animation: shiny-sweep 1s forwards;
+}
+
+@keyframes shiny-sweep {
+    0% {
+        left: -75%;
+    }
+    100% {
+        left: 125%;
+    }
+}
+
+.sidebar:not(.open) .sidebar-logo {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
 .sidebar .logo-details .logo_name {
-    color: #fff;
+    color: #FFFFFF;
     font-size: 20px;
     font-weight: 600;
     opacity: 0;
-    transition: all 0.5s ease;
+    white-space: pre-line;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform-origin: left center;
+    transform: translateX(-20px);
+}
+
+.sidebar.open .logo-details .logo_name {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .sidebar.open .logo-details,
@@ -45,25 +170,32 @@
 .sidebar .logo-details #btn {
     position: absolute;
     top: 50%;
-    right: 0;
+    left: 0;
     transform: translateY(-50%);
     font-size: 22px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.5s ease;
+    transition: left 0.5s ease-in-out, right 0.5s ease-in-out;
 }
 
 .sidebar.open .logo-details #btn {
+    left: auto;
+    right: 0;
     text-align: center;
+    transition: left 0.5s ease-in-out, right 0.5s ease-in-out;
 }
 
 .sidebar i {
-    color: #fff;
+    color: #FFFFFF; /* changed from blue to white for better visibility */
     height: 60px;
     min-width: 50px;
     font-size: 28px;
     text-align: center;
     line-height: 60px;
+}
+
+.sidebar li a:hover i {
+    color: #F8FAFC; /* near white on hover */
 }
 
 .sidebar .nav-list {
@@ -79,20 +211,221 @@
 
 .sidebar input {
     font-size: 15px;
-    color: #fff;
+    color: #94A3B8; /* cool gray */
     font-weight: 400;
     outline: none;
     height: 50px;
     width: 100%;
-    border: none;
+    border: 1px solid #334155;
     border-radius: 12px;
     transition: all 0.5s ease;
-    background: #1d1b31;
+    background: #1E293B; /* sidebar search bar background */
+}
+
+.sidebar input:focus {
+    outline: none;
+    border-color: #1E293B; /* match background to remove blue border */
+    box-shadow: none; /* remove blue glow */
+}
+
+.sidebar input::placeholder {
+    color: #64748B; /* slate */
 }
 
 .sidebar.open input {
-    padding: 0 20px 0 50px;
+    padding: 0 10px 0 50px;
     width: 100%;
+}
+
+/* Remove complex search box container transitions and styles */
+/* Use simpler search box styles from temp_sidebar_repo */
+
+/* Style the combined search menu item */
+li.search-item > a.search-link {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    border-radius: 12px;
+    background: #1E293B; /* distinct dark blue-gray for search menu */
+    color: white;
+    text-decoration: none;
+    padding: 0 6px 0 10px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+li.search-item > a.search-link .search-text {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 400;
+    color: white;
+    margin-left: 4px;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.open li.search-item > a.search-link .search-text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+li.search-item > a.search-link input#search-input {
+    flex-grow: 1;
+    font-size: 15px;
+    color: white;
+    background: transparent;
+    border: none;
+    outline: none;
+    height: 100%;
+    border-radius: 12px;
+    padding: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    left: 25px;
+    top: 0;
+}
+
+.sidebar.open li.search-item > a.search-link input#search-input {
+    width: calc(100% - 40px);
+    opacity: 1;
+    pointer-events: auto;
+    padding-left: 0;
+    display: inline-block;
+    position: relative;
+    left: 0;
+}
+
+.sidebar:not(.open) li.search-item > a.search-link input#search-input {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    padding: 0;
+    display: none;
+}
+
+li.search-item > a.search-link:hover {
+    background: #334155; /* grayish hover background */
+    box-shadow: none;
+    color: white;
+    border-left: 4px solid #FACC15; /* yellow highlight on hover */
+}
+
+li.search-item > a.search-link i.bx-search {
+    font-size: 22px;
+    margin-right: 5px;
+    flex-shrink: 0;
+    background: transparent;
+    color: white;
+    position: relative;
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    transition: color 0.3s ease;
+}
+
+li.search-item > a.search-link input#search-input {
+    flex-grow: 1;
+    font-size: 15px;
+    color: white;
+    background: transparent;
+    border: none;
+    outline: none;
+    height: 100%;
+    border-radius: 12px;
+    padding: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Show input only when sidebar is open */
+.sidebar.open li.search-item > a.search-link input#search-input {
+    width: 100%;
+    opacity: 1;
+    pointer-events: auto;
+    padding-left: 0;
+    display: inline-block;
+}
+
+/* When sidebar is closed, hide the input completely */
+.sidebar:not(.open) li.search-item > a.search-link input#search-input {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    padding: 0;
+    display: none;
+}
+
+/* Remove old icon-button styles */
+.sidebar:not(.open) .icon-button,
+.sidebar.open .icon-button {
+    display: none !important;
+}
+
+/* Login button styling */
+#logged-out-menu.profile a#log_in {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(59, 130, 246, 0.1); /* soft blue tint */
+    color: #cbd5e1;
+    border-radius: 12px 6px 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    padding-left: 0;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+    box-sizing: border-box;
+    margin: 0 !important;
+    transition: all 0.3s ease;
+}
+
+#logged-out-menu.profile a#log_in .links_name {
+    margin-left: 5px; /* reduce space between icon and text */
+}
+
+#logged-out-menu.profile a#log_in:hover {
+    border: 2px solid #facc15;
+    box-shadow: 0 0 10px #facc15; /* glowing yellow */
+    background-color: #facc15;
+    color: #3b82f6;
+}
+
+#logged-out-menu.profile a#log_in:hover i,
+#logged-out-menu.profile a#log_in:hover svg {
+    color: #3b82f6 !important; /* icon color on hover */
+}
+
+.sidebar .profile #log_out:hover {
+    /* Remove background color change on hover */
+    background: transparent;
+    color: #F1F5F9;
+}
+
+.sidebar .profile #log_out:hover {
+    color: #DC2626; /* red icon on hover */
+}
+
+#logged-out-menu.profile a#log_in i {
+    font-size: 18px;
+    color: #F8FAFC;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+    margin-right: 10px;
+    transition: color 0.4s ease, margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar .bx-search {
@@ -101,18 +434,21 @@
     left: 0;
     transform: translateY(-50%);
     font-size: 22px;
-    background: #1d1b31;
-    color: #fff;
+    background: transparent; /* removed blue background */
+    color: white; /* icon color */
+    border-radius: 12px 0 0 12px;
+    padding: 0 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar .bx-search:hover {
-    background: #fff;
-    color: #11101D;
+    background: transparent; /* remove blue background on hover */
+    color: white;
 }
 
 .sidebar.open .bx-search:hover {
-    background: #1d1b31;
-    color: #fff;
+    background: transparent; /* remove blue background on hover */
+    color: white;
 }
 
 .sidebar li i {
@@ -124,21 +460,31 @@
 
 .sidebar li a {
     display: flex;
-    height: 100%;
+    height: 50px;
     width: 100%;
     border-radius: 12px;
     align-items: center;
     text-decoration: none;
     transition: all 0.4s ease;
-    background: #11101D;
+    background: #2563EB;
+    color: #FFFFFF;
 }
 
 .sidebar li a:hover {
-    background: #fff;
+    background: #1D4ED8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+    color: #FFFFFF;
+}
+
+.sidebar li a.active {
+    background: #1E40AF;
+    border-left: 4px solid #FACC15;
+    color: #FFFFFF;
 }
 
 .sidebar li a .links_name {
-    color: #fff;
+    color: #FFFFFF;
     font-size: 15px;
     font-weight: 400;
     white-space: nowrap;
@@ -155,7 +501,192 @@
 .sidebar li a:hover .links_name,
 .sidebar li a:hover i {
     transition: all 0.5s ease;
-    color: #11101D;
+    color: #F8FAFC; /* near white */
+}
+
+#logged-out-menu.profile a#log_in:hover i {
+    color: #F8FAFC; /* near white on hover */
+}
+
+#logged-out-menu.profile {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    padding: 0;
+    background: #2563EB;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 8px 0;
+    z-index: 1;
+    border-top: 1px solid #334155; /* added subtle border above profile */
+    padding-top: 6px; /* spacing from border */
+}
+
+.sidebar.open #logged-out-menu.profile {
+    width: 100%;
+    height: 50px;
+    position: relative;
+    padding: 0;
+    background: #2563EB;
+    border-radius: 12px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 8px 0;
+    z-index: 1;
+}
+
+#logged-out-menu.profile a#log_in {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: white;
+    border-radius: 12px 6px 6px 12px;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+    box-sizing: border-box;
+    margin: 0 !important;
+    transition: background-color 0.3s ease;
+}
+
+#logged-out-menu.profile a#log_in i {
+    margin-left: 0;
+    margin-right: 0;
+    transition: color 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.sidebar:not(.open) #logged-out-menu.profile a#log_in {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.sidebar:not(.open) #logged-out-menu.profile a#log_in {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.sidebar:not(.open) #logged-out-menu.profile a#log_in {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#logged-out-menu.profile a#log_in i {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transition: color 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#logged-out-menu.profile a#log_in i {
+    margin-left: 35px;
+    transition: color 0.4s ease, margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#logged-out-menu.profile a#log_in:hover {
+    border: 2px solid #facc15;
+    box-shadow: 0 0 10px #facc15; /* glowing yellow */
+    background-color: #facc15;
+    color: #3b82f6;
+}
+
+.sidebar:not(.open) #logged-out-menu.profile a#log_in .links_name {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline; /* Ensure element is rendered for transition */
+}
+
+#logged-out-menu.profile a#log_in i {
+    font-size: 18px;
+    color: #F8FAFC;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+    margin-right: 10px;
+    transition: color 0.4s;
+}
+
+.sidebar:not(.open) #logged-out-menu.profile a#log_in i {
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    position: relative !important;
+    left: 0 !important;
+}
+
+#logged-out-menu.profile a#log_in:hover {
+    border: 2px solid #facc15;
+    box-shadow: 0 0 10px #facc15; /* glowing yellow */
+    background-color: #facc15;
+    color: #3b82f6;
+}
+
+.sidebar.open #logged-out-menu.profile a#log_in {
+    justify-content: center !important;
+    padding-left: 0 !important;
+}
+.sidebar.open #logged-out-menu.profile a#log_in i {
+    margin-left: -15px !important;
+    margin-right: 8px !important;
+}
+.sidebar.open #logged-out-menu.profile a#log_in .links_name {
+    display: inline-block;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    text-align: center;
+}
+
+#logged-out-menu.profile a#log_in i {
+    font-size: 18px;
+    color: #F8FAFC;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.4s, margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: -5px; /* moved icon 20px to the left */
+    margin-right: 0;
+}
+
+.sidebar.open #logged-out-menu.profile a#log_in i {
+    margin-left: 35px;
+}
+
+.sidebar.open #logged-out-menu.profile a#log_in i {
+    margin-left: 35px;
+}
+
+#logged-out-menu.profile a#log_in:hover i {
+    color: #F8FAFC !important;
 }
 
 .sidebar li .tooltip {
@@ -172,6 +703,11 @@
     white-space: nowrap;
     pointer-events: none;
     transition: 0s;
+}
+
+#logged-out-menu.profile .tooltip {
+    color: #111827; /* dark text for visibility */
+    padding-left: 12px;
 }
 
 .sidebar li:hover .tooltip {
@@ -191,11 +727,46 @@
     height: 60px;
     width: 78px;
     left: 0;
-    bottom: -8px;
-    padding: 10px 14px;
-    background: #1d1b31;
-    transition: all 0.5s ease;
-    overflow: hidden;
+    bottom: 0;
+    padding: 10px 20px; /* increased horizontal padding for centering */
+    background: #2563EB;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow: visible;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center; /* center content horizontally */
+    align-items: center; /* center content vertically */
+}
+
+/* Override for logged-out-menu to prevent fixed blue box */
+#logged-out-menu.profile {
+    position: relative !important;
+    height: auto !important;
+    width: 100% !important;
+    left: auto !important;
+    bottom: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+.sidebar:not(.open) #logged-out-menu.profile a#log_in {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#logged-out-menu.profile a#log_in {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.sidebar:not(.open) #logged-out-menu.profile a#log_in i {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 .sidebar.open li.profile {
@@ -220,7 +791,7 @@
 .sidebar li.profile .job {
     font-size: 15px;
     font-weight: 400;
-    color: #fff;
+    color: #F1F5F9;
     white-space: nowrap;
 }
 
@@ -228,41 +799,65 @@
     font-size: 12px;
 }
 
+/* Hide name and job when sidebar is collapsed */
+.sidebar li.profile:not(.open) .name,
+.sidebar li.profile:not(.open) .job {
+    display: none;
+}
+
+/* Hide profile details except image when sidebar is collapsed */
+.sidebar li.profile:not(.open) .profile-details {
+    justify-content: center;
+}
+
+/* Adjust profile image margin when sidebar is collapsed */
+.sidebar li.profile:not(.open) img {
+    margin-right: 0;
+}
+
+/* Logout button styles */
 .sidebar .profile #log_out {
     position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    background: #1d1b31;
-    width: 100%;
+    background: #2563EB;
+    width: 50px;
     height: 60px;
     line-height: 60px;
-    transition: all 0.5s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
 }
 
-.sidebar.open .profile #log_out {
-    width: 50px;
+/* Hover effect only on logout button */
+.sidebar .profile #log_out:hover {
+    background: #1E40AF;
+    color: #F1F5F9;
+}
+
+/* Remove hover effect on entire profile */
+.sidebar li.profile:hover {
     background: none;
 }
 
 .home-section {
     position: relative;
-    background: #e4e9f7;
+    background: #F8FAFC;
     min-height: 100vh;
     top: 0;
     left: 78px;
-    width: calc(100% -78px);
+    width: calc(100% - 78px);
     transition: all 0.5s ease;
 }
 
 .sidebar.open~.home-section {
     left: 250px;
-    width: calc(100%-250px);
+    width: calc(100% - 250px);
 }
 
 .home-section .text {
     display: inline-block;
-    color: #11101D;
+    color: #111827;
     font-size: 25px;
     font-weight: 500;
     margin: 18px;
