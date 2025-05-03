@@ -104,6 +104,18 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.reload();
         }
     });
+
+    // Add auth state change listener to handle session expiration and sign out
+    window.supabaseClient.auth.onAuthStateChange((event, session) => {
+        console.log('Auth state changed:', event, session);
+        if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESH_FAILED' || event === 'USER_DELETED') {
+            // Clear any session-related local storage or UI state
+            localStorage.removeItem('rememberMe');
+            // Optionally redirect to login page or show a message
+            alert('Your session has expired or you have been signed out. Please log in again.');
+            window.location.href = '/register.html'; // Adjust the path to your login page
+        }
+    });
     
     }
 );
