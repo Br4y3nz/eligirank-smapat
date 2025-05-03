@@ -86,7 +86,7 @@ closeBtn.addEventListener("click", () => {
             supabase
                 .from("profiles")
                 .select("username, role, avatar_url")
-                .eq("id", session.user.id)
+                .eq("user_id", session.user.id)
                 .single()
                 .then(({ data, error }) => {
                     if (error) {
