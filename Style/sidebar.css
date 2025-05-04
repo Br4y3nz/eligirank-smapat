@@ -744,6 +744,7 @@ li.search-item > a.search-link input#search-input {
 .sidebar.open li.profile {
     width: 250px;
     max-width: 250px;
+    height: 80px; /* increased height to fit username and role */
     overflow: hidden;
     box-sizing: border-box;
     padding-right: 10px;
@@ -755,6 +756,43 @@ li.search-item > a.search-link input#search-input {
     transition: width 0.5s ease-in-out, background-color 0.3s ease-in-out, padding-right 0.5s ease-in-out;
     /* Ensure width does not go beyond 250px */
     min-width: 78px;
+}
+.sidebar.open li.profile img#profile-img {
+    height: 60px; /* increased height to fit username and role */
+    width: 60px; /* increased width to fit username and role */
+    object-fit: contain;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+.sidebar.open li.profile img#profile-img {
+    height: 60px; /* increased height to fit username and role */
+    width: 60px; /* increased width to fit username and role */
+    object-fit: contain;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.sidebar li.profile .profile-details {
+    display: flex;
+    flex-direction: column; /* stack username and role vertically */
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 2px; /* small spacing between username and role */
+}
+
+.sidebar.open li.profile {
+    height: 80px; /* increased height to fit username and role */
+}
+
+
+.sidebar li.profile .profile-details {
+    display: flex;
+    flex-direction: column; /* stack username and role vertically */
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 2px; /* small spacing between username and role */
 }
 
 .sidebar li.profile img#profile-img {
