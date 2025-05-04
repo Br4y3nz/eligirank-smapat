@@ -16,6 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+    // Expand sidebar by default on page load
+    if (!sidebar.classList.contains("open")) {
+        sidebar.classList.add("open");
+    }
+
     function updateUserMenuDisplay() {
         if (!loggedInMenu || !loggedOutMenu) {
             console.error("Logged in/out menu elements not found");
