@@ -107,48 +107,48 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 300);
     });
 
-supabase.auth.getSession().then(async ({ data: sessionData }) => {
-    const session = sessionData?.session;
-    console.log('Session:', session);
-    console.log('Logged-in menu element:', loggedInMenu);
-    console.log('Logged-out menu element:', loggedOutMenu);
+    supabase.auth.getSession().then(async ({ data: sessionData }) => {
+        const session = sessionData?.session;
+        console.log('Session:', session);
+        console.log('Logged-in menu element:', loggedInMenu);
+        console.log('Logged-out menu element:', loggedOutMenu);
 
-    if (session) {
-        loggedInMenu.style.display = "flex";
-        loggedOutMenu.style.display = "none";
+        if (session) {
+            loggedInMenu.style.display = "flex";
+            loggedOutMenu.style.display = "none";
 
-        try {
-            console.log("Fetching profile data for user id:", session.user.id);
-            const { data: profileData, error: profileError } = await supabase
-                .from("profiles")
-                .select("username, phone")
-                .eq("id", session.user.id)
-                .maybeSingle();
+            try {
+                console.log("Fetching profile data for user id:", session.user.id);
+                const { data: profileData, error: profileError } = await supabase
+                    .from("profiles")
+                    .select("username, phone")
+                    .eq("id", session.user.id)
+                    .maybeSingle();
 
-            console.log("Profile data fetched:", profileData);
+                console.log("Profile data fetched:", profileData);
 
-            if (profileError) {
-                console.error("Error fetching user data:", profileError);
-            } else {
-                // Check if username or phone is missing, show modal if so
-                if (!profileData || !profileData.username || !profileData.phone) {
-                    const userInfoModal = document.getElementById("user-info-modal");
-                    const overlayElem = document.getElementById("overlay");
-                    if (userInfoModal && overlayElem) {
-                        userInfoModal.style.display = "block";
-                        overlayElem.style.display = "block";
+                if (profileError) {
+                    console.error("Error fetching user data:", profileError);
+                } else {
+                    // Check if username or phone is missing, show modal if so
+                    if (!profileData || !profileData.username || !profileData.phone) {
+                        const userInfoModal = document.getElementById("user-info-modal");
+                        const overlayElem = document.getElementById("overlay");
+                        if (userInfoModal && overlayElem) {
+                            userInfoModal.style.display = "block";
+                            overlayElem.style.display = "block";
+                        }
                     }
-                }
 
-                if (usernameElem) {
-                    // Directly set username text content without nested span
-                    usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
-                    usernameElem.style.display = "block";
+                    if (usernameElem) {
+                        // Directly set username text content without nested span
+                        usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
+                        usernameElem.style.display = "block";
 
-                    // Debug log for username content and display style
-                    console.log("Username element content:", usernameElem.textContent);
-                    console.log("Username element display style:", usernameElem.style.display);
-                }
+                        // Debug log for username content and display style
+                        console.log("Username element content:", usernameElem.textContent);
+                        console.log("Username element display style:", usernameElem.style.display);
+                    }
 
                     // Insert user circle icon if not already present
                     let userIcon = document.getElementById("default-user-icon");
@@ -178,50 +178,50 @@ supabase.auth.getSession().then(async ({ data: sessionData }) => {
                     .select("role")
                     .eq("user_id", session.user.id);
 
-if (roleError) {
-    console.error("Error fetching role data:", roleError);
-    if (roleElem) {
-        roleElem.innerHTML = '<span class="role-badge">Select role</span>';
-        roleElem.style.cursor = "pointer";
-    }
-} else {
-    // Override role to "admin" if user ID matches admin UID
-    if (session.user.id === ADMIN_UID) {
-        if (roleElem) {
-            roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
-            roleElem.style.cursor = "default";
-        }
-    } else if (roleData && roleData.length === 1 && roleData[0].role) {
-        if (roleElem) {
-            // Capitalize first letter of role
-            const roleText = roleData[0].role;
-            const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1).toLowerCase();
+                if (roleError) {
+                    console.error("Error fetching role data:", roleError);
+                    if (roleElem) {
+                        roleElem.innerHTML = '<span class="role-badge">Select role</span>';
+                        roleElem.style.cursor = "pointer";
+                    }
+                } else {
+                    // Override role to "admin" if user ID matches admin UID
+                    if (session.user.id === ADMIN_UID) {
+                        if (roleElem) {
+                            roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
+                            roleElem.style.cursor = "default";
+                        }
+                    } else if (roleData && roleData.length === 1 && roleData[0].role) {
+                        if (roleElem) {
+                            // Capitalize first letter of role
+                            const roleText = roleData[0].role;
+                            const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1).toLowerCase();
 
-            // Determine role class
-            let roleClass = "";
-            if (capitalizedRole.toLowerCase() === "student") {
-                roleClass = "role-student";
-            } else if (capitalizedRole.toLowerCase() === "teacher") {
-                roleClass = "role-teacher";
-            } else if (capitalizedRole.toLowerCase() === "admin") {
-                roleClass = "role-admin";
-            }
+                            // Determine role class
+                            let roleClass = "";
+                            if (capitalizedRole.toLowerCase() === "student") {
+                                roleClass = "role-student";
+                            } else if (capitalizedRole.toLowerCase() === "teacher") {
+                                roleClass = "role-teacher";
+                            } else if (capitalizedRole.toLowerCase() === "admin") {
+                                roleClass = "role-admin";
+                            }
 
-            roleElem.innerHTML = `<span class="role-badge ${roleClass}">${capitalizedRole}</span>`;
-            roleElem.style.cursor = "default";
+                            roleElem.innerHTML = `<span class="role-badge ${roleClass}">${capitalizedRole}</span>`;
+                            roleElem.style.cursor = "default";
 
-            if (!roleElem.textContent || roleElem.textContent.trim() === "") {
-                roleElem.innerHTML = '<span class="role-badge">Select role</span>';
-                roleElem.style.cursor = "pointer";
-            }
-        }
-    } else {
-        if (roleElem) {
-            roleElem.innerHTML = '<span class="role-badge">Select role</span>';
-            roleElem.style.cursor = "pointer";
-        }
-    }
-}
+                            if (!roleElem.textContent || roleElem.textContent.trim() === "") {
+                                roleElem.innerHTML = '<span class="role-badge">Select role</span>';
+                                roleElem.style.cursor = "pointer";
+                            }
+                        }
+                    } else {
+                        if (roleElem) {
+                            roleElem.innerHTML = '<span class="role-badge">Select role</span>';
+                            roleElem.style.cursor = "pointer";
+                        }
+                    }
+                }
             } catch (error) {
                 console.error("Error fetching user or role data:", error);
             }

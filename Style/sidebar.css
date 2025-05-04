@@ -728,7 +728,7 @@ li.search-item > a.search-link input#search-input {
     width: 78px;
     left: 0;
     bottom: -8px;
-    padding: 10px 14px;
+    padding: 12px 16px;
     background: #1E293B; /* match search box background */
     transition: all 0.5s ease;
     overflow: hidden;
@@ -737,8 +737,189 @@ li.search-item > a.search-link input#search-input {
     justify-content: flex-start;
     align-items: center;
     gap: 12px;
-    border-radius: 0 0 12px 0;
+    border-radius: 12px 0 12px 0;
     z-index: 10;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.open li.profile {
+    width: 250px;
+    max-width: 250px;
+    height: 80px; /* increased height to fit username and role */
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-right: 16px;
+    position: fixed;
+    bottom: -8px;
+    left: 0;
+    background: #1E293B; /* match search box background */
+    border-radius: 12px 0 12px 0;
+    transition: width 0.5s ease-in-out, background-color 0.3s ease-in-out, padding-right 0.5s ease-in-out;
+    /* Ensure width does not go beyond 250px */
+    min-width: 78px;
+}
+
+.sidebar.open li.profile img#profile-img {
+    height: 60px; /* increased height to fit username and role */
+    width: 60px; /* increased width to fit username and role */
+    object-fit: contain;
+    border-radius: 50%;
+    background-color: #facc15;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 12px;
+    border: none;
+}
+
+.sidebar li.profile img#profile-img {
+    height: 45px;
+    width: 45px;
+    object-fit: contain;
+    border-radius: 50%;
+    background-color: #facc15;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 12px;
+    border: none;
+}
+
+#default-user-icon {
+    font-size: 36px;
+    color: #0f172a; /* dark text to contrast yellow background */
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    cursor: pointer;
+    background-color: #facc15;
+    border-radius: 50%;
+    font-weight: bold;
+    box-shadow: 0 0 6px rgba(250, 204, 21, 0.6);
+}
+
+.sidebar li.profile .profile-details {
+    display: flex;
+    flex-direction: column; /* stack username and role vertically */
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 4px; /* increased spacing between username and role */
+}
+
+.sidebar li.profile .name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f1f5f9; /* softer white */
+    margin-right: 6px;
+    cursor: default;
+    position: relative;
+}
+
+.sidebar li.profile .name:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: #111827;
+    color: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.9;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar li.profile .job {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background-color: rgba(239, 68, 68, 0.15); /* default admin soft red */
+    color: #ef4444;
+    user-select: none;
+    cursor: default;
+    display: inline-block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.role-student {
+    background-color: rgba(16, 185, 129, 0.15); /* green-500 with opacity */
+    color: #10b981; /* green-500 */
+}
+
+.role-teacher {
+    background-color: rgba(59, 130, 246, 0.15); /* blue-500 with opacity */
+    color: #3b82f6; /* blue-500 */
+}
+
+.role-admin {
+    background-color: rgba(239, 68, 68, 0.15); /* red-500 with opacity */
+    color: #ef4444; /* red-500 */
+}
+
+.sidebar .profile #log_out {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent !important;
+    box-shadow: none !important;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    color: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar .profile #log_out:hover {
+    color: #facc15; /* yellow highlight on hover */
+    transform: scale(1.1);
+}
+
+.sidebar .profile #log_out[aria-label] {
+    position: relative;
+}
+
+.sidebar .profile #log_out[aria-label]::after {
+    content: attr(aria-label);
+    position: absolute;
+    bottom: 100%;
+    right: 50%;
+    transform: translateX(50%);
+    background: #111827;
+    color: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar .profile #log_out[aria-label]:hover::after {
+    opacity: 0.9;
 }
 
 .sidebar.open li.profile {
