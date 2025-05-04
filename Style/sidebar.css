@@ -743,6 +743,26 @@ li.search-item > a.search-link input#search-input {
 
 .sidebar.open li.profile {
     width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-right: 10px;
+    position: relative;
+    background: #1E293B; /* match search box background */
+}
+
+.sidebar li.profile img#profile-img {
+    border: 2px solid #FACC15; /* yellow outline around profile image */
+    box-sizing: border-box;
+}
+
+.sidebar.open .profile #log_out {
+    width: 50px;
+    background: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .sidebar li.profile::before {
