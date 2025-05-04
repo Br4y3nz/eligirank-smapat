@@ -141,24 +141,13 @@ supabase.auth.getSession().then(async ({ data: sessionData }) => {
                 }
 
                 if (usernameElem) {
-                    // Clear existing content
-                    usernameElem.textContent = "";
+                    // Directly set username text content without nested span
+                    usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
                     usernameElem.style.display = "block";
-
-                    // Create span for username text
-                    const usernameSpan = document.createElement("span");
-                    usernameSpan.className = "name";
-                    usernameSpan.textContent = (profileData && profileData.username) ? profileData.username : "User";
-
-                    usernameElem.appendChild(usernameSpan);
 
                     // Debug log for username content and display style
                     console.log("Username element content:", usernameElem.textContent);
                     console.log("Username element display style:", usernameElem.style.display);
-
-                    if (!usernameSpan.textContent || usernameSpan.textContent.trim() === "") {
-                        usernameSpan.textContent = "User";
-                    }
                 }
 
                     // Insert user circle icon if not already present
