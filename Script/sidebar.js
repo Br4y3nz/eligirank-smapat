@@ -358,6 +358,8 @@ if (userInfoForm) {
 
         try {
             const { data: { session } } = await supabase.auth.getSession();
+            console.log("Session user ID for update:", session?.user?.id);
+            console.log("Updating profile with username:", usernameInput.value, "phone:", phoneInput.value);
             if (!session) {
                 alert("You must be logged in to update your profile.");
                 return;
