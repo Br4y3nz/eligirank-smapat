@@ -137,24 +137,26 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
 
-                    if (usernameElem) {
-                        // Clear existing content
-                        usernameElem.textContent = "";
-                        usernameElem.style.display = "block";
+if (usernameElem) {
+    // Clear existing content
+    usernameElem.textContent = "";
+    usernameElem.style.display = "block";
 
-                        // Create span for username text
-                        const usernameSpan = document.createElement("span");
-                        usernameSpan.className = "name";
-                        usernameSpan.textContent = (profileData && profileData.username) ? profileData.username : "User";
+    // Create span for username text
+    const usernameSpan = document.createElement("span");
+    usernameSpan.className = "name";
+    usernameSpan.textContent = (profileData && profileData.username) ? profileData.username : "User";
 
-                        usernameElem.appendChild(usernameSpan);
+    usernameElem.appendChild(usernameSpan);
 
-                        // Removed checkmark icon insertion
+    // Debug log for username content and display style
+    console.log("Username element content:", usernameElem.textContent);
+    console.log("Username element display style:", usernameElem.style.display);
 
-                        if (!usernameSpan.textContent || usernameSpan.textContent.trim() === "") {
-                            usernameSpan.textContent = "User";
-                        }
-                    }
+    if (!usernameSpan.textContent || usernameSpan.textContent.trim() === "") {
+        usernameSpan.textContent = "User";
+    }
+}
 
                     // Insert user circle icon if not already present
                     let userIcon = document.getElementById("default-user-icon");
