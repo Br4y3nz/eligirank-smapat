@@ -1044,9 +1044,3 @@ li.search-item > a.search-link input#search-input {
     margin-right: 6px;
 }
 
-/* Admin check mark icon next to username */
-.sidebar li.profile .profile-details .admin-check {
-    color: #22c55e; /* green */
-    font-size: 18px;
-    vertical-align: middle;
-}
