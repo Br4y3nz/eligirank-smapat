@@ -739,7 +739,20 @@ li.search-item > a.search-link input#search-input {
     align-items: center;
     gap: 12px;
     border-radius: 12px 0 0 0;
+    z-index: 10; /* ensure above other elements */
 }
+
+.sidebar li.profile::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid #334155; /* stripe above profile */
+    pointer-events: none;
+    z-index: 11;
+}
+
 
 .sidebar:not(.open) li.profile {
     background: rgba(59, 130, 246, 0.1); /* soft blue tint like logged-out menu */
@@ -754,6 +767,20 @@ li.search-item > a.search-link input#search-input {
     gap: 0;
     border-top: none;
     box-sizing: border-box;
+    position: relative;
+}
+
+.sidebar:not(.open) li.profile i#log_out {
+    font-size: 18px; /* smaller like login icon */
+    color: #F1F5F9;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-left: 0;
+    flex-shrink: 0;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .sidebar li.profile img#profile-img {
@@ -787,10 +814,12 @@ li.search-item > a.search-link input#search-input {
 }
 
 .sidebar li.profile i#log_out {
-    font-size: 24px;
+    font-size: 18px; /* smaller like login icon */
     color: #F1F5F9;
     cursor: pointer;
     transition: color 0.3s ease;
+    margin-left: 8px;
+    flex-shrink: 0;
 }
 
 .sidebar li.profile i#log_out:hover {
