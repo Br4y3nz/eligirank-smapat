@@ -366,11 +366,11 @@ if (userInfoForm) {
 
             const { error } = await supabase
                 .from("profiles")
-                .update({
+                .upsert({
+                    id: userId,
                     username: usernameInput.value,
                     phone: phoneInput.value
-                })
-                .eq("id", userId);
+                }, { onConflict: "id" });
 
             if (error) {
                 console.error("Error updating profile:", error);
