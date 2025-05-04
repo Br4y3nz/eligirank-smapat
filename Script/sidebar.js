@@ -181,29 +181,43 @@ supabase.auth.getSession().then(async ({ data: sessionData }) => {
 if (roleError) {
     console.error("Error fetching role data:", roleError);
     if (roleElem) {
-        roleElem.textContent = "Select role";
+        roleElem.innerHTML = '<span class="role-badge">Select role</span>';
         roleElem.style.cursor = "pointer";
     }
 } else {
     // Override role to "admin" if user ID matches admin UID
     if (session.user.id === ADMIN_UID) {
         if (roleElem) {
-            roleElem.textContent = "admin";
+            roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
             roleElem.style.cursor = "default";
         }
     } else if (roleData && roleData.length === 1 && roleData[0].role) {
         if (roleElem) {
-            roleElem.textContent = roleData[0].role;
+            // Capitalize first letter of role
+            const roleText = roleData[0].role;
+            const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1).toLowerCase();
+
+            // Determine role class
+            let roleClass = "";
+            if (capitalizedRole.toLowerCase() === "student") {
+                roleClass = "role-student";
+            } else if (capitalizedRole.toLowerCase() === "teacher") {
+                roleClass = "role-teacher";
+            } else if (capitalizedRole.toLowerCase() === "admin") {
+                roleClass = "role-admin";
+            }
+
+            roleElem.innerHTML = `<span class="role-badge ${roleClass}">${capitalizedRole}</span>`;
             roleElem.style.cursor = "default";
 
             if (!roleElem.textContent || roleElem.textContent.trim() === "") {
-                roleElem.textContent = "Select role";
+                roleElem.innerHTML = '<span class="role-badge">Select role</span>';
                 roleElem.style.cursor = "pointer";
             }
         }
     } else {
         if (roleElem) {
-            roleElem.textContent = "Select role";
+            roleElem.innerHTML = '<span class="role-badge">Select role</span>';
             roleElem.style.cursor = "pointer";
         }
     }

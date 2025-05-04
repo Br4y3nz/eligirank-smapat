@@ -1040,7 +1040,40 @@ li.search-item > a.search-link input#search-input {
 .sidebar li.profile .profile-details .name {
     font-size: 18px;
     font-weight: 600;
-    color: #FACC15; /* yellow highlight */
+    color: #FFFFFF; /* white color for username */
     margin-right: 6px;
+}
+
+/* Role badge styles */
+.sidebar li.profile .profile-details .job {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.role-badge {
+    font-size: 0.75rem; /* text-sm */
+    font-weight: 600; /* font-semibold */
+    padding: 0.125rem 0.5rem; /* px-2 py-1 */
+    border-radius: 9999px; /* rounded-full */
+    background-color: rgba(0, 0, 0, 0.1); /* default light background */
+    color: #000000; /* default text color */
+    user-select: none;
+    display: inline-block;
+}
+
+.role-student {
+    background-color: rgba(59, 130, 246, 0.1); /* blue-500 with opacity */
+    color: #3b82f6; /* blue-500 */
+}
+
+.role-teacher {
+    background-color: rgba(16, 185, 129, 0.1); /* green-500 with opacity */
+    color: #10b981; /* green-500 */
+}
+
+.role-admin {
+    background-color: rgba(239, 68, 68, 0.1); /* red-500 with opacity */
+    color: #ef4444; /* red-500 */
 }
 
