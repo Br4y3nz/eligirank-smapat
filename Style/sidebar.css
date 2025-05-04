@@ -723,7 +723,9 @@ li.search-item > a.search-link input#search-input {
 }
 
 .sidebar li.profile {
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     height: 80px;
     width: 100%;
     padding: 10px 20px;
