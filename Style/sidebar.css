@@ -730,6 +730,7 @@ li.search-item > a.search-link input#search-input {
     width: 100%;
     padding: 10px 20px;
     background: #1E293B; /* same as search box background */
+    border-top: 1px solid #334155; /* stripe above profile */
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     overflow: visible;
     box-sizing: border-box;
