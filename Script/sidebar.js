@@ -122,13 +122,23 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 const { data: profileData, error: profileError } = await supabase
                     .from("profiles")
-                    .select("username")
+                    .select("username, phone")
                     .eq("id", session.user.id)
                     .maybeSingle();
 
                 if (profileError) {
                     console.error("Error fetching user data:", profileError);
                 } else {
+                    // Check if username or phone is missing, show modal if so
+                    if (!profileData || !profileData.username || !profileData.phone) {
+                        const userInfoModal = document.getElementById("user-info-modal");
+                        const overlayElem = document.getElementById("overlay");
+                        if (userInfoModal && overlayElem) {
+                            userInfoModal.style.display = "block";
+                            overlayElem.style.display = "block";
+                        }
+                    }
+
                     if (usernameElem) {
                         usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
                         usernameElem.style.display = "block";
@@ -309,7 +319,74 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("An error occurred. Please try again.");
         }
     });
+
 });
+
+// User info modal logic
+const userInfoModal = document.getElementById("user-info-modal");
+const userInfoForm = document.getElementById("user-info-form");
+const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
+const overlayElem = document.getElementById("overlay");
+
+if (closeUserInfoModalBtn) {
+    closeUserInfoModalBtn.addEventListener("click", () => {
+        if (userInfoModal && overlayElem) {
+            userInfoModal.style.display = "none";
+            overlayElem.style.display = "none";
+        }
+    });
+}
+
+if (userInfoForm) {
+    userInfoForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const usernameInput = document.getElementById("username-input");
+        const phoneInput = document.getElementById("phone-input");
+
+        if (!usernameInput.value || !phoneInput.value) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                alert("You must be logged in to update your profile.");
+                return;
+            }
+            const userId = session.user.id;
+
+            const { error } = await supabase
+                .from("profiles")
+                .update({
+                    username: usernameInput.value,
+                    phone: phoneInput.value
+                })
+                .eq("id", userId);
+
+            if (error) {
+                console.error("Error updating profile:", error);
+                alert("Failed to update profile. Please try again.");
+                return;
+            }
+
+            // Update sidebar username display
+            const usernameElem = document.getElementById("username");
+            if (usernameElem) {
+                usernameElem.textContent = usernameInput.value;
+            }
+
+            // Close modal and overlay
+            if (userInfoModal && overlayElem) {
+                userInfoModal.style.display = "none";
+                overlayElem.style.display = "none";
+            }
+        } catch (error) {
+            console.error("Error during profile update:", error);
+            alert("An error occurred. Please try again.");
+        }
+    });
+}
 
 
 function expandSidebar() {

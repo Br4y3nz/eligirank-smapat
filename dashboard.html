@@ -137,6 +137,21 @@
         </div>
     </div>
 
+    <!-- Username and Phone Number modal -->
+    <div id="user-info-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button" id="close-user-info-modal">&times;</span>
+            <h2>Complete Your Profile</h2>
+            <form id="user-info-form">
+                <label for="username-input">Username:</label>
+                <input type="text" id="username-input" name="username" required />
+                <label for="phone-input">Phone Number:</label>
+                <input type="tel" id="phone-input" name="phone" required />
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
     <div class="main-content">
         <section class="home-section">
             <div class="text">Dashboard</div>
