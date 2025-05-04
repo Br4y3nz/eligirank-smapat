@@ -747,8 +747,12 @@ li.search-item > a.search-link input#search-input {
     overflow: hidden;
     box-sizing: border-box;
     padding-right: 10px;
-    position: relative;
+    position: fixed;
+    bottom: -8px;
+    left: 0;
     background: #1E293B; /* match search box background */
+    border-radius: 0 0 12px 0;
+    transition: width 0.5s ease-in-out, background-color 0.3s ease-in-out, padding-right 0.5s ease-in-out;
 }
 
 .sidebar li.profile img#profile-img {
