@@ -94,13 +94,13 @@ closeBtn.addEventListener("click", () => {
                     .from("profiles")
                     .select("username")
                     .eq("id", session.user.id)
-                    .single();
+                    .maybeSingle();
 
                 if (profileError) {
                     console.error("Error fetching user data:", profileError);
-                } else if (profileData) {
+                } else {
                     if (usernameElem) {
-                        usernameElem.textContent = profileData.username || "User";
+                        usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
                         usernameElem.style.display = "block";
                     }
                     if (profileImg) {
