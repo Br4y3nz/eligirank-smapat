@@ -730,7 +730,7 @@ li.search-item > a.search-link input#search-input {
     bottom: 0;
     padding: 10px 20px;
     background: #1E293B; /* same as search box background */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
     overflow: visible;
     box-sizing: border-box;
     display: flex;
@@ -745,6 +745,8 @@ li.search-item > a.search-link input#search-input {
     width: 50px;
     border-radius: 50%;
     object-fit: cover;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid transparent;
 }
 
 .sidebar li.profile .profile-details {
@@ -753,6 +755,7 @@ li.search-item > a.search-link input#search-input {
     justify-content: center;
     flex-grow: 1;
     color: #F1F5F9;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .sidebar li.profile .profile-details .name {
@@ -848,11 +851,15 @@ li.search-item > a.search-link input#search-input {
 /* Hide profile details except image when sidebar is collapsed */
 .sidebar li.profile:not(.open) .profile-details {
     justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
 }
 
 /* Adjust profile image margin when sidebar is collapsed */
 .sidebar li.profile:not(.open) img {
     margin-right: 0;
+    border-color: #FACC15; /* yellowish outline on collapsed default pfp */
 }
 
 /* Logout button styles */

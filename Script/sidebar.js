@@ -38,19 +38,25 @@ const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
             return;
         }
 
-        if (sidebar.classList.contains("open")) {
-            // Sidebar open: show username, role, and logout button
-            if (usernameElem) usernameElem.style.display = "block";
-            if (roleElem) roleElem.style.display = "block";
-            if (profileImg) profileImg.style.display = "block";
-            if (logoutBtn) logoutBtn.style.display = "inline-flex";
-        } else {
-            // Sidebar closed: show only profile image and logout button
-            if (usernameElem) usernameElem.style.display = "none";
-            if (roleElem) roleElem.style.display = "none";
-            if (profileImg) profileImg.style.display = "block";
-            if (logoutBtn) logoutBtn.style.display = "inline-flex";
+    if (sidebar.classList.contains("open")) {
+        // Sidebar open: show username, role, and logout button
+        if (usernameElem) usernameElem.style.display = "block";
+        if (roleElem) roleElem.style.display = "block";
+        if (profileImg) {
+            profileImg.style.display = "block";
+            profileImg.classList.remove("collapsed-pfp");
         }
+        if (logoutBtn) logoutBtn.style.display = "inline-flex";
+    } else {
+        // Sidebar closed: show only profile image with yellow outline
+        if (usernameElem) usernameElem.style.display = "none";
+        if (roleElem) roleElem.style.display = "none";
+        if (profileImg) {
+            profileImg.style.display = "block";
+            profileImg.classList.add("collapsed-pfp");
+        }
+        if (logoutBtn) logoutBtn.style.display = "none";
+    }
     }
 
 closeBtn.addEventListener("click", () => {
@@ -101,6 +107,8 @@ closeBtn.addEventListener("click", () => {
                         // Set default profile picture if no avatar_url
                         profileImg.src = "Assets/default-pfp.png";
                         profileImg.style.display = "block";
+                        // Add class for collapsed sidebar styling
+                        profileImg.classList.add("collapsed-pfp");
                     }
                 }
 
