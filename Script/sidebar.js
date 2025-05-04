@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const loggedOutMenu = document.getElementById("logged-out-menu");
     const usernameElem = document.getElementById("username");
     const roleElem = document.getElementById("role");
-    // Removed profileImg and logoutBtn references related to profile picture
-    // const profileImg = document.getElementById("profile-img");
     const logoutBtn = document.getElementById("log_out");
 
     const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
@@ -39,8 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
             // Hide profile details and logout button when not logged in
             if (usernameElem) usernameElem.style.display = "none";
             if (roleElem) roleElem.style.display = "none";
-            // Removed profileImg and userIcon display manipulation
-            // if (profileImg) profileImg.style.display = "none";
             const userIcon = document.getElementById("default-user-icon");
             if (userIcon) userIcon.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "none";
@@ -63,8 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (roleElem) roleElem.style.display = "block";
             const userIcon = document.getElementById("default-user-icon");
             if (userIcon) userIcon.style.display = "inline-flex";
-            // Removed profileImg display manipulation
-            // if (profileImg) profileImg.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "inline-flex";
 
             // Show profile-details container
@@ -73,16 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 profileDetails.style.pointerEvents = "auto";
             }
         } else {
-            // Sidebar closed or logged in: hide username, role, user icon, and logout button; show collapsed profile image
+            // Sidebar closed or logged in: hide username, role, user icon, and logout button
             if (usernameElem) usernameElem.style.display = "none";
             if (roleElem) roleElem.style.display = "none";
             const userIcon = document.getElementById("default-user-icon");
             if (userIcon) userIcon.style.display = "none";
-            // Removed profileImg display and class manipulation
-            // if (profileImg) {
-            //     profileImg.style.display = "block";
-            //     profileImg.classList.add("collapsed-pfp");
-            // }
             if (logoutBtn) logoutBtn.style.display = "none";
 
             // Hide profile-details container
@@ -155,20 +144,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         usernameElem.appendChild(usernameSpan);
 
-                        // If user is admin, add check mark icon
-                        if (session.user.id === ADMIN_UID) {
-                            const checkIcon = document.createElement("i");
-                            checkIcon.className = "bx bx-check admin-check";
-                            checkIcon.title = "Admin";
-                            checkIcon.style.marginLeft = "4px";
-                            usernameElem.appendChild(checkIcon);
-                        }
+                        // Removed checkmark icon insertion
 
                         if (!usernameSpan.textContent || usernameSpan.textContent.trim() === "") {
                             usernameSpan.textContent = "User";
                         }
                     }
-                    // Removed profileImg and userIcon manipulation
+
+                    // Insert user circle icon if not already present
+                    let userIcon = document.getElementById("default-user-icon");
+                    if (!userIcon) {
+                        userIcon = document.createElement("i");
+                        userIcon.id = "default-user-icon";
+                        userIcon.className = "bx bx-user-circle default-user-icon";
+                        const profileContainer = document.querySelector(".sidebar li.profile");
+                        if (profileContainer) {
+                            profileContainer.insertBefore(userIcon, profileContainer.firstChild);
+                        }
+                    }
+                    userIcon.style.display = "inline-flex";
+                    userIcon.style.fontSize = "45px";
+                    userIcon.style.color = "#FACC15";
+                    userIcon.style.width = "45px";
+                    userIcon.style.height = "45px";
+                    userIcon.style.alignItems = "center";
+                    userIcon.style.justifyContent = "center";
+                    userIcon.style.marginRight = "10px";
+                    userIcon.style.cursor = "pointer";
                 }
 
                 // Fetch role from roles table
@@ -396,7 +398,7 @@ if (userInfoForm) {
             alert("An error occurred. Please try again.");
         }
     });
-};
+});
 
 
 function expandSidebar() {
