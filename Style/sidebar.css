@@ -753,6 +753,8 @@ li.search-item > a.search-link input#search-input {
     background: #1E293B; /* match search box background */
     border-radius: 0 0 12px 0;
     transition: width 0.5s ease-in-out, background-color 0.3s ease-in-out, padding-right 0.5s ease-in-out;
+    /* Ensure width does not go beyond 250px */
+    min-width: 78px;
 }
 
 .sidebar li.profile img#profile-img {
@@ -884,7 +886,7 @@ li.search-item > a.search-link input#search-input {
 }
 
 .sidebar.open li.profile {
-    width: 100%;
+    width: 250px;
 }
 
 .sidebar li .profile-details {
