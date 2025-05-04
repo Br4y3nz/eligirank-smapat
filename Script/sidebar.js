@@ -86,7 +86,7 @@ closeBtn.addEventListener("click", () => {
             try {
                 const { data: profileData, error: profileError } = await supabase
                     .from("profiles")
-                    .select("username, avatar_url")
+                    .select("username")
                     .eq("user_id", session.user.id)
                     .single();
 
@@ -97,9 +97,9 @@ closeBtn.addEventListener("click", () => {
                         usernameElem.textContent = profileData.username || "User";
                         usernameElem.style.display = "block";
                     }
-                    if (profileImg && profileData.avatar_url) {
-                        profileImg.src = profileData.avatar_url;
-                        profileImg.style.display = "block";
+                    // Hide profile image if no avatar_url
+                    if (profileImg) {
+                        profileImg.style.display = "none";
                     }
                 }
 
@@ -107,8 +107,7 @@ closeBtn.addEventListener("click", () => {
                 const { data: roleData, error: roleError } = await supabase
                     .from("roles")
                     .select("role")
-                    .eq("user_id", session.user.id)
-                    .single();
+                    .eq("user_id", session.user.id);
 
                 if (roleError) {
                     console.error("Error fetching role data:", roleError);
@@ -116,9 +115,9 @@ closeBtn.addEventListener("click", () => {
                         roleElem.textContent = "Select role";
                         roleElem.style.cursor = "pointer";
                     }
-                } else if (roleData && roleData.role) {
+                } else if (roleData && roleData.length === 1 && roleData[0].role) {
                     if (roleElem) {
-                        roleElem.textContent = roleData.role;
+                        roleElem.textContent = roleData[0].role;
                         roleElem.style.cursor = "default";
                     }
                 } else {
@@ -179,7 +178,9 @@ closeBtn.addEventListener("click", () => {
     }
 
     if (roleTextElem) {
+        console.log("Attaching click event to role element");
         roleTextElem.addEventListener("click", () => {
+            console.log("Role element clicked");
             if (roleTextElem.textContent === "Select role") {
                 openRoleModal();
             }
