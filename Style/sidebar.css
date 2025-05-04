@@ -723,109 +723,109 @@ li.search-item > a.search-link input#search-input {
 }
 
 .sidebar li.profile {
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    height: 60px;
+    width: 78px;
     left: 0;
-    height: 80px;
-    width: 100%;
-    padding: 10px 20px;
-    background: #1E293B; /* same as search box background */
-    border-top: 1px solid #334155; /* stripe above profile */
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    overflow: visible;
+    bottom: -8px;
+    padding: 10px 14px;
+    background: #1d1b31;
+    transition: all 0.5s ease;
+    overflow: hidden;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 12px;
-    border-radius: 12px 0 0 0;
-    z-index: 10; /* ensure above other elements */
+    border-radius: 0 0 12px 0;
+    z-index: 10;
+}
+
+.sidebar.open li.profile {
+    width: 250px;
 }
 
 .sidebar li.profile::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    border-top: 1px solid #334155; /* stripe above profile */
-    pointer-events: none;
-    z-index: 11;
+    content: none;
 }
 
 
 .sidebar:not(.open) li.profile {
-    background: rgba(59, 130, 246, 0.1); /* soft blue tint like logged-out menu */
-    border-radius: 12px 6px 6px 12px;
-    padding: 0;
-    height: 48px;
-    width: 48px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-    border-top: none;
+    position: fixed;
+    height: 60px;
+    width: 78px;
+    left: 0;
+    bottom: -8px;
+    padding: 10px 14px;
+    background: #1d1b31;
+    transition: all 0.5s ease;
+    overflow: hidden;
     box-sizing: border-box;
-    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    border-radius: 0 0 12px 0;
+    z-index: 10;
 }
 
 .sidebar:not(.open) li.profile i#log_out {
-    font-size: 18px; /* smaller like login icon */
-    color: #F1F5F9;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    margin-left: 0;
-    flex-shrink: 0;
     position: absolute;
-    right: 4px;
     top: 50%;
+    right: 0;
     transform: translateY(-50%);
+    background: #1d1b31;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    transition: all 0.5s ease;
 }
 
 .sidebar li.profile img#profile-img {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    transition: all 0.3s ease-in-out;
-    border: 2px solid transparent;
+    height: 45px;
+    width: 45px;
+    object-fit: contain;
+    border-radius: 6px;
+    margin-right: 10px;
 }
 
 .sidebar li.profile .profile-details {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-grow: 1;
-    color: #F1F5F9;
-    transition: opacity 0.3s ease-in-out;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
-.sidebar li.profile .profile-details .name {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.sidebar li.profile .profile-details .job {
-    font-size: 14px;
+.sidebar li.profile .name,
+.sidebar li.profile .job {
+    font-size: 15px;
     font-weight: 400;
-    color: #94A3B8; /* lighter gray for role text */
+    color: #fff;
+    white-space: nowrap;
 }
 
-.sidebar li.profile i#log_out {
-    font-size: 18px; /* smaller like login icon */
-    color: #F1F5F9;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    margin-left: 8px;
-    flex-shrink: 0;
+.sidebar li.profile .job {
+    font-size: 12px;
 }
 
-.sidebar li.profile i#log_out:hover {
+.sidebar .profile #log_out {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background: #1d1b31;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    transition: all 0.5s ease;
+}
+
+.sidebar.open .profile #log_out {
+    width: 50px;
+    background: none;
+}
+
+.sidebar .profile #log_out:hover {
     color: #FACC15; /* yellow highlight on hover */
-    background: transparent !important; /* remove blue box on hover */
-    box-shadow: none !important; /* remove any shadow */
 }
 
 /* Override for logged-out-menu to prevent fixed blue box */
