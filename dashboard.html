@@ -104,7 +104,38 @@
     </div>
 
     <div class="overlay" id="overlay"></div>
-    
+
+    <!-- Role selection modal -->
+    <div id="role-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button" id="close-role-modal">&times;</span>
+            <h2>Select Your Role</h2>
+            <form id="role-form">
+                <label>
+                    <input type="radio" name="role" value="student" required />
+                    Student
+                </label>
+                <div id="student-fields" style="display:none; margin-left: 20px;">
+                    <label for="nisn">NISN:</label>
+                    <input type="text" id="nisn" name="nisn" />
+                    <label for="nis">NIS:</label>
+                    <input type="text" id="nis" name="nis" />
+                </div>
+                <label>
+                    <input type="radio" name="role" value="teacher" required />
+                    Teacher
+                </label>
+                <div id="teacher-fields" style="display:none; margin-left: 20px;">
+                    <label for="nik">NIK:</label>
+                    <input type="text" id="nik" name="nik" />
+                    <label for="nuptk">NUPTK:</label>
+                    <input type="text" id="nuptk" name="nuptk" />
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
     <div class="main-content">
         <section class="home-section">
             <div class="text">Dashboard</div>

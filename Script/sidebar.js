@@ -73,7 +73,7 @@ closeBtn.addEventListener("click", () => {
     }, 300);
 });
 
-    supabase.auth.getSession().then(({ data: sessionData }) => {
+    supabase.auth.getSession().then(async ({ data: sessionData }) => {
         const session = sessionData?.session;
         console.log('Session:', session);
         console.log('Logged-in menu element:', loggedInMenu);
@@ -83,37 +83,55 @@ closeBtn.addEventListener("click", () => {
             loggedInMenu.style.display = "flex";
             loggedOutMenu.style.display = "none";
 
-            supabase
-                .from("profiles")
-                .select("username, role, avatar_url")
-                .eq("user_id", session.user.id)
-                .single()
-                .then(({ data, error }) => {
-                    if (error) {
-                        console.error("Error fetching user data:", error);
-                        return;
+            try {
+                const { data: profileData, error: profileError } = await supabase
+                    .from("profiles")
+                    .select("username, avatar_url")
+                    .eq("user_id", session.user.id)
+                    .single();
+
+                if (profileError) {
+                    console.error("Error fetching user data:", profileError);
+                } else if (profileData) {
+                    if (usernameElem) {
+                        usernameElem.textContent = profileData.username || "User";
+                        usernameElem.style.display = "block";
                     }
-                    if (data) {
-                        if (usernameElem) {
-                            usernameElem.textContent = data.username || "User";
-                            usernameElem.style.display = "block";
-                        }
-                        if (roleElem) {
-                            // Check if user is admin by UID
-                            if (session.user.id === ADMIN_UID) {
-                                roleElem.textContent = "admin";
-                            } else {
-                                roleElem.textContent = data.role || "Role";
-                            }
-                            roleElem.style.display = "block";
-                        }
-                        if (profileImg && data.avatar_url) {
-                            profileImg.src = data.avatar_url;
-                            profileImg.style.display = "block";
-                        }
+                    if (profileImg && profileData.avatar_url) {
+                        profileImg.src = profileData.avatar_url;
+                        profileImg.style.display = "block";
                     }
-                    updateUserMenuDisplay();
-                });
+                }
+
+                // Fetch role from roles table
+                const { data: roleData, error: roleError } = await supabase
+                    .from("roles")
+                    .select("role")
+                    .eq("user_id", session.user.id)
+                    .single();
+
+                if (roleError) {
+                    console.error("Error fetching role data:", roleError);
+                    if (roleElem) {
+                        roleElem.textContent = "Select role";
+                        roleElem.style.cursor = "pointer";
+                    }
+                } else if (roleData && roleData.role) {
+                    if (roleElem) {
+                        roleElem.textContent = roleData.role;
+                        roleElem.style.cursor = "default";
+                    }
+                } else {
+                    if (roleElem) {
+                        roleElem.textContent = "Select role";
+                        roleElem.style.cursor = "pointer";
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching user or role data:", error);
+            }
+
+            updateUserMenuDisplay();
         } else {
             loggedInMenu.style.display = "none";
             loggedOutMenu.style.display = "block";
@@ -126,7 +144,6 @@ closeBtn.addEventListener("click", () => {
         if (error) {
             console.error("Logout error:", error);
         } else {
-            // Place the line here
             localStorage.removeItem('rememberMe');
             window.location.reload();
         }
@@ -136,16 +153,100 @@ closeBtn.addEventListener("click", () => {
     supabase.auth.onAuthStateChange((event, session) => {
         console.log('Auth state changed:', event, session);
         if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESH_FAILED' || event === 'USER_DELETED') {
-            // Clear any session-related local storage or UI state
             localStorage.removeItem('rememberMe');
-            // Optionally redirect to login page or show a message
             alert('Your session has expired or you have been signed out. Please log in again.');
-            window.location.href = '/register.html'; // Adjust the path to your login page
+            window.location.href = '/register.html';
         }
     });
-    
+
+    // Role modal logic
+    const roleModal = document.getElementById("role-modal");
+    const overlay = document.getElementById("overlay");
+    const roleForm = document.getElementById("role-form");
+    const roleTextElem = roleElem;
+    const closeModalBtn = document.getElementById("close-role-modal");
+    const studentFields = document.getElementById("student-fields");
+    const teacherFields = document.getElementById("teacher-fields");
+
+    function openRoleModal() {
+        roleModal.style.display = "block";
+        overlay.style.display = "block";
     }
-);
+
+    function closeRoleModal() {
+        roleModal.style.display = "none";
+        overlay.style.display = "none";
+    }
+
+    if (roleTextElem) {
+        roleTextElem.addEventListener("click", () => {
+            if (roleTextElem.textContent === "Select role") {
+                openRoleModal();
+            }
+        });
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", closeRoleModal);
+    }
+
+    overlay.addEventListener("click", closeRoleModal);
+
+    roleForm.addEventListener("change", (event) => {
+        const selectedRole = roleForm.role.value;
+        if (selectedRole === "student") {
+            studentFields.style.display = "block";
+            teacherFields.style.display = "none";
+        } else if (selectedRole === "teacher") {
+            studentFields.style.display = "none";
+            teacherFields.style.display = "block";
+        }
+    });
+
+    roleForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(roleForm);
+        const role = formData.get("role");
+        const nisn = formData.get("nisn");
+        const nis = formData.get("nis");
+        const nik = formData.get("nik");
+        const nuptk = formData.get("nuptk");
+
+        try {
+            const session = supabase.auth.getSession().then(({ data: sessionData }) => sessionData?.session);
+            if (!session) {
+                alert("You must be logged in to set a role.");
+                return;
+            }
+            const userId = (await session).user.id;
+
+            // Insert or update role in roles table
+            const { error } = await supabase
+                .from("roles")
+                .upsert({
+                    user_id: userId,
+                    role: role,
+                    nisn: role === "student" ? nisn : null,
+                    nis: role === "student" ? nis : null,
+                    nik: role === "teacher" ? nik : null,
+                    nuptk: role === "teacher" ? nuptk : null,
+                }, { onConflict: "user_id" });
+
+            if (error) {
+                console.error("Error saving role:", error);
+                alert("Failed to save role. Please try again.");
+                return;
+            }
+
+            roleTextElem.textContent = role;
+            roleTextElem.style.cursor = "default";
+            closeRoleModal();
+        } catch (error) {
+            console.error("Error during role save:", error);
+            alert("An error occurred. Please try again.");
+        }
+    });
+});
 
 
 function expandSidebar() {
