@@ -35,22 +35,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 loggedOutMenu.classList.remove("open");
             }
 
+            // Hide profile details and logout button when not logged in
+            if (usernameElem) usernameElem.style.display = "none";
+            if (roleElem) roleElem.style.display = "none";
+            if (profileImg) profileImg.style.display = "none";
+            const userIcon = document.getElementById("default-user-icon");
+            if (userIcon) userIcon.style.display = "none";
+            if (logoutBtn) logoutBtn.style.display = "none";
+
             return;
         }
 
         if (sidebar.classList.contains("open")) {
-            // Sidebar open: show username, role, and logout button
+            // Sidebar open and logged in: show username, role, user icon, and logout button
             if (usernameElem) usernameElem.style.display = "block";
             if (roleElem) roleElem.style.display = "block";
-            if (profileImg) {
-                profileImg.style.display = "block";
-                profileImg.classList.remove("collapsed-pfp");
-            }
+            const userIcon = document.getElementById("default-user-icon");
+            if (userIcon) userIcon.style.display = "inline-flex";
+            if (profileImg) profileImg.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "inline-flex";
         } else {
-            // Sidebar closed: show only profile image with yellow outline
+            // Sidebar closed or logged in: hide username, role, user icon, and logout button; show collapsed profile image
             if (usernameElem) usernameElem.style.display = "none";
             if (roleElem) roleElem.style.display = "none";
+            const userIcon = document.getElementById("default-user-icon");
+            if (userIcon) userIcon.style.display = "none";
             if (profileImg) {
                 profileImg.style.display = "block";
                 profileImg.classList.add("collapsed-pfp");
