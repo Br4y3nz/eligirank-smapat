@@ -194,7 +194,6 @@ if (roleError) {
     if (roleElem) {
         roleElem.textContent = "Select role";
         roleElem.style.cursor = "pointer";
-        roleElem.classList.remove('role-admin', 'role-teacher', 'role-student');
     }
 } else {
     // Override role to "admin" if user ID matches admin UID
@@ -202,38 +201,21 @@ if (roleError) {
         if (roleElem) {
             roleElem.textContent = "admin";
             roleElem.style.cursor = "default";
-            roleElem.classList.remove('role-teacher', 'role-student');
-            roleElem.classList.add('role-admin');
         }
     } else if (roleData && roleData.length === 1 && roleData[0].role) {
         if (roleElem) {
             roleElem.textContent = roleData[0].role;
             roleElem.style.cursor = "default";
 
-            // Remove all role classes first
-            roleElem.classList.remove('role-admin', 'role-teacher', 'role-student');
-
-            // Add class based on role text
-            const roleLower = roleElem.textContent.toLowerCase();
-            if (roleLower === 'admin') {
-                roleElem.classList.add('role-admin');
-            } else if (roleLower === 'teacher') {
-                roleElem.classList.add('role-teacher');
-            } else if (roleLower === 'student') {
-                roleElem.classList.add('role-student');
-            }
-
             if (!roleElem.textContent || roleElem.textContent.trim() === "") {
                 roleElem.textContent = "Select role";
                 roleElem.style.cursor = "pointer";
-                roleElem.classList.remove('role-admin', 'role-teacher', 'role-student');
             }
         }
     } else {
         if (roleElem) {
             roleElem.textContent = "Select role";
             roleElem.style.cursor = "pointer";
-            roleElem.classList.remove('role-admin', 'role-teacher', 'role-student');
         }
     }
 }
