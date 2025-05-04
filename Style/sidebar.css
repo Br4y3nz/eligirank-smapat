@@ -770,9 +770,9 @@ li.search-item > a.search-link input#search-input {
 .sidebar li.profile .profile-details .job {
     font-size: 13px;
     font-weight: 500;
-    color: #9CA3AF; /* gray */
+    color: #FACC15;
     opacity: 0.85;
-    text-shadow: none;
+    text-shadow: 0 0 3px rgba(250, 204, 21, 0.7);
 }
 
 #default-user-icon {
@@ -1069,78 +1069,5 @@ li.search-item > a.search-link input#search-input {
     font-weight: 600;
     color: #FACC15; /* yellow highlight */
     margin-right: 6px;
-}
-
-/* Logged-in menu profile styling */
-#logged-in-menu.profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 16px;
-    background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
-    border-radius: 0 0 16px 0;
-    color: #FACC15;
-    font-weight: 600;
-    user-select: none;
-    position: fixed;
-    bottom: -8px;
-    left: 0;
-    width: 250px;
-    z-index: 10;
-    transition: all 0.5s ease, box-shadow 0.3s ease;
-}
-
-#logged-in-menu.profile:hover {
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.9);
-    background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%);
-    cursor: pointer;
-}
-
-#logged-in-menu.profile .profile-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 4px;
-    color: #FACC15;
-    font-weight: 600;
-    text-shadow: 0 0 4px rgba(250, 204, 21, 0.8);
-}
-
-#logged-in-menu.profile .profile-details .name {
-    font-size: 18px;
-    font-weight: 700;
-    color: #FACC15;
-    text-shadow: 0 0 6px rgba(250, 204, 21, 0.9);
-}
-
-#logged-in-menu.profile .profile-details .job {
-    font-size: 13px;
-    font-weight: 500;
-    color: #FACC15;
-    opacity: 0.85;
-    text-shadow: 0 0 3px rgba(250, 204, 21, 0.7);
-}
-
-/* Role-based colors */
-/* Removed empty role-based color rules to fix lint errors */
-
-#logged-in-menu #default-user-icon {
-    font-size: 48px;
-    color: #FACC15; /* yellow color to match profile image border */
-    width: 48px;
-    height: 48px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    cursor: pointer;
-    filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.8));
-    transition: filter 0.3s ease;
-}
-
-#logged-in-menu.profile:hover #default-user-icon {
-    filter: drop-shadow(0 0 6px rgba(250, 204, 21, 1));
 }
 
