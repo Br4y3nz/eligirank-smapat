@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const loggedOutMenu = document.getElementById("logged-out-menu");
     const usernameElem = document.getElementById("username");
     const roleElem = document.getElementById("role");
-    const profileImg = document.getElementById("profile-img");
+    // Removed profileImg and logoutBtn references related to profile picture
+    // const profileImg = document.getElementById("profile-img");
     const logoutBtn = document.getElementById("log_out");
 
     const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
@@ -38,7 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Hide profile details and logout button when not logged in
             if (usernameElem) usernameElem.style.display = "none";
             if (roleElem) roleElem.style.display = "none";
-            if (profileImg) profileImg.style.display = "none";
+            // Removed profileImg and userIcon display manipulation
+            // if (profileImg) profileImg.style.display = "none";
             const userIcon = document.getElementById("default-user-icon");
             if (userIcon) userIcon.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "none";
@@ -61,7 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (roleElem) roleElem.style.display = "block";
             const userIcon = document.getElementById("default-user-icon");
             if (userIcon) userIcon.style.display = "inline-flex";
-            if (profileImg) profileImg.style.display = "none";
+            // Removed profileImg display manipulation
+            // if (profileImg) profileImg.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "inline-flex";
 
             // Show profile-details container
@@ -75,10 +78,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (roleElem) roleElem.style.display = "none";
             const userIcon = document.getElementById("default-user-icon");
             if (userIcon) userIcon.style.display = "none";
-            if (profileImg) {
-                profileImg.style.display = "block";
-                profileImg.classList.add("collapsed-pfp");
-            }
+            // Removed profileImg display and class manipulation
+            // if (profileImg) {
+            //     profileImg.style.display = "block";
+            //     profileImg.classList.add("collapsed-pfp");
+            // }
             if (logoutBtn) logoutBtn.style.display = "none";
 
             // Hide profile-details container
@@ -164,29 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             usernameSpan.textContent = "User";
                         }
                     }
-                    if (profileImg) {
-                        // Replace default profile picture with user circle icon from Boxicons
-                        profileImg.style.display = "none"; // hide img element
-                        // Insert user circle icon element if not already present
-                        let userIcon = document.getElementById("default-user-icon");
-                        if (!userIcon) {
-                            userIcon = document.createElement("i");
-                            userIcon.id = "default-user-icon";
-                            userIcon.className = "bx bx-user-circle default-user-icon";
-                            profileImg.parentNode.insertBefore(userIcon, profileImg);
-                        }
-                        userIcon.style.display = "block";
-                        // Ensure userIcon is visible and has correct styles
-                        userIcon.style.fontSize = "45px";
-                        userIcon.style.color = "#FACC15";
-                        userIcon.style.width = "45px";
-                        userIcon.style.height = "45px";
-                        userIcon.style.display = "inline-flex";
-                        userIcon.style.alignItems = "center";
-                        userIcon.style.justifyContent = "center";
-                        userIcon.style.marginRight = "10px";
-                        userIcon.style.cursor = "pointer";
-                    }
+                    // Removed profileImg and userIcon manipulation
                 }
 
                 // Fetch role from roles table
@@ -414,7 +396,7 @@ if (userInfoForm) {
             alert("An error occurred. Please try again.");
         }
     });
-}
+};
 
 
 function expandSidebar() {
