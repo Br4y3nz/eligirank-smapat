@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileImg = document.getElementById("profile-img");
     const logoutBtn = document.getElementById("log_out");
 
-const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
+    const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
 
     if (!sidebar || !closeBtn) {
         console.error("Sidebar or close button not found in DOM");
@@ -38,46 +38,46 @@ const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
             return;
         }
 
-    if (sidebar.classList.contains("open")) {
-        // Sidebar open: show username, role, and logout button
-        if (usernameElem) usernameElem.style.display = "block";
-        if (roleElem) roleElem.style.display = "block";
-        if (profileImg) {
-            profileImg.style.display = "block";
-            profileImg.classList.remove("collapsed-pfp");
-        }
-        if (logoutBtn) logoutBtn.style.display = "inline-flex";
-    } else {
-        // Sidebar closed: show only profile image with yellow outline
-        if (usernameElem) usernameElem.style.display = "none";
-        if (roleElem) roleElem.style.display = "none";
-        if (profileImg) {
-            profileImg.style.display = "block";
-            profileImg.classList.add("collapsed-pfp");
-        }
-        if (logoutBtn) logoutBtn.style.display = "none";
-    }
-    }
-
-closeBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-    updateUserMenuDisplay();
-
-    // Animate icon change with fade out/in for smooth transition
-    closeBtn.style.transition = "opacity 0.3s ease";
-    closeBtn.style.opacity = "0";
-
-    setTimeout(() => {
         if (sidebar.classList.contains("open")) {
-            closeBtn.classList.remove("bx-menu");
-            closeBtn.classList.add("bx-menu-alt-right");
+            // Sidebar open: show username, role, and logout button
+            if (usernameElem) usernameElem.style.display = "block";
+            if (roleElem) roleElem.style.display = "block";
+            if (profileImg) {
+                profileImg.style.display = "block";
+                profileImg.classList.remove("collapsed-pfp");
+            }
+            if (logoutBtn) logoutBtn.style.display = "inline-flex";
         } else {
-            closeBtn.classList.remove("bx-menu-alt-right");
-            closeBtn.classList.add("bx-menu");
+            // Sidebar closed: show only profile image with yellow outline
+            if (usernameElem) usernameElem.style.display = "none";
+            if (roleElem) roleElem.style.display = "none";
+            if (profileImg) {
+                profileImg.style.display = "block";
+                profileImg.classList.add("collapsed-pfp");
+            }
+            if (logoutBtn) logoutBtn.style.display = "none";
         }
-        closeBtn.style.opacity = "1";
-    }, 300);
-});
+    }
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        updateUserMenuDisplay();
+
+        // Animate icon change with fade out/in for smooth transition
+        closeBtn.style.transition = "opacity 0.3s ease";
+        closeBtn.style.opacity = "0";
+
+        setTimeout(() => {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.remove("bx-menu");
+                closeBtn.classList.add("bx-menu-alt-right");
+            } else {
+                closeBtn.classList.remove("bx-menu-alt-right");
+                closeBtn.classList.add("bx-menu");
+            }
+            closeBtn.style.opacity = "1";
+        }, 300);
+    });
 
     supabase.auth.getSession().then(async ({ data: sessionData }) => {
         const session = sessionData?.session;
@@ -102,6 +102,9 @@ closeBtn.addEventListener("click", () => {
                     if (usernameElem) {
                         usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
                         usernameElem.style.display = "block";
+                        if (!usernameElem.textContent || usernameElem.textContent.trim() === "") {
+                            usernameElem.textContent = "User";
+                        }
                     }
                     if (profileImg) {
                         // Replace default profile picture with user circle icon from Boxicons
@@ -115,6 +118,16 @@ closeBtn.addEventListener("click", () => {
                             profileImg.parentNode.insertBefore(userIcon, profileImg);
                         }
                         userIcon.style.display = "block";
+                        // Ensure userIcon is visible and has correct styles
+                        userIcon.style.fontSize = "45px";
+                        userIcon.style.color = "#FACC15";
+                        userIcon.style.width = "45px";
+                        userIcon.style.height = "45px";
+                        userIcon.style.display = "inline-flex";
+                        userIcon.style.alignItems = "center";
+                        userIcon.style.justifyContent = "center";
+                        userIcon.style.marginRight = "10px";
+                        userIcon.style.cursor = "pointer";
                     }
                 }
 
@@ -134,6 +147,10 @@ closeBtn.addEventListener("click", () => {
                     if (roleElem) {
                         roleElem.textContent = roleData[0].role;
                         roleElem.style.cursor = "default";
+                        if (!roleElem.textContent || roleElem.textContent.trim() === "") {
+                            roleElem.textContent = "Select role";
+                            roleElem.style.cursor = "pointer";
+                        }
                     }
                 } else {
                     if (roleElem) {

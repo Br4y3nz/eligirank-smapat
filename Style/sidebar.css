@@ -762,6 +762,18 @@ li.search-item > a.search-link input#search-input {
     box-sizing: border-box;
 }
 
+#default-user-icon {
+    font-size: 45px;
+    color: #FACC15; /* yellow color to match profile image border */
+    width: 45px;
+    height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
 .sidebar.open .profile #log_out {
     width: 50px;
     background: none;
