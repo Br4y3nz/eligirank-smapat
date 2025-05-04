@@ -729,7 +729,7 @@ li.search-item > a.search-link input#search-input {
     left: 0;
     bottom: -8px;
     padding: 10px 14px;
-    background: #1d1b31;
+    background: #1E293B; /* match search box background */
     transition: all 0.5s ease;
     overflow: hidden;
     box-sizing: border-box;
@@ -766,7 +766,7 @@ li.search-item > a.search-link input#search-input {
     width: 50px;
     background: none;
     position: absolute;
-    right: 10px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -836,9 +836,9 @@ li.search-item > a.search-link input#search-input {
 .sidebar .profile #log_out {
     position: absolute;
     top: 50%;
-    right: 0;
+    right: 15px;
     transform: translateY(-50%);
-    background: #1d1b31;
+    background: #1E293B; /* match search box background */
     width: 100%;
     height: 60px;
     line-height: 60px;
