@@ -724,18 +724,58 @@ li.search-item > a.search-link input#search-input {
 
 .sidebar li.profile {
     position: fixed;
-    height: 60px;
-    width: 78px;
+    height: 80px;
+    width: 250px;
     left: 0;
     bottom: 0;
-    padding: 10px 20px; /* increased horizontal padding for centering */
-    background: #2563EB;
+    padding: 10px 20px;
+    background: #1E293B; /* same as search box background */
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow: visible;
     box-sizing: border-box;
     display: flex;
-    justify-content: center; /* center content horizontally */
-    align-items: center; /* center content vertically */
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px 0 0 0;
+}
+
+.sidebar li.profile img#profile-img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sidebar li.profile .profile-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    color: #F1F5F9;
+}
+
+.sidebar li.profile .profile-details .name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.sidebar li.profile .profile-details .job {
+    font-size: 14px;
+    font-weight: 400;
+    color: #94A3B8; /* lighter gray for role text */
+}
+
+.sidebar li.profile i#log_out {
+    font-size: 24px;
+    color: #F1F5F9;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.sidebar li.profile i#log_out:hover {
+    color: #FACC15; /* yellow highlight on hover */
 }
 
 /* Override for logged-out-menu to prevent fixed blue box */

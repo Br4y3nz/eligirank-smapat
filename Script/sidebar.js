@@ -97,9 +97,10 @@ closeBtn.addEventListener("click", () => {
                         usernameElem.textContent = profileData.username || "User";
                         usernameElem.style.display = "block";
                     }
-                    // Hide profile image if no avatar_url
                     if (profileImg) {
-                        profileImg.style.display = "none";
+                        // Set default profile picture if no avatar_url
+                        profileImg.src = "Assets/default-pfp.png";
+                        profileImg.style.display = "block";
                     }
                 }
 
@@ -144,7 +145,7 @@ closeBtn.addEventListener("click", () => {
             console.error("Logout error:", error);
         } else {
             localStorage.removeItem('rememberMe');
-            window.location.reload();
+            window.location.href = "index.html";
         }
     });
 
