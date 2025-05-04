@@ -757,20 +757,6 @@ li.search-item > a.search-link input#search-input {
     /* Ensure width does not go beyond 250px */
     min-width: 78px;
 }
-.sidebar.open li.profile img#profile-img {
-    height: 60px; /* increased height to fit username and role */
-    width: 60px; /* increased width to fit username and role */
-    object-fit: contain;
-    border-radius: 6px;
-    margin-right: 10px;
-}
-.sidebar.open li.profile img#profile-img {
-    height: 60px; /* increased height to fit username and role */
-    width: 60px; /* increased width to fit username and role */
-    object-fit: contain;
-    border-radius: 6px;
-    margin-right: 10px;
-}
 
 .sidebar li.profile .profile-details {
     display: flex;
@@ -795,10 +781,6 @@ li.search-item > a.search-link input#search-input {
     gap: 2px; /* small spacing between username and role */
 }
 
-.sidebar li.profile img#profile-img {
-    border: 2px solid #FACC15; /* yellow outline around profile image */
-    box-sizing: border-box;
-}
 
 #default-user-icon {
     font-size: 45px;
@@ -857,13 +839,6 @@ li.search-item > a.search-link input#search-input {
     transition: all 0.5s ease;
 }
 
-.sidebar li.profile img#profile-img {
-    height: 45px;
-    width: 45px;
-    object-fit: contain;
-    border-radius: 6px;
-    margin-right: 10px;
-}
 
 .sidebar li.profile .profile-details {
     display: flex;
