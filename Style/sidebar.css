@@ -741,6 +741,21 @@ li.search-item > a.search-link input#search-input {
     border-radius: 12px 0 0 0;
 }
 
+.sidebar:not(.open) li.profile {
+    background: #1E293B; /* same as search box background */
+    border-radius: 12px;
+    padding: 10px 10px;
+    height: 50px;
+    width: 48px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    border-top: none;
+    box-sizing: border-box;
+}
+
 .sidebar li.profile img#profile-img {
     height: 50px;
     width: 50px;
