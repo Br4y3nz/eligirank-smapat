@@ -104,11 +104,23 @@ closeBtn.addEventListener("click", () => {
                         usernameElem.style.display = "block";
                     }
                     if (profileImg) {
-                        // Set default profile picture if no avatar_url
-                        profileImg.src = "Assets/default-pfp.png";
-                        profileImg.style.display = "block";
-                        // Add class for collapsed sidebar styling
-                        profileImg.classList.add("collapsed-pfp");
+                        // Replace default profile picture with user circle icon from Boxicons
+                        profileImg.style.display = "none"; // hide img element
+                        // Insert user circle icon element if not already present
+                        let userIcon = document.getElementById("default-user-icon");
+                        if (!userIcon) {
+                            userIcon = document.createElement("i");
+                            userIcon.id = "default-user-icon";
+                            userIcon.className = "bx bx-user-circle";
+                            userIcon.style.fontSize = "50px";
+                            userIcon.style.color = "#FACC15"; // yellowish color
+                            userIcon.style.marginRight = "0";
+                            userIcon.style.borderRadius = "50%";
+                            userIcon.style.border = "2px solid #FACC15";
+                            userIcon.style.transition = "all 0.3s ease-in-out";
+                            profileImg.parentNode.insertBefore(userIcon, profileImg);
+                        }
+                        userIcon.style.display = "block";
                     }
                 }
 
