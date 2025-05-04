@@ -87,7 +87,7 @@ closeBtn.addEventListener("click", () => {
                 const { data: profileData, error: profileError } = await supabase
                     .from("profiles")
                     .select("username")
-                    .eq("user_id", session.user.id)
+                    .eq("id", session.user.id)
                     .single();
 
                 if (profileError) {
