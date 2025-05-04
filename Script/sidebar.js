@@ -43,8 +43,17 @@ document.addEventListener("DOMContentLoaded", () => {
             if (userIcon) userIcon.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "none";
 
+            // Also hide profile-details container opacity and pointer-events
+            const profileDetails = loggedInMenu.querySelector(".profile-details");
+            if (profileDetails) {
+                profileDetails.style.opacity = "0";
+                profileDetails.style.pointerEvents = "none";
+            }
+
             return;
         }
+
+        const profileDetails = loggedInMenu.querySelector(".profile-details");
 
         if (sidebar.classList.contains("open")) {
             // Sidebar open and logged in: show username, role, user icon, and logout button
@@ -54,6 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (userIcon) userIcon.style.display = "inline-flex";
             if (profileImg) profileImg.style.display = "none";
             if (logoutBtn) logoutBtn.style.display = "inline-flex";
+
+            // Show profile-details container
+            if (profileDetails) {
+                profileDetails.style.opacity = "1";
+                profileDetails.style.pointerEvents = "auto";
+            }
         } else {
             // Sidebar closed or logged in: hide username, role, user icon, and logout button; show collapsed profile image
             if (usernameElem) usernameElem.style.display = "none";
@@ -65,6 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 profileImg.classList.add("collapsed-pfp");
             }
             if (logoutBtn) logoutBtn.style.display = "none";
+
+            // Hide profile-details container
+            if (profileDetails) {
+                profileDetails.style.opacity = "0";
+                profileDetails.style.pointerEvents = "none";
+            }
         }
     }
 
