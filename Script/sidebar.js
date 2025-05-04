@@ -140,10 +140,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     if (usernameElem) {
-                        usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
+                        // Clear existing content
+                        usernameElem.textContent = "";
                         usernameElem.style.display = "block";
-                        if (!usernameElem.textContent || usernameElem.textContent.trim() === "") {
-                            usernameElem.textContent = "User";
+
+                        // Create span for username text
+                        const usernameSpan = document.createElement("span");
+                        usernameSpan.className = "name";
+                        usernameSpan.textContent = (profileData && profileData.username) ? profileData.username : "User";
+
+                        usernameElem.appendChild(usernameSpan);
+
+                        // If user is admin, add check mark icon
+                        if (session.user.id === ADMIN_UID) {
+                            const checkIcon = document.createElement("i");
+                            checkIcon.className = "bx bx-check admin-check";
+                            checkIcon.title = "Admin";
+                            checkIcon.style.marginLeft = "4px";
+                            usernameElem.appendChild(checkIcon);
+                        }
+
+                        if (!usernameSpan.textContent || usernameSpan.textContent.trim() === "") {
+                            usernameSpan.textContent = "User";
                         }
                     }
                     if (profileImg) {
