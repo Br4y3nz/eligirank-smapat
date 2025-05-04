@@ -723,11 +723,9 @@ li.search-item > a.search-link input#search-input {
 }
 
 .sidebar li.profile {
-    position: fixed;
+    position: relative;
     height: 80px;
-    width: 250px;
-    left: 0;
-    bottom: 0;
+    width: 100%;
     padding: 10px 20px;
     background: #1E293B; /* same as search box background */
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -815,7 +813,7 @@ li.search-item > a.search-link input#search-input {
 }
 
 .sidebar.open li.profile {
-    width: 250px;
+    width: 100%;
 }
 
 .sidebar li .profile-details {
