@@ -870,18 +870,21 @@ li.search-item > a.search-link input#search-input {
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    background: #2563EB;
+    background: transparent !important;
+    box-shadow: none !important;
     width: 50px;
     height: 60px;
     line-height: 60px;
     transition: background-color 0.3s ease, color 0.3s ease;
     cursor: pointer;
+    color: #F1F5F9;
 }
 
 /* Hover effect only on logout button */
 .sidebar .profile #log_out:hover {
-    background: #1E40AF;
-    color: #F1F5F9;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #FACC15; /* yellow highlight on hover */
 }
 
 /* Remove hover effect on entire profile */
