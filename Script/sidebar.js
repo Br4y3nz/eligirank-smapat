@@ -183,19 +183,27 @@ document.addEventListener("DOMContentLoaded", () => {
                         roleElem.textContent = "Select role";
                         roleElem.style.cursor = "pointer";
                     }
-                } else if (roleData && roleData.length === 1 && roleData[0].role) {
-                    if (roleElem) {
-                        roleElem.textContent = roleData[0].role;
-                        roleElem.style.cursor = "default";
-                        if (!roleElem.textContent || roleElem.textContent.trim() === "") {
+                } else {
+                    // Override role to "admin" if user ID matches admin UID
+                    if (session.user.id === ADMIN_UID) {
+                        if (roleElem) {
+                            roleElem.textContent = "admin";
+                            roleElem.style.cursor = "default";
+                        }
+                    } else if (roleData && roleData.length === 1 && roleData[0].role) {
+                        if (roleElem) {
+                            roleElem.textContent = roleData[0].role;
+                            roleElem.style.cursor = "default";
+                            if (!roleElem.textContent || roleElem.textContent.trim() === "") {
+                                roleElem.textContent = "Select role";
+                                roleElem.style.cursor = "pointer";
+                            }
+                        }
+                    } else {
+                        if (roleElem) {
                             roleElem.textContent = "Select role";
                             roleElem.style.cursor = "pointer";
                         }
-                    }
-                } else {
-                    if (roleElem) {
-                        roleElem.textContent = "Select role";
-                        roleElem.style.cursor = "pointer";
                     }
                 }
             } catch (error) {
