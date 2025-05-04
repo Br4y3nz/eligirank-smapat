@@ -398,7 +398,7 @@ if (userInfoForm) {
             alert("An error occurred. Please try again.");
         }
     });
-});
+};
 
 
 function expandSidebar() {
