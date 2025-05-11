@@ -119,6 +119,31 @@ body {
   margin-bottom: var(--space-4);
 }
 
+.form-group.remember-me {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--text-dark);
+}
+
+.form-group.remember-me label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-group.remember-me a {
+  font-size: var(--font-size-sm);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.form-group.remember-me a:hover {
+  text-decoration: underline;
+}
+
 label {
   display: block;
   margin-bottom: var(--space-1);
@@ -133,11 +158,31 @@ label {
 
 .input-icon i {
   position: absolute;
-  left: var(--space-2);
   top: 50%;
   transform: translateY(-50%);
   color: var(--primary);
   font-size: var(--font-size-base);
+}
+
+.input-icon i:first-child {
+  left: var(--space-2);
+}
+
+.input-icon #togglePassword {
+  right: var(--space-3);
+  cursor: pointer;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--primary);
+  user-select: none;
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .input-icon input,
@@ -187,14 +232,14 @@ label {
   background: linear-gradient(135deg, var(--secondary), #003366);
 }
 
-/* Google Sign-Up Button Styles */
-#google-signup-btn {
+/* Google Button Styles */
+.google-btn {
   width: 100%;
   padding: 12px;
   font-size: 1rem;
   background-color: transparent;
   color: var(--text-dark);
-  border: 1.5px solid #cbd5e1;
+  border: 2.5px solid #cbd5e1;
   border-radius: var(--border-radius);
   cursor: pointer;
   margin-top: 20px;
@@ -203,6 +248,29 @@ label {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.google-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.google-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 #google-signup-btn:hover {
@@ -224,4 +292,137 @@ label {
     max-width: 100%;
     padding: var(--space-3);
   }
+}
+
+/* Register page specific styles */
+.register-page .main-content {
+  background-image: url('../Assets/Login-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: calc(100vh - 70px);
+  padding: var(--space-6) var(--space-5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.register-page .card {
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: var(--transition);
+  max-width: 380px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #4a5568;
+}
+
+.register-page .btn {
+  transition: background-color 0.3s ease;
+}
+
+.register-page .btn:hover {
+  background-color: #0056b3;
+}
+
+.register-page input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  outline: none;
+}
+
+.register-page #error-message {
+  color: #dc2626;
+  margin-top: 8px;
+  display: none;
+}
+
+.register-page #togglePassword {
+  cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--primary);
+  user-select: none;
+  pointer-events: auto;
+}
+
+.register-page .form-group {
+  margin-bottom: var(--space-2);
+}
+
+/* Modal base styles */
+#registrationErrorModal, #registrationSuccessModal {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#registrationErrorModal.show, #registrationSuccessModal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  position: relative;
+  animation: slideDownFadeIn 0.4s ease forwards;
+}
+
+@keyframes slideDownFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.error-icon {
+  color: #dc2626;
+}
+
+.success-icon {
+  color: #22c55e;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.modal-content .close:hover {
+  color: #000;
 }

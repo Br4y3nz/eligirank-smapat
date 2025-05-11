@@ -1,558 +1,93 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login - EligiRank SMAPAT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-         :root {
-            --primary: #4DA3D8; /* Sky blue from logo */
-            --secondary: #1E3A8A; /* Dark blue */
-            --light: #F9FAFB; /* Light grayish white background */
-            --dark: #111827; /* Almost black text */
-            --border-radius: 8px; /* Softer corners */
-            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
-            --transition: all 0.3s ease;
-            --success: #10B981;
-            --danger: #DC2626;
-            --warning: #FACC15;
-            --border-light: #cbd5e1; /* Light mode border color */
-            --border-dark: #4b5563; /* Dark mode border color */
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7fa;
-            color: var(--dark);
-            transition: background-color 0.3s ease;
-        }
-
-        body.dark-mode {
-            background-color: #0F172A;
-            color: #F1F5F9;
-        }
-
-        body[data-theme="light"] {
-            --icon-color: #888; /* Default icon color for light mode */
-        }
-
-        body[data-theme="dark"] {
-            --icon-color: #F1F5F9; /* Light icon color for dark mode */
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 1rem 2rem;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: var(--box-shadow);
-        }
-        .header .brand {
-            font-size: 1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .theme-switch {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        .theme-switch input {
-            display: none;
-        }
-
-        .theme-switch label {
-            cursor: pointer;
-            width: 40px;
-            height: 20px;
-            background-color: #ccc;
-            border-radius: 20px;
-            position: relative;
-            transition: background-color 0.3s ease;
-        }
-
-        .theme-switch label:before {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: white;
-            top: 1px;
-            left: 1px;
-            transition: transform 0.3s ease;
-        }
-
-        .theme-switch input:checked + label {
-            background-color: var(--primary);
-        }
-
-        .theme-switch input:checked + label:before {
-            transform: translateX(20px);
-        }
-
-        .login-box {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 10px 15px; /* Further reduced padding to bring form elements closer */
-            border-radius: 8px;
-            box-shadow: var(--box-shadow);
-            background-color: var(--light);
-            color: var(--dark);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            backdrop-filter: none; /* placeholder for blur effect later */
-            background-color: rgba(249, 250, 251, 0.8); /* semi-transparent for background visibility */
-        }
-        .dark-mode .login-box {
-            background-color: rgba(30, 41, 59, 0.8); /* Semi-transparent dark background for the form */
-            color: #F1F5F9; /* Light text for the form */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-            backdrop-filter: none; /* placeholder for blur effect later */
-        }
-        .form-group {
-            margin-bottom: 6px; /* Further reduced margin to bring inputs closer */
-        }
-        label {
-            display: block;
-            margin-bottom: 6px; /* Slightly reduced margin */
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .input-icon {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .input-icon i {
-            position: absolute;
-            left: 10px;
-            color: var(--primary); /* Use the primary color for the icons */
-            font-size: 1rem;
-        }
-        .input-icon input {
-            padding-left: 35px; /* Add padding to make space for the icon */
-            width: 100%;
-        }
-        input {
-            padding: 12px;
-            border: 1px solid var(--border-light);
-            border-radius: var(--border-radius);
-            font-family: 'Poppins', sans-serif;
-            transition: var(--transition);
-            background-color: var(--light);
-            color: var(--dark);
-        }
-        .dark-mode input {
-            background-color: #334155; /* Dark input background */
-            color: #F1F5F9; /* Light text for inputs */
-            border: 1px solid var(--border-dark);
-        }
-        input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-        .btn {
-            padding: 12px 25px;
-            border-radius: var(--border-radius);
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-        .dark-mode .btn {
-            background: linear-gradient(135deg, #60A5FA, #4DA3D8); /* Dark mode button gradient */
-        }
-        .btn:hover {
-            background: linear-gradient(135deg, var(--secondary), #5a67d8);
-        }
-        .error-message {
-            color: var(--danger);
-            font-size: 0.9rem;
-            margin-top: 5px;
-            display: none;
-        }
-        .login-header {
-            text-align: center;
-            margin-bottom: 20px; /* Reduced margin */
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 1.75rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 15px; /* Reduced margin */
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        .login-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .login-link a:hover {
-            text-decoration: underline;
-            color: var(--secondary);
-        }
-        .remember-me {
-            display: flex;
-            align-items: center;
-            margin-top: 5px; /* Adjusted margin for tighter spacing */
-            font-size: 14px;
-            color: #495057;
-        }
-        .remember-me input {
-            margin-right: 2px; /* Reduced margin for closer alignment */
-            margin-top: 0; /* Ensuring checkbox is tightly aligned */
-            width: auto; /* Ensuring checkbox is not stretched */
-        }
-
-        /* Google Sign-In Button Styles */
-        #google-signin-btn {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            background-color: transparent;
-            color: var(--dark);
-            border: 1.5px solid var(--border-light);
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        body.dark-mode #google-signin-btn {
-            color: var(--light);
-            border-color: var(--border-dark);
-        }
-
-        #google-signin-btn:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        #google-signin-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 999; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        .modal-content {
-            background-color: var(--light); /* Light background for modal */
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border-radius: 8px;
-            width: 300px; /* Fixed width for modal */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            text-align: center;
-            position: relative; /* Allow positioning of the close button */
-        }
-
-        body.dark-mode .modal-content {
-            background-color: #1E293B; /* Dark background for modal */
-            color: #F1F5F9; /* Light text for modal */
-        }
-
-        .close {
-            position: absolute; /* Position the close button */
-            top: 10px; /* Distance from the top */
-            right: 10px; /* Distance from the right */
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            color: var(--dark); /* Match the color with the theme */
-        }
-
-        body.dark-mode .close {
-            color: #F1F5F9; /* Light color for dark mode */
-        }
-
-        .close:hover,
-        .close:focus {
-            color: var(--primary); /* Change color on hover */
-            text-decoration: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - EligiRank SMAPAT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+  <link rel="stylesheet" href="Style/styles.css" />
 </head>
-<body>
-    <!-- Header Section -->
-    <header class="header">
-        <div class="brand" style="margin-left: 10px;">
-            <i class="fas fa-school" style="color:white"></i>
-            <span>EligiRank SMAPAT | Login</span>
-        </div>
-        <div class="theme-switch">
-            <input type="checkbox" id="themeToggle" />
-            <label for="themeToggle">
-            </label>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="main-content" style="margin-left: 0; padding: 30px; margin-top: 80px;">
-        <div class="login-box">
-            <div class="login-header"><i class="fas fa-user"></i> Login Akun</div>
-            <form id="loginForm" novalidate>
-                <div class="form-group">
-                    <label for="display_name">Nama Lengkap/Email</label>
-                    <div class="input-icon">
-                        <i class="fas fa-user-circle"></i>
-                        <input type="text" id="display_name" placeholder="Masukkan display name/email" />
-                    </div>
-                    <span id="displayNameError" class="error-message" style="display: none;">Display Name tidak boleh kosong.</span>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="Masukkan password" />
-                    </div>
-                    <span id="passwordError" class="error-message" style="display: none;">Password tidak boleh kosong.</span>
-                </div>
-                <div class="form-group remember-me" style="justify-content: space-between; margin-bottom: 15px;">
-                    <label>
-                        <input type="checkbox" id="rememberMe" />
-                        Ingat Saya
-                    </label>
-                    <a href="forgot-password.html" style="font-size: 0.9rem; color: var(--primary); text-decoration: none;">Lupa Password?</a>
-                </div>
-                <button type="submit" class="btn">Login</button>
-                <div class="login-link" style="margin-top: 15px; text-align: center;">
-                    Belum punya akun? <a href="register.html" style="font-weight: 600; color: var(--primary); text-decoration: none;">Daftar</a>
-                </div>
-            </form>
-            <!-- Google Log In Button below the form with Google logo -->
-            <button id="google-signin-btn" type="button" aria-label="Log in with Google">
-                <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.5-34.1-4.3-50.4H272v95.5h146.9c-6.3 34-25.3 62.8-54.1 82v68h87.4c51-47 80.3-116 80.3-195.1z"/>
-                    <path fill="#34A853" d="M272 544.3c73.7 0 135.6-24.4 180.8-66.1l-87.4-68c-24.3 16.3-55.4 26-93.4 26-71.7 0-132.5-48.3-154.3-113.1H27.6v70.9c45.1 89.1 137.3 150.3 244.4 150.3z"/>
-                    <path fill="#FBBC05" d="M117.7 323.1c-10.7-31.7-10.7-65.9 0-97.6v-70.9H27.6c-38.6 75.3-38.6 164.7 0 240l90.1-71.5z"/>
-                    <path fill="#EA4335" d="M272 107.7c39.9 0 75.8 13.7 104 40.7l78-78C405.6 24.4 343.7 0 272 0 164.9 0 72.7 61.2 27.6 150.3l90.1 70.9c21.8-64.8 82.6-113.5 154.3-113.5z"/>
-                </svg>
-                Log in with Google
-            </button>
-        </div>
+<body class="register-page">
+  <!-- Header Section -->
+  <header class="header">
+    <div class="brand" style="display: flex; align-items: center; gap: 12px;">
+      <img src="Assets/Logo-smapat.png" alt="SMAPAT Logo" style="height: 40px; width: auto;" />
+      <span>EligiRank SMAPAT | Login</span>
     </div>
+  </header>
 
-    <!-- Error Modal -->
-    <div id="loginModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3 style="margin-bottom: 10px;">Login Gagal</h3>
-            <p>Mohon periksa kembali display name/email dan password Anda.</p>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="card">
+      <h2 style="text-align: center;"><i class='bx bx-log-in'></i> Login Akun</h2>
+      <form id="loginForm" novalidate>
+        <div class="form-group" style="margin-top: 20px;">
+          <label for="usernameOrEmail">Username atau Email</label>
+          <div class="input-icon">
+            <i class='bx bx-user-circle'></i>
+            <input type="text" id="usernameOrEmail" name="usernameOrEmail" autocomplete="username" placeholder="Masukkan username atau email" required />
+          </div>
+          <span id="usernameOrEmailError" class="error-message" style="display: none;">Username atau Email tidak boleh kosong.</span>
         </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3 style="margin-bottom: 10px;">Login Berhasil</h3>
-            <p>Login berhasil! Selamat datang kembali.</p>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-icon" style="position: relative;">
+            <i class='bx bx-lock-alt'></i>
+            <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Masukkan password" required />
+            <i id="togglePassword" class='bx bx-low-vision' style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--primary); font-size: 1.2rem;"></i>
+          </div>
+          <span id="passwordError" class="error-message" style="display: none;">Password tidak boleh kosong.</span>
         </div>
+        <div class="form-group remember-me" style="justify-content: space-between; margin-bottom: 15px;">
+          <label>
+            <input type="checkbox" id="rememberMe" />
+            Ingat Saya
+          </label>
+          <a href="forgot-password.html" style="font-size: 0.9rem; color: var(--primary); text-decoration: none;">Lupa Password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <div class="login-link" style="margin-top: 15px; text-align: center;">
+          Belum punya akun? <a href="register.html" style="font-weight: 600; color: var(--primary); text-decoration: none;">Daftar</a>
+        </div>
+      </form>
+
+      <!-- Google Log In Button below the form with Google logo -->
+      <button id="google-signin-btn" type="button" aria-label="Log in with Google" class="google-btn">
+        <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="google-icon">
+          <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.5-34.1-4.3-50.4H272v95.5h146.9c-6.3 34-25.3 62.8-54.1 82v68h87.4c51-47 80.3-116 80.3-195.1z"/>
+          <path fill="#34A853" d="M272 544.3c73.7 0 135.6-24.4 180.8-66.1l-87.4-68c-24.3 16.3-55.4 26-93.4 26-71.7 0-132.5-48.3-154.3-113.1H27.6v70.9c45.1 89.1 137.3 150.3 244.4 150.3z"/>
+          <path fill="#FBBC05" d="M117.7 323.1c-10.7-31.7-10.7-65.9 0-97.6v-70.9H27.6c-38.6 75.3-38.6 164.7 0 240l90.1-71.5z"/>
+          <path fill="#EA4335" d="M272 107.7c39.9 0 75.8 13.7 104 40.7l78-78C405.6 24.4 343.7 0 272 0 164.9 0 72.7 61.2 27.6 150.3l90.1 70.9c21.8-64.8 82.6-113.5 154.3-113.5z"/>
+        </svg>
+        Log in with Google
+      </button>
     </div>
+  </div>
 
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
+  <!-- Login Error Modal -->
+  <div id="loginErrorModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginErrorModal()">&times;</span>
+      <div class="modal-icon error-icon"><i class='bx bx-x-circle'></i></div>
+      <h3>Login Gagal</h3>
+      <p></p>
+    </div>
+  </div>
 
-        const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
-        const supabase = createClient(supabaseUrl, supabaseKey);
+  <!-- Login Success Modal -->
+  <div id="loginSuccessModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginSuccessModal()">&times;</span>
+      <div class="modal-icon success-icon"><i class='bx bx-check-circle'></i></div>
+      <h3>Login Berhasil</h3>
+      <p></p>
+    </div>
+  </div>
 
-        async function login() {
-            const emailOrDisplayName = document.getElementById('display_name').value.trim(); // Trim spaces
-            const password = document.getElementById('password').value.trim();
-            const rememberMeChecked = document.getElementById('rememberMe').checked;
-
-            if (!emailOrDisplayName || !password) {
-                // Show the error modal for empty fields
-                document.getElementById('loginModal').style.display = 'block';
-                document.querySelector('#loginModal p').textContent = 'Display Name/Email dan password tidak boleh kosong.';
-                return;
-            }
-
-            try {
-                let email = emailOrDisplayName;
-
-                // Check if the input is a display name (does not contain '@')
-                if (!emailOrDisplayName.includes('@')) {
-                    // Query the `auth.users` table to get the email associated with the display name
-                    const { data: user, error: userError } = await supabase
-                        .from('auth.users')
-                        .select('email, user_metadata')
-                        .eq('user_metadata->>display_name', emailOrDisplayName)
-                        .single();
-
-                    if (userError || !user) {
-                        console.error('Error fetching user by display name:', userError?.message || 'User not found');
-                        document.getElementById('loginModal').style.display = 'block';
-                        document.querySelector('#loginModal p').textContent = 'Display Name tidak ditemukan.';
-                        return;
-                    }
-
-                    email = user.email; // Use the email retrieved from the database
-                }
-
-                // Attempt to sign in with the email and password
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password,
-                });
-
-                if (error) {
-                    console.error('Error:', error.message);
-                    // Show the error modal
-                    document.getElementById('loginModal').style.display = 'block';
-                    document.querySelector('#loginModal p').textContent = 'Login gagal: ' + error.message;
-                } else {
-                    // Store remember me preference
-                    if (rememberMeChecked) {
-                        localStorage.setItem('rememberMe', 'true');
-                    } else {
-                        localStorage.removeItem('rememberMe');
-                    }
-                    // Show the success modal
-                    const successModal = document.getElementById('successModal');
-                    successModal.style.display = 'block';
-                    document.querySelector('#successModal p').textContent = 'Login berhasil! Selamat datang kembali.';
-                    setTimeout(() => {
-                        // Redirect to dashboard or another page after 2 seconds
-                        window.location.href = 'dashboard.html';
-                    }, 2000);
-                }
-            } catch (error) {
-                console.error('Unexpected Error:', error);
-                document.getElementById('loginModal').style.display = 'block';
-                document.querySelector('#loginModal p').textContent = 'Terjadi kesalahan. Silakan coba lagi.';
-            }
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            login();
-        });
-
-        const loginForm = document.getElementById('loginForm');
-        const modal = document.getElementById('loginModal');
-        const themeToggle = document.getElementById('themeToggle');
-
-        function closeModal() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach((modal) => {
-                modal.style.display = 'none';
-            });
-        }
-
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        }
-
-        // Theme switch functionality
-        themeToggle.addEventListener('change', function () {
-            const isDarkMode = themeToggle.checked;
-            document.body.classList.toggle('dark-mode', isDarkMode);
-            const currentTheme = isDarkMode ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', currentTheme);
-
-            // Save the theme preference to localStorage
-            localStorage.setItem('theme', currentTheme);
-        });
-
-        // Initialize the theme on page load
-        window.addEventListener('DOMContentLoaded', async () => {
-            const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light if no theme is saved
-            const isDarkMode = savedTheme === 'dark';
-
-            // Apply the saved theme
-            document.body.classList.toggle('dark-mode', isDarkMode);
-            document.documentElement.setAttribute('data-theme', savedTheme);
-
-            // Set the toggle state
-            themeToggle.checked = isDarkMode;
-
-            // Check if user is already logged in or rememberMe is set
-            const { data: { session } } = await supabase.auth.getSession();
-            const rememberMe = localStorage.getItem('rememberMe');
-
-            if (session || rememberMe === 'true') {
-                window.location.href = 'dashboard.html';
-            }
-        });
-
-        // Google Log In Button Logic
-        const googleSignInBtn = document.getElementById('google-signin-btn');
-
-        googleSignInBtn.addEventListener('click', async () => {
-            const { data, error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.origin + '/dashboard.html'
-                }
-            });
-            if (error) {
-                alert('Error: ' + error.message);
-            }
-        });
-
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (session) {
-                console.log('Logged in as:', session.user.email);
-                // Redirect or update UI accordingly
-                window.location.href = 'dashboard.html';
-            }
-        });
-
-        // Logout function to clear session and rememberMe
-        async function logout() {
-            await supabase.auth.signOut();
-            localStorage.removeItem('rememberMe');
-            window.location.href = 'index.html';
-        }
-    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/supabase.min.js"></script>
+  <script type="module" src="Script/login.js"></script>
 </body>
 </html>

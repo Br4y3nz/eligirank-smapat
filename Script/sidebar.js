@@ -1,6 +1,8 @@
+
 import supabase from '../Supabase/client.js';
 
-document.addEventListener("DOMContentLoaded", () => {
+export function initializeSidebar() {
+    console.log("initializeSidebar called");
     const sidebar = document.querySelector(".sidebar");
     const closeBtn = document.querySelector("#btn");
     const loggedInMenu = document.getElementById("logged-in-menu");
@@ -8,17 +10,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const usernameElem = document.getElementById("username");
     const roleElem = document.getElementById("role");
     const logoutBtn = document.getElementById("log_out");
-
-    const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d"; // Actual admin UID
+    const ADMIN_UID = "632455ea-c4e1-42f7-9955-b361dffa8e6d";
 
     if (!sidebar || !closeBtn) {
         console.error("Sidebar or close button not found in DOM");
         return;
     }
 
-    // Expand sidebar by default on page load
-    if (!sidebar.classList.contains("open")) {
-        sidebar.classList.add("open");
+    function toggleVisibility(element, show) {
+        if (!element) return;
+        if (show) {
+            element.classList.add("visible");
+            element.classList.remove("hidden");
+        } else {
+            element.classList.add("hidden");
+            element.classList.remove("visible");
+        }
     }
 
     function updateUserMenuDisplay() {
@@ -27,71 +34,79 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (loggedInMenu.style.display === "none" || !loggedInMenu.style.display) {
-            // User not logged in, show only login button
-            loggedOutMenu.style.display = "block";
-            loggedInMenu.style.display = "none";
+        if (loggedInMenu.classList.contains("hidden") || !loggedInMenu.classList.contains("visible")) {
+            loggedOutMenu.classList.add("visible");
+            loggedOutMenu.classList.remove("hidden");
+            loggedInMenu.classList.add("hidden");
+            loggedInMenu.classList.remove("visible");
 
-            // Toggle "open" class on loggedOutMenu based on sidebar open state for CSS animation
             if (sidebar.classList.contains("open")) {
                 loggedOutMenu.classList.add("open");
             } else {
                 loggedOutMenu.classList.remove("open");
             }
 
-            // Hide profile details and logout button when not logged in
-            if (usernameElem) usernameElem.style.display = "none";
-            if (roleElem) roleElem.style.display = "none";
+            toggleVisibility(usernameElem, false);
+            toggleVisibility(roleElem, false);
             const userIcon = document.getElementById("default-user-icon");
-            if (userIcon) userIcon.style.display = "none";
-            if (logoutBtn) logoutBtn.style.display = "none";
+            toggleVisibility(userIcon, false);
+            toggleVisibility(logoutBtn, false);
 
-            // Also hide profile-details container opacity and pointer-events
             const profileDetails = loggedInMenu.querySelector(".profile-details");
             if (profileDetails) {
-                profileDetails.style.opacity = "0";
-                profileDetails.style.pointerEvents = "none";
+                profileDetails.classList.add("hidden");
+                profileDetails.classList.remove("visible");
             }
-
+            const loginProfileDetails = loggedOutMenu.querySelector(".login-profile-details");
+            if (loginProfileDetails) {
+                loginProfileDetails.classList.add("visible");
+                loginProfileDetails.classList.remove("hidden");
+            }
             return;
         }
 
         const profileDetails = loggedInMenu.querySelector(".profile-details");
+        const loginProfileDetails = loggedOutMenu.querySelector(".login-profile-details");
 
         if (sidebar.classList.contains("open")) {
-            // Sidebar open and logged in: show username, role, user icon, and logout button
-            if (usernameElem) usernameElem.style.display = "block";
-            if (roleElem) roleElem.style.display = "block";
+            toggleVisibility(usernameElem, true);
+            toggleVisibility(roleElem, true);
             const userIcon = document.getElementById("default-user-icon");
-            if (userIcon) userIcon.style.display = "inline-flex";
-            if (logoutBtn) logoutBtn.style.display = "inline-flex";
+            toggleVisibility(userIcon, true);
+            toggleVisibility(logoutBtn, true);
 
-            // Show profile-details container
             if (profileDetails) {
-                profileDetails.style.opacity = "1";
-                profileDetails.style.pointerEvents = "auto";
+                profileDetails.classList.add("visible");
+                profileDetails.classList.remove("hidden");
+            }
+            if (loginProfileDetails) {
+                loginProfileDetails.classList.add("visible");
+                loginProfileDetails.classList.remove("hidden");
             }
         } else {
-            // Sidebar closed or logged in: hide username, role, user icon, and logout button
-            if (usernameElem) usernameElem.style.display = "none";
-            if (roleElem) roleElem.style.display = "none";
+            toggleVisibility(usernameElem, false);
+            toggleVisibility(roleElem, false);
             const userIcon = document.getElementById("default-user-icon");
-            if (userIcon) userIcon.style.display = "none";
-            if (logoutBtn) logoutBtn.style.display = "none";
+            toggleVisibility(userIcon, false);
+            toggleVisibility(logoutBtn, false);
 
-            // Hide profile-details container
             if (profileDetails) {
-                profileDetails.style.opacity = "0";
-                profileDetails.style.pointerEvents = "none";
+                profileDetails.classList.add("hidden");
+                profileDetails.classList.remove("visible");
+            }
+            if (loginProfileDetails) {
+                loginProfileDetails.classList.add("visible");
+                loginProfileDetails.classList.remove("hidden");
             }
         }
     }
 
     closeBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
+        const isOpen = sidebar.classList.toggle("open");
         updateUserMenuDisplay();
 
-        // Animate icon change with fade out/in for smooth transition
+        closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
         closeBtn.style.transition = "opacity 0.3s ease";
         closeBtn.style.opacity = "0";
 
@@ -104,132 +119,128 @@ document.addEventListener("DOMContentLoaded", () => {
                 closeBtn.classList.add("bx-menu");
             }
             closeBtn.style.opacity = "1";
+
+            if (isOpen) {
+                closeBtn.classList.add("btn-slide");
+            }
         }, 300);
     });
 
+    closeBtn.addEventListener("animationend", () => {
+        closeBtn.classList.remove("btn-slide");
+    });
+
+    async function fetchUserData(session) {
+        try {
+            const { data: profileData, error: profileError } = await supabase
+                .from("profiles")
+                .select("username, phone")
+                .eq("id", session.user.id)
+                .maybeSingle();
+
+            if (profileError) {
+                console.error("Error fetching user data:", profileError);
+                return null;
+            }
+            return profileData;
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            return null;
+        }
+    }
+
+    async function fetchUserRole(session) {
+        try {
+            const { data: roleData, error: roleError } = await supabase
+                .from("roles")
+                .select("role")
+                .eq("user_id", session.user.id);
+
+            if (roleError) {
+                console.error("Error fetching role data:", roleError);
+                return null;
+            }
+            return roleData;
+        } catch (error) {
+            console.error("Error fetching role data:", error);
+            return null;
+        }
+    }
+
     supabase.auth.getSession().then(async ({ data: sessionData }) => {
         const session = sessionData?.session;
-        console.log('Session:', session);
-        console.log('Logged-in menu element:', loggedInMenu);
-        console.log('Logged-out menu element:', loggedOutMenu);
-
         if (session) {
-            loggedInMenu.style.display = "flex";
-            loggedOutMenu.style.display = "none";
+            loggedInMenu.classList.add("visible");
+            loggedInMenu.classList.remove("hidden");
+            loggedOutMenu.classList.add("hidden");
+            loggedOutMenu.classList.remove("visible");
 
-            try {
-                console.log("Fetching profile data for user id:", session.user.id);
-                const { data: profileData, error: profileError } = await supabase
-                    .from("profiles")
-                    .select("username, phone")
-                    .eq("id", session.user.id)
-                    .maybeSingle();
-
-                console.log("Profile data fetched:", profileData);
-
-                if (profileError) {
-                    console.error("Error fetching user data:", profileError);
-                } else {
-                    // Check if username or phone is missing, show modal if so
-                    if (!profileData || !profileData.username || !profileData.phone) {
-                        const userInfoModal = document.getElementById("user-info-modal");
-                        const overlayElem = document.getElementById("overlay");
-                        if (userInfoModal && overlayElem) {
-                            userInfoModal.style.display = "block";
-                            overlayElem.style.display = "block";
-                        }
-                    }
-
-                    if (usernameElem) {
-                        // Directly set username text content without nested span
-                        usernameElem.textContent = (profileData && profileData.username) ? profileData.username : "User";
-                        usernameElem.style.display = "block";
-
-                        // Debug log for username content and display style
-                        console.log("Username element content:", usernameElem.textContent);
-                        console.log("Username element display style:", usernameElem.style.display);
-                    }
-
-                    // Insert user circle icon if not already present
-                    let userIcon = document.getElementById("default-user-icon");
-                    if (!userIcon) {
-                        userIcon = document.createElement("i");
-                        userIcon.id = "default-user-icon";
-                        userIcon.className = "bx bx-user-circle default-user-icon";
-                        const profileContainer = document.querySelector(".sidebar li.profile");
-                        if (profileContainer) {
-                            profileContainer.insertBefore(userIcon, profileContainer.firstChild);
-                        }
-                    }
-                    userIcon.style.display = "inline-flex";
-                    userIcon.style.fontSize = "45px";
-                    userIcon.style.color = "#FACC15";
-                    userIcon.style.width = "45px";
-                    userIcon.style.height = "45px";
-                    userIcon.style.alignItems = "center";
-                    userIcon.style.justifyContent = "center";
-                    userIcon.style.marginRight = "10px";
-                    userIcon.style.cursor = "pointer";
+            const profileData = await fetchUserData(session);
+            if (profileData && (!profileData.username || !profileData.phone)) {
+                const userInfoModal = document.getElementById("user-info-modal");
+                const overlayElem = document.getElementById("overlay");
+                if (userInfoModal && overlayElem) {
+                    userInfoModal.style.display = "block";
+                    overlayElem.style.display = "block";
                 }
+            }
 
-                // Fetch role from roles table
-                const { data: roleData, error: roleError } = await supabase
-                    .from("roles")
-                    .select("role")
-                    .eq("user_id", session.user.id);
+            if (usernameElem) {
+                usernameElem.textContent = profileData?.username || "User";
+                toggleVisibility(usernameElem, true);
+            }
 
-                if (roleError) {
-                    console.error("Error fetching role data:", roleError);
+            let userIcon = document.getElementById("default-user-icon");
+            if (!userIcon) {
+                userIcon = document.createElement("i");
+                userIcon.id = "default-user-icon";
+                userIcon.className = "bx bx-user-circle default-user-icon";
+                const profileContainer = document.querySelector(".sidebar li.profile");
+                if (profileContainer) {
+                    profileContainer.insertBefore(userIcon, profileContainer.firstChild);
+                }
+            }
+            toggleVisibility(userIcon, true);
+            userIcon.style.fontSize = "45px";
+            userIcon.style.color = "#FACC15";
+            userIcon.style.width = "45px";
+            userIcon.style.height = "45px";
+            userIcon.style.alignItems = "center";
+            userIcon.style.justifyContent = "center";
+            userIcon.style.marginRight = "10px";
+            userIcon.style.cursor = "pointer";
+
+            const roleData = await fetchUserRole(session);
+            if (roleData === null) {
+                if (roleElem) {
+                    roleElem.innerHTML = '<span class="role-badge">Select role</span>';
+                    roleElem.style.cursor = "pointer";
+                }
+            } else {
+                if (session.user.id === ADMIN_UID) {
+                    if (roleElem) {
+                        roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
+                        roleElem.style.cursor = "default";
+                    }
+                } else if (roleData.length === 1 && roleData[0].role) {
+                    if (roleElem) {
+                        const roleText = roleData[0].role;
+                        const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1).toLowerCase();
+                        roleElem.innerHTML = `<span class="role-badge">${capitalizedRole}</span>`;
+                    }
+                } else {
                     if (roleElem) {
                         roleElem.innerHTML = '<span class="role-badge">Select role</span>';
-                        roleElem.style.cursor = "pointer";
-                    }
-                } else {
-                    // Override role to "admin" if user ID matches admin UID
-                    if (session.user.id === ADMIN_UID) {
-                        if (roleElem) {
-                            roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
-                            roleElem.style.cursor = "default";
-                        }
-                    } else if (roleData && roleData.length === 1 && roleData[0].role) {
-                        if (roleElem) {
-                            // Capitalize first letter of role
-                            const roleText = roleData[0].role;
-                            const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1).toLowerCase();
-
-                            // Determine role class
-                            let roleClass = "";
-                            if (capitalizedRole.toLowerCase() === "student") {
-                                roleClass = "role-student";
-                            } else if (capitalizedRole.toLowerCase() === "teacher") {
-                                roleClass = "role-teacher";
-                            } else if (capitalizedRole.toLowerCase() === "admin") {
-                                roleClass = "role-admin";
-                            }
-
-                            roleElem.innerHTML = `<span class="role-badge ${roleClass}">${capitalizedRole}</span>`;
-                            roleElem.style.cursor = "default";
-
-                            if (!roleElem.textContent || roleElem.textContent.trim() === "") {
-                                roleElem.innerHTML = '<span class="role-badge">Select role</span>';
-                                roleElem.style.cursor = "pointer";
-                            }
-                        }
-                    } else {
-                        if (roleElem) {
-                            roleElem.innerHTML = '<span class="role-badge">Select role</span>';
-                            roleElem.style.cursor = "pointer";
-                        }
                     }
                 }
-            } catch (error) {
-                console.error("Error fetching user or role data:", error);
             }
 
             updateUserMenuDisplay();
         } else {
-            loggedInMenu.style.display = "none";
-            loggedOutMenu.style.display = "block";
+            loggedInMenu.classList.add("hidden");
+            loggedInMenu.classList.remove("visible");
+            loggedOutMenu.classList.add("visible");
+            loggedOutMenu.classList.remove("hidden");
             updateUserMenuDisplay();
         }
     });
@@ -239,29 +250,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (error) {
             console.error("Logout error:", error);
         } else {
-            localStorage.removeItem('rememberMe');
+            localStorage.removeItem("rememberMe");
             window.location.href = "index.html";
         }
     });
 
-    // Add auth state change listener to handle session expiration and sign out
-    supabase.auth.onAuthStateChange((event, session) => {
-        console.log('Auth state changed:', event, session);
-        if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESH_FAILED' || event === 'USER_DELETED') {
-            localStorage.removeItem('rememberMe');
-            alert('Your session has expired or you have been signed out. Please log in again.');
-            window.location.href = '/register.html';
-        }
-    });
-
-    // Role modal logic
     const roleModal = document.getElementById("role-modal");
     const overlay = document.getElementById("overlay");
     const roleForm = document.getElementById("role-form");
-    const roleTextElem = roleElem;
     const closeModalBtn = document.getElementById("close-role-modal");
-    const studentFields = document.getElementById("student-fields");
-    const teacherFields = document.getElementById("teacher-fields");
 
     function openRoleModal() {
         roleModal.style.display = "block";
@@ -273,11 +270,9 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.style.display = "none";
     }
 
-    if (roleTextElem) {
-        console.log("Attaching click event to role element");
-        roleTextElem.addEventListener("click", () => {
-            console.log("Role element clicked");
-            if (roleTextElem.textContent === "Select role") {
+    if (roleElem) {
+        roleElem.addEventListener("click", () => {
+            if (roleElem.textContent === "Select role") {
                 openRoleModal();
             }
         });
@@ -289,45 +284,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     overlay.addEventListener("click", closeRoleModal);
 
-    roleForm.addEventListener("change", (event) => {
-        const selectedRole = roleForm.role.value;
-        if (selectedRole === "student") {
-            studentFields.style.display = "block";
-            teacherFields.style.display = "none";
-        } else if (selectedRole === "teacher") {
-            studentFields.style.display = "none";
-            teacherFields.style.display = "block";
-        }
-    });
-
     roleForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const formData = new FormData(roleForm);
         const role = formData.get("role");
-        const nisn = formData.get("nisn");
-        const nis = formData.get("nis");
-        const nik = formData.get("nik");
-        const nuptk = formData.get("nuptk");
 
         try {
-            const session = supabase.auth.getSession().then(({ data: sessionData }) => sessionData?.session);
+            const session = await supabase.auth.getSession().then(({ data }) => data?.session);
             if (!session) {
                 alert("You must be logged in to set a role.");
                 return;
             }
-            const userId = (await session).user.id;
 
-            // Insert or update role in roles table
+            const userId = session.user.id;
+
             const { error } = await supabase
                 .from("roles")
-                .upsert({
-                    user_id: userId,
-                    role: role,
-                    nisn: role === "student" ? nisn : null,
-                    nis: role === "student" ? nis : null,
-                    nik: role === "teacher" ? nik : null,
-                    nuptk: role === "teacher" ? nuptk : null,
-                }, { onConflict: "user_id" });
+                .upsert({ user_id: userId, role }, { onConflict: "user_id" });
 
             if (error) {
                 console.error("Error saving role:", error);
@@ -335,118 +308,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            roleTextElem.textContent = role;
-            roleTextElem.style.cursor = "default";
+            roleElem.textContent = role;
             closeRoleModal();
         } catch (error) {
             console.error("Error during role save:", error);
             alert("An error occurred. Please try again.");
         }
     });
-
-});
-
-// User info modal logic
-const userInfoModal = document.getElementById("user-info-modal");
-const userInfoForm = document.getElementById("user-info-form");
-const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
-const overlayElem = document.getElementById("overlay");
-
-if (closeUserInfoModalBtn) {
-    closeUserInfoModalBtn.addEventListener("click", () => {
-        if (userInfoModal && overlayElem) {
-            userInfoModal.style.display = "none";
-            overlayElem.style.display = "none";
-        }
-    });
 }
-
-if (userInfoForm) {
-    userInfoForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const usernameInput = document.getElementById("username-input");
-        const phoneInput = document.getElementById("phone-input");
-
-        if (!usernameInput.value || !phoneInput.value) {
-            alert("Please fill in all fields.");
-            return;
-        }
-
-        try {
-            const { data: { session } } = await supabase.auth.getSession();
-            console.log("Session user ID for update:", session?.user?.id);
-            console.log("Updating profile with username:", usernameInput.value, "phone:", phoneInput.value);
-            if (!session) {
-                alert("You must be logged in to update your profile.");
-                return;
-            }
-            const userId = session.user.id;
-
-            const { error } = await supabase
-                .from("profiles")
-                .upsert({
-                    id: userId,
-                    username: usernameInput.value,
-                    phone: phoneInput.value
-                }, { onConflict: "id" });
-
-            if (error) {
-                console.error("Error updating profile:", error);
-                alert("Failed to update profile. Please try again.");
-                return;
-            }
-
-            // Update sidebar username display
-            const usernameElem = document.getElementById("username");
-            if (usernameElem) {
-                usernameElem.textContent = usernameInput.value;
-            }
-
-            // Close modal and overlay
-            if (userInfoModal && overlayElem) {
-                userInfoModal.style.display = "none";
-                overlayElem.style.display = "none";
-            }
-        } catch (error) {
-            console.error("Error during profile update:", error);
-            alert("An error occurred. Please try again.");
-        }
-    });
-};
-
-
-function expandSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    if (!sidebar.classList.contains('open')) {
-        sidebar.classList.add('open');
-    }
-}
-
-// Add event listener to search icon button after DOM content loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const searchIconBtn = document.getElementById('search-icon');
-    if (searchIconBtn) {
-        searchIconBtn.addEventListener('click', () => {
-            expandSidebar();
-            // Optionally, focus the search input after expanding
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) {
-                searchInput.focus();
-            }
-        });
-    }
-
-    // Prevent navigation on clicking the search link anchor
-    const searchLink = document.querySelector('a.search-link');
-    if (searchLink) {
-        searchLink.addEventListener('click', (event) => {
-            event.preventDefault();
-            // Expand sidebar and focus search input
-            expandSidebar();
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) {
-                searchInput.focus();
-            }
-        });
-    }
-});

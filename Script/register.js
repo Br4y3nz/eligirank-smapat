@@ -5,14 +5,42 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function signUp() {
-  const fullName = document.getElementById('fullName').value;
-  const username = document.getElementById('username').value;
-  const email = document.getElementById('email').value;
+  const fullName = document.getElementById('fullName').value.trim();
+  const username = document.getElementById('username').value.trim();
+  const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
-  const phone = document.getElementById('phone').value;
+  const phone = iti.getNumber();
 
+  const errorMessageEl = document.getElementById('error-message');
+  errorMessageEl.style.display = 'none';
+  errorMessageEl.textContent = '';
+
+  // Basic validation
+  if (!fullName || !username || !email || !password || !phone) {
+    errorMessageEl.textContent = 'Harap isi semua bidang!';
+    errorMessageEl.style.display = 'block';
+    return;
+  }
+
+  // Email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    errorMessageEl.textContent = 'Format email tidak valid.';
+    errorMessageEl.style.display = 'block';
+    return;
+  }
+
+  // Password length validation
   if (password.length < 8) {
-    showErrorModal('Password harus minimal 8 karakter.');
+    errorMessageEl.textContent = 'Password harus minimal 8 karakter.';
+    errorMessageEl.style.display = 'block';
+    return;
+  }
+
+  // Phone number validation
+  if (!iti.isValidNumber()) {
+    errorMessageEl.textContent = 'Nomor telepon tidak valid.';
+    errorMessageEl.style.display = 'block';
     return;
   }
 
@@ -23,7 +51,7 @@ async function signUp() {
       password: password,
       options: {
         data: {
-          display_name: fullName.trim(),
+          display_name: fullName,
           phone: phone,
         },
       },
@@ -31,13 +59,15 @@ async function signUp() {
 
     if (authError) {
       console.error('Auth Error:', authError.message);
-      showErrorModal(`Pendaftaran gagal: ${authError.message}`);
+      errorMessageEl.textContent = `Pendaftaran gagal: ${authError.message}`;
+      errorMessageEl.style.display = 'block';
       return;
     }
 
     // Ensure the user is created before proceeding
     if (!authData.user) {
-      showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
+      errorMessageEl.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
+      errorMessageEl.style.display = 'block';
       return;
     }
 
@@ -59,7 +89,8 @@ async function signUp() {
 
     if (profileError) {
       console.error('Profile Error:', profileError.message);
-      showErrorModal(`Gagal menyimpan data pengguna: ${profileError.message}. Namun, email verifikasi telah dikirim. Silakan cek email kamu.`);
+      errorMessageEl.textContent = `Gagal menyimpan data pengguna: ${profileError.message}. Namun, email verifikasi telah dikirim. Silakan cek email kamu.`;
+      errorMessageEl.style.display = 'block';
       return;
     }
 
@@ -67,7 +98,8 @@ async function signUp() {
     showSuccessModal('Registrasi berhasil! Silakan cek email untuk verifikasi.');
   } catch (error) {
     console.error('Unexpected Error:', error);
-    showErrorModal('Terjadi kesalahan. Silakan coba lagi.');
+    errorMessageEl.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
+    errorMessageEl.style.display = 'block';
   }
 }
 
@@ -141,19 +173,59 @@ function validatePhoneNumber() {
 function showErrorModal(message) {
   const modal = document.getElementById('registrationErrorModal');
   modal.querySelector('p').textContent = message;
-  modal.style.display = 'block';
+  modal.classList.add('show');
+
+  // Add event listener to close modal on outside click
+  function outsideClickListener(event) {
+    if (!modal.querySelector('.modal-content').contains(event.target)) {
+      closeRegistrationErrorModal();
+      document.removeEventListener('click', outsideClickListener);
+    }
+  }
+  setTimeout(() => {
+    document.addEventListener('click', outsideClickListener);
+  }, 0);
 }
 
 function showSuccessModal(message) {
   const modal = document.getElementById('registrationSuccessModal');
   modal.querySelector('p').textContent = message;
-  modal.style.display = 'block';
+  modal.classList.add('show');
+
+  // Add event listener to close modal on outside click
+  function outsideClickListener(event) {
+    if (!modal.querySelector('.modal-content').contains(event.target)) {
+      closeRegistrationSuccessModal();
+      document.removeEventListener('click', outsideClickListener);
+    }
+  }
+  setTimeout(() => {
+    document.addEventListener('click', outsideClickListener);
+  }, 0);
 }
 
 function closeRegistrationErrorModal() {
-  document.getElementById('registrationErrorModal').style.display = 'none';
+  const modal = document.getElementById('registrationErrorModal');
+  modal.classList.remove('show');
 }
 
 function closeRegistrationSuccessModal() {
-  document.getElementById('registrationSuccessModal').style.display = 'none';
+  const modal = document.getElementById('registrationSuccessModal');
+  modal.classList.remove('show');
 }
+
+// Show/hide password toggle
+const togglePassword = document.getElementById('togglePassword');
+const passwordInput = document.getElementById('password');
+
+togglePassword.addEventListener('click', () => {
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+  if (type === 'password') {
+    togglePassword.classList.remove('bx-show');
+    togglePassword.classList.add('bx-low-vision');
+  } else {
+    togglePassword.classList.remove('bx-low-vision');
+    togglePassword.classList.add('bx-show');
+  }
+});

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
   <link rel="stylesheet" href="Style/styles.css" />
 </head>
-<body>
+<body class="register-page">
   <!-- Header Section -->
   <header class="header">
     <div class="brand" style="display: flex; align-items: center; gap: 12px;">
@@ -47,9 +47,10 @@
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <div class="input-icon">
+          <div class="input-icon" style="position: relative;">
             <i class='bx bx-lock-alt'></i>
             <input type="password" id="password" name="password" autocomplete="new-password" placeholder="Masukkan password" required />
+            <i id="togglePassword" class='bx bx-low-vision' style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--primary);"></i>
           </div>
         </div>
         <div class="form-group">
@@ -61,14 +62,15 @@
         </div>
 
         <button type="submit" class="btn">Daftar</button>
+        <p id="error-message" style="color: #dc2626; margin-top: 8px; display: none;"></p>
         <div class="login-link" style="margin-top: 15px; text-align: center;">
           Sudah punya akun? <a href="index.html" style="font-weight: 600; color: var(--primary); text-decoration: none;">Login</a>
         </div>
       </form>
 
       <!-- Google Sign-Up Button below the form with Google logo -->
-      <button id="google-signup-btn" type="button" aria-label="Sign up with Google">
-        <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <button id="google-signup-btn" type="button" aria-label="Sign up with Google" class="google-btn">
+        <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="google-icon">
           <path fill="#4285F4" d="M533.5 278.4c0-17.4-1.5-34.1-4.3-50.4H272v95.5h146.9c-6.3 34-25.3 62.8-54.1 82v68h87.4c51-47 80.3-116 80.3-195.1z"/>
           <path fill="#34A853" d="M272 544.3c73.7 0 135.6-24.4 180.8-66.1l-87.4-68c-24.3 16.3-55.4 26-93.4 26-71.7 0-132.5-48.3-154.3-113.1H27.6v70.9c45.1 89.1 137.3 150.3 244.4 150.3z"/>
           <path fill="#FBBC05" d="M117.7 323.1c-10.7-31.7-10.7-65.9 0-97.6v-70.9H27.6c-38.6 75.3-38.6 164.7 0 240l90.1-71.5z"/>

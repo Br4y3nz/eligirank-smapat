@@ -1,0 +1,85 @@
+<nav class="sidebar" role="navigation" aria-label="Main sidebar navigation" id="sidebar">
+    <header class="logo-details">
+        <div class="sidebar-logo" style="display: flex; align-items: center; gap: 8px;">
+            <img src="Assets/Logo-smapat.png" alt="SMA Negeri 4 Parepare Logo" style="width: 40px; height: auto;" />
+            <div class="logo_name">EligiRank SMAPAT</div>
+        </div>
+        <button id="sidebar-toggle" class="btn bx bx-menu-alt-left" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebar-menu"></button>
+    </header>
+    <ul class="nav-list" id="sidebar-menu">
+        <li class="search-item">
+            <a class="search-link" href="#" aria-label="Search">
+                <i class="bx bx-search" aria-hidden="true"></i>
+                <input type="text" id="search-input" name="search-input" placeholder="Search..." aria-label="Search input" />
+            </a>
+            <span class="tooltip">Search</span>
+        </li>
+        <li>
+            <a href="dashboard.html">
+                <i class="bx bx-grid-alt" aria-hidden="true"></i>
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li>
+        <li>
+            <a href="ranking.html">
+                <i class="bx bx-bar-chart" aria-hidden="true"></i>
+                <span class="links_name">Ranking</span>
+            </a>
+            <span class="tooltip">Ranking</span>
+        </li>
+        <li>
+            <a href="prestasi.html">
+                <i class="bx bx-trophy" aria-hidden="true"></i>
+                <span class="links_name">Prestasi</span>
+            </a>
+            <span class="tooltip">Prestasi</span>
+        </li>
+        <li>
+            <a href="organisasi.html">
+                <i class="bx bx-pie-chart-alt-2" aria-hidden="true"></i>
+                <span class="links_name">Organisasi</span>
+            </a>
+            <span class="tooltip">Organisasi</span>
+        </li>
+        <li>
+            <a href="data-siswa.html">
+                <i class="bx bx-folder" aria-hidden="true"></i>
+                <span class="links_name">Data Siswa</span>
+            </a>
+            <span class="tooltip">Data Siswa</span>
+        </li>
+        <li>
+            <a href="guru-staff.html">
+                <i class="bx bx-group" aria-hidden="true"></i>
+                <span class="links_name">Guru & Staff</span>
+            </a>
+            <span class="tooltip">Guru & Staff</span>
+        </li>
+        <li>
+            <a href="akun.html">
+                <i class="bx bx-cog" aria-hidden="true"></i>
+                <span class="links_name">Pengaturan</span>
+            </a>
+            <span class="tooltip">Pengaturan</span>
+        </li>
+
+        <li id="logged-in-menu" class="profile" style="display: none;" role="region" aria-label="User profile">
+            <div class="profile-details">
+                <div class="name" id="username" tabindex="0"></div>
+                <div class="job" id="role" tabindex="0"></div>
+            </div>
+            <button aria-label="Log out" id="log_out" class="bx bx-log-out"></button>
+            <span class="tooltip" id="logout-tooltip">Log out</span>
+        </li>
+    </ul>
+    <div class="bottom-profile">
+        <li id="logged-out-menu" class="search-item" role="region" aria-label="Login menu">
+            <a href="index.html" id="log_in" class="search-link" role="button" aria-label="Login">
+                <i class="bx bx-log-in" aria-hidden="true"></i>
+                <span class="search-text">Login</span>
+            </a>
+            <span class="tooltip">Login</span>
+        </li>
+    </div>
+</nav>
