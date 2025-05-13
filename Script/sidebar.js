@@ -1,11 +1,11 @@
-import supabase from '../Supabase/client.js';
+import supabase from '../supabase/client.js';
 
 export function initializeSidebar() {
     console.log("initializeSidebar called");
     const sidebar = document.querySelector(".sidebar");
     const closeBtn = document.querySelector("#sidebar-toggle");
     const loggedInMenu = document.getElementById("logged-in-menu");
-    const loggedOutMenu = document.getElementById("logged-out-menu");
+    // Duplicate declaration removed
     const usernameElem = document.getElementById("username");
     const roleElem = document.getElementById("role");
     const logoutBtn = document.getElementById("log_out");
@@ -16,6 +16,19 @@ export function initializeSidebar() {
     if (!sidebar || !closeBtn) {
         console.error("Sidebar or close button not found in DOM");
         return;
+    }
+
+    const loggedOutMenu = document.getElementById("logged-out-menu");
+    const loginLink = document.getElementById("log_in");
+
+    if (loginLink) {
+        loginLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Implement your login logic here, e.g., show login modal or redirect
+            console.log("Login link clicked");
+            // Example: redirect to login page
+            window.location.href = "index.html";
+        });
     }
 
     function toggleVisibility(element, show) {
