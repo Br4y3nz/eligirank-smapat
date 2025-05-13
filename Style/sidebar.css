@@ -364,83 +364,111 @@ li.search-item > a.search-link i.bx-search {
 /* Profile section */
 .sidebar li.profile {
     position: fixed;
-    height: 80px;
-    width: 250px;
-    left: 0;
     bottom: 0;
-    padding: 10px 14px;
-    background: #E2E8F0; /* Light gray background card */
-    border-radius: 0 0 12px 0;
+    left: 0;
+    height: 50px;
+    width: 78px;
+    background-color: #F1F5F9;
+    border-top: 1px solid #E2E8F0;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: center;
+    transition: width 0.5s ease-in-out;
+    box-sizing: border-box;
+    border-radius: 0 0 12px 0;
+    overflow: hidden;
+}
+
+.sidebar.open li.profile {
+    width: 250px;
+    justify-content: flex-start;
+    padding: 0 16px;
     gap: 12px;
-    box-sizing: border-box;
-    z-index: 10;
-    box-shadow: none;
 }
 
-/* Logged-out login box container */
-.sidebar .nav-list li#logged-out-menu {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-}
-
-.sidebar.open .nav-list li#logged-out-menu a {
-    justify-content: center !important;
-    padding-left: 0 !important;
-    gap: 8px;
-}
-
-.sidebar.open .nav-list li#logged-out-menu a i {
-    position: static !important;
-    width: auto !important;
-    height: auto !important;
-    line-height: normal !important;
-    margin-right: 8px;
-}
-
-/* Force profile image to exactly 50x50 */
 .sidebar li.profile img#profile-img {
-    height: 50px !important;
-    width: 50px !important;
-    object-fit: cover;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
-    border: 2px solid #2563EB; /* Bright blue border */
-    box-sizing: border-box;
+    object-fit: cover;
+    border: 2px solid #2563EB;
+    transition: all 0.3s ease-in-out;
 }
 
 .sidebar li.profile .profile-details {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
-    color: #1E293B;
-    font-weight: 600;
+    line-height: 1.2;
+    transition: all 0.3s ease-in-out;
 }
 
-.sidebar li.profile .profile-details .name {
-    font-size: 16px;
+.sidebar.open li.profile .profile-details {
+    display: flex;
 }
 
-.sidebar li.profile .profile-details .job {
+.sidebar li.profile .name {
     font-size: 14px;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.sidebar li.profile .job {
+    font-size: 12px;
     color: #475569;
 }
 
-/* Logout button */
 .sidebar .profile #log_out {
+    display: none;
     background: transparent;
-    color: #DC2626; /* Tailwind red-600 */
-    font-size: 24px;
+    color: #DC2626;
+    font-size: 22px;
     cursor: pointer;
     border: none;
     outline: none;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease-in-out;
+    margin-left: auto;
+}
+
+.sidebar.open .profile #log_out {
+    display: block;
 }
 
 .sidebar .profile #log_out:hover {
     color: #B91C1C; /* Darker red */
+}
+
+/* Tooltip on avatar when sidebar is closed */
+.sidebar li.profile .tooltip {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #1E293B;
+    color: #F8FAFC;
+    padding: 6px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 100;
+}
+
+.sidebar.open li.profile .tooltip {
+    display: none;
+}
+
+.sidebar li.profile:hover .tooltip {
+    opacity: 1;
+}
+
+/* Optional: Add hover animation for profile image */
+.sidebar li.profile img#profile-img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
 }
 
 /* Sidebar menu text */
