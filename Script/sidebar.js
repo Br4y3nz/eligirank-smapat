@@ -31,6 +31,19 @@ export function initializeSidebar() {
         });
     }
 
+    // Logout button event listener
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error("Logout error:", error);
+            } else {
+                localStorage.removeItem("rememberMe");
+                window.location.href = "index.html";
+            }
+        });
+    }
+
     function toggleVisibility(element, show) {
         if (!element) return;
         element.style.display = show ? "" : "none";
