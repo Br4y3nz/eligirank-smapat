@@ -238,7 +238,7 @@ li.search-item > a.search-link {
     align-items: center;
     justify-content: center;
     height: 50px;
-    width: 50px;
+    width: 50px; /* revert to 50px for closed state */
     border-radius: 12px;
     background: #FFFFFF; /* White */
     color: #1E293B;
@@ -381,142 +381,24 @@ li.search-item > a.search-link i.bx-search {
 }
 
 /* Logged-out login box container */
-#logged-out-menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 78px;
-    height: 50px;
-    background-color: #F1F5F9;
-    border-top: 1px solid #E2E8F0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: width 0.5s ease;
-    overflow: hidden;
-    cursor: pointer;
-    border-radius: 0 0 12px 0;
-    z-index: 10;
-    box-sizing: border-box;
-    padding-left: 14px;
-    padding-right: 14px;
-}
-
-.sidebar.open #logged-out-menu {
-    width: 222px;
-    padding-left: 20px;
-    padding-right: 20px;
-    justify-content: flex-start;
-}
-
-#logged-out-menu a {
-    border-radius: 12px;
-    transition: background-color 0.3s ease;
-}
-
-#logged-out-menu a:hover {
-    background-color: #E0E7FF; /* Soft indigo blue hover */
-    border-radius: 12px;
-}
-
-.sidebar.open #logged-out-menu {
-    width: 222px;
-    padding-left: 20px;
-    padding-right: 20px;
-    justify-content: flex-start;
-}
-
-#logged-out-menu a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: #1E293B;
-    font-weight: 600;
-    font-size: 16px;
+.sidebar .nav-list li#logged-out-menu {
+    position: absolute;
+    bottom: 20px;
     width: 100%;
-    height: 50px;
 }
 
-#logged-out-menu a .login-icon-box {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
+.sidebar.open .nav-list li#logged-out-menu a {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    gap: 8px;
 }
 
-#logged-out-menu a .login-icon-box i {
-    font-size: 24px;
-    color: #475569;
-    transition: color 0.3s ease;
-}
-
-#logged-out-menu a:hover .login-icon-box i {
-    color: #2563EB;
-}
-
-#logged-out-menu a .login-text-box {
-    display: none;
-    white-space: nowrap;
-}
-
-.sidebar.open #logged-out-menu a .login-text-box {
-    display: block;
-}
-
-/* Fix alignment of 50x50 box in closed state */
-.sidebar:not(.open) #logged-out-menu {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 14px; /* align with other boxes */
-}
-
-.sidebar.open #logged-out-menu {
-    width: 222px;
-    padding-left: 10px;
-    justify-content: flex-start;
-}
-
-#logged-out-menu a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: #1E293B;
-    font-weight: 600;
-    font-size: 16px;
-    width: 100%;
-    height: 50px;
-}
-
-#logged-out-menu a .login-icon-box {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#logged-out-menu a .login-icon-box i {
-    font-size: 24px;
-    color: #475569;
-    transition: color 0.3s ease;
-}
-
-#logged-out-menu a:hover .login-icon-box i {
-    color: #2563EB;
-}
-
-#logged-out-menu a .login-text-box {
-    display: none;
-    white-space: nowrap;
-}
-
-.sidebar.open #logged-out-menu a .login-text-box {
-    display: block;
+.sidebar.open .nav-list li#logged-out-menu a i {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    line-height: normal !important;
+    margin-right: 8px;
 }
 
 /* Force profile image to exactly 50x50 */
@@ -567,7 +449,9 @@ li.search-item > a.search-link i.bx-search {
     overflow: hidden;
     text-overflow: ellipsis;
     opacity: 1;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, width 0.5s ease-in-out;
+    width: auto;
+    display: inline-block;
 }
 
 .sidebar:not(.open) li a .links_name {
@@ -577,24 +461,6 @@ li.search-item > a.search-link i.bx-search {
     pointer-events: none;
     transition: opacity 0.5s ease-in-out, width 0.5s ease-in-out;
     white-space: nowrap;
-    display: none;
-}
-
-/* Sidebar menu text */
-.sidebar li a .links_name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    opacity: 1;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
-
-.sidebar:not(.open) li a .links_name {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    pointer-events: none;
-    transition: opacity 0.5s ease-in-out, width 0.5s ease-in-out;
-    white-space: nowrap;
-    display: none;
+    visibility: hidden;
+    display: inline-block;
 }
