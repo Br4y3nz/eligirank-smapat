@@ -1,19 +1,12 @@
 <nav class="sidebar" role="navigation" aria-label="Main sidebar navigation" id="sidebar">
     <header class="logo-details">
-        <div class="sidebar-logo" style="display: flex; align-items: center; gap: 8px;">
-            <img src="Assets/Logo-smapat.png" alt="SMA Negeri 4 Parepare Logo" style="width: 40px; height: auto;" />
+        <div class="sidebar-logo">
+            <img src="Assets/Logo-smapat.png" alt="SMA Negeri 4 Parepare Logo" />
             <div class="logo_name">EligiRank SMAPAT</div>
         </div>
         <button id="sidebar-toggle" class="btn bx bx-menu-alt-left" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebar-menu"></button>
     </header>
     <ul class="nav-list" id="sidebar-menu">
-        <li class="search-item">
-            <a class="search-link" href="#" aria-label="Search">
-                <i class="bx bx-search" aria-hidden="true"></i>
-                <input type="text" id="search-input" name="search-input" placeholder="Search..." aria-label="Search input" />
-            </a>
-            <span class="tooltip">Search</span>
-        </li>
         <li>
             <a href="dashboard.html">
                 <i class="bx bx-grid-alt" aria-hidden="true"></i>
@@ -73,13 +66,14 @@
             <span class="tooltip" id="logout-tooltip">Log out</span>
         </li>
     </ul>
-    <div class="bottom-profile">
-        <li id="logged-out-menu" class="search-item" role="region" aria-label="Login menu">
-            <a href="index.html" id="log_in" class="search-link" role="button" aria-label="Login">
+    <div id="logged-out-menu" class="bottom-profile" role="region" aria-label="Login menu">
+        <a href="index.html" id="log_in" class="search-link" role="button" aria-label="Login">
+            <div class="login-icon-box">
                 <i class="bx bx-log-in" aria-hidden="true"></i>
+            </div>
+            <div class="login-text-box">
                 <span class="search-text">Login</span>
-            </a>
-            <span class="tooltip">Login</span>
-        </li>
-    </div>
+            </div>
+        </a>
+        </div>
 </nav>
