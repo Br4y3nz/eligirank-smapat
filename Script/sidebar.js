@@ -80,6 +80,7 @@ export function initializeSidebar() {
         }
 
         const { data: sessionData } = await supabase.auth.getSession();
+        console.log("updateUserMenuDisplay sessionData:", sessionData);
         const session = sessionData?.session;
 
         if (session) {
