@@ -82,8 +82,10 @@ export function initializeSidebar() {
         const { data: sessionData } = await supabase.auth.getSession();
         console.log("updateUserMenuDisplay sessionData:", sessionData);
         const session = sessionData?.session;
+        console.log("Session object:", session);
 
         if (session) {
+            console.log("User is logged in, showing logged-in menu");
             toggleVisibility(loggedInMenu, true);
             toggleVisibility(loggedOutMenu, false);
 
