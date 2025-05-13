@@ -178,18 +178,6 @@ export function initializeSidebar() {
     supabase.auth.onAuthStateChange((_event, session) => {
         updateUserMenuDisplay();
     });
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", async () => {
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-                console.error("Logout error:", error);
-            } else {
-                localStorage.removeItem("rememberMe");
-                window.location.href = "index.html";
-            }
-        });
-    } else {
-        console.warn("Logout button not found");
-    }
 }
+
+window.initializeSidebar = initializeSidebar;
