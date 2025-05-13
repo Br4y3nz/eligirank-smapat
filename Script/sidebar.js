@@ -154,7 +154,12 @@ export function initializeSidebar() {
         });
     }
 
-    supabase.auth.getSession().then(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+        updateUserMenuDisplay();
+    });
+
+    // Listen to auth state changes to update menu display accordingly
+    supabase.auth.onAuthStateChange((_event, session) => {
         updateUserMenuDisplay();
     });
 
