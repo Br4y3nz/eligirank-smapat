@@ -537,7 +537,7 @@ li.search-item > a.search-link i.bx-search {
 .sidebar.open #logged-out-menu {
     width: 250px;
     justify-content: flex-start;
-    padding-left: 12px; /* Adjusted from 20px to 12px to move more left */
+    padding-left: 16px; /* Adjusted to match logged-in menu padding */
     background-color: #F1F5F9;
     border-top: 1px solid #E2E8F0;
 }
@@ -629,11 +629,11 @@ li.search-item > a.search-link i.bx-search {
 }
 
 .sidebar.open #logged-out-menu a#log_in {
-    width: 250px; /* Expand width to 250px */
+    width: 222px; /* Expand width */
     height: 50px;
-    justify-content: flex-start;
-    padding-left: 40px; /* Reduced padding-left for better alignment */
-    margin: 0 auto 12px auto;
+    justify-content: center; /* Center icon and span horizontally */
+    padding-left: 0; /* Remove left padding */
+    margin: 0 0 12px 0; /* Remove auto margin to align left */
     border-radius: 12px;
     background-color: #F3F4F6;
     color: #475569;
@@ -643,33 +643,20 @@ li.search-item > a.search-link i.bx-search {
 }
 
 .sidebar.open #logged-out-menu a#log_in i {
-    width: 50px;
-    height: 50px;
+    position: static !important; /* Remove absolute positioning */
+    width: auto !important;
+    height: auto !important;
+    line-height: normal !important;
+    text-align: center !important;
     font-size: 22px;
     color: #475569;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar.open #logged-out-menu a#log_in .links_name {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 15px;
-    font-weight: 400;
-    color: #475569;
-}
-.sidebar.open #logged-out-menu a#log_in:hover {
-    width: 222px; /* Shrink width on hover */
 }
 
 #logged-out-menu a#log_in:hover {
     background-color: #E0E7FF; /* Soft indigo */
     color: #111827; /* Darker text */
-    border-left: none;
-    box-shadow: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border-left: 4px solid #2563EB; /* Bright blue left border on hover */
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.5); /* Soft blue glow */
+    transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease, box-shadow 0.3s ease;
 }

@@ -58,20 +58,20 @@
         </li>
 
         <li id="logged-in-menu" class="profile" style="display: none;" role="region" aria-label="User profile">
-            <div class="profile-details">
-                <img src="Assets/profile.jpg" alt="Profile Picture" class="profile-picture" />
-                <div class="name" id="username" tabindex="0"></div>
-                <div class="job" id="role" tabindex="0"></div>
-            </div>
-            <button aria-label="Log out" id="log_out" class="bx bx-log-out"></button>
-            <span class="tooltip" id="logout-tooltip">Log out</span>
+          <img src="" alt="Profile Picture" id="profile-img" />
+          <div class="profile-info">
+            <span class="name" id="username">User</span>
+            <span class="job" id="role">Role</span>
+          </div>
+          <button id="log_out" class="bx bx-log-out" aria-label="Log out"></button>
+          <span class="tooltip" id="profile-tooltip">User</span>
         </li>
         <li id="logged-out-menu" role="region" aria-label="Login menu">
-            <a href="index.html">
-                <i class="bx bx-log-in" aria-hidden="true"></i>
-                <span class="links_name">Login</span>
-            </a>
-            <span class="tooltip">Login</span>
+          <a href="index.html" id="log_in">
+            <i class="bx bx-log-in" aria-hidden="true"></i>
+            <span class="links_name">Login</span>
+          </a>
+          <span class="tooltip">Login</span>
         </li>
     </ul>
 </nav>
