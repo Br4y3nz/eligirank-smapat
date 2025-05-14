@@ -1,11 +1,10 @@
 import supabase from '../Supabase/client.js';
 
 export function initializeSidebar() {
-    console.log("initializeSidebar called");
+    
     const sidebar = document.querySelector(".sidebar");
     const closeBtn = document.querySelector("#sidebar-toggle");
     const loggedInMenu = document.getElementById("logged-in-menu");
-    // Duplicate declaration removed
     const usernameElem = document.getElementById("username");
     const roleElem = document.getElementById("role");
     const logoutBtn = document.getElementById("log_out");
@@ -93,12 +92,9 @@ export function initializeSidebar() {
         }
 
         const { data: sessionData } = await supabase.auth.getSession();
-        console.log("updateUserMenuDisplay sessionData:", sessionData);
         const session = sessionData?.session;
-        console.log("Session object:", session);
 
         if (session) {
-            console.log("User is logged in, showing logged-in menu");
             toggleVisibility(loggedInMenu, true);
             toggleVisibility(loggedOutMenu, false);
 

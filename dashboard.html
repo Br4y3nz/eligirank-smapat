@@ -26,14 +26,15 @@
                     document.getElementById('sidebar-container').innerHTML = html;
 
                     // Use event delegation to handle sidebar toggle button click
-                    document.addEventListener('click', function (e) {
-                        if (e.target && e.target.id === 'sidebar-toggle') {
-                            const sidebar = document.querySelector('.sidebar');
-                            if (sidebar) {
-                                sidebar.classList.toggle('open');
-                            }
-                        }
-                    });
+                    // Removed this event delegation to avoid conflict with sidebar.js toggle logic
+                    // document.addEventListener('click', function (e) {
+                    //     if (e.target && e.target.id === 'sidebar-toggle') {
+                    //         const sidebar = document.querySelector('.sidebar');
+                    //         if (sidebar) {
+                    //             sidebar.classList.toggle('open');
+                    //         }
+                    //     }
+                    // });
 
                     // After loading sidebar, initialize sidebar.js functions if needed
                     if (typeof initializeSidebar === 'function') {
