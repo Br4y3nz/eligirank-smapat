@@ -17,43 +17,6 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <script>
-        // Dynamically load sidebar component HTML into sidebar-container
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('sidebar.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('sidebar-container').innerHTML = html;
-
-                    // Use event delegation to handle sidebar toggle button click
-                    // Removed this event delegation to avoid conflict with sidebar.js toggle logic
-                    // document.addEventListener('click', function (e) {
-                    //     if (e.target && e.target.id === 'sidebar-toggle') {
-                    //         const sidebar = document.querySelector('.sidebar');
-                    //         if (sidebar) {
-                    //             sidebar.classList.toggle('open');
-                    //         }
-                    //     }
-                    // });
-
-                    // After loading sidebar, initialize sidebar.js functions if needed
-                    if (typeof initializeSidebar === 'function') {
-                        initializeSidebar();
-                    }
-
-                    // Highlight active page link based on current URL
-                    const currentPath = window.location.pathname.split('/').pop();
-                    const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
-                    sidebarLinks.forEach(link => {
-                        if (link.getAttribute('href') === currentPath) {
-                            link.classList.add('active');
-                        }
-                    });
-                })
-                .catch(err => console.error('Failed to load sidebar:', err));
-        });
-    </script>
-
     <!-- Role selection modal -->
     <div id="role-modal" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
         <div class="modal-content">
@@ -84,6 +47,51 @@
             </form>
         </div>
     </div>
+
+    <div>
+        <div>
+            <!-- Username and Phone Number modal -->
+            <div id="user-info-modal" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="user-info-modal-title">
+                <div class="modal-content">
+                    <button class="close-button" id="close-user-info-modal" aria-label="Close user info modal">&times;</button>
+                    <h2 id="user-info-modal-title">Complete Your Profile</h2>
+                    <form id="user-info-form">
+                        <label for="username-input">Username:</label>
+                        <input type="text" id="username-input" name="username" required />
+                        <label for="phone-input">Phone Number:</label>
+                        <input type="tel" id="phone-input" name="phone" required />
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dynamically load sidebar component HTML into sidebar-container
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('sidebar.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('sidebar-container').innerHTML = html;
+
+                    // After loading sidebar, initialize sidebar.js functions if needed
+                    if (typeof initializeSidebar === 'function') {
+                        initializeSidebar();
+                    }
+
+                    // Highlight active page link based on current URL
+                    const currentPath = window.location.pathname.split('/').pop();
+                    const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
+                    sidebarLinks.forEach(link => {
+                        if (link.getAttribute('href') === currentPath) {
+                            link.classList.add('active');
+                        }
+                    });
+                })
+                .catch(err => console.error('Failed to load sidebar:', err));
+        });
+    </script>
 
     <!-- Username and Phone Number modal -->
     <div id="user-info-modal" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="user-info-modal-title">

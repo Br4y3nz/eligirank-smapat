@@ -111,6 +111,16 @@ export function initializeSidebar() {
             const profileData = await fetchUserData(session);
             if (profileData && usernameElem) {
                 usernameElem.textContent = profileData.username || "User";
+
+                // Show modal if username or phone missing
+                if (!profileData.username || !profileData.phone) {
+                    const userInfoModal = document.getElementById("user-info-modal");
+                    const overlay = document.getElementById("overlay");
+                    if (userInfoModal && overlay) {
+                        userInfoModal.style.display = "block";
+                        overlay.style.display = "block";
+                    }
+                }
             }
 
             const roleData = await fetchUserRole(session);
@@ -122,11 +132,13 @@ export function initializeSidebar() {
                     const roleText = roleData[0].role;
                     const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1).toLowerCase();
                     roleElem.innerHTML = `<span class="role-badge">${capitalizedRole}</span>`;
+                    roleElem.style.cursor = "default";
                 } else {
                     roleElem.innerHTML = '<span class="role-badge">Select role</span>';
                     roleElem.style.cursor = "pointer";
                 }
             }
+
         } else {
             toggleVisibility(loggedInMenu, false);
             toggleVisibility(loggedOutMenu, true);
@@ -134,6 +146,121 @@ export function initializeSidebar() {
                 logoutBtn.style.display = "none";
             }
         }
+    }
+
+    // Add click event to roleElem to open role modal if "Select role"
+    if (roleElem) {
+        roleElem.addEventListener("click", () => {
+            if (roleElem.textContent.trim() === "Select role") {
+                const roleModal = document.getElementById("role-modal");
+                const overlay = document.getElementById("overlay");
+                if (roleModal && overlay) {
+                    roleModal.style.display = "block";
+                    overlay.style.display = "block";
+                }
+            }
+        });
+    }
+
+    // Modal close buttons
+    const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
+    const closeRoleModalBtn = document.getElementById("close-role-modal");
+    const userInfoModal = document.getElementById("user-info-modal");
+    const roleModal = document.getElementById("role-modal");
+    const overlay = document.getElementById("overlay");
+
+    if (closeUserInfoModalBtn) {
+        closeUserInfoModalBtn.onclick = () => {
+            if (userInfoModal && overlay) {
+                userInfoModal.style.display = "none";
+                overlay.style.display = "none";
+            }
+        };
+    }
+
+    if (closeRoleModalBtn) {
+        closeRoleModalBtn.onclick = () => {
+            if (roleModal && overlay) {
+                roleModal.style.display = "none";
+                overlay.style.display = "none";
+            }
+        };
+    }
+
+    // Show fields based on selected role in role modal
+    const roleInputs = document.querySelectorAll('input[name="role"]');
+    roleInputs.forEach(input => {
+        input.addEventListener("change", () => {
+            const studentFields = document.getElementById("student-fields");
+            const teacherFields = document.getElementById("teacher-fields");
+            if (studentFields && teacherFields) {
+                studentFields.style.display = input.value === "student" ? "block" : "none";
+                teacherFields.style.display = input.value === "teacher" ? "block" : "none";
+            }
+        });
+    });
+
+    // Submit user info form
+    const userInfoForm = document.getElementById("user-info-form");
+    if (userInfoForm) {
+        userInfoForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const usernameInput = document.getElementById("username-input");
+            const phoneInput = document.getElementById("phone-input");
+            if (!usernameInput || !phoneInput) return;
+
+            const username = usernameInput.value.trim();
+            const phone = phoneInput.value.trim();
+
+            const { data: { session } } = await supabase.auth.getSession();
+
+            const { error } = await supabase.from("profiles").update({
+                username, phone
+            }).eq("id", session.user.id);
+
+            if (!error) {
+                alert("Profile updated!");
+                location.reload();
+            } else {
+                alert("Error saving profile.");
+                console.error(error);
+            }
+        });
+    }
+
+    // Submit role form
+    const roleForm = document.getElementById("role-form");
+    if (roleForm) {
+        roleForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const role = document.querySelector('input[name="role"]:checked')?.value;
+            if (!role) {
+                alert("Please select a role.");
+                return;
+            }
+
+            const { data: { session } } = await supabase.auth.getSession();
+
+            const updateData = { role };
+
+            if (role === "student") {
+                updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
+                updateData.nis = document.getElementById("nis")?.value.trim() || null;
+            } else if (role === "teacher") {
+                updateData.nik = document.getElementById("nik")?.value.trim() || null;
+                updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
+            }
+
+            const { error } = await supabase.from("profiles").update(updateData).eq("id", session.user.id);
+
+            if (!error) {
+                alert("Role saved!");
+                location.reload();
+            } else {
+                alert("Error saving role.");
+                console.error(error);
+            }
+        });
     }
 
     closeBtn.addEventListener("click", () => {
@@ -189,4 +316,106 @@ export function initializeSidebar() {
     });
 }
 
+// Removed duplicate modal logic and event listeners from global scope
 window.initializeSidebar = initializeSidebar;
+
+// Modal close buttons
+const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
+const closeRoleModalBtn = document.getElementById("close-role-modal");
+const userInfoModal = document.getElementById("user-info-modal");
+const roleModal = document.getElementById("role-modal");
+const overlay = document.getElementById("overlay");
+
+if (closeUserInfoModalBtn) {
+    closeUserInfoModalBtn.onclick = () => {
+        if (userInfoModal && overlay) {
+            userInfoModal.style.display = "none";
+            overlay.style.display = "none";
+        }
+    };
+}
+
+if (closeRoleModalBtn) {
+    closeRoleModalBtn.onclick = () => {
+        if (roleModal && overlay) {
+            roleModal.style.display = "none";
+            overlay.style.display = "none";
+        }
+    };
+}
+
+// Show fields based on selected role in role modal
+const roleInputs = document.querySelectorAll('input[name="role"]');
+roleInputs.forEach(input => {
+    input.addEventListener("change", () => {
+        const studentFields = document.getElementById("student-fields");
+        const teacherFields = document.getElementById("teacher-fields");
+        if (studentFields && teacherFields) {
+            studentFields.style.display = input.value === "student" ? "block" : "none";
+            teacherFields.style.display = input.value === "teacher" ? "block" : "none";
+        }
+    });
+});
+
+// Submit user info form
+const userInfoForm = document.getElementById("user-info-form");
+if (userInfoForm) {
+    userInfoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const usernameInput = document.getElementById("username-input");
+        const phoneInput = document.getElementById("phone-input");
+        if (!usernameInput || !phoneInput) return;
+
+        const username = usernameInput.value.trim();
+        const phone = phoneInput.value.trim();
+
+        const { data: { session } } = await supabase.auth.getSession();
+
+        const { error } = await supabase.from("profiles").update({
+            username, phone
+        }).eq("id", session.user.id);
+
+        if (!error) {
+            alert("Profile updated!");
+            location.reload();
+        } else {
+            alert("Error saving profile.");
+            console.error(error);
+        }
+    });
+}
+
+// Submit role form
+const roleForm = document.getElementById("role-form");
+if (roleForm) {
+    roleForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const role = document.querySelector('input[name="role"]:checked')?.value;
+        if (!role) {
+            alert("Please select a role.");
+            return;
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+
+        const updateData = { role };
+
+        if (role === "student") {
+            updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
+            updateData.nis = document.getElementById("nis")?.value.trim() || null;
+        } else if (role === "teacher") {
+            updateData.nik = document.getElementById("nik")?.value.trim() || null;
+            updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
+        }
+
+        const { error } = await supabase.from("profiles").update(updateData).eq("id", session.user.id);
+
+        if (!error) {
+            alert("Role saved!");
+            location.reload();
+        } else {
+            alert("Error saving role.");
+            console.error(error);
+        }
+    });
+};
