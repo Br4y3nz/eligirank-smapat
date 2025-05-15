@@ -1,4 +1,4 @@
-    /* Reset and base styles */
+        /* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -509,10 +509,57 @@ li.search-item > a.search-link i.bx-search {
     transform: translateX(0);
 }
 
+/* Show only profile picture in logged-in menu when sidebar is closed */
 .sidebar:not(.open) #logged-in-menu {
-    display: none; /* Hide when sidebar is closed */
-    opacity: 0;
-    transform: translateX(-20px);
+    display: flex; /* Show container */
+    opacity: 1;
+    transform: translateX(0);
+    justify-content: center;
+    padding: 0 8px;
+}
+
+.sidebar:not(.open) #logged-in-menu > *:not(.profile-picture) {
+    display: none; /* Hide all except profile picture */
+}
+
+#logged-in-menu .profile-picture {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #cbd5e1; /* fallback background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#logged-in-menu .profile-picture img#profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+#logged-in-menu .profile-picture .default-user-icon {
+    font-size: 40px;
+    color: #64748b; /* slate-500 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#logged-in-menu .profile-picture img#profile-img:not([src=""]):not([src="null"]) {
+    display: block;
+}
+
+#logged-in-menu .profile-picture img#profile-img[src=""],
+#logged-in-menu .profile-picture img#profile-img[src="null"] {
+    display: none;
 }
 
 /* Logged-out menu */
