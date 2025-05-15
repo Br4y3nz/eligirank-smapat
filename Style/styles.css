@@ -239,7 +239,7 @@ label {
   font-size: 1rem;
   background-color: transparent;
   color: var(--text-dark);
-  border: 2.5px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   border-radius: var(--border-radius);
   cursor: pointer;
   margin-top: 20px;
