@@ -1,4 +1,4 @@
-import supabase from '../Supabase/client.js';
+import supabase from '../supabase/client.js';
 
 export function initializeSidebar() {
     
