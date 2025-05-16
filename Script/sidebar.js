@@ -150,6 +150,7 @@ export function initializeSidebar() {
 
     // Add click event to roleElem to open role modal if "Select Role"
     if (roleElem) {
+        roleElem.style.cursor = "pointer"; // Ensure cursor indicates clickable
         roleElem.addEventListener("click", () => {
             if (roleElem.textContent.trim() === "Select Role") {
                 const roleModal = document.getElementById("role-modal");
