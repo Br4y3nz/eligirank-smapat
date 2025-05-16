@@ -97,8 +97,12 @@
 
                 // New function to check profile completeness and show user info modal
                 async function checkAndShowUserInfoModal() {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (!session) return;
+                    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                    if (!session || sessionError) {
+                        console.error("No session or session error:", sessionError);
+                        alert("User not logged in.");
+                        return;
+                    }
 
                     try {
                         const { data: profileData, error } = await supabase
