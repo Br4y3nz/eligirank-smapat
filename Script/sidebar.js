@@ -148,10 +148,10 @@ export function initializeSidebar() {
         }
     }
 
-    // Add click event to roleElem to open role modal if "Select role"
+    // Add click event to roleElem to open role modal if "Select Role"
     if (roleElem) {
         roleElem.addEventListener("click", () => {
-            if (roleElem.textContent.trim() === "Select role") {
+            if (roleElem.textContent.trim() === "Select Role") {
                 const roleModal = document.getElementById("role-modal");
                 const overlay = document.getElementById("overlay");
                 if (roleModal && overlay) {
@@ -335,7 +335,8 @@ export function initializeSidebar() {
                 return;
             }
 
-            if (profileData && (!profileData.username || !profileData.phone)) {
+            // Also check if username or phone is null or empty string
+            if (profileData && (!profileData.username || profileData.username.trim() === "" || !profileData.phone || profileData.phone.trim() === "")) {
                 const userInfoModal = document.getElementById("user-info-modal");
                 const overlay = document.getElementById("overlay");
                 if (userInfoModal && overlay) {
