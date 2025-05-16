@@ -69,7 +69,9 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import supabase from './Supabase/client.js';
+
         // Dynamically load sidebar component HTML into sidebar-container
         document.addEventListener('DOMContentLoaded', () => {
             fetch('sidebar.html')

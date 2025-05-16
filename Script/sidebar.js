@@ -241,14 +241,27 @@ export function initializeSidebar() {
 
             const { data: { session } } = await supabase.auth.getSession();
 
+            if (!session) {
+                alert("User not logged in.");
+                return;
+            }
+
             const updateData = { role };
 
             if (role === "student") {
-                updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
-                updateData.nis = document.getElementById("nis")?.value.trim() || null;
+                updateData.nisn = document.getElementById("nisn")?.value.trim();
+                updateData.nis = document.getElementById("nis")?.value.trim();
+                if (!updateData.nisn || !updateData.nis) {
+                    alert("Please enter NIS and NISN");
+                    return;
+                }
             } else if (role === "teacher") {
-                updateData.nik = document.getElementById("nik")?.value.trim() || null;
-                updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
+                updateData.nik = document.getElementById("nik")?.value.trim();
+                updateData.nuptk = document.getElementById("nuptk")?.value.trim();
+                if (!updateData.nik || !updateData.nuptk) {
+                    alert("Please enter NIK and NUPTK");
+                    return;
+                }
             }
 
             const { error } = await supabase.from("profiles").update(updateData).eq("id", session.user.id);
@@ -306,7 +319,6 @@ export function initializeSidebar() {
         });
     }
 
-    // Removed checkAndShowUserInfoModal calls and function as it will be moved to dashboard.html
 }
 
 // Removed duplicate modal logic and event listeners from global scope
