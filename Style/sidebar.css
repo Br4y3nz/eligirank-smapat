@@ -548,7 +548,8 @@ li.search-item > a.search-link i.bx-search {
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, width 0.3s ease-in-out;
     overflow: hidden;
     white-space: nowrap;
-    width: 0;
+    width: 78px; /* Set to sidebar closed width */
+    box-sizing: border-box;
 }
 
 .sidebar.open #logged-in-menu {
