@@ -200,33 +200,51 @@ export function initializeSidebar() {
         });
     });
 
-    // Submit user info form
-    const userInfoForm = document.getElementById("user-info-form");
-    if (userInfoForm) {
-        userInfoForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const usernameInput = document.getElementById("username-input");
-            const phoneInput = document.getElementById("phone-input");
-            if (!usernameInput || !phoneInput) return;
+const userInfoForm = document.getElementById("user-info-form");
+if (userInfoForm) {
+  userInfoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-            const username = usernameInput.value.trim();
-            const phone = phoneInput.value.trim();
+    const username = document.getElementById("username-input").value.trim();
+    const phone = document.getElementById("phone-input").value.trim();
 
-            const { data: { session } } = await supabase.auth.getSession();
-
-            const { error } = await supabase.from("profiles").update({
-                username, phone
-            }).eq("id", session.user.id);
-
-            if (!error) {
-                alert("Profile updated!");
-                location.reload();
-            } else {
-                alert("Error saving profile.");
-                console.error(error);
-            }
-        });
+    if (!username || !phone) {
+      alert("Please fill in both username and phone number.");
+      return;
     }
+
+    // Get the logged-in session
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+    if (!session || sessionError) {
+      console.error("Session fetch failed:", sessionError);
+      alert("You're not logged in.");
+      return;
+    }
+
+    const userId = session.user.id;
+
+    // Use upsert to insert/update user profile safely
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({
+        id: userId,
+        username,
+        phone
+      });
+
+    if (error) {
+      console.error("Supabase error during upsert:", error);
+      alert("Failed to save profile. Please try again.");
+      return;
+    }
+
+    alert("Profile updated successfully!");
+    document.getElementById("user-info-modal").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    window.location.reload(); // Refresh to re-fetch sidebar data
+  });
+}
 
     // Submit role form
     const roleForm = document.getElementById("role-form");
