@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="Style/sidebar.css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="Style/role-modal.css" />
+    <link rel="stylesheet" href="style/user-info-modal.css" />
 
 </head>
 
@@ -77,18 +78,53 @@
                     document.getElementById('sidebar-container').innerHTML = html;
 
                     // After loading sidebar, initialize sidebar.js functions if needed
-                    if (typeof initializeSidebar === 'function') {
-                        initializeSidebar();
-                    }
+                if (typeof initializeSidebar === 'function') {
+                    console.log('Initializing sidebar...');
+                    initializeSidebar();
+                    console.log('Sidebar initialized.');
+                }
 
-                    // Highlight active page link based on current URL
-                    const currentPath = window.location.pathname.split('/').pop();
-                    const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
-                    sidebarLinks.forEach(link => {
-                        if (link.getAttribute('href') === currentPath) {
-                            link.classList.add('active');
+                // Highlight active page link based on current URL
+                const currentPath = window.location.pathname.split('/').pop();
+                const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
+                sidebarLinks.forEach(link => {
+                    if (link.getAttribute('href') === currentPath) {
+                        link.classList.add('active');
+                    }
+                });
+
+                // New function to check profile completeness and show user info modal
+                async function checkAndShowUserInfoModal() {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (!session) return;
+
+                    try {
+                        const { data: profileData, error } = await supabase
+                            .from("profiles")
+                            .select("username, phone")
+                            .eq("id", session.user.id)
+                            .maybeSingle();
+
+                        if (error) {
+                            console.error("Error fetching profile:", error);
+                            return;
                         }
-                    });
+
+                        if (!profileData?.username?.trim() || !profileData?.phone?.trim()) {
+                            const userInfoModal = document.getElementById("user-info-modal");
+                            const overlay = document.getElementById("overlay");
+                            if (userInfoModal && overlay) {
+                                userInfoModal.style.display = "block";
+                                overlay.style.display = "block";
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Error checking profile completeness:", err);
+                    }
+                }
+
+                // Call the function after sidebar is loaded and initialized
+                checkAndShowUserInfoModal();
                 })
                 .catch(err => console.error('Failed to load sidebar:', err));
         });

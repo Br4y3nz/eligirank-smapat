@@ -306,48 +306,7 @@ export function initializeSidebar() {
         });
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-        updateUserMenuDisplay();
-        // Also check and show user info modal if needed independently
-        checkAndShowUserInfoModal();
-    });
-
-    // Listen to auth state changes to update menu display accordingly
-    supabase.auth.onAuthStateChange((_event, session) => {
-        updateUserMenuDisplay();
-        checkAndShowUserInfoModal();
-    });
-
-    // New function to check profile completeness and show user info modal
-    async function checkAndShowUserInfoModal() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
-
-        try {
-            const { data: profileData, error } = await supabase
-                .from("profiles")
-                .select("username, phone")
-                .eq("id", session.user.id)
-                .maybeSingle();
-
-            if (error) {
-                console.error("Error fetching profile data:", error);
-                return;
-            }
-
-            // Also check if username or phone is null or empty string
-            if (profileData && (!profileData.username || profileData.username.trim() === "" || !profileData.phone || profileData.phone.trim() === "")) {
-                const userInfoModal = document.getElementById("user-info-modal");
-                const overlay = document.getElementById("overlay");
-                if (userInfoModal && overlay) {
-                    userInfoModal.style.display = "block";
-                    overlay.style.display = "block";
-                }
-            }
-        } catch (err) {
-            console.error("Error checking profile completeness:", err);
-        }
-    }
+    // Removed checkAndShowUserInfoModal calls and function as it will be moved to dashboard.html
 }
 
 // Removed duplicate modal logic and event listeners from global scope

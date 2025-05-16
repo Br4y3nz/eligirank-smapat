@@ -1,0 +1,47 @@
+#user-info-modal {
+  z-index: 1201; /* same as role-modal */
+}
+
+#user-info-modal .modal-content {
+  background-color: #F1F5F9;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  font-family: "Poppins", sans-serif;
+}
+
+#user-info-modal label {
+  display: block;
+  font-size: 14px;
+  color: #1E293B;
+  margin-top: 12px;
+}
+
+#user-info-modal input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #CBD5E1;
+  background-color: #FFFFFF;
+  color: #1E293B;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+#user-info-modal button[type="submit"] {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px 0;
+  background-color: #2563EB;
+  border: none;
+  border-radius: 12px;
+  color: #F8FAFC;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#user-info-modal button[type="submit"]:hover {
+  background-color: #1E40AF;
+}
