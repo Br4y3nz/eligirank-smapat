@@ -373,10 +373,33 @@ li.search-item > a.search-link i.bx-search {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: width 0.5s ease-in-out;
+    transition: width 0.3s ease;
     box-sizing: border-box;
     border-radius: 0 0 12px 0;
     overflow: hidden;
+}
+
+.sidebar.open li.profile {
+    width: 250px;
+    justify-content: flex-start;
+    padding: 0 16px;
+    gap: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-info {
+    margin-left: 12px;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+.sidebar:not(.open) .profile-info {
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
 }
 
 .sidebar.open li.profile {
@@ -670,6 +693,37 @@ li.search-item > a.search-link i.bx-search {
     font-size: 15px;
     font-weight: 400;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Role badge styles */
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 999px;
+  color: #fff;
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
+}
+
+.role-admin {
+  background-color: #F87171; /* Soft Red */
+}
+
+.role-student {
+  background-color: #60A5FA; /* Blue */
+}
+
+.role-teacher {
+  background-color: #FBBF24; /* Amber */
+  color: #1F2937; /* Darker text on yellow */
+}
+
+.role-unset {
+  background-color: #94A3B8; /* Gray */
+  cursor: pointer;
 }
 
 #logged-out-menu a#log_in:hover {

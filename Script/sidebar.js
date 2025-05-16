@@ -126,15 +126,15 @@ export function initializeSidebar() {
             const roleData = await fetchUserRole(session);
             if (roleData && roleElem) {
                 if (session.user.id === ADMIN_UID) {
-                    roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
+                    roleElem.innerHTML = '<span class="role-badge role-admin" title="Admin" aria-label="Admin role">Admin</span>';
                     roleElem.style.cursor = "default";
                 } else if (roleData.length === 1 && roleData[0].role) {
-                    const roleText = roleData[0].role;
-                    const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1).toLowerCase();
-                    roleElem.innerHTML = `<span class="role-badge">${capitalizedRole}</span>`;
+                    const roleText = roleData[0].role.toLowerCase();
+                    const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1);
+                    roleElem.innerHTML = `<span class="role-badge role-${roleText}" title="${capitalizedRole}" aria-label="${capitalizedRole} role">${capitalizedRole}</span>`;
                     roleElem.style.cursor = "default";
                 } else {
-                    roleElem.innerHTML = '<span class="role-badge">Select role</span>';
+                    roleElem.innerHTML = '<span class="role-badge role-unset" title="Select Role" aria-label="Select role">Select Role</span>';
                     roleElem.style.cursor = "pointer";
                 }
             }
@@ -308,12 +308,45 @@ export function initializeSidebar() {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
         updateUserMenuDisplay();
+        // Also check and show user info modal if needed independently
+        checkAndShowUserInfoModal();
     });
 
     // Listen to auth state changes to update menu display accordingly
     supabase.auth.onAuthStateChange((_event, session) => {
         updateUserMenuDisplay();
+        checkAndShowUserInfoModal();
     });
+
+    // New function to check profile completeness and show user info modal
+    async function checkAndShowUserInfoModal() {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        try {
+            const { data: profileData, error } = await supabase
+                .from("profiles")
+                .select("username, phone")
+                .eq("id", session.user.id)
+                .maybeSingle();
+
+            if (error) {
+                console.error("Error fetching profile data:", error);
+                return;
+            }
+
+            if (profileData && (!profileData.username || !profileData.phone)) {
+                const userInfoModal = document.getElementById("user-info-modal");
+                const overlay = document.getElementById("overlay");
+                if (userInfoModal && overlay) {
+                    userInfoModal.style.display = "block";
+                    overlay.style.display = "block";
+                }
+            }
+        } catch (err) {
+            console.error("Error checking profile completeness:", err);
+        }
+    }
 }
 
 // Removed duplicate modal logic and event listeners from global scope
