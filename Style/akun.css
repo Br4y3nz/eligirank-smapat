@@ -1,10 +1,11 @@
-/* akun.css */
+/* akun.css - improved profile card for logged-in user, matching sidebar style */
 
 body {
-  background-color: #F8FAFC; /* light slate background */
+  background-color: #F8FAFC;
   color: #1E293B;
   font-family: "Poppins", sans-serif;
-  padding: 20px;
+  padding: 0;
+  margin: 0;
 }
 
 .main-content {
@@ -14,49 +15,118 @@ body {
 }
 
 .profile-section {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 720px;
+  margin: 48px auto 0 auto;
+  padding: 0 16px;
 }
 
 .profile-card {
   background-color: #FFFFFF;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  padding: 24px;
-  margin-bottom: 32px;
+  border-radius: 24px;
+  box-shadow: 0 4px 16px rgba(16, 30, 54, 0.07);
+  padding: 32px 24px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-items: stretch;
 }
 
-.profile-card h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #2563EB;
+  object-fit: cover;
+  background: #F1F5F9;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+  transition: transform 0.2s;
+}
+.profile-avatar:hover {
+  transform: scale(1.05);
+}
+
+.username {
+  font-size: 22px;
+  font-weight: 700;
   color: #1E293B;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.profile-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1E293B;
+  margin-bottom: 12px;
+  margin-top: 0;
 }
 
 .form-group {
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
 }
 
 .form-group label {
-  display: block;
   font-size: 14px;
-  color: #475569;
   margin-bottom: 6px;
+  color: #475569;
+  font-weight: 500;
 }
 
 .form-group input {
-  width: 100%;
   padding: 10px 12px;
-  border-radius: 8px;
   border: 1px solid #CBD5E1;
-  background-color: #F9FAFB;
+  border-radius: 12px;
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  background-color: #F8FAFC;
+  color: #1E293B;
+  transition: border-color 0.3s;
 }
 
 .form-group input:focus {
   border-color: #2563EB;
   outline: none;
+}
+
+.student-section,
+.teacher-section {
+  background: #F1F5F9;
+  border-radius: 12px;
+  padding: 16px 14px 10px 14px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(16,30,54,0.03);
+}
+
+.student-section h3,
+.teacher-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2563EB;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .profile-card {
+    padding: 18px 6px 16px 6px;
+    border-radius: 16px;
+    gap: 18px;
+  }
+  .profile-avatar {
+    width: 72px;
+    height: 72px;
+  }
+  .username {
+    font-size: 17px;
+  }
 }
 
 .btn-primary {
@@ -67,7 +137,7 @@ body {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .btn-primary:hover {
@@ -81,6 +151,7 @@ body {
   font-weight: 600;
   border-radius: 999px;
   color: #fff;
+  background: #2563EB;
   white-space: nowrap;
   text-align: center;
   margin-bottom: 16px;
