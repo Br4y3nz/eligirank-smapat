@@ -130,7 +130,18 @@ async function updateUserMenuDisplay() {
                 if (profileData.avatar_url) {
                     const profileImg = document.getElementById("profile-img");
                     if (profileImg) {
-                        profileImg.src = profileData.avatar_url;
+                        // If avatar_url is a bucket path, get public URL from Supabase storage
+                        const { data: publicUrlData, error: publicUrlError } = await supabase.storage
+                            .from('avatars') // replace 'avatars' with your bucket name if different
+                            .getPublicUrl(profileData.avatar_url);
+
+                        if (publicUrlError) {
+                            console.error("Error getting public URL for avatar:", publicUrlError);
+                            profileImg.src = profileData.avatar_url; // fallback to stored value
+                        } else {
+                            profileImg.src = publicUrlData.publicUrl;
+                        }
+                        profileImg.style.display = "block";
                     }
                 }
             }
