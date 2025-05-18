@@ -1,4 +1,4 @@
-import supabase from '../Supabase/client.js';
+    import supabase from '../Supabase/client.js';
 
 export function initializeSidebar() {
     
@@ -486,48 +486,7 @@ if (userInfoForm) {
                 console.error(error);
             }
         });
-    }
-
-    closeBtn.addEventListener("click", () => {
-        const isOpen = sidebar.classList.toggle("open");
-        updateUserMenuDisplay();
-
-        // Update profile tooltip text and visibility based on sidebar state
-        const profileTooltip = document.getElementById("profile-tooltip");
-        const username = usernameElem ? usernameElem.textContent : "";
-        if (profileTooltip) {
-            if (!isOpen && username) {
-                profileTooltip.textContent = username;
-                profileTooltip.style.display = "block";
-            } else {
-                profileTooltip.style.display = "none";
-            }
-        }
-
-        closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-
-        closeBtn.style.transition = "opacity 0.3s ease";
-        closeBtn.style.opacity = "0";
-
-        setTimeout(() => {
-            if (sidebar.classList.contains("open")) {
-                closeBtn.classList.remove("bx-menu");
-                closeBtn.classList.add("bx-menu-alt-right");
-            } else {
-                closeBtn.classList.remove("bx-menu-alt-right");
-                closeBtn.classList.add("bx-menu");
-            }
-            closeBtn.style.opacity = "1";
-
-            if (isOpen) {
-                closeBtn.classList.add("btn-slide");
-            }
-        }, 300);
-    });
-
-    closeBtn.addEventListener("animationend", () => {
-        closeBtn.classList.remove("btn-slide");
-    });
+}
 
     if (searchLink && searchInput) {
         searchLink.addEventListener("click", (e) => {
