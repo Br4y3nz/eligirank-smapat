@@ -488,20 +488,4 @@ if (userInfoForm) {
         });
 }
 
-    if (searchLink && searchInput) {
-        searchLink.addEventListener("click", (e) => {
-            if (!sidebar.classList.contains("open")) {
-                e.preventDefault();
-                sidebar.classList.add("open");
-                closeBtn.setAttribute("aria-expanded", "true");
-                updateUserMenuDisplay();
-                setTimeout(() => {
-                    searchInput.focus();
-                }, 300);
-            }
-        });
-    }
-
-
-
 window.initializeSidebar = initializeSidebar;
