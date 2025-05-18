@@ -85,7 +85,7 @@ export function initializeSidebar() {
         }
     }
 
-    async function updateUserMenuDisplay() {
+async function updateUserMenuDisplay() {
         if (!loggedInMenu || !loggedOutMenu) {
             console.error("Logged in/out menu elements not found");
             return;
@@ -123,6 +123,14 @@ export function initializeSidebar() {
                     if (userInfoModal && overlay) {
                         userInfoModal.style.display = "block";
                         overlay.style.display = "block";
+                    }
+                }
+
+                // Update sidebar profile image if avatar_url exists
+                if (profileData.avatar_url) {
+                    const profileImg = document.getElementById("profile-img");
+                    if (profileImg) {
+                        profileImg.src = profileData.avatar_url;
                     }
                 }
             }
@@ -328,9 +336,13 @@ if (userInfoForm) {
             if (sidebar.classList.contains("open")) {
                 closeBtn.classList.remove("bx-menu");
                 closeBtn.classList.add("bx-menu-alt-right");
+                document.body.classList.add('sidebar-open');
+                document.body.classList.remove('sidebar-closed');
             } else {
                 closeBtn.classList.remove("bx-menu-alt-right");
                 closeBtn.classList.add("bx-menu");
+                document.body.classList.add('sidebar-closed');
+                document.body.classList.remove('sidebar-open');
             }
             closeBtn.style.opacity = "1";
 

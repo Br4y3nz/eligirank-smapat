@@ -1,0 +1,87 @@
+/* akun.css */
+
+body {
+  background-color: #F8FAFC; /* light slate background */
+  color: #1E293B;
+  font-family: "Poppins", sans-serif;
+  padding: 20px;
+}
+
+.main-content {
+  margin-left: 250px; /* match expanded sidebar */
+  padding: 40px 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.profile-section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.profile-card h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1E293B;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #CBD5E1;
+  background-color: #F9FAFB;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #2563EB;
+  outline: none;
+}
+
+.btn-primary {
+  background-color: #2563EB;
+  color: #FFFFFF;
+  padding: 10px 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #1D4ED8;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 999px;
+  color: #fff;
+  white-space: nowrap;
+  text-align: center;
+  margin-bottom: 16px;
+}
