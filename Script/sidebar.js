@@ -356,21 +356,6 @@ if (userInfoForm) {
 
 }
 
-    // Add click event to roleElem to open role modal if "Select Role"
-    if (roleElem) {
-        roleElem.style.cursor = "pointer"; // Ensure cursor indicates clickable
-        roleElem.addEventListener("click", () => {
-            if (roleElem.textContent.trim() === "Select Role") {
-                const roleModal = document.getElementById("role-modal");
-                const overlay = document.getElementById("overlay");
-                if (roleModal && overlay) {
-                    roleModal.style.display = "block";
-                    overlay.style.display = "block";
-                }
-            }
-        });
-    }
-
     // Modal close buttons
     const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
     const closeRoleModalBtn = document.getElementById("close-role-modal");
