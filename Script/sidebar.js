@@ -507,6 +507,18 @@ if (userInfoForm) {
         const isOpen = sidebar.classList.toggle("open");
         updateUserMenuDisplay();
 
+        // Update profile tooltip text and visibility based on sidebar state
+        const profileTooltip = document.getElementById("profile-tooltip");
+        const username = usernameElem ? usernameElem.textContent : "";
+        if (profileTooltip) {
+            if (!isOpen && username) {
+                profileTooltip.textContent = username;
+                profileTooltip.style.display = "block";
+            } else {
+                profileTooltip.style.display = "none";
+            }
+        }
+
         closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
 
         closeBtn.style.transition = "opacity 0.3s ease";
