@@ -299,8 +299,11 @@ if (userInfoForm) {
                 updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
             }
 
-            console.log("Updating roles with data:", updateData);
-            const { error } = await supabase.from("roles").update(updateData).eq("user_id", session.user.id);
+            console.log("Upserting roles with data:", updateData);
+            const { error } = await supabase.from("roles").upsert({
+                user_id: session.user.id,
+                ...updateData
+            });
 
             if (!error) {
                 alert("Role saved!");
@@ -477,7 +480,11 @@ if (userInfoForm) {
                 }
             }
 
-            const { error } = await supabase.from("roles").update(updateData).eq("user_id", session.user.id);
+            console.log("Upserting roles with data:", updateData);
+            const { error } = await supabase.from("roles").upsert({
+                user_id: session.user.id,
+                ...updateData
+            });
 
             if (!error) {
                 alert("Role saved!");
