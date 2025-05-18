@@ -98,6 +98,10 @@ export function initializeSidebar() {
             toggleVisibility(loggedInMenu, true);
             toggleVisibility(loggedOutMenu, false);
 
+            // Set visibility visible to prevent flicker
+            loggedInMenu.style.visibility = 'visible';
+            loggedOutMenu.style.visibility = 'visible';
+
             if (usernameElem) {
                 usernameElem.textContent = "Loading...";
             }
@@ -142,11 +146,215 @@ export function initializeSidebar() {
         } else {
             toggleVisibility(loggedInMenu, false);
             toggleVisibility(loggedOutMenu, true);
+
+            // Set visibility visible to prevent flicker
+            loggedInMenu.style.visibility = 'visible';
+            loggedOutMenu.style.visibility = 'visible';
+
             if (logoutBtn) {
                 logoutBtn.style.display = "none";
             }
         }
     }
+
+    // New function to wait for session readiness before updating UI
+    async function waitForSessionThenUpdate() {
+        const { data: { session }, error } = await supabase.auth.getSession();
+
+        if (error) {
+            console.error("Session fetch error:", error);
+            return;
+        }
+
+        if (!session) {
+            // No session yet, check again after short delay
+            setTimeout(waitForSessionThenUpdate, 200);
+        } else {
+            updateUserMenuDisplay();
+        }
+    }
+
+    // Call waitForSessionThenUpdate on sidebar load
+    waitForSessionThenUpdate();
+
+    // Add click event to roleElem to open role modal if "Select Role"
+    if (roleElem) {
+        roleElem.style.cursor = "pointer"; // Ensure cursor indicates clickable
+        roleElem.addEventListener("click", () => {
+            if (roleElem.textContent.trim() === "Select Role") {
+                const roleModal = document.getElementById("role-modal");
+                const overlay = document.getElementById("overlay");
+                if (roleModal && overlay) {
+                    roleModal.style.display = "block";
+                    overlay.style.display = "block";
+                }
+            }
+        });
+    }
+
+    // Modal close buttons
+    const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
+    const closeRoleModalBtn = document.getElementById("close-role-modal");
+    const userInfoModal = document.getElementById("user-info-modal");
+    const roleModal = document.getElementById("role-modal");
+    const overlay = document.getElementById("overlay");
+
+    if (closeUserInfoModalBtn) {
+        closeUserInfoModalBtn.onclick = () => {
+            if (userInfoModal && overlay) {
+                userInfoModal.style.display = "none";
+                overlay.style.display = "none";
+            }
+        };
+    }
+
+    if (closeRoleModalBtn) {
+        closeRoleModalBtn.onclick = () => {
+            if (roleModal && overlay) {
+                roleModal.style.display = "none";
+                overlay.style.display = "none";
+            }
+        };
+    }
+
+    // Show fields based on selected role in role modal
+    const roleInputs = document.querySelectorAll('input[name="role"]');
+    roleInputs.forEach(input => {
+        input.addEventListener("change", () => {
+            const studentFields = document.getElementById("student-fields");
+            const teacherFields = document.getElementById("teacher-fields");
+            if (studentFields && teacherFields) {
+                studentFields.style.display = input.value === "student" ? "block" : "none";
+                teacherFields.style.display = input.value === "teacher" ? "block" : "none";
+            }
+        });
+    });
+
+const userInfoForm = document.getElementById("user-info-form");
+if (userInfoForm) {
+  userInfoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("username-input").value.trim();
+    const phone = document.getElementById("phone-input").value.trim();
+
+    if (!username || !phone) {
+      alert("Please fill in both username and phone number.");
+      return;
+    }
+
+    // Get the logged-in session
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+    if (!session || sessionError) {
+      console.error("Session fetch failed:", sessionError);
+      alert("You're not logged in.");
+      return;
+    }
+
+    const userId = session.user.id;
+
+    // Use upsert to insert/update user profile safely
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({
+        id: userId,
+        username,
+        phone
+      });
+
+    if (error) {
+      console.error("Supabase error during upsert:", error);
+      alert("Failed to save profile. Please try again.");
+      return;
+    }
+
+    alert("Profile updated successfully!");
+    document.getElementById("user-info-modal").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    window.location.reload(); // Refresh to re-fetch sidebar data
+  });
+}
+
+    // Submit role form
+    const roleForm = document.getElementById("role-form");
+    if (roleForm) {
+        roleForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const role = document.querySelector('input[name="role"]:checked')?.value;
+            if (!role) {
+                alert("Please select a role.");
+                return;
+            }
+
+            const { data: { session } } = await supabase.auth.getSession();
+
+            const updateData = { role };
+
+            if (role === "student") {
+                updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
+                updateData.nis = document.getElementById("nis")?.value.trim() || null;
+            } else if (role === "teacher") {
+                updateData.nik = document.getElementById("nik")?.value.trim() || null;
+                updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
+            }
+
+            const { error } = await supabase.from("profiles").update(updateData).eq("id", session.user.id);
+
+            if (!error) {
+                alert("Role saved!");
+                location.reload();
+            } else {
+                alert("Error saving role.");
+                console.error(error);
+            }
+        });
+    }
+
+    closeBtn.addEventListener("click", () => {
+        const isOpen = sidebar.classList.toggle("open");
+        waitForSessionThenUpdate();
+
+        closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+        closeBtn.style.transition = "opacity 0.3s ease";
+        closeBtn.style.opacity = "0";
+
+        setTimeout(() => {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.remove("bx-menu");
+                closeBtn.classList.add("bx-menu-alt-right");
+            } else {
+                closeBtn.classList.remove("bx-menu-alt-right");
+                closeBtn.classList.add("bx-menu");
+            }
+            closeBtn.style.opacity = "1";
+
+            if (isOpen) {
+                closeBtn.classList.add("btn-slide");
+            }
+        }, 300);
+    });
+
+    closeBtn.addEventListener("animationend", () => {
+        closeBtn.classList.remove("btn-slide");
+    });
+
+    if (searchLink && searchInput) {
+        searchLink.addEventListener("click", (e) => {
+            if (!sidebar.classList.contains("open")) {
+                e.preventDefault();
+                sidebar.classList.add("open");
+                closeBtn.setAttribute("aria-expanded", "true");
+                waitForSessionThenUpdate();
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+        });
+    }
+
+}
 
     // Add click event to roleElem to open role modal if "Select Role"
     if (roleElem) {
@@ -338,108 +546,6 @@ if (userInfoForm) {
         });
     }
 
-}
 
-// Removed duplicate modal logic and event listeners from global scope
+
 window.initializeSidebar = initializeSidebar;
-
-// Modal close buttons
-const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
-const closeRoleModalBtn = document.getElementById("close-role-modal");
-const userInfoModal = document.getElementById("user-info-modal");
-const roleModal = document.getElementById("role-modal");
-const overlay = document.getElementById("overlay");
-
-if (closeUserInfoModalBtn) {
-    closeUserInfoModalBtn.onclick = () => {
-        if (userInfoModal && overlay) {
-            userInfoModal.style.display = "none";
-            overlay.style.display = "none";
-        }
-    };
-}
-
-if (closeRoleModalBtn) {
-    closeRoleModalBtn.onclick = () => {
-        if (roleModal && overlay) {
-            roleModal.style.display = "none";
-            overlay.style.display = "none";
-        }
-    };
-}
-
-// Show fields based on selected role in role modal
-const roleInputs = document.querySelectorAll('input[name="role"]');
-roleInputs.forEach(input => {
-    input.addEventListener("change", () => {
-        const studentFields = document.getElementById("student-fields");
-        const teacherFields = document.getElementById("teacher-fields");
-        if (studentFields && teacherFields) {
-            studentFields.style.display = input.value === "student" ? "block" : "none";
-            teacherFields.style.display = input.value === "teacher" ? "block" : "none";
-        }
-    });
-});
-
-// Submit user info form
-const userInfoForm = document.getElementById("user-info-form");
-if (userInfoForm) {
-    userInfoForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const usernameInput = document.getElementById("username-input");
-        const phoneInput = document.getElementById("phone-input");
-        if (!usernameInput || !phoneInput) return;
-
-        const username = usernameInput.value.trim();
-        const phone = phoneInput.value.trim();
-
-        const { data: { session } } = await supabase.auth.getSession();
-
-        const { error } = await supabase.from("profiles").update({
-            username, phone
-        }).eq("id", session.user.id);
-
-        if (!error) {
-            alert("Profile updated!");
-            location.reload();
-        } else {
-            alert("Error saving profile.");
-            console.error(error);
-        }
-    });
-}
-
-// Submit role form
-const roleForm = document.getElementById("role-form");
-if (roleForm) {
-    roleForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const role = document.querySelector('input[name="role"]:checked')?.value;
-        if (!role) {
-            alert("Please select a role.");
-            return;
-        }
-
-        const { data: { session } } = await supabase.auth.getSession();
-
-        const updateData = { role };
-
-        if (role === "student") {
-            updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
-            updateData.nis = document.getElementById("nis")?.value.trim() || null;
-        } else if (role === "teacher") {
-            updateData.nik = document.getElementById("nik")?.value.trim() || null;
-            updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
-        }
-
-        const { error } = await supabase.from("profiles").update(updateData).eq("id", session.user.id);
-
-        if (!error) {
-            alert("Role saved!");
-            location.reload();
-        } else {
-            alert("Error saving role.");
-            console.error(error);
-        }
-    });
-};
