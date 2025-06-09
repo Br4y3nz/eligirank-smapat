@@ -147,9 +147,13 @@ export function initializeSidebar() {
         const { data: sessionData } = await supabase.auth.getSession();
         const session = sessionData?.session;
 
+        console.log("updateUserMenuDisplay: session =", session);
+
         if (session) {
             toggleVisibility(loggedInMenu, true);
             toggleVisibility(loggedOutMenu, false);
+
+            console.log("updateUserMenuDisplay: Showing logged-in menu, hiding logged-out menu");
 
             // Set visibility visible to prevent flicker
             loggedInMenu.style.visibility = 'visible';
@@ -231,8 +235,10 @@ export function initializeSidebar() {
             toggleVisibility(loggedInMenu, false);
             toggleVisibility(loggedOutMenu, true);
 
+            console.log("updateUserMenuDisplay: loggedInMenu hidden, loggedOutMenu visible");
+
             // Set visibility visible to prevent flicker
-            loggedInMenu.style.visibility = 'visible';
+            loggedInMenu.style.visibility = 'hidden';
             loggedOutMenu.style.visibility = 'visible';
 
             if (logoutBtn) {
