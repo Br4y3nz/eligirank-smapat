@@ -1,5 +1,59 @@
 import supabase from '../Supabase/client.js';
 
+async function loadUserProfile() {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  const profileContent = document.getElementById("akun-content");
+  const notLoggedIn = document.getElementById("akun-logged-out");
+  const tipsCard = document.getElementById("tips-card");
+
+  if (!session) {
+    if (profileContent) profileContent.style.display = "none";
+    if (notLoggedIn) notLoggedIn.style.display = "flex";
+    if (tipsCard) tipsCard.style.display = "none";
+    return;
+  }
+
+  if (profileContent) profileContent.style.display = "block";
+  if (notLoggedIn) notLoggedIn.style.display = "none";
+  if (tipsCard) tipsCard.style.display = "block";
+
+  const userId = session?.user?.id;
+  if (!userId) return;
+
+  // Users
+  const email = session.user.email;
+  document.getElementById("email").value = email;
+
+  // Profiles
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId).single();
+  if (profile) {
+    document.getElementById("fullname").value = profile.fullname || "";
+    document.getElementById("phone").value = profile.phone || "";
+    document.getElementById("profile-avatar").src = profile.avatar_url || "https://via.placeholder.com/100";
+    document.getElementById("profile-username").textContent = profile.username || "User";
+  }
+
+  // Roles
+  const { data: role } = await supabase.from("roles").select("*").eq("user_id", userId).single();
+  if (role) {
+    const roleLabel = role.role.charAt(0).toUpperCase() + role.role.slice(1);
+    document.getElementById("profile-role").textContent = roleLabel;
+
+    if (role.role === "student") {
+      document.getElementById("student-section").style.display = "block";
+      document.getElementById("kelas").value = role.kelas || "";
+      document.getElementById("rapor").value = role.rapor || "";
+    }
+    if (role.role === "teacher") {
+      document.getElementById("teacher-section").style.display = "block";
+      document.getElementById("subject").value = role.subject || "";
+      document.getElementById("homeroom").value = role.homeroom || "";
+    }
+  }
+}
+document.addEventListener("DOMContentLoaded", loadUserProfile);
+
 document.addEventListener('DOMContentLoaded', () => {
   let cropper = null;
   const uploadInput = document.getElementById("avatar-upload");

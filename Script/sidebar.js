@@ -17,6 +17,10 @@ export function initializeSidebar() {
         return;
     }
 
+    // Ensure toggle button is visible and enabled for all users
+    closeBtn.style.display = "";
+    closeBtn.disabled = false;
+
     const loggedOutMenu = document.getElementById("logged-out-menu");
     const loginLink = document.getElementById("log_in");
 
@@ -41,6 +45,46 @@ export function initializeSidebar() {
                 window.location.href = "index.html";
             }
         });
+    }
+
+    // Sidebar toggle button click handler without debug logs
+    if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+        if (!sidebar) {
+            console.error("Sidebar element not found on toggle");
+            return;
+        }
+        const isOpen = sidebar.classList.toggle("open");
+
+        closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+        closeBtn.style.transition = "opacity 0.3s ease";
+        closeBtn.style.opacity = "0";
+
+        setTimeout(() => {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.remove("bx-menu");
+                closeBtn.classList.add("bx-menu-alt-right");
+                document.body.classList.add('sidebar-open');
+                document.body.classList.remove('sidebar-closed');
+            } else {
+                closeBtn.classList.remove("bx-menu-alt-right");
+                closeBtn.classList.add("bx-menu");
+                document.body.classList.add('sidebar-closed');
+                document.body.classList.remove('sidebar-open');
+            }
+            closeBtn.style.opacity = "1";
+
+            if (isOpen) {
+                closeBtn.classList.add("btn-slide");
+            }
+        }, 300);
+    });
+    }
+
+    // Remove debug: Log sidebar open/close state changes
+    if (sidebar) {
+        // No longer logging sidebar class changes
     }
 
     function toggleVisibility(element, show) {
@@ -85,10 +129,16 @@ export function initializeSidebar() {
         }
     }
 
-async function updateUserMenuDisplay() {
+    async function updateUserMenuDisplay() {
         if (!loggedInMenu || !loggedOutMenu) {
             console.error("Logged in/out menu elements not found");
             return;
+        }
+
+        // Always show sidebar nav and links regardless of login state
+        const sidebarNav = document.getElementById("sidebar-menu");
+        if (sidebarNav) {
+            sidebarNav.style.display = "block";
         }
 
         const { data: sessionData } = await supabase.auth.getSession();
@@ -126,10 +176,10 @@ async function updateUserMenuDisplay() {
                     }
                 }
 
-                // Update sidebar profile image if avatar_url exists
-                if (profileData.avatar_url) {
-                    const profileImg = document.getElementById("profile-img");
-                    if (profileImg) {
+                const profileImg = document.getElementById("profile-img");
+                const defaultUserIcon = document.querySelector(".default-user-icon");
+                if (profileImg) {
+                    if (profileData.avatar_url) {
                         // If avatar_url is a bucket path, get public URL from Supabase storage
                         const { data: publicUrlData, error: publicUrlError } = await supabase.storage
                             .from('avatars') // replace 'avatars' with your bucket name if different
@@ -142,9 +192,23 @@ async function updateUserMenuDisplay() {
                             profileImg.src = publicUrlData.publicUrl;
                         }
                         profileImg.style.display = "block";
+                        const defaultProfileImg = document.getElementById("default-profile-img");
+                        if (defaultProfileImg) {
+                            defaultProfileImg.style.display = "none";
+                        }
+                        profileImg.style.width = "40px";
+                        profileImg.style.height = "40px";
+                        profileImg.style.borderRadius = "50%";
+                        profileImg.style.objectFit = "cover";
+                    } else {
+                        // No avatar_url, show default profile image
+                        profileImg.style.display = "none";
+                        const defaultProfileImg = document.getElementById("default-profile-img");
+                        if (defaultProfileImg) {
+                            defaultProfileImg.style.display = "block";
+                        }
                     }
                 }
-            }
 
             const roleData = await fetchUserRole(session);
             if (roleData && roleElem) {
@@ -381,142 +445,7 @@ if (userInfoForm) {
         });
     }
 
-}
-
-    // Modal close buttons
-    const closeUserInfoModalBtn = document.getElementById("close-user-info-modal");
-    const closeRoleModalBtn = document.getElementById("close-role-modal");
-    const userInfoModal = document.getElementById("user-info-modal");
-    const roleModal = document.getElementById("role-modal");
-    const overlay = document.getElementById("overlay");
-
-    if (closeUserInfoModalBtn) {
-        closeUserInfoModalBtn.onclick = () => {
-            if (userInfoModal && overlay) {
-                userInfoModal.style.display = "none";
-                overlay.style.display = "none";
-            }
-        };
     }
-
-    if (closeRoleModalBtn) {
-        closeRoleModalBtn.onclick = () => {
-            if (roleModal && overlay) {
-                roleModal.style.display = "none";
-                overlay.style.display = "none";
-            }
-        };
-    }
-
-    // Show fields based on selected role in role modal
-    const roleInputs = document.querySelectorAll('input[name="role"]');
-    roleInputs.forEach(input => {
-        input.addEventListener("change", () => {
-            const studentFields = document.getElementById("student-fields");
-            const teacherFields = document.getElementById("teacher-fields");
-            if (studentFields && teacherFields) {
-                studentFields.style.display = input.value === "student" ? "block" : "none";
-                teacherFields.style.display = input.value === "teacher" ? "block" : "none";
-            }
-        });
-    });
-
-const userInfoForm = document.getElementById("user-info-form");
-if (userInfoForm) {
-  userInfoForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const username = document.getElementById("username-input").value.trim();
-    const phone = document.getElementById("phone-input").value.trim();
-
-    if (!username || !phone) {
-      alert("Please fill in both username and phone number.");
-      return;
-    }
-
-    // Get the logged-in session
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-
-    if (!session || sessionError) {
-      console.error("Session fetch failed:", sessionError);
-      alert("You're not logged in.");
-      return;
-    }
-
-    const userId = session.user.id;
-
-    // Use upsert to insert/update user profile safely
-    const { error } = await supabase
-      .from("profiles")
-      .upsert({
-        id: userId,
-        username,
-        phone
-      });
-
-    if (error) {
-      console.error("Supabase error during upsert:", error);
-      alert("Failed to save profile. Please try again.");
-      return;
-    }
-
-    alert("Profile updated successfully!");
-    document.getElementById("user-info-modal").style.display = "none";
-    document.getElementById("overlay").style.display = "none";
-    window.location.reload(); // Refresh to re-fetch sidebar data
-  });
-}
-
-    // Submit role form
-    const roleForm = document.getElementById("role-form");
-    if (roleForm) {
-        roleForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const role = document.querySelector('input[name="role"]:checked')?.value;
-            if (!role) {
-                alert("Please select a role.");
-                return;
-            }
-
-            const { data: { session } } = await supabase.auth.getSession();
-
-            if (!session) {
-                alert("User not logged in.");
-                return;
-            }
-
-            const updateData = { role };
-
-            if (role === "student") {
-                updateData.nisn = document.getElementById("nisn")?.value.trim();
-                updateData.nis = document.getElementById("nis")?.value.trim();
-                if (!updateData.nisn || !updateData.nis) {
-                    alert("Please enter NIS and NISN");
-                    return;
-                }
-            } else if (role === "teacher") {
-                updateData.nik = document.getElementById("nik")?.value.trim();
-                updateData.nuptk = document.getElementById("nuptk")?.value.trim();
-                if (!updateData.nik || !updateData.nuptk) {
-                    alert("Please enter NIK and NUPTK");
-                    return;
-                }
-            }
-
-            console.log("Upserting roles with data:", updateData);
-            const { error } = await supabase.from("roles").upsert({
-                user_id: session.user.id,
-                ...updateData
-            });
-
-            if (!error) {
-                alert("Role saved!");
-                location.reload();
-            } else {
-                alert("Error saving role.");
-                console.error(error);
-            }
-        });
 }
 
 window.initializeSidebar = initializeSidebar;

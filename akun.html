@@ -72,181 +72,106 @@
     </div>
 
     <!-- Main Content -->
-    <main class="main-content" role="main" aria-label="Account settings main content" style="padding: 20px; margin-left: 80px; transition: margin-left 0.3s ease;">
-        <section class="profile-section" id="profile-section">
-            <div class="profile-card" id="profile-card" style="display:none;">
-                <h2>Profile Details</h2>
-
-                <span class="role-badge role-student">Student</span>
-
-                <div class="profile-header">
-                    <img id="profile-avatar" src="https://via.placeholder.com/100" alt="User Profile Picture" class="profile-avatar" />
-                    <h2 class="username" id="profile-username">Username</h2>
-                </div>
-
-                <div class="profile-info">
-                    <h3>Informasi Pribadi</h3>
-                    <div class="form-group">
-                        <label for="fullname">Nama Lengkap</label>
-                        <input type="text" id="fullname" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Nomor HP</label>
-                        <input type="tel" id="phone" disabled />
-                    </div>
-
-                    <!-- Student Section -->
-                    <div class="student-section" style="display:none">
-                        <h3>Informasi Akademik</h3>
-                        <div class="form-group">
-                            <label for="nisn">NISN</label>
-                            <input type="text" id="nisn" disabled />
-                        </div>
-                        <div class="form-group">
-                            <label for="kelas">Kelas</label>
-                            <input type="text" id="kelas" disabled />
-                        </div>
-                    </div>
-
-                    <!-- Teacher Section -->
-                    <div class="teacher-section" style="display:none">
-                        <h3>Informasi Profesional</h3>
-                        <div class="form-group">
-                            <label for="nik">NIK</label>
-                            <input type="text" id="nik" disabled />
-                        </div>
-                        <div class="form-group">
-                            <label for="nuptk">NUPTK</label>
-                            <input type="text" id="nuptk" disabled />
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Mata Pelajaran</label>
-                            <input type="text" id="subject" disabled />
-                        </div>
-                        <div class="form-group">
-                            <label for="position">Jabatan</label>
-                            <input type="text" id="position" disabled />
-                        </div>
-                    </div>
-                </div>
-
+    <main class="akun-layout">
+      <section class="akun-main">
+          <div id="akun-content" style="display:none;">
+            <!-- Profile Card -->
+            <div class="profile-card" id="profile-card">
+              <div class="profile-header">
+                <img id="profile-avatar" class="profile-avatar" src="https://via.placeholder.com/100" />
+                <h2 id="profile-username">Username</h2>
+                <p id="
+                profile-role" class="profile-role">Role</p>
+              </div>
+              <div class="profile-info">
+                <h3>Informasi Pribadi</h3>
                 <div class="form-group">
-                    <label for="avatar-upload">Ubah Foto Profil</label>
-                    <input type="file" id="avatar-upload" accept="image/*" />
+                  <label>Nama Lengkap</label>
+                  <input id="fullname" disabled />
                 </div>
-
-                <button class="btn-primary">Save Changes</button>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input id="email" disabled />
+                </div>
+                <div class="form-group">
+                  <label>No Telepon</label>
+                  <input id="phone" disabled />
+                </div>
+                <div id="student-section" style="display:none">
+                  <h3>Informasi Akademik</h3>
+                  <div class="form-group">
+                    <label>Kelas</label>
+                    <input id="kelas" disabled />
+                  </div>
+                  <div class="form-group">
+                    <label>Rata-rata Rapor</label>
+                    <input id="rapor" disabled />
+                  </div>
+                </div>
+                <div id="teacher-section" style="display:none">
+                  <h3>Informasi Mengajar</h3>
+                  <div class="form-group">
+                    <label>Mata Pelajaran</label>
+                    <input id="subject" disabled />
+                  </div>
+                  <div class="form-group">
+                    <label>Wali Kelas</label>
+                    <input id="homeroom" disabled />
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div id="not-logged-in-message" style="display:none; padding: 20px; margin-left: 80px; background-color: #fee2e2; border-radius: 12px; color: #b91c1c; font-weight: 600;">
-                Anda belum login. Silakan <a href="index.html">login</a> untuk mengakses halaman ini.
+            <!-- Ganti Password Card -->
+            <div class="profile-card">
+              <h3>Ganti Password</h3>
+              <form id="change-password-form">
+                <div class="form-group">
+                  <label>Password Saat Ini</label>
+                  <input type="password" id="current-password" required />
+                </div>
+                <div class="form-group">
+                  <label>Password Baru</label>
+                  <input type="password" id="new-password" required />
+                </div>
+                <div class="form-group">
+                  <label>Konfirmasi Password Baru</label>
+                  <input type="password" id="confirm-password" required />
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn-primary">Ganti</button>
+                  <a href="#" class="forgot-password">Lupa Password?</a>
+                </div>
+              </form>
             </div>
+          </div>
+          <div id="akun-logged-out" class="logout-box" style="display:none;">
+            <h2>Anda belum login</h2>
+            <p>Silakan login terlebih dahulu untuk melihat informasi akun Anda.</p>
+          </div>
+      </section>
+      <aside class="akun-sidebar">
+        <div class="profile-card" id="tips-card" style="display:none;">
+          <h3>Tips</h3>
+          <p>Pastikan data akunmu lengkap. Foto profil membantumu dikenali teman dan guru.</p>
+        </div>
+      </aside>
+</main>
 
-            <!-- Modal Cropper Section -->
-            <div id="cropper-modal" style="display:none;">
-                <img id="image-preview" style="max-width: 100%;" />
-                <button id="crop-avatar">Crop & Upload</button>
-            </div>
+<script type="module">
+  import { initializeSidebar } from './script/sidebar.js';
 
-            <div class="profile-card" id="change-password-card" style="display:none;">
-                <h3>Ganti Password</h3>
-                <form id="change-password-form">
-                    <div class="form-group">
-                        <label for="new-password">Password Baru</label>
-                        <input type="password" id="new-password" placeholder="Masukkan password baru" required />
-                    </div>
-                    <button type="submit" class="btn-primary">Simpan Password</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-        <script type="module">
-            import supabase from './Supabase/client.js';
-            import { initializeSidebar } from './Script/sidebar.js';
-
-            document.addEventListener('DOMContentLoaded', () => {
-                fetch('sidebar.html')
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById('sidebar-container').innerHTML = html;
-                        if (typeof initializeSidebar === 'function') {
-                            initializeSidebar();
-                        }
-
-                        const currentPath = window.location.pathname.split('/').pop();
-                        const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
-                        sidebarLinks.forEach(link => {
-                            if (link.getAttribute('href') === currentPath) {
-                                link.classList.add('active');
-                            }
-                        });
-
-                        // Show or hide profile section based on login status
-                        async function checkLoginStatus() {
-                            const { data: { session }, error } = await supabase.auth.getSession();
-                            const profileCard = document.getElementById("profile-card");
-                            const notLoggedInMessage = document.getElementById("not-logged-in-message");
-
-                            if (error) {
-                                console.error("Error fetching session:", error);
-                                return;
-                            }
-
-                            if (session) {
-                                if (profileCard) profileCard.style.display = "block";
-                                if (notLoggedInMessage) notLoggedInMessage.style.display = "none";
-                            } else {
-                                if (profileCard) profileCard.style.display = "none";
-                                if (notLoggedInMessage) notLoggedInMessage.style.display = "block";
-                            }
-                        }
-
-                        checkLoginStatus();
-
-                        // Check supabase session and profile completeness
-                        async function checkAndShowUserInfoModal() {
-                            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-                            if (!session || sessionError) {
-                                console.error("No session or session error:", sessionError);
-                                // Suppress alert to avoid popup when user not logged in
-                                // alert("User not logged in.");
-                                return;
-                            }
-
-                            try {
-                                const { data: profileData, error } = await supabase
-                                    .from("profiles")
-                                    .select("username, phone")
-                                    .eq("id", session.user.id)
-                                    .maybeSingle();
-
-                                if (error) {
-                                    console.error("Error fetching profile:", error);
-                                    return;
-                                }
-
-                                if (!profileData?.username?.trim() || !profileData?.phone?.trim()) {
-                                    const userInfoModal = document.getElementById("user-info-modal");
-                                    const overlay = document.getElementById("overlay");
-                                    if (userInfoModal && overlay) {
-                                        userInfoModal.style.display = "block";
-                                        overlay.style.display = "block";
-                                    }
-                                }
-                            } catch (err) {
-                                console.error("Error checking profile completeness:", err);
-                            }
-                        }
-
-                        checkAndShowUserInfoModal();
-                    })
-                    .catch(err => console.error('Failed to load sidebar:', err));
-            });
-        </script>
+  document.addEventListener('DOMContentLoaded', () => {
+    fetch('sidebar.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('sidebar-container').innerHTML = html;
+        if (typeof initializeSidebar === 'function') {
+          initializeSidebar();
+        }
+      })
+      .catch(err => console.error('Failed to load sidebar:', err));
+  });
+</script>
+        
 </body>
 </html>
