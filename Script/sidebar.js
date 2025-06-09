@@ -90,6 +90,8 @@ export function initializeSidebar() {
     function toggleVisibility(element, show) {
         if (!element) return;
         element.style.display = show ? "" : "none";
+        element.style.visibility = show ? "visible" : "hidden";
+        console.log(`toggleVisibility: element id=${element.id}, show=${show}`);
     }
 
     async function fetchUserData(session) {
