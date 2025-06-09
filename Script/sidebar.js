@@ -96,7 +96,7 @@ export function initializeSidebar() {
         try {
             const { data: profileData, error: profileError } = await supabase
                 .from("profiles")
-                .select("username, phone")
+                .select("username, phone, avatar_url")
                 .eq("id", session.user.id)
                 .maybeSingle();
 
@@ -104,6 +104,7 @@ export function initializeSidebar() {
                 console.error("Error fetching user data:", profileError);
                 return null;
             }
+            console.log("Fetched profile data:", profileData);
             return profileData;
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -179,7 +180,7 @@ export function initializeSidebar() {
                 const profileImg = document.getElementById("profile-img");
                 const defaultUserIcon = document.querySelector(".default-user-icon");
                 if (profileImg) {
-                    if (profileData.avatar_url) {
+                    if (profileData.avatar_url && profileData.avatar_url.trim() !== "") {
                         // If avatar_url is a bucket path, get public URL from Supabase storage
                         const { data: publicUrlData, error: publicUrlError } = await supabase.storage
                             .from('avatars') // replace 'avatars' with your bucket name if different
@@ -192,20 +193,18 @@ export function initializeSidebar() {
                             profileImg.src = publicUrlData.publicUrl;
                         }
                         profileImg.style.display = "block";
-                        const defaultProfileImg = document.getElementById("default-profile-img");
-                        if (defaultProfileImg) {
-                            defaultProfileImg.style.display = "none";
+                        if (defaultUserIcon) {
+                            defaultUserIcon.style.display = "none";
                         }
                         profileImg.style.width = "40px";
                         profileImg.style.height = "40px";
                         profileImg.style.borderRadius = "50%";
                         profileImg.style.objectFit = "cover";
                     } else {
-                        // No avatar_url, show default profile image
+                        // No avatar_url, show default profile icon
                         profileImg.style.display = "none";
-                        const defaultProfileImg = document.getElementById("default-profile-img");
-                        if (defaultProfileImg) {
-                            defaultProfileImg.style.display = "block";
+                        if (defaultUserIcon) {
+                            defaultUserIcon.style.display = "block";
                         }
                     }
                 }
@@ -313,51 +312,55 @@ export function initializeSidebar() {
         });
     });
 
-const userInfoForm = document.getElementById("user-info-form");
-if (userInfoForm) {
-  userInfoForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    const userInfoForm = document.getElementById("user-info-form");
+    if (userInfoForm) {
+      userInfoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    const username = document.getElementById("username-input").value.trim();
-    const phone = document.getElementById("phone-input").value.trim();
+        const username = document.getElementById("username-input").value.trim();
+        const phone = document.getElementById("phone-input").value.trim();
 
-    if (!username || !phone) {
-      alert("Please fill in both username and phone number.");
-      return;
-    }
+        if (!username || !phone) {
+          alert("Please fill in both username and phone number.");
+          return;
+        }
 
-    // Get the logged-in session
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        // Get the logged-in session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-    if (!session || sessionError) {
-      console.error("Session fetch failed:", sessionError);
-      alert("You're not logged in.");
-      return;
-    }
+        if (!session || sessionError) {
+          console.error("Session fetch failed:", sessionError);
+          alert("You're not logged in.");
+          return;
+        }
 
-    const userId = session.user.id;
+        const userId = session.user.id;
 
-    // Use upsert to insert/update user profile safely
-    const { error } = await supabase
-      .from("profiles")
-      .upsert({
-        id: userId,
-        username,
-        phone
+        // Use upsert to insert/update user profile safely
+        const { error } = await supabase
+          .from("profiles")
+          .upsert({
+            id: userId,
+            username,
+            phone
+          });
+
+        if (error) {
+          console.error("Supabase error during upsert:", error);
+          alert("Failed to save profile. Please try again.");
+          return;
+        }
+
+        alert("Profile updated successfully!");
+        document.getElementById("user-info-modal").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+
+        // Instead of full reload, update sidebar user data
+        if (typeof updateUserMenuDisplay === 'function') {
+          updateUserMenuDisplay();
+        }
       });
-
-    if (error) {
-      console.error("Supabase error during upsert:", error);
-      alert("Failed to save profile. Please try again.");
-      return;
     }
-
-    alert("Profile updated successfully!");
-    document.getElementById("user-info-modal").style.display = "none";
-    document.getElementById("overlay").style.display = "none";
-    window.location.reload(); // Refresh to re-fetch sidebar data
-  });
-}
 
     // Submit role form
     const roleForm = document.getElementById("role-form");
