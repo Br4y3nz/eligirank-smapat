@@ -151,7 +151,7 @@ export function initializeSidebar() {
 
             // Set visibility visible to prevent flicker
             loggedInMenu.style.visibility = 'visible';
-            loggedOutMenu.style.visibility = 'visible';
+            loggedOutMenu.style.visibility = 'hidden';
 
             if (usernameElem) {
                 usernameElem.textContent = "Loading...";
