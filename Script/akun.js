@@ -35,17 +35,18 @@ async function loadUserProfile() {
   }
 
   // Roles
-  const { data: role, error } = await supabase
+  const { data: roles, error } = await supabase
     .from("roles")
     .select("*")
-    .eq("user_id", userId)
-    .single();
+    .eq("user_id", userId);
 
   if (error) {
-    console.error("Error fetching role:", error);
+    console.error("Error fetching roles:", error);
   }
 
-  if (role) {
+  if (roles && roles.length > 0) {
+    // Use the first role or handle multiple roles as needed
+    const role = roles[0];
     const roleLabel = role.role.charAt(0).toUpperCase() + role.role.slice(1);
     document.getElementById("profile-role").textContent = roleLabel;
 
