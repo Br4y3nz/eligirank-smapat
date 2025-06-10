@@ -1,7 +1,8 @@
     import supabase from '../Supabase/client.js';
 
 export function initializeSidebar() {
-    
+    console.log("initializeSidebar called");
+
     const sidebar = document.querySelector(".sidebar");
     const closeBtn = document.querySelector("#sidebar-toggle");
     const loggedInMenu = document.getElementById("logged-in-menu");
@@ -144,7 +145,10 @@ export function initializeSidebar() {
             sidebarNav.style.display = "block";
         }
 
-        const { data: sessionData } = await supabase.auth.getSession();
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) {
+            console.error("Session fetch error:", sessionError);
+        }
         const session = sessionData?.session;
 
         console.log("updateUserMenuDisplay: session =", session);
