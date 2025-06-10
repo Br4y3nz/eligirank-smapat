@@ -35,7 +35,8 @@ async function loadUserProfile() {
         profileAvatar.src = profile.avatar_url;
         profileAvatar.style.display = "block";
       } else {
-        profileAvatar.style.display = "none";
+        profileAvatar.style.display = "";
+        profileAvatar.src = "";
       }
       document.getElementById("profile-username").textContent = profile.username || "User";
     }
