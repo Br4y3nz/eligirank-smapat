@@ -27,12 +27,12 @@ async function loadUserProfile() {
 
   // Profiles
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", userId).single();
-  if (profile) {
-    document.getElementById("fullname").value = profile.fullname || "";
-    document.getElementById("phone").value = profile.phone || "";
-    document.getElementById("profile-avatar").src = profile.avatar_url || "https://via.placeholder.com/100";
-    document.getElementById("profile-username").textContent = profile.username || "User";
-  }
+    if (profile) {
+      document.getElementById("fullname").value = profile.fullname || "";
+      document.getElementById("phone").value = profile.phone || "";
+      document.getElementById("profile-avatar").src = profile.avatar_url || "Assets/Logo-smapat.png";
+      document.getElementById("profile-username").textContent = profile.username || "User";
+    }
 
   // Roles
   const { data: roles, error } = await supabase
