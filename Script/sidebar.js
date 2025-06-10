@@ -132,129 +132,129 @@ export function initializeSidebar() {
         }
     }
 
-    async function updateUserMenuDisplay() {
-        if (!loggedInMenu || !loggedOutMenu) {
-            console.error("Logged in/out menu elements not found");
-            return;
+async function updateUserMenuDisplay() {
+    if (!loggedInMenu || !loggedOutMenu) {
+        console.error("Logged in/out menu elements not found");
+        return;
+    }
+
+    // Always show sidebar nav and links regardless of login state
+    const sidebarNav = document.getElementById("sidebar-menu");
+    if (sidebarNav) {
+        sidebarNav.style.display = "block";
+    }
+
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) {
+        console.error("Session fetch error:", sessionError);
+    }
+    const session = sessionData?.session;
+
+    console.log("updateUserMenuDisplay: session =", session);
+
+    if (session) {
+        toggleVisibility(loggedInMenu, false);
+        toggleVisibility(loggedOutMenu, true);
+
+        console.log("updateUserMenuDisplay: Showing logged-in menu, hiding logged-out menu");
+
+        // Set visibility visible to prevent flicker
+        loggedInMenu.style.visibility = 'hidden';
+        loggedOutMenu.style.visibility = 'visible';
+
+        if (usernameElem) {
+            usernameElem.textContent = "Loading...";
+        }
+        if (roleElem) {
+            roleElem.textContent = "";
+        }
+        if (logoutBtn) {
+            logoutBtn.style.display = "";
         }
 
-        // Always show sidebar nav and links regardless of login state
-        const sidebarNav = document.getElementById("sidebar-menu");
-        if (sidebarNav) {
-            sidebarNav.style.display = "block";
-        }
+        const profileData = await fetchUserData(session);
+        if (profileData && usernameElem) {
+            usernameElem.textContent = profileData.username || "User";
 
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-        if (sessionError) {
-            console.error("Session fetch error:", sessionError);
-        }
-        const session = sessionData?.session;
-
-        console.log("updateUserMenuDisplay: session =", session);
-
-        if (session) {
-            toggleVisibility(loggedInMenu, true);
-            toggleVisibility(loggedOutMenu, false);
-
-            console.log("updateUserMenuDisplay: Showing logged-in menu, hiding logged-out menu");
-
-            // Set visibility visible to prevent flicker
-            loggedInMenu.style.visibility = 'visible';
-            loggedOutMenu.style.visibility = 'hidden';
-
-            if (usernameElem) {
-                usernameElem.textContent = "Loading...";
-            }
-            if (roleElem) {
-                roleElem.textContent = "";
-            }
-            if (logoutBtn) {
-                logoutBtn.style.display = "";
-            }
-
-            const profileData = await fetchUserData(session);
-            if (profileData && usernameElem) {
-                usernameElem.textContent = profileData.username || "User";
-
-                // Show modal if username or phone missing
-                if (!profileData.username || !profileData.phone) {
-                    const userInfoModal = document.getElementById("user-info-modal");
-                    const overlay = document.getElementById("overlay");
-                    if (userInfoModal && overlay) {
-                        userInfoModal.style.display = "block";
-                        overlay.style.display = "block";
-                    }
+            // Show modal if username or phone missing
+            if (!profileData.username || !profileData.phone) {
+                const userInfoModal = document.getElementById("user-info-modal");
+                const overlay = document.getElementById("overlay");
+                if (userInfoModal && overlay) {
+                    userInfoModal.style.display = "block";
+                    overlay.style.display = "block";
                 }
+            }
 
-                const profileImg = document.getElementById("profile-img");
-                const defaultUserIcon = document.querySelector(".default-user-icon");
-                if (profileImg) {
-                    if (profileData.avatar_url && profileData.avatar_url.trim() !== "") {
-                        // Check if avatar_url is a full URL (starts with http or https)
-                        if (profileData.avatar_url.startsWith("http://") || profileData.avatar_url.startsWith("https://")) {
-                            profileImg.src = profileData.avatar_url;
-                        } else {
-                            // If avatar_url is a bucket path, get public URL from Supabase storage
-                            const { data: publicUrlData, error: publicUrlError } = await supabase.storage
-                                .from('avatars') // replace 'avatars' with your bucket name if different
-                                .getPublicUrl(profileData.avatar_url);
-
-                            if (publicUrlError) {
-                                console.error("Error getting public URL for avatar:", publicUrlError);
-                                profileImg.src = profileData.avatar_url; // fallback to stored value
-                            } else {
-                                profileImg.src = publicUrlData.publicUrl;
-                            }
-                        }
-                        profileImg.style.display = "block";
-                        if (defaultUserIcon) {
-                            defaultUserIcon.style.display = "none";
-                        }
-                        profileImg.style.width = "40px";
-                        profileImg.style.height = "40px";
-                        profileImg.style.borderRadius = "50%";
-                        profileImg.style.objectFit = "cover";
+            const profileImg = document.getElementById("profile-img");
+            const defaultUserIcon = document.querySelector(".default-user-icon");
+            if (profileImg) {
+                if (profileData.avatar_url && profileData.avatar_url.trim() !== "") {
+                    // Check if avatar_url is a full URL (starts with http or https)
+                    if (profileData.avatar_url.startsWith("http://") || profileData.avatar_url.startsWith("https://")) {
+                        profileImg.src = profileData.avatar_url;
                     } else {
-                        // No avatar_url, show default profile icon
-                        profileImg.style.display = "none";
-                        if (defaultUserIcon) {
-                            defaultUserIcon.style.display = "block";
+                        // If avatar_url is a bucket path, get public URL from Supabase storage
+                        const { data: publicUrlData, error: publicUrlError } = await supabase.storage
+                            .from('avatars') // replace 'avatars' with your bucket name if different
+                            .getPublicUrl(profileData.avatar_url);
+
+                        if (publicUrlError) {
+                            console.error("Error getting public URL for avatar:", publicUrlError);
+                            profileImg.src = profileData.avatar_url; // fallback to stored value
+                        } else {
+                            profileImg.src = publicUrlData.publicUrl;
                         }
                     }
-                }
-            } // Add closing brace for if (profileData && usernameElem)
-
-            const roleData = await fetchUserRole(session);
-            if (roleData && roleElem) {
-                if (session.user.id === ADMIN_UID) {
-                    roleElem.innerHTML = '<span class="role-badge role-admin" title="Admin" aria-label="Admin role">Admin</span>';
-                    roleElem.style.cursor = "default";
-                } else if (roleData.length === 1 && roleData[0].role) {
-                    const roleText = roleData[0].role.toLowerCase();
-                    const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1);
-                    roleElem.innerHTML = `<span class="role-badge role-${roleText}" title="${capitalizedRole}" aria-label="${capitalizedRole} role">${capitalizedRole}</span>`;
-                    roleElem.style.cursor = "default";
+                    profileImg.style.display = "block";
+                    if (defaultUserIcon) {
+                        defaultUserIcon.style.display = "none";
+                    }
+                    profileImg.style.width = "40px";
+                    profileImg.style.height = "40px";
+                    profileImg.style.borderRadius = "50%";
+                    profileImg.style.objectFit = "cover";
                 } else {
-                    roleElem.innerHTML = '<span class="role-badge role-unset" title="Select Role" aria-label="Select role">Select Role</span>';
-                    roleElem.style.cursor = "pointer";
+                    // No avatar_url, show default profile icon
+                    profileImg.style.display = "none";
+                    if (defaultUserIcon) {
+                        defaultUserIcon.style.display = "block";
+                    }
                 }
             }
+        } // Add closing brace for if (profileData && usernameElem)
 
-        } else {
-            toggleVisibility(loggedInMenu, false);
-            toggleVisibility(loggedOutMenu, true);
-
-            console.log("updateUserMenuDisplay: loggedInMenu hidden, loggedOutMenu visible");
-
-            // Set visibility visible to prevent flicker
-            loggedInMenu.style.visibility = 'hidden';
-            loggedOutMenu.style.visibility = 'visible';
-
-            if (logoutBtn) {
-                logoutBtn.style.display = "none";
+        const roleData = await fetchUserRole(session);
+        if (roleData && roleElem) {
+            if (session.user.id === ADMIN_UID) {
+                roleElem.innerHTML = '<span class="role-badge role-admin" title="Admin" aria-label="Admin role">Admin</span>';
+                roleElem.style.cursor = "default";
+            } else if (roleData.length === 1 && roleData[0].role) {
+                const roleText = roleData[0].role.toLowerCase();
+                const capitalizedRole = roleText.charAt(0).toUpperCase() + roleText.slice(1);
+                roleElem.innerHTML = `<span class="role-badge role-${roleText}" title="${capitalizedRole}" aria-label="${capitalizedRole} role">${capitalizedRole}</span>`;
+                roleElem.style.cursor = "default";
+            } else {
+                roleElem.innerHTML = '<span class="role-badge role-unset" title="Select Role" aria-label="Select role">Select Role</span>';
+                roleElem.style.cursor = "pointer";
             }
+        }
+
+    } else {
+        toggleVisibility(loggedInMenu, true);
+        toggleVisibility(loggedOutMenu, false);
+
+        console.log("updateUserMenuDisplay: loggedInMenu hidden, loggedOutMenu visible");
+
+        // Set visibility visible to prevent flicker
+        loggedInMenu.style.visibility = 'visible';
+        loggedOutMenu.style.visibility = 'hidden';
+
+        if (logoutBtn) {
+            logoutBtn.style.display = "none";
         }
     }
+}
 
     // New function to wait for session readiness before updating UI
     async function waitForSessionThenUpdate() {
