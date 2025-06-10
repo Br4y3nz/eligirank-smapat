@@ -191,16 +191,21 @@ export function initializeSidebar() {
                 const defaultUserIcon = document.querySelector(".default-user-icon");
                 if (profileImg) {
                     if (profileData.avatar_url && profileData.avatar_url.trim() !== "") {
-                        // If avatar_url is a bucket path, get public URL from Supabase storage
-                        const { data: publicUrlData, error: publicUrlError } = await supabase.storage
-                            .from('avatars') // replace 'avatars' with your bucket name if different
-                            .getPublicUrl(profileData.avatar_url);
-
-                        if (publicUrlError) {
-                            console.error("Error getting public URL for avatar:", publicUrlError);
-                            profileImg.src = profileData.avatar_url; // fallback to stored value
+                        // Check if avatar_url is a full URL (starts with http or https)
+                        if (profileData.avatar_url.startsWith("http://") || profileData.avatar_url.startsWith("https://")) {
+                            profileImg.src = profileData.avatar_url;
                         } else {
-                            profileImg.src = publicUrlData.publicUrl;
+                            // If avatar_url is a bucket path, get public URL from Supabase storage
+                            const { data: publicUrlData, error: publicUrlError } = await supabase.storage
+                                .from('avatars') // replace 'avatars' with your bucket name if different
+                                .getPublicUrl(profileData.avatar_url);
+
+                            if (publicUrlError) {
+                                console.error("Error getting public URL for avatar:", publicUrlError);
+                                profileImg.src = profileData.avatar_url; // fallback to stored value
+                            } else {
+                                profileImg.src = publicUrlData.publicUrl;
+                            }
                         }
                         profileImg.style.display = "block";
                         if (defaultUserIcon) {
@@ -253,18 +258,26 @@ export function initializeSidebar() {
 
     // New function to wait for session readiness before updating UI
     async function waitForSessionThenUpdate() {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        console.log("waitForSessionThenUpdate called");
+        try {
+            const { data: { session }, error } = await supabase.auth.getSession();
 
-        if (error) {
-            console.error("Session fetch error:", error);
-            return;
-        }
+            if (error) {
+                console.error("Session fetch error:", error);
+                return;
+            }
 
-        if (!session) {
-            // No session yet, check again after short delay
-            setTimeout(waitForSessionThenUpdate, 200);
-        } else {
-            updateUserMenuDisplay();
+            console.log("waitForSessionThenUpdate: session =", session);
+
+            if (!session) {
+                // No session yet, check again after short delay
+                setTimeout(waitForSessionThenUpdate, 200);
+            } else {
+                console.log("waitForSessionThenUpdate: session ready, calling updateUserMenuDisplay");
+                updateUserMenuDisplay();
+            }
+        } catch (err) {
+            console.error("Error in waitForSessionThenUpdate:", err);
         }
     }
 
