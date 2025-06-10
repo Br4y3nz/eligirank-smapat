@@ -30,7 +30,13 @@ async function loadUserProfile() {
     if (profile) {
       document.getElementById("fullname").value = profile.fullname || "";
       document.getElementById("phone").value = profile.phone || "";
-      document.getElementById("profile-avatar").src = profile.avatar_url || "Assets/Logo-smapat.png";
+      const profileAvatar = document.getElementById("profile-avatar");
+      if (profile.avatar_url) {
+        profileAvatar.src = profile.avatar_url;
+        profileAvatar.style.display = "block";
+      } else {
+        profileAvatar.style.display = "none";
+      }
       document.getElementById("profile-username").textContent = profile.username || "User";
     }
 
