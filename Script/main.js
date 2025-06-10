@@ -1,9 +1,4 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-// Initialize Supabase client
-const supabaseUrl = SUPABASE_URL;
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
-const supabase = createClient(supabaseUrl, supabaseKey);
+import supabase from '../Supabase/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   async function signUp() {
@@ -57,34 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sidebar toggle functionality adapted from temp_sidebar_repo/script.js
-  const sidebar = document.querySelector('.sidebar');
-  const toggleBtn = document.getElementById('btn');
-  const searchBtn = document.querySelector('.bx-search');
-
-  if (toggleBtn && sidebar) {
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      menuBtnChange();
-    });
-  }
-
-  if (searchBtn && sidebar) {
-    searchBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      menuBtnChange();
-    });
-  }
-
-  function menuBtnChange() {
-    if (sidebar.classList.contains('open')) {
-      toggleBtn.classList.replace('bx-menu', 'bx-menu-alt-right');
-    } else {
-      toggleBtn.classList.replace('bx-menu-alt-right', 'bx-menu');
-    }
-  }
-
-  menuBtnChange();
+  // Removed sidebar toggle code to avoid duplication with sidebar.js
 
   // Dark Mode Toggle
   const darkModeToggle = document.getElementById('darkModeToggle');
@@ -151,40 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Modal functions
-  function showModal(message) {
-    const modal = document.getElementById('notificationModal');
-    const modalMessage = document.getElementById('modalMessage');
-    if (modal && modalMessage) {
-      modalMessage.textContent = message;
-      modal.style.display = 'flex';
-      modal.style.justifyContent = 'center';
-      modal.style.alignItems = 'center';
-    }
-  }
-
-  function closeModal() {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach((modal) => {
-      modal.style.display = 'none';
-    });
-  }
-
-  function showSuccessModal(message) {
-    const modal = document.getElementById('registrationSuccessModal');
-    if (modal) {
-      modal.querySelector('p').textContent = message;
-      modal.style.display = 'block';
-    }
-  }
-
-  function showErrorModal(message) {
-    const modal = document.getElementById('registrationErrorModal');
-    if (modal) {
-      modal.querySelector('p').textContent = message;
-      modal.style.display = 'block';
-    }
-  }
+  // Modal functions (to be refactored into reusable utilities)
 
   // Toggle profile menu visibility based on authentication state
   const loggedInMenu = document.getElementById('logged-in-menu');
