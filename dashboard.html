@@ -78,13 +78,14 @@
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('sidebar-container').innerHTML = html;
+                    console.log('Sidebar loaded ✅');
 
-                    // After loading sidebar, initialize sidebar.js functions if needed
-                if (typeof initializeSidebar === 'function') {
-                    console.log('Initializing sidebar...');
-                    initializeSidebar();
-                    console.log('Sidebar initialized.');
-                }
+                    if (typeof initializeSidebar === 'function') {
+                        initializeSidebar();
+                        console.log('Sidebar initialized ✅');
+                    } else {
+                        console.error('initializeSidebar() not found ❌');
+                    }
 
                 // Highlight active page link based on current URL
                 const currentPath = window.location.pathname.split('/').pop();
