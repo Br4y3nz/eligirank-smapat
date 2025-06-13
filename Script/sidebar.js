@@ -184,9 +184,16 @@ export function initializeSidebar() {
   // Add event listener to close userInfoModal and overlay on clicking overlay
   const overlay = document.getElementById("overlay");
   if (overlay) {
-    overlay.addEventListener("click", () => {
+    overlay.addEventListener("click", (event) => {
+      // Prevent immediate closing if click is inside modal content
       const userInfoModal = document.getElementById("user-info-modal");
       const roleModal = document.getElementById("role-modal");
+      if (userInfoModal && userInfoModal.contains(event.target)) {
+        return;
+      }
+      if (roleModal && roleModal.contains(event.target)) {
+        return;
+      }
       if (userInfoModal && !userInfoModal.classList.contains("close")) {
         userInfoModal.classList.remove("open");
         userInfoModal.classList.add("close");
