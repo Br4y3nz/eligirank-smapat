@@ -124,6 +124,16 @@ export function initializeSidebar() {
       }
     }
 
+    // Show modal if username or phone missing
+    if (!profile.username || !profile.phone) {
+      const userInfoModal = document.getElementById("user-info-modal");
+      const overlay = document.getElementById("overlay");
+      if (userInfoModal && overlay) {
+        userInfoModal.style.display = "block";
+        overlay.style.display = "block";
+      }
+    }
+
     // Highlight active menu item based on current page URL
     const currentPath = window.location.pathname.split("/").pop();
     const menuLinks = document.querySelectorAll("#sidebar-menu li a");
