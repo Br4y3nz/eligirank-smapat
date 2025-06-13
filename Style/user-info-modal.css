@@ -86,3 +86,16 @@
 #user-info-modal button[type="submit"]:hover {
   background-color: #1E40AF;
 }
+
+.modal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  /* do NOT set display: none here */
+}
+
+.modal.open {
+  opacity: 1;
+  pointer-events: auto;
+  /* still no display property */
+}
