@@ -70,7 +70,6 @@ export function initializeSidebar() {
       }
     });
   }
-}
   
 
   closeBtn.addEventListener("click", () => {
@@ -271,4 +270,5 @@ export function initializeSidebar() {
       }
     });
   });
+}
 
