@@ -187,16 +187,18 @@ export function initializeSidebar() {
     overlay.addEventListener("click", () => {
       const userInfoModal = document.getElementById("user-info-modal");
       const roleModal = document.getElementById("role-modal");
-      if (userInfoModal) {
+      if (userInfoModal && !userInfoModal.classList.contains("close")) {
         userInfoModal.classList.remove("open");
         userInfoModal.classList.add("close");
       }
-      if (roleModal) {
+      if (roleModal && !roleModal.classList.contains("close")) {
         roleModal.classList.remove("open");
         roleModal.classList.add("close");
       }
-      overlay.classList.remove("open");
-      overlay.classList.add("close");
+      if (overlay.classList.contains("open")) {
+        overlay.classList.remove("open");
+        overlay.classList.add("close");
+      }
     });
   }
 
