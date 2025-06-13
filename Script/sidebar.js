@@ -212,4 +212,17 @@ export function initializeSidebar() {
       }
     });
   }
+
+  // Add change event listeners to role radio inputs to show/hide student/teacher fields
+  const roleInputs = document.querySelectorAll('input[name="role"]');
+  roleInputs.forEach(input => {
+    input.addEventListener("change", () => {
+      const studentFields = document.getElementById("student-fields");
+      const teacherFields = document.getElementById("teacher-fields");
+      if (studentFields && teacherFields) {
+        studentFields.style.display = input.value === "student" ? "block" : "none";
+        teacherFields.style.display = input.value === "teacher" ? "block" : "none";
+      }
+    });
+  });
 }
