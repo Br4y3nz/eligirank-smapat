@@ -216,17 +216,14 @@ export function initializeSidebar() {
       if (roleModal && roleModal.contains(event.target)) {
         return;
       }
-      if (userInfoModal && !userInfoModal.classList.contains("close")) {
+      if (userInfoModal && userInfoModal.classList.contains("open")) {
         userInfoModal.classList.remove("open");
-        userInfoModal.classList.add("close");
       }
-      if (roleModal && !roleModal.classList.contains("close")) {
+      if (roleModal && roleModal.classList.contains("open")) {
         roleModal.classList.remove("open");
-        roleModal.classList.add("close");
       }
       if (overlay.classList.contains("open")) {
         overlay.classList.remove("open");
-        overlay.classList.add("close");
       }
     });
   }
