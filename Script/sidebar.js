@@ -28,7 +28,7 @@ export function initializeSidebar() {
   }
 
   // Add submit event listener for role form to save role data
-  const roleForm = document.getElementById("role-form");
+  let roleForm = document.getElementById("role-form");
   if (roleForm) {
     roleForm.addEventListener("submit", async (e) => {
       e.preventDefault();
