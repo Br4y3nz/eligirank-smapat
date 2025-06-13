@@ -147,4 +147,54 @@ export function initializeSidebar() {
   }
 
   updateUserMenuDisplay();
+
+  // Add submit event listener for user-info form to save profile data without page reload
+  const userInfoForm = document.getElementById("user-info-form");
+  if (userInfoForm) {
+    userInfoForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username-input").value.trim();
+      const phone = document.getElementById("phone-input").value.trim();
+
+      if (!username || !phone) {
+        alert("Please fill in both username and phone number.");
+        return;
+      }
+
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (!session || sessionError) {
+        console.error("Session fetch failed:", sessionError);
+        alert("You're not logged in.");
+        return;
+      }
+
+      const userId = session.user.id;
+
+      const { error } = await supabase
+        .from("profiles")
+        .upsert({
+          id: userId,
+          username,
+          phone
+        });
+
+      if (error) {
+        console.error("Supabase error during upsert:", error);
+        alert("Failed to save profile. Please try again.");
+        return;
+      }
+
+      alert("Profile updated successfully!");
+      const userInfoModal = document.getElementById("user-info-modal");
+      const overlay = document.getElementById("overlay");
+      if (userInfoModal && overlay) {
+        userInfoModal.style.display = "none";
+        overlay.style.display = "none";
+      }
+
+      // Update sidebar user info display without page reload
+      updateUserMenuDisplay();
+    });
+  }
 }
