@@ -169,15 +169,36 @@ export function initializeSidebar() {
       }
     }
 
-    // Show modal if username or phone missing
-    if (!profile.username || !profile.phone) {
-      const userInfoModal = document.getElementById("user-info-modal");
-      const overlay = document.getElementById("overlay");
-      if (userInfoModal && overlay) {
-        userInfoModal.style.display = "block";
-        overlay.style.display = "block";
-      }
+  // Show modal if username or phone missing
+  if (profile && (!profile.username || !profile.phone)) {
+    const userInfoModal = document.getElementById("user-info-modal");
+    const overlay = document.getElementById("overlay");
+    if (userInfoModal && overlay) {
+      userInfoModal.classList.add("open");
+      userInfoModal.classList.remove("close");
+      overlay.classList.add("open");
+      overlay.classList.remove("close");
     }
+  }
+  
+  // Add event listener to close userInfoModal and overlay on clicking overlay
+  const overlay = document.getElementById("overlay");
+  if (overlay) {
+    overlay.addEventListener("click", () => {
+      const userInfoModal = document.getElementById("user-info-modal");
+      const roleModal = document.getElementById("role-modal");
+      if (userInfoModal) {
+        userInfoModal.classList.remove("open");
+        userInfoModal.classList.add("close");
+      }
+      if (roleModal) {
+        roleModal.classList.remove("open");
+        roleModal.classList.add("close");
+      }
+      overlay.classList.remove("open");
+      overlay.classList.add("close");
+    });
+  }
 
     // Highlight active menu item based on current page URL
     const currentPath = window.location.pathname.split("/").pop();
@@ -234,8 +255,10 @@ export function initializeSidebar() {
       const userInfoModal = document.getElementById("user-info-modal");
       const overlay = document.getElementById("overlay");
       if (userInfoModal && overlay) {
-        userInfoModal.style.display = "none";
-        overlay.style.display = "none";
+        userInfoModal.classList.remove("open");
+        userInfoModal.classList.add("close");
+        overlay.classList.remove("open");
+        overlay.classList.add("close");
       }
 
       // Update sidebar user info display without page reload
@@ -251,8 +274,10 @@ export function initializeSidebar() {
         const roleModal = document.getElementById("role-modal");
         const overlay = document.getElementById("overlay");
         if (roleModal && overlay) {
-          roleModal.style.display = "block";
-          overlay.style.display = "block";
+          roleModal.classList.add("open");
+          roleModal.classList.remove("close");
+          overlay.classList.add("open");
+          overlay.classList.remove("close");
         }
       }
     });
