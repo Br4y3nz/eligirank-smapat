@@ -123,6 +123,17 @@ export function initializeSidebar() {
         roleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
       }
     }
+
+    // Highlight active menu item based on current page URL
+    const currentPath = window.location.pathname.split("/").pop();
+    const menuLinks = document.querySelectorAll("#sidebar-menu li a");
+    menuLinks.forEach(link => {
+      if (link.getAttribute("href") === currentPath) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
   }
 
   updateUserMenuDisplay();
