@@ -4,7 +4,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1);
   background-color: #F1F5F9; /* match sidebar base */
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -14,6 +14,45 @@
   padding: 24px;
   color: #1E293B; /* text slate color */
   font-family: "Poppins", sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+  animation: modalFadeIn 0.3s forwards;
+}
+
+.modal.close {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.9);
+  animation: modalFadeOut 0.3s forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
 }
 
 .modal-content h2 {
@@ -107,4 +146,17 @@
   backdrop-filter: blur(6px);
   z-index: 1200; /* increased from 1000 */
   display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+#overlay.close {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
