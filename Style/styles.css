@@ -38,6 +38,16 @@ body {
   min-height: 100vh;
 }
 
+main {
+  margin-left: 85px;
+}
+
+/* Exclude login and register pages from main margin */
+body.login-page main,
+body.register-page main {
+  margin-left: 0;
+}
+
 .header {
   height: 70px;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
