@@ -70,6 +70,7 @@
     </div>
 
     <script type="module">
+        import { initializeSidebar } from './script/sidebar.js';
         import supabase from './Supabase/client.js';
 
         // Dynamically load sidebar component HTML into sidebar-container
@@ -80,12 +81,8 @@
                     document.getElementById('sidebar-container').innerHTML = html;
                     console.log('Sidebar loaded ✅');
 
-                    if (typeof initializeSidebar === 'function') {
-                        initializeSidebar();
-                        console.log('Sidebar initialized ✅');
-                    } else {
-                        console.error('initializeSidebar() not found ❌');
-                    }
+                    initializeSidebar();
+                    console.log('Sidebar initialized ✅');
 
                 // Highlight active page link based on current URL
                 const currentPath = window.location.pathname.split('/').pop();
