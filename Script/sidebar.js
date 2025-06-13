@@ -70,6 +70,28 @@ export function initializeSidebar() {
       }
     });
   }
+
+  // Add event listener to close modals on Escape key press
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      const userInfoModal = document.getElementById("user-info-modal");
+      const roleModal = document.getElementById("role-modal");
+      const overlay = document.getElementById("overlay");
+
+      if (userInfoModal && userInfoModal.classList.contains("open")) {
+        userInfoModal.classList.remove("open");
+        userInfoModal.classList.add("close");
+      }
+      if (roleModal && roleModal.classList.contains("open")) {
+        roleModal.classList.remove("open");
+        roleModal.classList.add("close");
+      }
+      if (overlay && overlay.classList.contains("open")) {
+        overlay.classList.remove("open");
+        overlay.classList.add("close");
+      }
+    }
+  });
   
 
   closeBtn.addEventListener("click", () => {
