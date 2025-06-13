@@ -27,6 +27,52 @@ export function initializeSidebar() {
     });
   }
 
+  // Add submit event listener for role form to save role data
+  const roleForm = document.getElementById("role-form");
+  if (roleForm) {
+    roleForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const role = document.querySelector('input[name="role"]:checked')?.value;
+      if (!role) {
+        alert("Please select a role.");
+        return;
+      }
+
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (!session || sessionError) {
+        console.error("Session fetch failed:", sessionError);
+        alert("You're not logged in.");
+        return;
+      }
+
+      const updateData = { role };
+
+      if (role === "student") {
+        updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
+        updateData.nis = document.getElementById("nis")?.value.trim() || null;
+      } else if (role === "teacher") {
+        updateData.nik = document.getElementById("nik")?.value.trim() || null;
+        updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
+      }
+
+      const { error } = await supabase.from("roles").upsert({
+        user_id: session.user.id,
+        ...updateData
+      });
+
+      if (!error) {
+        alert("Role saved!");
+        location.reload();
+      } else {
+        alert("Error saving role.");
+        console.error(error);
+      }
+    });
+  }
+}
+  
+
   closeBtn.addEventListener("click", () => {
     const isOpen = sidebar.classList.toggle("open");
     closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
@@ -225,4 +271,4 @@ export function initializeSidebar() {
       }
     });
   });
-}
+
