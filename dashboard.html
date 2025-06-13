@@ -20,7 +20,7 @@
     <div class="overlay" id="overlay"></div>
 
     <!-- Role selection modal -->
-    <div id="role-modal" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
+    <div id="role-modal" class="modal close" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
         <div class="modal-content">
             <button class="close-button" id="close-role-modal" aria-label="Close role selection modal">&times;</button>
             <h2 id="role-modal-title">Select Your Role</h2>
@@ -50,22 +50,18 @@
         </div>
     </div>
 
-    <div>
-        <div>
-            <!-- Username and Phone Number modal -->
-            <div id="user-info-modal" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="user-info-modal-title">
-                <div class="modal-content">
-                    <button class="close-button" id="close-user-info-modal" aria-label="Close user info modal">&times;</button>
-                    <h2 id="user-info-modal-title">Complete Your Profile</h2>
-                    <form id="user-info-form">
-                        <label for="username-input">Username:</label>
-                        <input type="text" id="username-input" name="username" required />
-                        <label for="phone-input">Phone Number:</label>
-                        <input type="tel" id="phone-input" name="phone" required />
-                        <button type="submit">Save</button>
-                    </form>
-                </div>
-            </div>
+    <!-- Username and Phone Number modal -->
+    <div id="user-info-modal" class="modal close" role="dialog" aria-modal="true" aria-labelledby="user-info-modal-title">
+        <div class="modal-content">
+            <button class="close-button" id="close-user-info-modal" aria-label="Close user info modal">&times;</button>
+            <h2 id="user-info-modal-title">Complete Your Profile</h2>
+            <form id="user-info-form">
+                <label for="username-input">Username:</label>
+                <input type="text" id="username-input" name="username" required />
+                <label for="phone-input">Phone Number:</label>
+                <input type="tel" id="phone-input" name="phone" required />
+                <button type="submit">Save</button>
+            </form>
         </div>
     </div>
 
@@ -114,14 +110,16 @@
                             return;
                         }
 
-                        if (!profileData?.username?.trim() || !profileData?.phone?.trim()) {
-                            const userInfoModal = document.getElementById("user-info-modal");
-                            const overlay = document.getElementById("overlay");
-                            if (userInfoModal && overlay) {
-                                userInfoModal.style.display = "block";
-                                overlay.style.display = "block";
-                            }
-                        }
+            if (!profileData?.username?.trim() || !profileData?.phone?.trim()) {
+                const userInfoModal = document.getElementById("user-info-modal");
+                const overlay = document.getElementById("overlay");
+                if (userInfoModal && overlay) {
+                    userInfoModal.classList.add("open");
+                    userInfoModal.classList.remove("close");
+                    overlay.classList.add("open");
+                    overlay.classList.remove("close");
+                }
+            }
                     } catch (err) {
                         console.error("Error checking profile completeness:", err);
                     }
@@ -134,20 +132,7 @@
         });
     </script>
 
-    <!-- Username and Phone Number modal -->
-    <div id="user-info-modal" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="user-info-modal-title">
-        <div class="modal-content">
-            <button class="close-button" id="close-user-info-modal" aria-label="Close user info modal">&times;</button>
-            <h2 id="user-info-modal-title">Complete Your Profile</h2>
-            <form id="user-info-form">
-                <label for="username-input">Username:</label>
-                <input type="text" id="username-input" name="username" required />
-                <label for="phone-input">Phone Number:</label>
-                <input type="tel" id="phone-input" name="phone" required />
-                <button type="submit">Save</button>
-            </form>
-        </div>
-    </div>
+
 
     <main class="main-content">
         <section class="home-section" role="main" aria-label="Dashboard main content">
