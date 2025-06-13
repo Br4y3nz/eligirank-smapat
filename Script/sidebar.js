@@ -323,5 +323,27 @@ export function initializeSidebar() {
       }
     });
   });
+
+  function showModal(modal) {
+    modal.classList.remove('close');
+    modal.classList.add('open');
+  }
+
+  function hideModal(modal) {
+    modal.classList.remove('open');
+    modal.classList.add('close');
+  }
+
+  function openModal(modal) {
+    showModal(modal);
+    document.getElementById('overlay')?.classList.add('open');
+    document.getElementById('overlay')?.classList.remove('close');
+  }
+
+  function closeModal(modal) {
+    hideModal(modal);
+    document.getElementById('overlay')?.classList.remove('open');
+    document.getElementById('overlay')?.classList.add('close');
+  }
 }
 
