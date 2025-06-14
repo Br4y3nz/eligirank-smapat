@@ -131,7 +131,7 @@
 
     <main class="main-content">
         <!-- Greeting -->
-        <section class="greeting scroll-fade">
+        <section class="greeting scroll-fade" aria-label="Greeting section">
             <div class="greeting-card">
                 <h1><i class='bx bx-smile'></i> Selamat datang, <span id="dashboard-username" class="text-blue-600">...</span> 👋</h1>
                 <p class="quote">"Setiap hari adalah kesempatan untuk menjadi lebih baik — jangan sia-siakan peluang hari ini."</p>
@@ -139,36 +139,36 @@
         </section>
 
         <!-- Stat Cards -->
-        <section class="stats">
-            <div id="stat-siswa" class="stat-card"><i class='bx bxs-graduation'></i> Loading siswa...</div>
-            <div id="stat-guru" class="stat-card"><i class='bx bxs-user'></i> Loading guru...</div>
-            <div id="stat-prestasi" class="stat-card"><i class='bx bxs-trophy'></i> Loading prestasi...</div>
-            <div id="stat-organisasi" class="stat-card"><i class='bx bxs-group'></i> Loading organisasi...</div>
+        <section class="stats" aria-label="Statistics cards">
+            <div id="stat-siswa" class="stat-card" role="region" aria-live="polite"><i class='bx bxs-graduation'></i> Loading siswa...</div>
+            <div id="stat-guru" class="stat-card" role="region" aria-live="polite"><i class='bx bxs-user'></i> Loading guru...</div>
+            <div id="stat-prestasi" class="stat-card" role="region" aria-live="polite"><i class='bx bxs-trophy'></i> Loading prestasi...</div>
+            <div id="stat-organisasi" class="stat-card" role="region" aria-live="polite"><i class='bx bxs-group'></i> Loading organisasi...</div>
         </section>
 
         <!-- Highlights -->
-        <section class="highlights">
-            <div class="highlight-card" id="top-siswa"><i class='bx bxs-star'></i> Top Siswa Bulan Ini</div>
-            <div class="highlight-card" id="fitur-terbaru"><i class='bx bxs-bolt-circle'></i> Fitur Terbaru</div>
+        <section class="highlights" aria-label="Highlights section">
+            <div class="highlight-card" id="top-siswa" tabindex="0"><i class='bx bxs-star'></i> Top Siswa Bulan Ini</div>
+            <div class="highlight-card" id="fitur-terbaru" tabindex="0"><i class='bx bxs-bolt-circle'></i> Fitur Terbaru</div>
         </section>
 
         <!-- Announcements -->
-        <section class="announcements">
-            <h2><i class='bx bxs-megaphone'></i> Pengumuman</h2>
+        <section class="announcements" aria-label="Announcements section">
+            <h2><i class='bx bxs-megaphone bx-tada'></i> Pengumuman</h2>
             <ul id="announcement-list"></ul>
         </section>
 
         <!-- Vision, Mission, Goals -->
-        <section class="vmg">
-            <div class="vmg-card stat-card">
+        <section class="vmg scroll-fade" aria-label="Vision, Mission, Goals section">
+            <div class="vmg-card stat-card" tabindex="0">
                 <h3><i class='bx bxs-eye'></i> VISI</h3>
                 <p>Menuju sekolah yang berimtaq, terampil, berprestasi dan peduli lingkungan.</p>
             </div>
-            <div class="vmg-card stat-card">
+            <div class="vmg-card stat-card" tabindex="0">
                 <h3><i class='bx bxs-target-lock'></i> MISI</h3>
                 <p>Menghasilkan lulusan yang beriman dan bertaqwa, terampil berwirausaha, berprestasi dan bersaing di perguruan tinggi serta peduli lingkungan.</p>
             </div>
-            <div class="vmg-card stat-card">
+            <div class="vmg-card stat-card" tabindex="0">
                 <h3><i class='bx bxs-bullseye'></i> TUJUAN</h3>
                 <ol>
                     <li>Menyiapkan peserta didik yang berimtaq.</li>
@@ -181,9 +181,9 @@
         </section>
 
         <!-- Footer -->
-        <footer class="footer-grid scroll-fade">
+        <footer class="footer-grid scroll-fade" aria-label="Footer section">
             <div>
-                <h3>Tentang Sekolah</h3>
+                <h3><i class='bx bxs-info-circle'></i> Tentang Sekolah</h3>
                 <p>UPT SMA Negeri 4 Parepare adalah sekolah unggulan yang berkomitmen menghasilkan lulusan berprestasi dan berkarakter.</p>
             </div>
             <div>
