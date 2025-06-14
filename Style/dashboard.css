@@ -16,6 +16,20 @@
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
   padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.greeting::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top left, #bfdbfe 10%, transparent 40%), radial-gradient(circle at bottom right, #93c5fd 10%, transparent 40%);
+  opacity: 0.2;
+  pointer-events: none;
 }
 
 .greeting h1 {
@@ -40,20 +54,25 @@
 }
 
 .stat-card {
-  background-color: #ffffff;
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
   border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
   padding: 1rem;
   font-weight: 600;
   font-size: 1.25rem;
-  color: #111827; /* gray-900 */
+  color: #0369a1; /* blue-700 */
   text-align: center;
-  transition: box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+}
+
+.stat-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgb(0 0 0 / 0.15);
 }
 
 .stat-card:hover {
