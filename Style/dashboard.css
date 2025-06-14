@@ -1,8 +1,8 @@
 /* dashboard.css - styles for dashboard page */
 
 .main-content {
-  margin-left: 250px; /* match sidebar width */
-  padding: 2rem;
+  margin-left: 85px; /* Adjusted to match sidebar width */
+  padding: 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f9fafb;
   min-height: 100vh;
@@ -11,7 +11,11 @@
 
 /* Greeting Section */
 .greeting {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  padding: 1rem;
 }
 
 .greeting h1 {
@@ -30,15 +34,15 @@
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .stat-card {
   background-color: #ffffff;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
-  padding: 1.5rem;
+  padding: 1rem;
   font-weight: 600;
   font-size: 1.25rem;
   color: #111827; /* gray-900 */
@@ -55,14 +59,14 @@
 .highlights {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .highlight-card {
   background-color: #e0f2fe; /* light blue */
   border-radius: 0.5rem;
-  padding: 1.5rem;
+  padding: 1rem;
   font-weight: 600;
   font-size: 1.1rem;
   color: #0369a1; /* blue-700 */
@@ -75,49 +79,51 @@
 .announcements {
   background-color: #ffffff;
   border-radius: 0.5rem;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .announcements h2 {
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   color: #1e40af; /* blue-800 */
 }
 
 #announcement-list {
   list-style-type: disc;
-  padding-left: 1.5rem;
+  padding-left: 1.25rem;
   color: #374151; /* gray-700 */
 }
 
 #announcement-list li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 /* Vision, Mission, Goals */
 .vmg {
   background-color: #f3f4f6; /* gray-100 */
   border-radius: 0.5rem;
-  padding: 1.5rem;
+  padding: 1rem;
   font-weight: 500;
   color: #4b5563; /* gray-600 */
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
 }
 
-/* Footer */
-footer {
+/* Footer bar */
+.footer-bar {
   text-align: center;
   padding: 1rem 0;
-  font-size: 0.9rem;
-  color: #6b7280; /* gray-500 */
-  border-top: 1px solid #e5e7eb; /* gray-200 */
-  background-color: #ffffff;
+  font-size: 1rem;
+  color: #e0f2fe; /* light blue text */
+  background-color: #0369a1; /* blue background */
+  width: 100%;
+  box-shadow: 0 -2px 6px rgb(0 0 0 / 0.15);
   position: fixed;
   bottom: 0;
-  width: calc(100% - 250px);
-  margin-left: 250px;
+  left: 0;
+  z-index: 10;
 }
 
 /* Responsive adjustments */
@@ -127,9 +133,8 @@ footer {
     padding: 1rem;
   }
 
-  footer {
+  .footer-bar {
     position: static;
     width: 100%;
-    margin-left: 0;
   }
 }
