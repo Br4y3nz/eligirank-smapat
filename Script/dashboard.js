@@ -1,4 +1,4 @@
-// dashboard.js - dynamic content for dashboard page
+import supabase from '../Supabase/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   loadUsername();
