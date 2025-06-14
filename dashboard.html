@@ -7,11 +7,12 @@
     <title>Dashboard - EligiRank SMAPAT</title>
     <script type="module" src="./Supabase/client.js" defer></script>
     <script type="module" src="/Script/sidebar.js" defer></script>
+    <script type="module" src="/script/dashboard.js" defer></script>
     <link rel="stylesheet" href="Style/sidebar.css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="Style/role-modal.css" />
     <link rel="stylesheet" href="Style/user-info-modal.css" />
-
+    <link rel="stylesheet" href="Style/dashboard.css" />
 </head>
 
 <body>
@@ -75,71 +76,108 @@
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('sidebar-container').innerHTML = html;
-                    console.log('Sidebar loaded ✅');
-
                     initializeSidebar();
-                    console.log('Sidebar initialized ✅');
 
-                // Highlight active page link based on current URL
-                const currentPath = window.location.pathname.split('/').pop();
-                const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
-                sidebarLinks.forEach(link => {
-                    if (link.getAttribute('href') === currentPath) {
-                        link.classList.add('active');
-                    }
-                });
+                    // Highlight active page link based on current URL
+                    const currentPath = window.location.pathname.split('/').pop();
+                    const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
+                    sidebarLinks.forEach(link => {
+                        if (link.getAttribute('href') === currentPath) {
+                            link.classList.add('active');
+                        }
+                    });
 
-                // New function to check profile completeness and show user info modal
-                async function checkAndShowUserInfoModal() {
-                    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-                    if (!session || sessionError) {
-                        console.error("No session or session error:", sessionError);
-                        alert("User not logged in.");
-                        return;
-                    }
-
-                    try {
-                        const { data: profileData, error } = await supabase
-                            .from("profiles")
-                            .select("username, phone")
-                            .eq("id", session.user.id)
-                            .maybeSingle();
-
-                        if (error) {
-                            console.error("Error fetching profile:", error);
+                    // Check profile completeness and show user info modal if needed
+                    async function checkAndShowUserInfoModal() {
+                        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                        if (!session || sessionError) {
+                            console.error("No session or session error:", sessionError);
+                            alert("User not logged in.");
                             return;
                         }
 
-            if (!profileData?.username?.trim() || !profileData?.phone?.trim()) {
-                const userInfoModal = document.getElementById("user-info-modal");
-                const overlay = document.getElementById("overlay");
-                if (userInfoModal && overlay) {
-                    userInfoModal.classList.add("open");
-                    userInfoModal.classList.remove("close");
-                    overlay.classList.add("open");
-                    overlay.classList.remove("close");
-                }
-            }
-                    } catch (err) {
-                        console.error("Error checking profile completeness:", err);
-                    }
-                }
+                        try {
+                            const { data: profileData, error } = await supabase
+                                .from("profiles")
+                                .select("username, phone")
+                                .eq("id", session.user.id)
+                                .maybeSingle();
 
-                // Call the function after sidebar is loaded and initialized
-                checkAndShowUserInfoModal();
+                            if (error) {
+                                console.error("Error fetching profile:", error);
+                                return;
+                            }
+
+                            if (!profileData?.username?.trim() || !profileData?.phone?.trim()) {
+                                const userInfoModal = document.getElementById("user-info-modal");
+                                const overlay = document.getElementById("overlay");
+                                if (userInfoModal && overlay) {
+                                    userInfoModal.classList.add("open");
+                                    userInfoModal.classList.remove("close");
+                                    overlay.classList.add("open");
+                                    overlay.classList.remove("close");
+                                }
+                            }
+                        } catch (err) {
+                            console.error("Error checking profile completeness:", err);
+                        }
+                    }
+
+                    checkAndShowUserInfoModal();
                 })
                 .catch(err => console.error('Failed to load sidebar:', err));
         });
     </script>
 
-
-
     <main class="main-content">
-        <section class="home-section" role="main" aria-label="Dashboard main content">
-            <div class="text">Dashboard</div>
+        <!-- Greeting -->
+        <section class="greeting">
+            <h1>Selamat datang, <span id="dashboard-username">...</span> 👋</h1>
+            <p class="quote">"Setiap hari adalah kesempatan untuk menjadi lebih baik."</p>
         </section>
-    </main>
 
+        <!-- Stat Cards -->
+        <section class="stats">
+            <div id="stat-siswa" class="stat-card">Loading siswa...</div>
+            <div id="stat-guru" class="stat-card">Loading guru...</div>
+            <div id="stat-prestasi" class="stat-card">Loading prestasi...</div>
+            <div id="stat-organisasi" class="stat-card">Loading organisasi...</div>
+        </section>
+
+        <!-- Highlights -->
+        <section class="highlights">
+            <div class="highlight-card" id="top-siswa">Top Siswa Bulan Ini</div>
+            <div class="highlight-card" id="fitur-terbaru">Fitur Terbaru</div>
+        </section>
+
+        <!-- Announcements -->
+        <section class="announcements">
+            <h2>Pengumuman</h2>
+            <ul id="announcement-list"></ul>
+        </section>
+
+        <!-- Vision, Mission, Goals -->
+        <section class="vmg">
+            <h2>VISI, MISI, DAN TUJUAN UPT SMA NEGERI 4 PAREPARE</h2>
+            <h3>VISI</h3>
+            <p>Menuju sekolah yang berimtaq, terampil, berprestasi dan peduli lingkungan.</p>
+            <h3>MISI</h3>
+            <p>Menghasilkan lulusan yang beriman dan bertaqwa, terampil berwirausaha, berprestasi dan bersaing di perguruan tinggi serta peduli lingkungan.</p>
+            <h3>TUJUAN</h3>
+            <ol>
+                <li>Menyiapkan peserta didik yang berimtaq.</li>
+                <li>Menyiapkan peserta didik yang terampil dalam berwirausaha.</li>
+                <li>Menyiapkan Peserta didik berprestasi dibidang akademik dan non akademik.</li>
+                <li>Menyiapkan peserta didik yang siap melanjutkan pendidikan ke Perguruan Tinggi Negeri  yang terbaik.</li>
+                <li>Menciptakan suasana lingkungan sekolah yang bersih, sehat, asri, nyaman dan rindang.</li>
+            </ol>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Info sekolah, kepala sekolah, maps, sosmed</p>
+        </footer>
+    </main>
 </body>
 
 </html>
