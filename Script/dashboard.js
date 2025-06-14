@@ -1,6 +1,7 @@
 // dashboard.js - dynamic content for dashboard page
 
-import supabase from '../Supabase/client.js';
+// Since the Supabase tables "announcements", "siswa", "guru", "prestasi", and "organisasi" do not exist,
+// we will provide mock data for demonstration purposes.
 
 document.addEventListener('DOMContentLoaded', () => {
   loadUsername();
@@ -8,94 +9,42 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnnouncements();
 });
 
-// Load username from profiles table and inject into greeting
+// Load username - mock implementation
 export async function loadUsername() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      document.getElementById('dashboard-username').textContent = 'Guest';
-      return;
-    }
-    const { data: profile, error } = await supabase
-      .from('profiles')
-      .select('username')
-      .eq('id', session.user.id)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Error fetching username:', error);
-      document.getElementById('dashboard-username').textContent = 'User';
-      return;
-    }
-    document.getElementById('dashboard-username').textContent = profile?.username || 'User';
-  } catch (err) {
-    console.error('Error loading username:', err);
-    document.getElementById('dashboard-username').textContent = 'User';
-  }
+  // Mock username
+  const username = "User";
+  document.getElementById('dashboard-username').textContent = username;
 }
 
-// Load stats counts for siswa, guru, prestasi, organisasi
+// Load stats - mock implementation
 export async function loadStats() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      setStatsLoadingError();
-      return;
-    }
+  const stats = {
+    siswa: 120,
+    guru: 15,
+    prestasi: 30,
+    organisasi: 5,
+  };
 
-    // Fetch counts from respective tables
-    const [siswaCount, guruCount, prestasiCount, organisasiCount] = await Promise.all([
-      supabase.from('siswa').select('*', { count: 'exact' }).then(r => r.count || 0),
-      supabase.from('guru').select('*', { count: 'exact' }).then(r => r.count || 0),
-      supabase.from('prestasi').select('*', { count: 'exact' }).then(r => r.count || 0),
-      supabase.from('organisasi').select('*', { count: 'exact' }).then(r => r.count || 0),
-    ]);
-
-    document.getElementById('stat-siswa').textContent = `Siswa: ${siswaCount}`;
-    document.getElementById('stat-guru').textContent = `Guru: ${guruCount}`;
-    document.getElementById('stat-prestasi').textContent = `Prestasi: ${prestasiCount}`;
-    document.getElementById('stat-organisasi').textContent = `Organisasi: ${organisasiCount}`;
-  } catch (err) {
-    console.error('Error loading stats:', err);
-    setStatsLoadingError();
-  }
+  document.getElementById('stat-siswa').textContent = `Siswa: ${stats.siswa}`;
+  document.getElementById('stat-guru').textContent = `Guru: ${stats.guru}`;
+  document.getElementById('stat-prestasi').textContent = `Prestasi: ${stats.prestasi}`;
+  document.getElementById('stat-organisasi').textContent = `Organisasi: ${stats.organisasi}`;
 }
 
-function setStatsLoadingError() {
-  document.getElementById('stat-siswa').textContent = 'Error loading siswa';
-  document.getElementById('stat-guru').textContent = 'Error loading guru';
-  document.getElementById('stat-prestasi').textContent = 'Error loading prestasi';
-  document.getElementById('stat-organisasi').textContent = 'Error loading organisasi';
-}
-
-// Load announcements from announcements table and inject into list
+// Load announcements - mock implementation
 export async function loadAnnouncements() {
-  try {
-    const { data: announcements, error } = await supabase
-      .from('announcements')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(5);
+  const announcements = [
+    { title: "Pengumuman 1: Libur sekolah tanggal 1 Mei" },
+    { title: "Pengumuman 2: Jadwal ujian semester" },
+    { title: "Pengumuman 3: Kegiatan ekstrakurikuler" },
+  ];
 
-    if (error) {
-      console.error('Error loading announcements:', error);
-      return;
-    }
+  const list = document.getElementById('announcement-list');
+  list.innerHTML = '';
 
-    const list = document.getElementById('announcement-list');
-    list.innerHTML = '';
-
-    if (!announcements || announcements.length === 0) {
-      list.innerHTML = '<li>No announcements available.</li>';
-      return;
-    }
-
-    announcements.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = item.title || 'Untitled announcement';
-      list.appendChild(li);
-    });
-  } catch (err) {
-    console.error('Error loading announcements:', err);
-  }
+  announcements.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item.title;
+    list.appendChild(li);
+  });
 }
