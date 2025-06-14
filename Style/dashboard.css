@@ -32,10 +32,11 @@
 
 /* Stat Cards */
 .stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  justify-content: space-between;
 }
 
 .stat-card {
@@ -48,7 +49,11 @@
   color: #111827; /* gray-900 */
   text-align: center;
   transition: box-shadow 0.3s ease;
-  cursor: default;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .stat-card:hover {
@@ -72,7 +77,16 @@
   color: #0369a1; /* blue-700 */
   text-align: center;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
-  cursor: default;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.highlight-card:hover {
+  background-color: #bae6fd; /* lighter blue on hover */
 }
 
 /* Announcements */
@@ -82,12 +96,21 @@
   padding: 1rem;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
   margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.announcements:hover {
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.15);
 }
 
 .announcements h2 {
   font-weight: 700;
   margin-bottom: 0.75rem;
   color: #1e40af; /* blue-800 */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 #announcement-list {
@@ -109,6 +132,31 @@
   color: #4b5563; /* gray-600 */
   margin-bottom: 1.5rem;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.vmg-card {
+  background-color: #f3f4f6; /* gray-100 */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-weight: 500;
+  color: #4b5563; /* gray-600 */
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  cursor: default;
+  transition: box-shadow 0.3s ease;
+}
+
+.vmg-card:hover {
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.15);
+}
+
+.vmg-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Footer bar */
@@ -120,10 +168,8 @@
   background-color: #0369a1; /* blue background */
   width: 100%;
   box-shadow: 0 -2px 6px rgb(0 0 0 / 0.15);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
+  position: static;
+  margin-top: 2rem;
 }
 
 /* Responsive adjustments */
