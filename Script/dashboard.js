@@ -51,23 +51,25 @@ async function loadStats() {
   document.getElementById('stat-organisasi').setAttribute('data-count', stats.organisasi);
 
   // Initialize with 0
-  document.getElementById('stat-siswa').textContent = `Siswa: 0`;
-  document.getElementById('stat-guru').textContent = `Guru: 0`;
-  document.getElementById('stat-prestasi').textContent = `Prestasi: 0`;
-  document.getElementById('stat-organisasi').textContent = `Organisasi: 0`;
+  document.querySelector('#stat-siswa .stat-value').textContent = '0';
+  document.querySelector('#stat-guru .stat-value').textContent = '0';
+  document.querySelector('#stat-prestasi .stat-value').textContent = '0';
+  document.querySelector('#stat-organisasi .stat-value').textContent = '0';
 }
 
 // Animate numbers on scroll into view
 function animateNumber(el, count) {
   let current = 0;
   const step = Math.ceil(count / 50);
+  const valueEl = el.querySelector('.stat-value');
+  const label = el.querySelector('.stat-label').textContent;
   const interval = setInterval(() => {
     current += step;
     if (current >= count) {
-      el.textContent = `${el.id.replace('stat-', '')}: ${count}`;
+      valueEl.textContent = count;
       clearInterval(interval);
     } else {
-      el.textContent = `${el.id.replace('stat-', '')}: ${current}`;
+      valueEl.textContent = current;
     }
   }, 20);
 }
