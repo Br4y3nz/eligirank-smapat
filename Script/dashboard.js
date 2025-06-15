@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnnouncements();
   observeScrollFade();
   animateStatsOnScroll();
-  renderChart();
+  initVMGSlider();
 });
 
 // Load username from Supabase profiles table
@@ -63,7 +63,6 @@ function animateNumber(el, count) {
   let current = 0;
   const step = Math.ceil(count / 50);
   const valueEl = el.querySelector('.stat-value');
-  const label = el.querySelector('.stat-label').textContent;
   const interval = setInterval(() => {
     current += step;
     if (current >= count) {
@@ -122,53 +121,42 @@ async function loadAnnouncements() {
   });
 }
 
-// Render chart for average student scores per class using Chart.js
-function renderChart() {
-  // Load Chart.js dynamically if not already loaded
-  if (!window.Chart) {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-    script.onload = () => drawChart();
-    document.head.appendChild(script);
-  } else {
-    drawChart();
+// VMG slider for mobile: show one card at a time, auto-advance every 8 seconds
+function initVMGSlider() {
+  const slider = document.querySelector('.vmg-slider');
+  if (!slider) return;
+
+  const cards = slider.querySelectorAll('.vmg-card');
+  let currentIndex = 0;
+
+  function showCard(index) {
+    cards.forEach((card, i) => {
+      card.style.display = i === index ? 'flex' : 'none';
+    });
   }
-}
 
-function drawChart() {
-  const ctx = document.getElementById('chart-nilai-canvas').getContext('2d');
+  showCard(currentIndex);
 
-  // Mock data for average scores per class
-  const data = {
-    labels: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
-    datasets: [{
-      label: 'Nilai Rata-rata',
-      data: [78, 85, 82],
-      backgroundColor: 'rgba(37, 99, 235, 0.6)',
-      borderColor: 'rgba(37, 99, 235, 1)',
-      borderWidth: 1,
-      borderRadius: 5,
-    }]
-  };
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % cards.length;
+    showCard(currentIndex);
+  }, 8000);
 
-  const options = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100
-      }
-    },
-    plugins: {
-      legend: {
-        display: false
-      }
+  // Optional: add swipe support for mobile (left/right)
+  let startX = 0;
+  slider.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
+  slider.addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    if (endX - startX > 50) {
+      // swipe right
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      showCard(currentIndex);
+    } else if (startX - endX > 50) {
+      // swipe left
+      currentIndex = (currentIndex + 1) % cards.length;
+      showCard(currentIndex);
     }
-  };
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: options
   });
 }
