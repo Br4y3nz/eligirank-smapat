@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnnouncements();
   observeScrollFade();
   animateStatsOnScroll();
+  renderChart();
 });
 
 // Load username from Supabase profiles table
@@ -118,5 +119,56 @@ async function loadAnnouncements() {
     const li = document.createElement('li');
     li.textContent = item.title;
     list.appendChild(li);
+  });
+}
+
+// Render chart for average student scores per class using Chart.js
+function renderChart() {
+  // Load Chart.js dynamically if not already loaded
+  if (!window.Chart) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    script.onload = () => drawChart();
+    document.head.appendChild(script);
+  } else {
+    drawChart();
+  }
+}
+
+function drawChart() {
+  const ctx = document.getElementById('chart-nilai-canvas').getContext('2d');
+
+  // Mock data for average scores per class
+  const data = {
+    labels: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
+    datasets: [{
+      label: 'Nilai Rata-rata',
+      data: [78, 85, 82],
+      backgroundColor: 'rgba(37, 99, 235, 0.6)',
+      borderColor: 'rgba(37, 99, 235, 1)',
+      borderWidth: 1,
+      borderRadius: 5,
+    }]
+  };
+
+  const options = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
+    }
+  };
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options
   });
 }
