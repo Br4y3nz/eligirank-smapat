@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnnouncements();
   observeScrollFade();
   animateStatsOnScroll();
+  renderChart();
   initVMGSlider();
 });
 
@@ -158,5 +159,62 @@ function initVMGSlider() {
       currentIndex = (currentIndex + 1) % cards.length;
       showCard(currentIndex);
     }
+  });
+}
+
+// Render chart for average student scores per class using Chart.js
+function renderChart() {
+  // Load Chart.js dynamically if not already loaded
+  if (!window.Chart) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    script.onload = () => drawChart();
+    document.head.appendChild(script);
+  } else {
+    drawChart();
+  }
+}
+
+function drawChart() {
+  const canvas = document.getElementById('chart-nilai-canvas');
+  if (!canvas) {
+    console.error('Chart canvas element not found');
+    return;
+  }
+  const ctx = canvas.getContext('2d');
+
+  // Mock data for average scores per class
+  const data = {
+    labels: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
+    datasets: [{
+      label: 'Nilai Rata-rata',
+      data: [78, 85, 82],
+      backgroundColor: 'rgba(37, 99, 235, 0.6)',
+      borderColor: 'rgba(37, 99, 235, 1)',
+      borderWidth: 1,
+      borderRadius: 5,
+    }]
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
+    }
+  };
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options
   });
 }

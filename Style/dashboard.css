@@ -94,11 +94,9 @@
 }
 
 .stat-card {
-  background: linear-gradient(135deg, #e0f2fe 60%, #bae6fd 100%);
   border-radius: 1.25rem;
   box-shadow: 0 6px 24px 0 rgba(37, 99, 235, 0.08), 0 1.5px 4px 0 rgba(0,0,0,0.04);
   padding: 1.5rem 1rem;
-  color: #0369a1;
   font-size: 1.35rem;
   font-weight: 700;
   display: flex;
@@ -110,6 +108,24 @@
   transition: box-shadow 0.25s, transform 0.18s;
   cursor: pointer;
   overflow: hidden;
+}
+.stat-card.siswa {
+  background: linear-gradient(135deg, #bfdbfe 60%, #93c5fd 100%);
+  color: #1e40af;
+}
+.stat-card.guru {
+  background: linear-gradient(135deg, #dbeafe 60%, #bfdbfe 100%);
+  color: #1e3a8a;
+}
+.stat-card.prestasi {
+  background: linear-gradient(135deg, #fef3c7 60%, #fde68a 100%);
+  color: #a16207;
+  border: 1px solid #fbbf24;
+}
+.stat-card.organisasi {
+  background: linear-gradient(135deg, #d9f99d 60%, #bef264 100%);
+  color: #4d7c0f;
+  border: 1px solid #84cc16;
 }
 
 .stat-card .stat-icon {
@@ -287,6 +303,9 @@
   flex: 0 0 100%;
   max-width: 100%;
   scroll-snap-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .vmg-card h3 {
