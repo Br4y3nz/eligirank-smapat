@@ -319,7 +319,10 @@
 
 /* --- Responsive adjustments --- */
 @media (max-width: 900px) {
-  .stats, .highlights, .vmg {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .highlights, .vmg {
     grid-template-columns: 1fr;
   }
 }
