@@ -112,28 +112,44 @@
   border: 1px solid #d1d5db;
 }
 .stat-card.siswa {
-  background: linear-gradient(135deg, #bfdbfe 60%, #93c5fd 100%);
-  color: #1e40af;
+  background: linear-gradient(135deg, #2563eb 80%, #1e40af 100%);
+  color: #ffffff;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(37, 99, 235, 0.08);
+  box-shadow: 0 6px 24px 0 rgba(37, 99, 235, 0.8);
+}
+.stat-card.siswa .stat-icon {
+  background: #ffffff;
+  color: #2563eb;
 }
 .stat-card.guru {
-  background: linear-gradient(135deg, #dbeafe 60%, #bfdbfe 100%);
-  color: #1e3a8a;
+  background: linear-gradient(135deg, #1e40af 80%, #1e3a8a 100%);
+  color: #ffffff;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(59, 130, 246, 0.5);
+  box-shadow: 0 6px 24px 0 rgba(59, 130, 246, 0.8);
+}
+.stat-card.guru .stat-icon {
+  background: #ffffff;
+  color: #1e40af;
 }
 .stat-card.prestasi {
-  background: linear-gradient(135deg, #fef3c7 60%, #fde68a 100%);
-  color: #a16207;
+  background: linear-gradient(135deg, #b45309 80%, #78350f 100%);
+  color: #ffffff;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(202, 138, 4, 0.5);
+  box-shadow: 0 6px 24px 0 rgba(202, 138, 4, 0.8);
+}
+.stat-card.prestasi .stat-icon {
+  background: #ffffff;
+  color: #b45309;
 }
 .stat-card.organisasi {
-  background: linear-gradient(135deg, #d9f99d 60%, #bef264 100%);
-  color: #4d7c0f;
+  background: linear-gradient(135deg, #4d7c0f 80%, #365314 100%);
+  color: #ffffff;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(101, 163, 13, 0.5);
+  box-shadow: 0 6px 24px 0 rgba(101, 163, 13, 0.8);
+}
+.stat-card.organisasi .stat-icon {
+  background: #ffffff;
+  color: #4d7c0f;
 }
 
 .stat-card .stat-icon {
