@@ -7,6 +7,8 @@
   background-color: #f9fafb;
   min-height: 100vh;
   color: #333;
+  scroll-behavior: smooth;
+  scroll-padding-top: 1rem;
 }
 
 /* Greeting Section */
@@ -19,6 +21,7 @@
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.3s ease;
+  will-change: transform, opacity;
 }
 
 .greeting:hover, .greeting:focus-within {
@@ -90,76 +93,154 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
 }
 
 .stat-card {
   border-radius: 1.25rem;
   box-shadow: 0 6px 24px 0 rgba(37, 99, 235, 0.08), 0 1.5px 4px 0 rgba(0,0,0,0.04);
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 2rem 1.5rem 1rem;
   font-size: 1.35rem;
   font-weight: 700;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 0.25rem;
-  min-height: 130px;
+  justify-content: space-between;
+  min-height: 90px;
+  min-width: 320px;
+  max-width: 400px;
   position: relative;
   transition: box-shadow 0.25s, transform 0.18s;
   cursor: pointer;
   overflow: hidden;
   color: #fff;
+  will-change: transform, opacity;
 }
 .stat-card.siswa {
-  background: linear-gradient(135deg, #2563eb 80%, #1e40af 100%);
+  background: linear-gradient(to right, #dbeafe 60%, #bfdbfe 100%);
+  color: #1e40af;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(37, 99, 235, 0.8);
+  box-shadow: 0 6px 24px 0 rgba(59, 130, 246, 0.3);
+  transition: background 0.3s ease;
+}
+.stat-card.siswa:hover {
+  background: linear-gradient(to right, #bfdbfe 60%, #3b82f6 100%);
 }
 .stat-card.siswa .stat-icon {
   background: #ffffff;
   color: #2563eb;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+}
+.stat-card.siswa .stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 .stat-card.siswa .stat-value,
 .stat-card.siswa .stat-label {
-  color: #ffffff;
+  color: #1e40af;
 }
 .stat-card.guru {
-  background: linear-gradient(135deg, #1e40af 80%, #1e3a8a 100%);
+  background: linear-gradient(to right, #e0e7ff 60%, #c7d2fe 100%);
+  color: #3730a3;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(59, 130, 246, 0.8);
+  box-shadow: 0 6px 24px 0 rgba(67, 56, 202, 0.3);
+  transition: background 0.3s ease;
+}
+.stat-card.guru:hover {
+  background: linear-gradient(to right, #c7d2fe 60%, #4338ca 100%);
 }
 .stat-card.guru .stat-icon {
   background: #ffffff;
-  color: #1e40af;
+  color: #4338ca;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 2px 8px rgba(67,56,202,0.3);
+}
+.stat-card.guru .stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 .stat-card.guru .stat-value,
 .stat-card.guru .stat-label {
-  color: #ffffff;
+  color: #3730a3;
 }
 .stat-card.prestasi {
-  background: linear-gradient(135deg, #b45309 80%, #78350f 100%);
+  background: linear-gradient(to right, #fef3c7 60%, #fbbf24 100%);
+  color: #92400e;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(202, 138, 4, 0.8);
+  box-shadow: 0 6px 24px 0 rgba(202, 138, 4, 0.3);
+  transition: background 0.3s ease;
+}
+.stat-card.prestasi:hover {
+  background: linear-gradient(to right, #fbbf24 60%, #ea580c 100%);
 }
 .stat-card.prestasi .stat-icon {
   background: #ffffff;
   color: #b45309;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 2px 8px rgba(234,88,12,0.3);
+}
+.stat-card.prestasi .stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 .stat-card.prestasi .stat-value,
 .stat-card.prestasi .stat-label {
-  color: #ffffff;
+  color: #92400e;
 }
 .stat-card.organisasi {
-  background: linear-gradient(135deg, #4d7c0f 80%, #365314 100%);
+  background: linear-gradient(to right, #dcfce7 60%, #22c55e 100%);
+  color: #166534;
   border: none;
-  box-shadow: 0 6px 24px 0 rgba(101, 163, 13, 0.8);
+  box-shadow: 0 6px 24px 0 rgba(22, 163, 74, 0.3);
+  transition: background 0.3s ease;
+}
+.stat-card.organisasi:hover {
+  background: linear-gradient(to right, #22c55e 60%, #15803d 100%);
 }
 .stat-card.organisasi .stat-icon {
   background: #ffffff;
-  color: #4d7c0f;
+  color: #16a34a;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 2px 8px rgba(22,163,74,0.3);
+}
+.stat-card.organisasi .stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 .stat-card.organisasi .stat-value,
 .stat-card.organisasi .stat-label {
-  color: #ffffff;
+  color: #166534;
 }
 
 .stat-card .stat-icon {
