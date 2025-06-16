@@ -578,6 +578,7 @@
   font-size: 1.1rem;
   margin-right: 0.5rem;
   flex-shrink: 0;
+  display: none;
 }
 
 .vmg-card:hover, .vmg-card:focus {
