@@ -75,6 +75,123 @@
   }
 }
 
+@media (max-width: 600px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    overflow-x: hidden !important;
+  }
+  .stat-card {
+    min-width: 120px !important;
+    max-width: 160px !important;
+    font-size: 0.8rem !important;
+    padding: 0.6rem !important;
+  }
+  .stat-card .stat-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1.1rem !important;
+  }
+  .stat-card .stat-value {
+    font-size: 1.1rem !important;
+  }
+  .stat-card .stat-label {
+    font-size: 0.6rem !important;
+  }
+  .greeting h1 {
+    font-size: 1.3rem !important;
+  }
+  .greeting .quote {
+    font-size: 0.8rem !important;
+  }
+  .highlight-card {
+    font-size: 0.8rem !important;
+    padding: 0.8rem !important;
+    min-height: 180px !important;
+  }
+  .highlight-card .highlight-icon {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 1rem !important;
+  }
+  .announcements {
+    font-size: 0.8rem !important;
+    padding: 0.8rem !important;
+  }
+  .announcements h2 {
+    font-size: 0.9rem !important;
+  }
+  .announcements .announcement-icon {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 1rem !important;
+  }
+  .vmg {
+    font-size: 0.8rem !important;
+    padding: 0.8rem !important;
+  }
+  .vmg-card {
+    font-size: 0.8rem !important;
+    padding: 0.6rem !important;
+    min-height: 60px !important;
+  }
+  .vmg-card h3 {
+    font-size: 0.9rem !important;
+  }
+  .vmg-card .vmg-icon {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    overflow-x: hidden !important;
+  }
+  .stat-card {
+    min-width: 120px !important;
+    max-width: 150px !important;
+    font-size: 0.9rem !important;
+    padding: 0.8rem !important;
+  }
+  .stat-card .stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1.3rem !important;
+  }
+  .stat-card .stat-value {
+    font-size: 1.3rem !important;
+  }
+  .stat-card .stat-label {
+    font-size: 0.7rem !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .stats {
+    grid-template-columns: repeat(1, 1fr) !important;
+    overflow-x: hidden !important;
+  }
+  .stat-card {
+    min-width: 100px !important;
+    max-width: 130px !important;
+    font-size: 0.8rem !important;
+    padding: 0.6rem !important;
+  }
+  .stat-card .stat-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1.1rem !important;
+  }
+  .stat-card .stat-value {
+    font-size: 1.1rem !important;
+  }
+  .stat-card .stat-label {
+    font-size: 0.6rem !important;
+  }
+}
+
 .greeting h1 {
   font-size: 2rem;
   font-weight: 700;
@@ -92,10 +209,23 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin: 2.5rem 1rem;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  overflow-x: auto;
+  overflow-x: hidden;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+}
+
+.stat-card {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .stat-card {
@@ -110,13 +240,14 @@
   justify-content: space-between;
   min-height: 90px;
   min-width: 320px;
-  max-width: 400px;
+  max-width: 480px;
   position: relative;
   transition: box-shadow 0.25s, transform 0.18s;
   cursor: pointer;
   overflow: hidden;
   color: #fff;
   will-change: transform, opacity;
+  gap: 1rem;
 }
 .stat-card.siswa {
   background: linear-gradient(to right, #dbeafe 60%, #bfdbfe 100%);
@@ -179,6 +310,7 @@
 .stat-card.guru .stat-value,
 .stat-card.guru .stat-label {
   color: #3730a3;
+  display: none;
 }
 .stat-card.prestasi {
   background: linear-gradient(to right, #fef3c7 60%, #fbbf24 100%);
@@ -255,7 +387,7 @@
   font-size: 2.5rem;
   box-shadow: 0 2px 8px rgba(37,99,235,0.10);
   flex-shrink: 0;
-  order: -1;
+  order: 1;
 }
 
 .stat-card .stat-info {
