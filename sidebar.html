@@ -58,16 +58,6 @@
         </li>
 
         <li id="logged-in-menu" class="profile" style="display: none;" role="region" aria-label="User profile">
-          <div id="profile-img-container" class="profile-picture">
-            <i class="bx bx-user-circle default-user-icon" aria-hidden="true"></i>
-            <img src="" alt="Profile Picture" id="profile-img" style="display:none;" />
-          </div>
-          <div class="profile-info">
-            <span class="name" id="username">User</span>
-            <span class="job" id="role">Role</span>
-          </div>
-          <button id="log_out" class="bx bx-log-out" aria-label="Log out"></button>
-          <span class="tooltip" id="profile-tooltip">User</span>
         </li>
         <li id="logged-out-menu" role="region" aria-label="Login menu">
           <a href="index.html" id="log_in">
@@ -82,30 +72,38 @@
 <!-- Mobile Bottom Navbar (separate from sidebar) -->
 <nav class="mobile-bottom-navbar">
   <a href="/dashboard.html" class="mobile-nav-item" id="mobile-nav-dashboard">
-    <i class='bx bx-home'></i>
-    <span class="mobile-link-text">Beranda</span>
+    <i class='bx bx-grid-alt'></i>
+    <span class="mobile-tooltip">Dashboard</span>
+    <span class="mobile-link-text">Dashboard</span>
   </a>
   <a href="/ranking.html" class="mobile-nav-item" id="mobile-nav-ranking">
-    <i class='bx bx-bar-chart-alt-2'></i>
+    <i class='bx bx-bar-chart'></i>
+    <span class="mobile-tooltip">Ranking</span>
     <span class="mobile-link-text">Ranking</span>
   </a>
   <a href="/prestasi.html" class="mobile-nav-item" id="mobile-nav-prestasi">
     <i class='bx bx-trophy'></i>
+    <span class="mobile-tooltip">Prestasi</span>
     <span class="mobile-link-text">Prestasi</span>
   </a>
   <a href="/akun.html" class="mobile-nav-item" id="mobile-nav-akun">
     <i class='bx bx-cog'></i>
+    <span class="mobile-tooltip">Pengaturan</span>
     <span class="mobile-link-text">Pengaturan</span>
   </a>
   <button class="mobile-nav-item" id="mobile-nav-more" onclick="toggleMobileMoreMenu(event)">
     <i class='bx bx-dots-horizontal-rounded'></i>
+    <span class="mobile-tooltip">Lainnya</span>
     <span class="mobile-link-text">Lainnya</span>
   </button>
 </nav>
 <!-- Bottom Sheet for "More" -->
 <div id="mobile-more-menu" class="mobile-more-menu hidden">
-  <a href="/organisasi.html"><i class='bx bx-group'></i> Organisasi</a>
-  <a href="/datasiswa.html"><i class='bx bx-user'></i> Data Siswa</a>
-  <a href="/guru.html"><i class='bx bx-user-voice'></i> Guru & Staff</a>
-  <button onclick="logout()"><i class='bx bx-log-out'></i> Logout</button>
+<a href="/organisasi.html"><i class='bx bx-pie-chart-alt-2'></i> Organisasi</a>
+<a href="/datasiswa.html"><i class='bx bx-folder'></i> Data Siswa</a>
+<a href="/guru.html"><i class='bx bx-group'></i> Guru & Staff</a>
+<a href="index.html" id="log_in_mobile" class="mobile-login-btn" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid #e2e8f0; color: #475569; text-decoration: none;">
+  <i class='bx bx-log-in'></i> Login
+</a>
 </div>
+

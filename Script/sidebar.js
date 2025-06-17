@@ -347,8 +347,14 @@ export function initializeSidebar() {
 
   // Toggle the mobile "More" menu
   window.toggleMobileMoreMenu = function(event) {
-    event?.stopPropagation(); // Prevent the document click from firing
     document.getElementById('mobile-more-menu').classList.toggle('hidden');
+    // Remove focus so tooltip hides
+    if (event && event.currentTarget) {
+      event.currentTarget.blur();
+    } else {
+      // fallback for inline onclick
+      document.getElementById('mobile-nav-more').blur();
+    }
   };
 
   // Hide the "More" menu if clicking outside

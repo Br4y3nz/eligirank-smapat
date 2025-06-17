@@ -974,3 +974,36 @@ li.search-item > a.search-link i.bx-search {
     margin-left: 0 !important;
   }
 }
+
+/* Mobile tooltips */
+.mobile-tooltip {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: #fff;
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.13), 0 1.5px 6px rgba(0,0,0,0.06);
+  transition: opacity 0.18s;
+}
+
+/* Show tooltip on hover/focus (desktop/tablet) */
+.mobile-nav-item:hover .mobile-tooltip,
+.mobile-nav-item:focus .mobile-tooltip {
+  opacity: 1;
+}
+
+/* Optional: show tooltip on touch (mobile) */
+@media (hover: none) and (pointer: coarse) {
+  .mobile-nav-item:active .mobile-tooltip {
+    opacity: 1;
+  }
+}
