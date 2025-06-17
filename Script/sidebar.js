@@ -296,73 +296,26 @@ export function initializeSidebar() {
 }
 
 // Example: Fetch sidebar.html and insert into #sidebar-container
-fetch('sidebar.html')
-  .then(response => response.text())
-  .then(html => {
-    document.getElementById('sidebar-container').innerHTML = html;
-    // Now initialize sidebar logic
-    if (window.initializeSidebar) window.initializeSidebar();
-  });
+checkAuth().then(user => {
+  fetch('sidebar.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      window.initializeSidebar && window.initializeSidebar(user);
+    });
+});
 
-window.initializeSidebar = function() {
-  // Highlight active nav
-  let path = window.location.pathname.split('/').pop();
-  if (!path || path === '') path = 'dashboard.html';
-  if (!path.includes('.')) path += '.html';
+window.initializeSidebar = function(user) {
+  // ...existing highlight logic...
 
-  const sidebarMap = {
-    'dashboard.html': 'sidebar-nav-dashboard',
-    'ranking.html': 'sidebar-nav-ranking',
-    'prestasi.html': 'sidebar-nav-prestasi',
-    'organisasi.html': 'sidebar-nav-organisasi',
-    'akun.html': 'sidebar-nav-akun'
-  };
-  const mobileMap = {
-    'dashboard.html': 'mobile-nav-dashboard',
-    'ranking.html': 'mobile-nav-ranking',
-    'prestasi.html': 'mobile-nav-prestasi',
-    'organisasi.html': 'mobile-nav-organisasi',
-    'akun.html': 'mobile-nav-akun'
-  };
-
-  // Sidebar highlight
-  const sidebarId = sidebarMap[path];
-  if (sidebarId) {
-    const el = document.getElementById(sidebarId);
-    el?.classList.add('active');
-    el?.setAttribute('aria-current', 'page');
+  // Show/hide menus based on login state
+  const loggedInMenu = document.getElementById("logged-in-menu");
+  const loggedOutMenu = document.getElementById("logged-out-menu");
+  if (user && user.isLoggedIn) {
+    loggedInMenu && (loggedInMenu.style.display = "block");
+    loggedOutMenu && (loggedOutMenu.style.display = "none");
+  } else {
+    loggedInMenu && (loggedInMenu.style.display = "none");
+    loggedOutMenu && (loggedOutMenu.style.display = "block");
   }
-
-  // Mobile navbar highlight
-  const mobileId = mobileMap[path];
-  if (mobileId) {
-    const el = document.getElementById(mobileId);
-    el?.classList.add('active');
-    el?.setAttribute('aria-current', 'page');
-  }
-
-  // Toggle "Others" menu
-  window.toggleMobileMoreMenu = function(event) {
-    document.getElementById('mobile-more-menu').classList.toggle('hidden');
-    if (event && event.currentTarget) {
-      event.currentTarget.blur();
-    } else {
-      document.getElementById('mobile-nav-other').blur();
-    }
-  };
-
-  // Hide "Others" menu on outside click
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobile-more-menu');
-    const otherBtn = document.getElementById('mobile-nav-other');
-    if (
-      menu && otherBtn &&
-      !menu.classList.contains('hidden') &&
-      !menu.contains(e.target) &&
-      e.target !== otherBtn
-    ) {
-      menu.classList.add('hidden');
-    }
-  });
-};
-}
+};}
