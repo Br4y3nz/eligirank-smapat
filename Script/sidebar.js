@@ -346,7 +346,8 @@ export function initializeSidebar() {
   }
 
   // Toggle the mobile "More" menu
-  window.toggleMobileMoreMenu = function() {
+  window.toggleMobileMoreMenu = function(event) {
+    event?.stopPropagation(); // Prevent the document click from firing
     document.getElementById('mobile-more-menu').classList.toggle('hidden');
   };
 
@@ -354,23 +355,50 @@ export function initializeSidebar() {
   document.addEventListener('click', function(e) {
     const menu = document.getElementById('mobile-more-menu');
     const moreBtn = document.getElementById('mobile-nav-more');
-    if (!menu.classList.contains('hidden') && !menu.contains(e.target) && e.target !== moreBtn) {
+    if (
+      !menu.classList.contains('hidden') &&
+      !menu.contains(e.target) &&
+      e.target !== moreBtn
+    ) {
       menu.classList.add('hidden');
     }
   });
 
   // Highlight active nav item for mobile navbar
   document.addEventListener('DOMContentLoaded', function() {
-    const path = window.location.pathname.split('/').pop();
-    const map = {
+    let path = window.location.pathname.split('/').pop();
+    if (!path || path === '') path = 'dashboard.html'; // fallback for root
+    if (!path.includes('.')) path += '.html'; // handle clean URLs
+
+    // Sidebar map
+    const sidebarMap = {
+      'dashboard.html': 'sidebar-nav-dashboard',
+      'ranking.html': 'sidebar-nav-ranking',
+      'prestasi.html': 'sidebar-nav-prestasi',
+      'organisasi.html': 'sidebar-nav-organisasi',
+      'akun.html': 'sidebar-nav-akun'
+    };
+    // Mobile navbar map
+    const mobileMap = {
       'dashboard.html': 'mobile-nav-dashboard',
       'ranking.html': 'mobile-nav-ranking',
       'prestasi.html': 'mobile-nav-prestasi',
+      'organisasi.html': 'mobile-nav-organisasi',
       'akun.html': 'mobile-nav-akun'
     };
-    const id = map[path];
-    if (id) {
-      const el = document.getElementById(id);
+
+    // Highlight sidebar
+    const sidebarId = sidebarMap[path];
+    if (sidebarId) {
+      const el = document.getElementById(sidebarId);
+      el?.classList.add('active');
+      el?.setAttribute('aria-current', 'page');
+    }
+
+    // Highlight mobile navbar
+    const mobileId = mobileMap[path];
+    if (mobileId) {
+      const el = document.getElementById(mobileId);
       el?.classList.add('active');
       el?.setAttribute('aria-current', 'page');
     }
