@@ -42,7 +42,6 @@ export function initializeSidebar() {
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       if (!session || sessionError) {
         console.error("Session fetch failed:", sessionError);
-        // alert("You're not logged in.");
         return;
       }
 
