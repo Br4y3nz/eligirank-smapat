@@ -144,7 +144,7 @@
   top: 0;
   left: 0;
   height: 100vh;
-  width: 250px; /* or your preferred width */
+  width: 72px; /* collapsed width */
   background: #fff;
   box-shadow: 2px 0 8px rgba(37, 99, 235, 0.06);
   z-index: 100;
@@ -153,11 +153,20 @@
   transition: width 0.3s;
 }
 
+.sidebar.open, nav.sidebar.open, aside.sidebar.open {
+  width: 250px; /* expanded width */
+}
+
 /* Push main content to the right of the sidebar */
 @media (min-width: 768px) {
   main, .main-content, #main-content {
-    margin-left: 250px; /* match sidebar width */
+    margin-left: 72px; /* collapsed sidebar width */
     transition: margin-left 0.3s;
+  }
+  .sidebar.open ~ main,
+  .sidebar.open ~ .main-content,
+  .sidebar.open ~ #main-content {
+    margin-left: 250px; /* expanded sidebar width */
   }
 }
 
