@@ -42,6 +42,12 @@ main {
   margin-left: 85px;
 }
 
+@media (max-width: 767px) {
+  main {
+    margin-left: 0;
+  }
+}
+
 /* Exclude login and register pages from main margin */
 body.login-page main,
 body.register-page main {

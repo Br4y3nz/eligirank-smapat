@@ -346,7 +346,8 @@ export function initializeSidebar() {
     document.getElementById('overlay')?.classList.add('close');
   }
 
-  function toggleMobileMoreMenu() {
+  // Make toggleMobileMoreMenu globally accessible
+  window.toggleMobileMoreMenu = function() {
     const menu = document.getElementById('mobile-more-menu');
     menu.classList.toggle('hidden');
   }
