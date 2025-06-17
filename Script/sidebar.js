@@ -347,7 +347,14 @@ export function initializeSidebar() {
 
   // Toggle the mobile "More" menu
   window.toggleMobileMoreMenu = function() {
-    document.getElementById('mobile-more-menu').classList.toggle('hidden');
+    const menu = document.getElementById('mobile-more-menu');
+    menu.classList.toggle('hidden');
+    // Toggle class on body to indicate mobile more menu active
+    if (menu.classList.contains('hidden')) {
+      document.body.classList.remove('mobile-more-menu-active');
+    } else {
+      document.body.classList.add('mobile-more-menu-active');
+    }
   };
 
   // Highlight active nav item

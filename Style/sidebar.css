@@ -908,3 +908,34 @@ li.search-item > a.search-link i.bx-search {
     display: flex;
   }
 }
+
+/* Mobile more menu (hidden by default) */
+.mobile-more-menu {
+  position: fixed;
+  bottom: 70px;
+  left: 12px;
+  right: 12px;
+  /* ...other styles... */
+  z-index: 200;
+}
+.mobile-more-menu.hidden {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  main, .main-content, #main-content {
+    margin-left: 64px; /* or your sidebar width */
+    transition: margin-left 0.3s;
+  }
+  .sidebar.open ~ main,
+  .sidebar.open ~ .main-content,
+  .sidebar.open ~ #main-content {
+    margin-left: 240px; /* or your expanded sidebar width */
+  }
+}
+
+@media (max-width: 767px) {
+  main, .main-content, #main-content {
+    margin-left: 0 !important;
+  }
+}
