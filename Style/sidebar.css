@@ -172,7 +172,6 @@
   align-items: center;
   justify-content: center;
   padding: 24px 0 16px 0;
-  transition: padding 0.3s;
   min-height: 72px;
   box-sizing: border-box;
 }
@@ -186,13 +185,13 @@
   display: flex;
   align-items: center;
   gap: 0;
+  width: 100%;
 }
 
 .sidebar .sidebar-logo img {
   width: 38px;
   height: 38px;
   border-radius: 8px;
-  margin-right: 0;
   transition: margin 0.3s;
   box-shadow: 0 2px 8px rgba(37,99,235,0.08);
   background: #fff;
@@ -202,7 +201,7 @@
   margin-right: 12px;
 }
 
-.sidebar .logo-details .logo_name {
+.sidebar .logo_name {
   opacity: 0;
   max-width: 0;
   overflow: hidden;
@@ -214,25 +213,27 @@
   transition: opacity 0.3s, max-width 0.3s;
 }
 
-.sidebar.open .logo-details .logo_name {
+.sidebar.open .logo_name {
   opacity: 1;
   max-width: 160px;
+  margin-right: 8px;
 }
 
-.sidebar .logo-details #sidebar-toggle {
+.sidebar .sidebar-logo #sidebar-toggle {
   background: none;
   border: none;
   color: #64748b;
   font-size: 1.6rem;
-  margin-left: auto;
-  margin-right: 12px;
+  margin-left: 0;
+  margin-right: 0;
   cursor: pointer;
   border-radius: 8px;
   padding: 4px 8px;
   transition: background 0.2s, color 0.2s;
+  align-self: center;
 }
 
-.sidebar .logo-details #sidebar-toggle:hover {
+.sidebar .sidebar-logo #sidebar-toggle:hover {
   background: #e0e7ff;
   color: #2563eb;
 }
