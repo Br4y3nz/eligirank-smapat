@@ -845,6 +845,11 @@ li.search-item > a.search-link i.bx-search {
   font-weight: 500;
   letter-spacing: 0.01em;
   transition: color 0.25s;
+  opacity: 0;
+  max-width: 0;
+  transition: opacity 0.2s, max-width 0.2s;
+  overflow: hidden;
+  display: inline-block;
 }
 .mobile-nav-item.active,
 .mobile-nav-item:active,
