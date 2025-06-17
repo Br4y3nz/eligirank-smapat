@@ -870,6 +870,9 @@ li.search-item > a.search-link i.bx-search {
 .mobile-nav-item.active {
   background: #e0e7ff;
   color: #2563eb;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.13), 0 1.5px 6px rgba(0,0,0,0.06);
+  /* Optional: make it pop a bit more */
+  z-index: 2;
 }
 
 .mobile-nav-item:active {
