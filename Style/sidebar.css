@@ -138,6 +138,36 @@
   }
 }
 
+/* --- Desktop Sidebar Layout --- */
+.sidebar, nav.sidebar, aside.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px; /* or your preferred width */
+  background: #fff;
+  box-shadow: 2px 0 8px rgba(37, 99, 235, 0.06);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s;
+}
+
+/* Push main content to the right of the sidebar */
+@media (min-width: 768px) {
+  main, .main-content, #main-content {
+    margin-left: 250px; /* match sidebar width */
+    transition: margin-left 0.3s;
+  }
+}
+
+/* Hide sidebar on mobile */
+@media (max-width: 767px) {
+  .sidebar, nav.sidebar, aside.sidebar {
+    display: none;
+  }
+}
+
 /* Sidebar styles below... */
 .sidebar .sidebar-logo img {
     width: 40px;
