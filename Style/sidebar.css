@@ -887,3 +887,24 @@ li.search-item > a.search-link i.bx-search {
   border-radius: 50%;
   background: #2563eb;
 }
+
+/* Show sidebar only on desktop, hide on mobile */
+@media (min-width: 768px) {
+  .sidebar {
+    display: flex;
+  }
+  .mobile-bottom-navbar,
+  .mobile-more-menu {
+    display: none !important;
+  }
+}
+
+/* Show mobile navbar only on mobile, hide sidebar */
+@media (max-width: 767px) {
+  .sidebar {
+    display: none !important;
+  }
+  .mobile-bottom-navbar {
+    display: flex;
+  }
+}
