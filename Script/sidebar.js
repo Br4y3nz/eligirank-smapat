@@ -227,124 +227,6 @@ export function initializeSidebar() {
     });
   }
 
-    // Highlight active menu item based on current page URL
-    const currentPath = window.location.pathname.split("/").pop();
-    const menuLinks = document.querySelectorAll("#sidebar-menu li a");
-    menuLinks.forEach(link => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
-      }
-    });
-  }
-
-  updateUserMenuDisplay();
-
-  // Add submit event listener for user-info form to save profile data without page reload
-  const userInfoForm = document.getElementById("user-info-form");
-  if (userInfoForm) {
-    userInfoForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const username = document.getElementById("username-input").value.trim();
-      const phone = document.getElementById("phone-input").value.trim();
-
-      if (!username || !phone) {
-        alert("Please fill in both username and phone number.");
-        return;
-      }
-
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      if (!session || sessionError) {
-        console.error("Session fetch failed:", sessionError);
-        // alert("You're not logged in.");
-        return;
-      }
-
-      const userId = session.user.id;
-
-      const { error } = await supabase
-        .from("profiles")
-        .upsert({
-          id: userId,
-          username,
-          phone
-        });
-
-      if (error) {
-        console.error("Supabase error during upsert:", error);
-        alert("Failed to save profile. Please try again.");
-        return;
-      }
-
-      alert("Profile updated successfully!");
-      const userInfoModal = document.getElementById("user-info-modal");
-      const overlay = document.getElementById("overlay");
-      if (userInfoModal && overlay) {
-        userInfoModal.classList.remove("open");
-        userInfoModal.classList.add("close");
-        overlay.classList.remove("open");
-        overlay.classList.add("close");
-      }
-
-      // Update sidebar user info display without page reload
-      updateUserMenuDisplay();
-    });
-  }
-
-  // Add click event to roleElem to open role modal if "Select Role"
-  if (roleElem) {
-    roleElem.style.cursor = "pointer"; // Ensure cursor indicates clickable
-    roleElem.addEventListener("click", () => {
-      if (roleElem.textContent.trim() === "Select Role") {
-        const roleModal = document.getElementById("role-modal");
-        const overlay = document.getElementById("overlay");
-        if (roleModal && overlay) {
-          roleModal.classList.add("open");
-          roleModal.classList.remove("close");
-          overlay.classList.add("open");
-          overlay.classList.remove("close");
-        }
-      }
-    });
-  }
-
-  // Add change event listeners to role radio inputs to show/hide student/teacher fields
-  const roleInputs = document.querySelectorAll('input[name="role"]');
-  roleInputs.forEach(input => {
-    input.addEventListener("change", () => {
-      const studentFields = document.getElementById("student-fields");
-      const teacherFields = document.getElementById("teacher-fields");
-      if (studentFields && teacherFields) {
-        studentFields.style.display = input.value === "student" ? "block" : "none";
-        teacherFields.style.display = input.value === "teacher" ? "block" : "none";
-      }
-    });
-  });
-
-  function showModal(modal) {
-    modal.classList.remove('close');
-    modal.classList.add('open');
-  }
-
-  function hideModal(modal) {
-    modal.classList.remove('open');
-    modal.classList.add('close');
-  }
-
-  function openModal(modal) {
-    showModal(modal);
-    document.getElementById('overlay')?.classList.add('open');
-    document.getElementById('overlay')?.classList.remove('close');
-  }
-
-  function closeModal(modal) {
-    hideModal(modal);
-    document.getElementById('overlay')?.classList.remove('open');
-    document.getElementById('overlay')?.classList.add('close');
-  }
-
   // Toggle the mobile "More" menu
   window.toggleMobileMoreMenu = function(event) {
     document.getElementById('mobile-more-menu').classList.toggle('hidden');
@@ -370,7 +252,7 @@ export function initializeSidebar() {
     }
   });
 
-  // Highlight active nav item for mobile navbar
+  // Highlight active nav item for mobile navbar and sidebar
   document.addEventListener('DOMContentLoaded', function() {
     let path = window.location.pathname.split('/').pop();
     if (!path || path === '') path = 'dashboard.html'; // fallback for root
@@ -409,5 +291,4 @@ export function initializeSidebar() {
       el?.setAttribute('aria-current', 'page');
     }
   });
-}
-
+}}
