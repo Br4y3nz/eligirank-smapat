@@ -1,63 +1,63 @@
-        /* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; 
-    font-family: "Poppins", sans-serif;
+/* Mobile bottom navigation styles */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 6px 0;
+  background-color: #fff;
+  border-top: 1px solid #e2e8f0;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
+  z-index: 50;
 }
-
-/* Sidebar container */
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 78px;
-    background-color: #F1F5F9; /* Light gray-blue */
-    padding: 0;
-    z-index: 1100;
-    transition: width 0.5s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-right: 1px solid #E2E8F0; /* Light gray border */
+.mobile-nav-item {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
-.sidebar.open {
-    width: 250px;
+.mobile-nav-item i {
+  font-size: 20px;
 }
-
-/* Logo details */
-.sidebar .logo-details {
-    background-color: #F1F5F9;
-    border-bottom: 1px solid #E2E8F0;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
+.mobile-nav-item.active {
+  color: #2563eb;
 }
-
-.sidebar .sidebar-logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-    height: 50px; /* match profile image box height */
-    padding-left: 8px;
-    padding-right: 8px;
-    width: 100%;
-    transition: width 0.5s ease, opacity 0.5s ease;
+.mobile-more-menu {
+  position: fixed;
+  bottom: 60px;
+  left: 12px;
+  right: 12px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  z-index: 60;
 }
-
-.sidebar:not(.open) .sidebar-logo {
-    width: 48px; /* partially visible width when sidebar closed */
-    opacity: 1;
-    transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    overflow: visible; /* allow partial visibility */
+.mobile-more-menu a,
+.mobile-more-menu button {
+  display: block;
+  padding: 10px 0;
+  text-align: left;
+  color: #334155;
+  width: 100%;
+  font-size: 14px;
 }
-
+.mobile-more-menu button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+@media (min-width: 768px) {
+  .mobile-nav, .mobile-more-menu {
+    display: none !important;
+  }
+}
 .sidebar .sidebar-logo img {
     width: 40px;
     height: 40px; /* fixed height to align with profile image */
@@ -798,3 +798,17 @@ li.search-item > a.search-link i.bx-search {
     box-shadow: 0 0 8px rgba(37, 99, 235, 0.5); /* Soft blue glow */
     transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease, box-shadow 0.3s ease;
 }
+
+@media (min-width: 768px) {
+  .mobile-nav, .mobile-more-menu {
+    display: none !important;
+  }
+}
+
+
+@media (max-width: 767px) {
+  aside.sidebar, nav.sidebar {
+    display: none;
+  }
+}
+

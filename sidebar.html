@@ -78,3 +78,31 @@
         </li>
     </ul>
 </nav>
+
+<!-- 📱 Mobile Bottom Navigation (Responsive Sidebar Replacement) -->
+<nav class="mobile-nav">
+  <a href="/dashboard.html" class="mobile-nav-item" id="nav-dashboard">
+    <i class='bx bx-home'></i><span>Beranda</span>
+  </a>
+  <a href="/ranking.html" class="mobile-nav-item" id="nav-ranking">
+    <i class='bx bx-bar-chart-alt-2'></i><span>Ranking</span>
+  </a>
+  <a href="/prestasi.html" class="mobile-nav-item" id="nav-prestasi">
+    <i class='bx bx-trophy'></i><span>Prestasi</span>
+  </a>
+  <a href="/organisasi.html" class="mobile-nav-item" id="nav-organisasi">
+    <i class='bx bx-group'></i><span>Organisasi</span>
+  </a>
+  <button class="mobile-nav-item" onclick="toggleMobileMoreMenu()">
+    <i class='bx bx-dots-horizontal-rounded'></i><span>Lainnya</span>
+  </button>
+</nav>
+
+<!-- Hidden More Menu (Bottom Sheet) -->
+<div id="mobile-more-menu" class="mobile-more-menu hidden">
+  <a href="/datasiswa.html">🧑‍🎓 Data Siswa</a>
+  <a href="/guru.html">👨‍🏫 Guru & Staff</a>
+  <a href="/akun.html">⚙️ Pengaturan</a>
+  <button onclick="logout()">🔓 Logout</button>
+</div>
+</create_file>

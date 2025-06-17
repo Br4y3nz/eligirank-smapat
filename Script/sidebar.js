@@ -345,5 +345,26 @@ export function initializeSidebar() {
     document.getElementById('overlay')?.classList.remove('open');
     document.getElementById('overlay')?.classList.add('close');
   }
+
+  function toggleMobileMoreMenu() {
+    const menu = document.getElementById('mobile-more-menu');
+    menu.classList.toggle('hidden');
+  }
+
+  function highlightMobileNav() {
+    const path = window.location.pathname.split('/').pop();
+    const map = {
+      'dashboard.html': 'nav-dashboard',
+      'ranking.html': 'nav-ranking',
+      'prestasi.html': 'nav-prestasi',
+      'organisasi.html': 'nav-organisasi',
+    };
+    const id = map[path];
+    if (id) {
+      document.getElementById(id)?.classList.add('active');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', highlightMobileNav);
 }
 
