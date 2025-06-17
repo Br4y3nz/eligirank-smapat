@@ -936,3 +936,22 @@ li.search-item > a.search-link i.bx-search {
     display: none;
   }
 }
+
+.mobile-bottom-navbar a,
+.mobile-bottom-navbar .mobile-nav-item {
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.mobile-nav-item::after {
+  display: none;
+}
+.mobile-nav-item.active::after {
+  content: '';
+  display: block;
+  margin: 4px auto 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2563eb;
+}
