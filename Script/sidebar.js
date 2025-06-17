@@ -346,26 +346,25 @@ export function initializeSidebar() {
     document.getElementById('overlay')?.classList.add('close');
   }
 
-  // Make toggleMobileMoreMenu globally accessible
+  // Toggle the mobile "More" menu
   window.toggleMobileMoreMenu = function() {
-    const menu = document.getElementById('mobile-more-menu');
-    menu.classList.toggle('hidden');
-  }
+    document.getElementById('mobile-more-menu').classList.toggle('hidden');
+  };
 
+  // Highlight active nav item
   function highlightMobileNav() {
     const path = window.location.pathname.split('/').pop();
     const map = {
-      'dashboard.html': 'nav-dashboard',
-      'ranking.html': 'nav-ranking',
-      'prestasi.html': 'nav-prestasi',
-      'organisasi.html': 'nav-organisasi',
+      'dashboard.html': 'mobile-nav-dashboard',
+      'ranking.html': 'mobile-nav-ranking',
+      'prestasi.html': 'mobile-nav-prestasi',
+      'akun.html': 'mobile-nav-akun'
     };
     const id = map[path];
     if (id) {
       document.getElementById(id)?.classList.add('active');
     }
   }
-
   document.addEventListener('DOMContentLoaded', highlightMobileNav);
 }
 

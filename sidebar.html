@@ -78,3 +78,34 @@
         </li>
     </ul>
 </nav>
+
+<!-- Mobile Bottom Navbar (separate from sidebar) -->
+<nav class="mobile-bottom-navbar">
+  <a href="/dashboard.html" class="mobile-nav-item" id="mobile-nav-dashboard">
+    <i class='bx bx-home'></i>
+    <span class="mobile-link-text">Beranda</span>
+  </a>
+  <a href="/ranking.html" class="mobile-nav-item" id="mobile-nav-ranking">
+    <i class='bx bx-bar-chart-alt-2'></i>
+    <span class="mobile-link-text">Ranking</span>
+  </a>
+  <a href="/prestasi.html" class="mobile-nav-item" id="mobile-nav-prestasi">
+    <i class='bx bx-trophy'></i>
+    <span class="mobile-link-text">Prestasi</span>
+  </a>
+  <a href="/akun.html" class="mobile-nav-item" id="mobile-nav-akun">
+    <i class='bx bx-cog'></i>
+    <span class="mobile-link-text">Pengaturan</span>
+  </a>
+  <button class="mobile-nav-item" id="mobile-nav-more" onclick="toggleMobileMoreMenu()" aria-label="Lainnya">
+    <i class='bx bx-dots-horizontal-rounded'></i>
+    <span class="mobile-link-text">Lainnya</span>
+  </button>
+</nav>
+<!-- Bottom Sheet for "More" -->
+<div id="mobile-more-menu" class="mobile-more-menu hidden">
+  <a href="/organisasi.html"><i class='bx bx-group'></i> Organisasi</a>
+  <a href="/datasiswa.html"><i class='bx bx-user'></i> Data Siswa</a>
+  <a href="/guru.html"><i class='bx bx-user-voice'></i> Guru & Staff</a>
+  <button onclick="logout()"><i class='bx bx-log-out'></i> Logout</button>
+</div>
