@@ -902,45 +902,56 @@ li.search-item > a.search-link i.bx-search {
 .mobile-more-menu {
   position: fixed;
   bottom: 70px;
-  left: 12px;
-  right: 12px;
+  left: 16px;
+  right: 16px;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.13);
-  padding: 16px 0;
+  border-radius: 18px;
+  box-shadow: 0 10px 32px rgba(37, 99, 235, 0.13), 0 2px 8px rgba(0,0,0,0.06);
+  padding: 12px 0;
   z-index: 200;
   animation: slideUpSheet 0.25s cubic-bezier(.4,1.4,.6,1) both;
   transition: box-shadow 0.3s;
+  border: 1px solid #e2e8f0;
 }
+
 @keyframes slideUpSheet {
   from { transform: translateY(60px) scale(0.98); opacity: 0; }
   to   { transform: translateY(0) scale(1); opacity: 1; }
 }
+
 .mobile-more-menu a,
 .mobile-more-menu button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
+  gap: 10px;
+  padding: 14px 28px;
   text-align: left;
   color: #334155;
   width: 100%;
-  font-size: 15px;
+  font-size: 16px;
   background: none;
   border: none;
-  border-radius: 8px;
-  transition: background 0.2s, color 0.2s;
+  border-radius: 10px;
+  transition: background 0.18s, color 0.18s;
   cursor: pointer;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  outline: none;
 }
+
 .mobile-more-menu a:hover,
-.mobile-more-menu button:hover {
+.mobile-more-menu button:hover,
+.mobile-more-menu a:focus,
+.mobile-more-menu button:focus {
   background: #e0e7ff;
   color: #2563eb;
 }
-.mobile-more-menu button:active,
-.mobile-more-menu a:active {
+
+.mobile-more-menu a:active,
+.mobile-more-menu button:active {
   background: #c7d2fe;
 }
+
 .mobile-more-menu.hidden {
   display: none !important;
 }
