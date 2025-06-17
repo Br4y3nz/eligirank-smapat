@@ -1,5 +1,10 @@
 import supabase from '../Supabase/client.js';
 
+// If you don't have real auth, use a dummy function for now:
+function checkAuth() {
+  return Promise.resolve({ isLoggedIn: true });
+}
+
 export function initializeSidebar() {
   const sidebar = document.querySelector(".sidebar");
   const closeBtn = document.querySelector("#sidebar-toggle");
@@ -229,12 +234,11 @@ export function initializeSidebar() {
 
   // Toggle the mobile "More" menu
   window.toggleMobileMoreMenu = function(event) {
-    document.getElementById('mobile-nav-other').classList.toggle('hidden');
-    // Remove focus so tooltip hides (optional)
+    document.getElementById('mobile-more-menu').classList.toggle('hidden');
     if (event && event.currentTarget) {
       event.currentTarget.blur();
     } else {
-      document.getElementById('mobile-nav-other').blur();
+      document.getElementById('mobile-nav-other')?.blur();
     }
   };
 
