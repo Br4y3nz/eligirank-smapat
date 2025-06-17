@@ -808,15 +808,16 @@ li.search-item > a.search-link i.bx-search {
   left: 0;
   right: 0;
   height: 64px;
-  background: #f8fafc;
+  background: rgba(248,250,252,0.95);
   border-top: 1px solid #e2e8f0;
-  box-shadow: 0 -2px 16px rgba(37, 99, 235, 0.07);
+  box-shadow: 0 -2px 16px rgba(37, 99, 235, 0.07), 0 -2px 8px rgba(0,0,0,0.04);
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
-  transition: background 0.3s;
+  backdrop-filter: blur(8px);
 }
+
 .mobile-nav-item {
   flex: 1;
   display: flex;
@@ -828,13 +829,14 @@ li.search-item > a.search-link i.bx-search {
   border: none;
   font-size: 12px;
   border-radius: 12px;
-  padding: 6px 0 2px 0;
+  padding: 0;
   margin: 0 4px;
   transition: background 0.25s, color 0.25s;
   cursor: pointer;
   outline: none;
-  height: 56px; /* Ensures vertical centering */
+  height: 56px;
   position: relative;
+  text-decoration: none;
 }
 
 .mobile-nav-item i {
@@ -845,7 +847,6 @@ li.search-item > a.search-link i.bx-search {
   display: block;
 }
 
-/* Hide label by default, show only for active */
 .mobile-link-text {
   display: none;
   margin-top: 2px;
@@ -860,24 +861,41 @@ li.search-item > a.search-link i.bx-search {
   opacity: 1;
 }
 
-/* For active, add spacing below icon */
 .mobile-nav-item.active i {
   margin-bottom: 2px;
+  color: #2563eb;
+  transform: scale(1.18);
 }
 
-/* For inactive, icon is perfectly centered (no margin) */
+.mobile-nav-item.active {
+  background: #e0e7ff;
+  color: #2563eb;
+}
+
+.mobile-nav-item:active {
+  background: #c7d2fe;
+}
+
+.mobile-nav-item:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
 .mobile-nav-item:not(.active) i {
   margin-bottom: 0;
-}
-.mobile-bottom-navbar a,
-.mobile-bottom-navbar .mobile-nav-item {
-  text-decoration: none;
-  box-shadow: none;
+  color: #64748b;
 }
 
-.mobile-nav-item::after {
-  display: none;
+.mobile-nav-item:hover {
+  background: #f1f5f9;
+  color: #2563eb;
 }
+
+.mobile-nav-item:hover i {
+  color: #2563eb;
+}
+
+/* Indicator dot for active */
 .mobile-nav-item.active::after {
   content: '';
   display: block;
@@ -888,38 +906,63 @@ li.search-item > a.search-link i.bx-search {
   background: #2563eb;
 }
 
-/* Show sidebar only on desktop, hide on mobile */
-@media (min-width: 768px) {
-  .sidebar {
-    display: flex;
-  }
-  .mobile-bottom-navbar,
-  .mobile-more-menu {
-    display: none !important;
-  }
-}
-
-/* Show mobile navbar only on mobile, hide sidebar */
-@media (max-width: 767px) {
-  .sidebar {
-    display: none !important;
-  }
-  .mobile-bottom-navbar {
-    display: flex;
-  }
-}
-
-/* Mobile more menu (hidden by default) */
+/* --- Bottom Sheet for More --- */
 .mobile-more-menu {
   position: fixed;
   bottom: 70px;
   left: 12px;
   right: 12px;
-  /* ...other styles... */
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.13);
+  padding: 16px 0;
   z-index: 200;
+  animation: slideUpSheet 0.25s cubic-bezier(.4,1.4,.6,1) both;
+  transition: box-shadow 0.3s;
+}
+@keyframes slideUpSheet {
+  from { transform: translateY(60px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+.mobile-more-menu a,
+.mobile-more-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  text-align: left;
+  color: #334155;
+  width: 100%;
+  font-size: 15px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+}
+.mobile-more-menu a:hover,
+.mobile-more-menu button:hover {
+  background: #e0e7ff;
+  color: #2563eb;
+}
+.mobile-more-menu button:active,
+.mobile-more-menu a:active {
+  background: #c7d2fe;
 }
 .mobile-more-menu.hidden {
   display: none !important;
+}
+
+/* Responsive: Hide mobile nav on desktop, hide sidebar on mobile */
+@media (min-width: 768px) {
+  .mobile-bottom-navbar, .mobile-more-menu {
+    display: none !important;
+  }
+}
+@media (max-width: 767px) {
+  .sidebar, nav.sidebar, aside.sidebar {
+    display: none !important;
+  }
 }
 
 @media (min-width: 768px) {

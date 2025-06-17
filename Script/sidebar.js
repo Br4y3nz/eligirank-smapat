@@ -347,18 +347,20 @@ export function initializeSidebar() {
 
   // Toggle the mobile "More" menu
   window.toggleMobileMoreMenu = function() {
-    const menu = document.getElementById('mobile-more-menu');
-    menu.classList.toggle('hidden');
-    // Toggle class on body to indicate mobile more menu active
-    if (menu.classList.contains('hidden')) {
-      document.body.classList.remove('mobile-more-menu-active');
-    } else {
-      document.body.classList.add('mobile-more-menu-active');
-    }
+    document.getElementById('mobile-more-menu').classList.toggle('hidden');
   };
 
-  // Highlight active nav item
-  function highlightMobileNav() {
+  // Hide the "More" menu if clicking outside
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobile-more-menu');
+    const moreBtn = document.getElementById('mobile-nav-more');
+    if (!menu.classList.contains('hidden') && !menu.contains(e.target) && e.target !== moreBtn) {
+      menu.classList.add('hidden');
+    }
+  });
+
+  // Highlight active nav item for mobile navbar
+  document.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname.split('/').pop();
     const map = {
       'dashboard.html': 'mobile-nav-dashboard',
@@ -368,9 +370,10 @@ export function initializeSidebar() {
     };
     const id = map[path];
     if (id) {
-      document.getElementById(id)?.classList.add('active');
+      const el = document.getElementById(id);
+      el?.classList.add('active');
+      el?.setAttribute('aria-current', 'page');
     }
-  }
-  document.addEventListener('DOMContentLoaded', highlightMobileNav);
+  });
 }
 
