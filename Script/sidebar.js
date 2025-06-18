@@ -339,7 +339,7 @@ checkAuth().then(user => {
     });
 });
 
-window.initializeSidebar = function(user) {
+window.initializeSidebar = async function(user) {
   // Hamburger toggle
   const sidebar = document.querySelector(".sidebar");
   const closeBtn = document.querySelector("#sidebar-toggle");
@@ -350,71 +350,93 @@ window.initializeSidebar = function(user) {
     };
   }
 
-  // Insert profile info if logged in
+  // Sidebar profile (desktop)
   const loggedInMenu = document.getElementById("logged-in-menu");
   const loggedOutMenu = document.getElementById("logged-out-menu");
+  const profileContainer = document.getElementById("sidebar-profile-container");
   if (user && user.isLoggedIn) {
-    loggedInMenu.style.display = "none";
-    loggedOutMenu.style.display = "none";
+    document.getElementById('sidebar-profile-container').innerHTML = `
+      <div class="profile-picture">
+        <img src="${user.avatar_url || ''}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" style="display:${user.avatar_url ? 'block' : 'none'};">
+        <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
+      </div>
+      <div class="profile-details">
+        <span class="name">${user.username || 'User'}</span>
+        <span class="role-badge">${user.role || ''}</span>
+      </div>
+      <button id="log_out" title="Logout"><i class="bx bx-log-out"></i></button>
+    `;
+    document.getElementById('sidebar-login-container').innerHTML = '';
+  } else {
+    document.getElementById('sidebar-profile-container').innerHTML = '';
+    document.getElementById('sidebar-login-container').innerHTML = `
+      <a href="login.html" class="nav-link">
+        <i class="bx bx-log-in"></i>
+        <span class="link-text">Login</span>
+      </a>
+    `;
+  }
 
-    const profileContainer = document.getElementById("sidebar-profile-container");
-    if (profileContainer) {
-      profileContainer.innerHTML = `
-        <div class="profile-picture">
-          <img id="profile-img" src="${user.avatar_url || ''}" alt="Profile" />
-          <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
-        </div>
-        <div class="profile-details">
-          <span class="name" id="username">${user.username || 'User'}</span>
-          <span class="job" id="role">${user.role || ''}</span>
-        </div>
-        <button id="log_out" title="Logout"><i class="bx bx-log-out"></i></button>
-      `;
+  // Logout
+  const logoutBtn = document.getElementById("log_out");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "index.html";
+    });
+  }
+
+  // Role selection
+  const selectRoleBtn = document.getElementById("select-role-btn");
+  if (selectRoleBtn) {
+    selectRoleBtn.onclick = () => {
+      // Show your role selection modal here
+      alert("Show role selection modal here!");
+    };
+  }
+
+  // Mobile profile
+  const mobileProfileContainer = document.getElementById("mobile-profile-container");
+  const mobileLoginBtn = document.getElementById("log_in_mobile");
+  if (mobileProfileContainer) {
+    mobileProfileContainer.style.display = "flex";
+    mobileProfileContainer.innerHTML = `
+      <div class="profile-picture">
+        <img id="mobile-profile-img" src="${user.avatar_url}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" style="display:${user.avatar_url ? 'block' : 'none'};">
+        <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
+      </div>
+      <div class="profile-details">
+        <span class="name" id="mobile-username">${user.username}</span>
+        <span class="job" id="mobile-role">${user.role || ""}</span>
+        ${roleBadge.replace('select-role-btn', 'mobile-select-role-btn')}
+      </div>
+      <button id="mobile-log_out" title="Logout"><i class="bx bx-log-out"></i></button>
+    `;
+    // Mobile logout
+    const mobileLogoutBtn = document.getElementById("mobile-log_out");
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.href = "index.html";
+      });
     }
-
-    // Show mobile profile container and hide mobile login button
-    const mobileProfileContainer = document.getElementById("mobile-profile-container");
-    const mobileLoginBtn = document.getElementById("log_in_mobile");
-    if (mobileProfileContainer) {
-      mobileProfileContainer.style.display = "flex";
-      const mobileProfileImg = document.getElementById("mobile-profile-img");
-      const mobileDefaultIcon = mobileProfileContainer.querySelector(".default-user-icon");
-      const mobileUsername = document.getElementById("mobile-username");
-      const mobileRole = document.getElementById("mobile-role");
-
-      if (mobileProfileImg && user.avatar_url) {
-        mobileProfileImg.src = user.avatar_url;
-        mobileProfileImg.style.display = "block";
-        if (mobileDefaultIcon) mobileDefaultIcon.style.display = "none";
-      } else if (mobileDefaultIcon) {
-        mobileDefaultIcon.style.display = "block";
-        if (mobileProfileImg) mobileProfileImg.style.display = "none";
-      }
-
-      if (mobileUsername) mobileUsername.textContent = user.username || "User";
-      if (mobileRole) mobileRole.textContent = user.role || "";
+    // Mobile role selection
+    const mobileSelectRoleBtn = document.getElementById("mobile-select-role-btn");
+    if (mobileSelectRoleBtn) {
+      mobileSelectRoleBtn.onclick = () => {
+        alert("Show role selection modal here!");
+      };
     }
-    if (mobileLoginBtn) {
-      mobileLoginBtn.style.display = "none";
-    }
+    if (mobileLoginBtn) mobileLoginBtn.style.display = "none";
   } else if (loggedOutMenu) {
     loggedInMenu.style.display = "none";
     loggedOutMenu.style.display = "flex";
-
-    const profileContainer = document.getElementById("sidebar-profile-container");
-    if (profileContainer) {
-      profileContainer.innerHTML = "";
-    }
-
-    // Hide mobile profile container and show mobile login button
+    if (profileContainer) profileContainer.innerHTML = "";
+    // Mobile
     const mobileProfileContainer = document.getElementById("mobile-profile-container");
     const mobileLoginBtn = document.getElementById("log_in_mobile");
-    if (mobileProfileContainer) {
-      mobileProfileContainer.style.display = "none";
-    }
-    if (mobileLoginBtn) {
-      mobileLoginBtn.style.display = "flex";
-    }
+    if (mobileProfileContainer) mobileProfileContainer.style.display = "none";
+    if (mobileLoginBtn) mobileLoginBtn.style.display = "flex";
   }
 
   // Mobile "Others" menu
