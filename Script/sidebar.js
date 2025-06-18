@@ -355,14 +355,22 @@ window.initializeSidebar = async function(user) {
   const loggedOutMenu = document.getElementById("logged-out-menu");
   const profileContainer = document.getElementById("sidebar-profile-container");
   if (user && user.isLoggedIn) {
+    const { username = 'User', avatar_url, role: userRole } = user;
+    const roleData = await fetchUserRole(user.session);
+    const role = roleData?.role || "";
+    const roleBadge = role
+      ? `<span class="role-badge role-${role}">${role.charAt(0).toUpperCase() + role.slice(1)}</span>`
+      : `<button class="role-badge role-unset" id="select-role-btn">Select Role</button>`;
+
     document.getElementById('sidebar-profile-container').innerHTML = `
       <div class="profile-picture">
-        <img src="${user.avatar_url || ''}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" style="display:${user.avatar_url ? 'block' : 'none'};">
-        <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
+        <img id="profile-img" src="${avatar_url}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" style="display:${avatar_url ? 'block' : 'none'};">
+        <i class="bx bx-user default-user-icon" style="display:${avatar_url ? 'none' : 'block'}"></i>
       </div>
       <div class="profile-details">
-        <span class="name">${user.username || 'User'}</span>
-        <span class="role-badge">${user.role || ''}</span>
+        <span class="name" id="username">${username}</span>
+        <span class="job" id="role">${role || ""}</span>
+        ${roleBadge}
       </div>
       <button id="log_out" title="Logout"><i class="bx bx-log-out"></i></button>
     `;
