@@ -2,7 +2,9 @@ import supabase from '../Supabase/client.js';
 
 // If you don't have real auth, use a dummy function for now:
 function checkAuth() {
-  return Promise.resolve({ isLoggedIn: true });
+  return supabase.auth.getSession().then(({ data: { session } }) => {
+    return { isLoggedIn: !!session, session };
+  });
 }
 
 export function initializeSidebar() {
@@ -169,7 +171,10 @@ export function initializeSidebar() {
 
       const profileImg = document.getElementById("profile-img");
       const defaultUserIcon = document.querySelector(".default-user-icon");
-
+      const loggedInMenu = document.getElementById("logged-in-menu");
+      const loggedOutMenu = document.getElementById("logged-out-menu");
+      const loginBtn = document.getElementById("log_in");
+      
       if (profileImg && profile.avatar_url) {
         if (profile.avatar_url.startsWith("http")) {
           profileImg.src = profile.avatar_url;
@@ -180,6 +185,24 @@ export function initializeSidebar() {
         profileImg.style.display = "block";
         if (defaultUserIcon) defaultUserIcon.style.display = "none";
       }
+
+      // Show profile image and logged-in menu, hide logged-out menu and login button
+      if (loggedInMenu) loggedInMenu.style.display = "block";
+      if (loggedOutMenu) loggedOutMenu.style.display = "none";
+      if (loginBtn) loginBtn.style.display = "none";
+    } else {
+      // Hide profile image and show logged-out menu and login button
+      const profileImg = document.getElementById("profile-img");
+      const defaultUserIcon = document.querySelector(".default-user-icon");
+      const loggedInMenu = document.getElementById("logged-in-menu");
+      const loggedOutMenu = document.getElementById("logged-out-menu");
+      const loginBtn = document.getElementById("log_in");
+
+      if (profileImg) profileImg.style.display = "none";
+      if (defaultUserIcon) defaultUserIcon.style.display = "block";
+      if (loggedInMenu) loggedInMenu.style.display = "none";
+      if (loggedOutMenu) loggedOutMenu.style.display = "block";
+      if (loginBtn) loginBtn.style.display = "block";
     }
 
     const roleData = await fetchUserRole(session);
@@ -233,13 +256,26 @@ export function initializeSidebar() {
   }
 
   // Toggle the mobile "More" menu
-  window.toggleMobileMoreMenu = function (event) {
+  function toggleMobileMoreMenu(event) {
     event.preventDefault();
     const menu = document.getElementById("mobile-more-menu");
     if (menu) {
       menu.classList.toggle("hidden");
     }
-  };
+  }
+
+  // Add event listener for the "more" button
+  document.addEventListener("DOMContentLoaded", () => {
+    const moreBtn = document.getElementById("mobile-nav-other");
+    if (moreBtn) {
+      moreBtn.onclick = function(event) {
+        event.preventDefault();
+        const menu = document.getElementById("mobile-more-menu");
+        if (menu) menu.classList.toggle("hidden");
+        moreBtn.blur();
+      };
+    }
+  });
 
   // Tutup menu jika klik di luar
   document.addEventListener("click", function (e) {
@@ -253,7 +289,7 @@ export function initializeSidebar() {
   });
 
   // Highlight active nav item for mobile navbar and sidebar
-  document.addEventListener('DOMContentLoaded', function() {
+  function highlightActiveNav() {
     let path = window.location.pathname.split('/').pop();
     if (!path || path === '') path = 'dashboard.html'; // fallback for root
     if (!path.includes('.')) path += '.html'; // handle clean URLs
@@ -290,7 +326,7 @@ export function initializeSidebar() {
       el?.classList.add('active');
       el?.setAttribute('aria-current', 'page');
     }
-  });
+  }
 }
 
 // Example: Fetch sidebar.html and insert into #sidebar-container
@@ -304,16 +340,104 @@ checkAuth().then(user => {
 });
 
 window.initializeSidebar = function(user) {
-  // ...existing highlight logic...
+  // Hamburger toggle
+  const sidebar = document.querySelector(".sidebar");
+  const closeBtn = document.querySelector("#sidebar-toggle");
+  if (sidebar && closeBtn) {
+    closeBtn.onclick = () => {
+      const isOpen = sidebar.classList.toggle("open");
+      closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    };
+  }
 
-  // Show/hide menus based on login state
+  // Insert profile info if logged in
   const loggedInMenu = document.getElementById("logged-in-menu");
   const loggedOutMenu = document.getElementById("logged-out-menu");
   if (user && user.isLoggedIn) {
-    loggedInMenu && (loggedInMenu.style.display = "block");
-    loggedOutMenu && (loggedOutMenu.style.display = "none");
-  } else {
-    loggedInMenu && (loggedInMenu.style.display = "none");
-    loggedOutMenu && (loggedOutMenu.style.display = "block");
+    loggedInMenu.style.display = "none";
+    loggedOutMenu.style.display = "none";
+
+    const profileContainer = document.getElementById("sidebar-profile-container");
+    if (profileContainer) {
+      profileContainer.innerHTML = `
+        <div class="profile-picture">
+          <img id="profile-img" src="${user.avatar_url || ''}" alt="Profile" />
+          <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
+        </div>
+        <div class="profile-details">
+          <span class="name" id="username">${user.username || 'User'}</span>
+          <span class="job" id="role">${user.role || ''}</span>
+        </div>
+        <button id="log_out" title="Logout"><i class="bx bx-log-out"></i></button>
+      `;
+    }
+  } else if (loggedOutMenu) {
+    loggedInMenu.style.display = "none";
+    loggedOutMenu.style.display = "flex";
+
+    const profileContainer = document.getElementById("sidebar-profile-container");
+    if (profileContainer) {
+      profileContainer.innerHTML = "";
+    }
   }
-};}
+
+  // Mobile "Others" menu
+  const moreBtn = document.getElementById("mobile-nav-other");
+  if (moreBtn) {
+    moreBtn.onclick = function(event) {
+      event.preventDefault();
+      const menu = document.getElementById("mobile-more-menu");
+      if (menu) menu.classList.toggle("hidden");
+      moreBtn.blur();
+    };
+  }
+
+  // Hide "Others" menu on outside click
+  document.addEventListener("click", function (e) {
+    const menu = document.getElementById("mobile-more-menu");
+    const btn = document.getElementById("mobile-nav-other");
+    if (menu && !menu.classList.contains("hidden") &&
+        !menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.add("hidden");
+    }
+  });
+
+  // Highlight active nav
+  highlightActiveNav();
+}
+
+// Place highlightActiveNav outside so it's accessible
+function highlightActiveNav() {
+  let path = window.location.pathname.split('/').pop();
+  if (!path || path === '') path = 'dashboard.html';
+  if (!path.includes('.')) path += '.html';
+
+  const sidebarMap = {
+    'dashboard.html': 'sidebar-nav-dashboard',
+    'ranking.html': 'sidebar-nav-ranking',
+    'prestasi.html': 'sidebar-nav-prestasi',
+    'organisasi.html': 'sidebar-nav-organisasi',
+    'akun.html': 'sidebar-nav-akun'
+  };
+  const mobileMap = {
+    'dashboard.html': 'mobile-nav-dashboard',
+    'ranking.html': 'mobile-nav-ranking',
+    'prestasi.html': 'mobile-nav-prestasi',
+    'organisasi.html': 'mobile-nav-organisasi',
+    'akun.html': 'mobile-nav-akun'
+  };
+
+  const sidebarId = sidebarMap[path];
+  if (sidebarId) {
+    const el = document.getElementById(sidebarId);
+    el?.classList.add('active');
+    el?.setAttribute('aria-current', 'page');
+  }
+
+  const mobileId = mobileMap[path];
+  if (mobileId) {
+    const el = document.getElementById(mobileId);
+    el?.classList.add('active');
+    el?.setAttribute('aria-current', 'page');
+  }
+}}
