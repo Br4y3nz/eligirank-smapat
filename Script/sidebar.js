@@ -372,8 +372,28 @@ window.initializeSidebar = function(user) {
       `;
     }
 
-    // Show mobile login button as hidden
+    // Show mobile profile container and hide mobile login button
+    const mobileProfileContainer = document.getElementById("mobile-profile-container");
     const mobileLoginBtn = document.getElementById("log_in_mobile");
+    if (mobileProfileContainer) {
+      mobileProfileContainer.style.display = "flex";
+      const mobileProfileImg = document.getElementById("mobile-profile-img");
+      const mobileDefaultIcon = mobileProfileContainer.querySelector(".default-user-icon");
+      const mobileUsername = document.getElementById("mobile-username");
+      const mobileRole = document.getElementById("mobile-role");
+
+      if (mobileProfileImg && user.avatar_url) {
+        mobileProfileImg.src = user.avatar_url;
+        mobileProfileImg.style.display = "block";
+        if (mobileDefaultIcon) mobileDefaultIcon.style.display = "none";
+      } else if (mobileDefaultIcon) {
+        mobileDefaultIcon.style.display = "block";
+        if (mobileProfileImg) mobileProfileImg.style.display = "none";
+      }
+
+      if (mobileUsername) mobileUsername.textContent = user.username || "User";
+      if (mobileRole) mobileRole.textContent = user.role || "";
+    }
     if (mobileLoginBtn) {
       mobileLoginBtn.style.display = "none";
     }
@@ -386,8 +406,12 @@ window.initializeSidebar = function(user) {
       profileContainer.innerHTML = "";
     }
 
-    // Show mobile login button
+    // Hide mobile profile container and show mobile login button
+    const mobileProfileContainer = document.getElementById("mobile-profile-container");
     const mobileLoginBtn = document.getElementById("log_in_mobile");
+    if (mobileProfileContainer) {
+      mobileProfileContainer.style.display = "none";
+    }
     if (mobileLoginBtn) {
       mobileLoginBtn.style.display = "flex";
     }
