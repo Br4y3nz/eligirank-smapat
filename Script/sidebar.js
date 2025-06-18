@@ -333,9 +333,16 @@ export function initializeSidebar() {
 checkAuth().then(user => {
   fetch('sidebar.html')
     .then(res => res.text())
-    .then(html => {
+    .then(async html => {
       document.getElementById('sidebar-container').innerHTML = html;
-      window.initializeSidebar && window.initializeSidebar(user);
+      const { data: { session } } = await supabase.auth.getSession();
+      window.initializeSidebar && window.initializeSidebar({
+        isLoggedIn: !!session,
+        session,
+        username: session?.user?.user_metadata?.username || 'User',
+        avatar_url: session?.user?.user_metadata?.avatar_url || '',
+        role: '' // isi dari tabel roles jika ada
+      });
     });
 });
 
@@ -355,7 +362,7 @@ window.initializeSidebar = async function(user) {
   const loggedOutMenu = document.getElementById("logged-out-menu");
   const profileContainer = document.getElementById("sidebar-profile-container");
   if (user && user.isLoggedIn) {
-    const { username = 'User', avatar_url, role: userRole } = user;
+    const { username = 'User', avatar_url = '', role: userRole = '' } = user || {};
     const roleData = await fetchUserRole(user.session);
     const role = roleData?.role || "";
     const roleBadge = role
@@ -364,7 +371,7 @@ window.initializeSidebar = async function(user) {
 
     document.getElementById('sidebar-profile-container').innerHTML = `
       <div class="profile-picture">
-        <img id="profile-img" src="${avatar_url}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" style="display:${avatar_url ? 'block' : 'none'};">
+        <img id="profile-img" src="${avatar_url || ''}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
         <i class="bx bx-user default-user-icon" style="display:${avatar_url ? 'none' : 'block'}"></i>
       </div>
       <div class="profile-details">
