@@ -233,28 +233,22 @@ export function initializeSidebar() {
   }
 
   // Toggle the mobile "More" menu
-  window.toggleMobileMoreMenu = function(event) {
-    document.getElementById('mobile-more-menu').classList.toggle('hidden');
-    if (event && event.currentTarget) {
-      event.currentTarget.blur();
-    } else {
-      document.getElementById('mobile-nav-other')?.blur();
+  window.toggleMobileMoreMenu = function (event) {
+    event.preventDefault();
+    const menu = document.getElementById("mobile-more-menu");
+    if (menu) {
+      menu.classList.toggle("hidden");
     }
   };
 
-  // Expose toggleMobileMoreMenu globally for inline onclick usage
-  window.toggleMobileMoreMenu = window.toggleMobileMoreMenu;
+  // Tutup menu jika klik di luar
+  document.addEventListener("click", function (e) {
+    const menu = document.getElementById("mobile-more-menu");
+    const btn = document.getElementById("mobile-nav-other");
 
-  // Hide the "More" menu if clicking outside
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobile-more-menu');
-    const otherBtn = document.getElementById('mobile-nav-other');
-    if (
-      !menu.classList.contains('hidden') &&
-      !menu.contains(e.target) &&
-      e.target !== otherBtn
-    ) {
-      menu.classList.add('hidden');
+    if (menu && !menu.classList.contains("hidden") &&
+        !menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.add("hidden");
     }
   });
 
