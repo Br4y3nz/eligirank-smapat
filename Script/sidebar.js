@@ -371,6 +371,12 @@ window.initializeSidebar = function(user) {
         <button id="log_out" title="Logout"><i class="bx bx-log-out"></i></button>
       `;
     }
+
+    // Show mobile login button as hidden
+    const mobileLoginBtn = document.getElementById("log_in_mobile");
+    if (mobileLoginBtn) {
+      mobileLoginBtn.style.display = "none";
+    }
   } else if (loggedOutMenu) {
     loggedInMenu.style.display = "none";
     loggedOutMenu.style.display = "flex";
@@ -378,6 +384,12 @@ window.initializeSidebar = function(user) {
     const profileContainer = document.getElementById("sidebar-profile-container");
     if (profileContainer) {
       profileContainer.innerHTML = "";
+    }
+
+    // Show mobile login button
+    const mobileLoginBtn = document.getElementById("log_in_mobile");
+    if (mobileLoginBtn) {
+      mobileLoginBtn.style.display = "flex";
     }
   }
 
