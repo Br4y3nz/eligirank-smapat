@@ -1,86 +1,142 @@
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-content">
-    <header class="logo-details">
-      <div class="sidebar-logo">
-        <img src="Assets/Logo-smapat.png" alt="Logo" />
-        <span class="logo_name">EligiRank SMAPAT</span>
-      </div>
-      <button id="sidebar-toggle" class="bx bx-menu sidebar-toggle-btn" aria-label="Toggle sidebar"></button>
-    </header>
-    <ul class="nav-list">
-      <li>
-        <a href="dashboard.html" class="nav-link" id="sidebar-nav-dashboard">
-          <i class="bx bx-home"></i>
-          <span class="link-text">Dashboard</span>
-        </a>
-      </li>
-      <li>
-        <a href="ranking.html" class="nav-link" id="sidebar-nav-ranking">
-          <i class="bx bx-bar-chart-alt-2"></i>
-          <span class="link-text">Ranking</span>
-        </a>
-      </li>
-      <li>
-        <a href="prestasi.html" class="nav-link" id="sidebar-nav-prestasi">
-          <i class="bx bx-trophy"></i>
-          <span class="link-text">Prestasi</span>
-        </a>
-      </li>
-      <li>
-        <a href="organisasi.html" class="nav-link" id="sidebar-nav-organisasi">
-          <i class="bx bx-group"></i>
-          <span class="link-text">Organisasi</span>
-        </a>
-      </li>
-      <li>
-        <a href="akun.html" class="nav-link" id="sidebar-nav-akun">
-          <i class="bx bx-cog"></i>
-          <span class="link-text">Pengaturan</span>
-        </a>
-      </li>
-    </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sidebar</title>
+</head>
+<body>
+  <div id="sidebar-container">
+    <nav class="sidebar" role="navigation" aria-label="Main sidebar navigation" id="sidebar">
+      <header class="logo-details">
+        <div class="sidebar-logo">
+          <img src="Assets/Logo-smapat.png" alt="SMA Negeri 4 Parepare Logo" />
+          <div class="logo_name">EligiRank SMAPAT</div>
+        </div>
+        <button id="sidebar-toggle" class="btn bx bx-menu" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebar-menu"></button>
+      </header>
+      <ul class="nav-list" id="sidebar-menu">
+        <li>
+          <a href="dashboard.html">
+            <i class="bx bx-grid-alt" aria-hidden="true"></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+          <span class="tooltip">Dashboard</span>
+        </li>
+        <li>
+          <a href="ranking.html">
+            <i class="bx bx-bar-chart" aria-hidden="true"></i>
+            <span class="links_name">Ranking</span>
+          </a>
+          <span class="tooltip">Ranking</span>
+        </li>
+        <li>
+          <a href="prestasi.html">
+            <i class="bx bx-trophy" aria-hidden="true"></i>
+            <span class="links_name">Prestasi</span>
+          </a>
+          <span class="tooltip">Prestasi</span>
+        </li>
+        <li>
+          <a href="organisasi.html">
+            <i class="bx bx-pie-chart-alt-2" aria-hidden="true"></i>
+            <span class="links_name">Organisasi</span>
+          </a>
+          <span class="tooltip">Organisasi</span>
+        </li>
+        <li>
+          <a href="data-siswa.html">
+            <i class="bx bx-folder" aria-hidden="true"></i>
+            <span class="links_name">Data Siswa</span>
+          </a>
+          <span class="tooltip">Data Siswa</span>
+        </li>
+        <li>
+          <a href="guru-staff.html">
+            <i class="bx bx-group" aria-hidden="true"></i>
+            <span class="links_name">Guru & Staff</span>
+          </a>
+          <span class="tooltip">Guru & Staff</span>
+        </li>
+        <li>
+          <a href="akun.html">
+            <i class="bx bx-cog" aria-hidden="true"></i>
+            <span class="links_name">Pengaturan</span>
+          </a>
+          <span class="tooltip">Pengaturan</span>
+        </li>
+        <li id="logged-in-menu" class="profile" style="display: none;" role="region" aria-label="User profile">
+          <div id="profile-img-container" class="profile-picture">
+            <i class="bx bx-user-circle default-user-icon" aria-hidden="true"></i>
+            <img src="" alt="Profile Picture" id="profile-img" style="display:none;" />
+          </div>
+          <div class="profile-info">
+            <span class="name" id="username">User</span>
+            <span class="job" id="role">Role</span>
+          </div>
+          <button id="log_out" class="bx bx-log-out" aria-label="Log out"></button>
+          <span class="tooltip" id="profile-tooltip">User</span>
+        </li>
+        <li id="logged-out-menu" role="region" aria-label="Login menu">
+          <a href="index.html" id="log_in">
+            <i class="bx bx-log-in" aria-hidden="true"></i>
+            <span class="links_name">Login</span>
+          </a>
+          <span class="tooltip">Login</span>
+        </li>
+      </ul>
+    </nav>
   </div>
-  <!-- Profile/Login section always at the bottom -->
-  <div id="sidebar-profile-container"></div>
-  <div id="sidebar-login-container"></div>
-</nav>
 
-<!-- Mobile Bottom Navbar (separate from sidebar) -->
-<nav class="mobile-bottom-navbar">
-  <a href="/dashboard.html" class="mobile-nav-item" id="mobile-nav-dashboard">
-    <i class='bx bx-grid-alt'></i>
-    <span class="mobile-tooltip">Dashboard</span>
-    <span class="mobile-link-text">Dashboard</span>
-  </a>
-  <a href="/ranking.html" class="mobile-nav-item" id="mobile-nav-ranking">
-    <i class='bx bx-bar-chart'></i>
-    <span class="mobile-tooltip">Ranking</span>
-    <span class="mobile-link-text">Ranking</span>
-  </a>
-  <a href="/prestasi.html" class="mobile-nav-item" id="mobile-nav-prestasi">
-    <i class='bx bx-trophy'></i>
-    <span class="mobile-tooltip">Prestasi</span>
-    <span class="mobile-link-text">Prestasi</span>
-  </a>
-  <a href="/akun.html" class="mobile-nav-item" id="mobile-nav-akun">
-    <i class='bx bx-cog'></i>
-    <span class="mobile-tooltip">Pengaturan</span>
-    <span class="mobile-link-text">Pengaturan</span>
-  </a>
-  <button class="mobile-nav-item" id="mobile-nav-other">
-    <i class='bx bx-dots-horizontal-rounded'></i>
-    <span class="mobile-tooltip">Lainnya</span>
-    <span class="mobile-link-text">Lainnya</span>
-  </button>
-</nav>
-<!-- Bottom Sheet for "More" -->
-<div id="mobile-more-menu" class="mobile-more-menu hidden">
-  <a href="/organisasi.html"><i class='bx bx-pie-chart-alt-2'></i> Organisasi</a>
-  <a href="/datasiswa.html"><i class='bx bx-folder'></i> Data Siswa</a>
-  <a href="/guru.html"><i class='bx bx-group'></i> Guru & Staff</a>
-  <a href="index.html" id="log_in_mobile" class="mobile-login-btn" style="display: flex;">
-    <i class='bx bx-log-in'></i> Login
-  </a>
-  <div id="mobile-profile-container" class="mobile-profile-container" style="display:none;"></div>
-</div>
+  <!-- Mobile Bottom Navbar (separate from sidebar) -->
+  <nav class="mobile-bottom-navbar" role="navigation" aria-label="Mobile bottom navigation">
+    <a href="/dashboard.html" class="mobile-nav-item active" id="mobile-nav-dashboard" role="region" aria-label="Dashboard">
+      <i class='bx bx-home' aria-hidden="true"></i>
+      <span class="mobile-link-text">Beranda</span>
+    </a>
+    <a href="/ranking.html" class="mobile-nav-item" id="mobile-nav-ranking" role="region" aria-label="Ranking">
+      <i class='bx bx-bar-chart-alt-2' aria-hidden="true"></i>
+      <span class="mobile-link-text">Ranking</span>
+    </a>
+    <a href="/prestasi.html" class="mobile-nav-item" id="mobile-nav-prestasi" role="region" aria-label="Prestasi">
+      <i class='bx bx-trophy' aria-hidden="true"></i>
+      <span class="mobile-link-text">Prestasi</span>
+    </a>
+    <a href="/akun.html" class="mobile-nav-item" id="mobile-nav-akun" role="region" aria-label="Pengaturan">
+      <i class='bx bx-cog' aria-hidden="true"></i>
+      <span class="mobile-link-text">Pengaturan</span>
+    </a>
+    <button class="mobile-nav-item" id="mobile-nav-more" aria-haspopup="true" aria-expanded="false" aria-controls="mobile-more-menu" type="button">
+      <i class='bx bx-dots-horizontal-rounded' aria-hidden="true"></i>
+      <span class="mobile-link-text">Lainnya</span>
+    </button>
 
+    <!-- Bottom Sheet for "More" -->
+    <div id="mobile-more-menu" class="mobile-more-menu hidden" role="menu" aria-label="More menu">
+      <a href="/organisasi.html"><i class='bx bx-group'></i> Organisasi</a>
+      <a href="/datasiswa.html"><i class='bx bx-user'></i> Data Siswa</a>
+      <a href="/guru.html"><i class='bx bx-user-voice'></i> Guru & Staff</a>
+
+      <li id="mobile-logged-in-menu" class="mobile-profile" style="display: none;" role="region" aria-label="User profile">
+        <div id="mobile-profile-img-container" class="profile-picture">
+          <i class="bx bx-user-circle default-user-icon" aria-hidden="true"></i>
+          <img src="" alt="Profile Picture" id="mobile-profile-img" style="display:none;" />
+        </div>
+        <div class="profile-info">
+          <span class="name" id="mobile-username">User</span>
+          <span class="job" id="mobile-role">Role</span>
+        </div>
+        <button id="mobile-log_out" class="bx bx-log-out" aria-label="Log out"></button>
+      </li>
+
+      <li id="mobile-logged-out-menu" role="region" aria-label="Login menu">
+        <a href="index.html" id="mobile-log_in">
+          <i class="bx bx-log-in" aria-hidden="true"></i>
+          <span class="links_name">Login</span>
+        </a>
+      </li>
+
+    </div>
+  </nav>
+</body>
+</html>
