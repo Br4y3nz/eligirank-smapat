@@ -100,25 +100,14 @@ export function initializeSidebar() {
   });
   
 
-closeBtn.addEventListener("click", () => {
+  closeBtn.addEventListener("click", () => {
     const isOpen = sidebar.classList.toggle("open");
-    if (sidebarContainer) {
-      sidebarContainer.classList.toggle("open", isOpen);
-    }
     closeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
     document.body.classList.toggle('sidebar-open', isOpen);
     document.body.classList.toggle('sidebar-closed', !isOpen);
     closeBtn.classList.toggle("bx-menu", !isOpen);
     closeBtn.classList.toggle("bx-menu-alt-right", isOpen);
     closeBtn.classList.add("btn-slide");
-  });
-
-  // Keyboard accessibility for toggle button
-  closeBtn.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
-      e.preventDefault();
-      closeBtn.click();
-    }
   });
 
   closeBtn.addEventListener("animationend", () => {
@@ -278,7 +267,7 @@ closeBtn.addEventListener("click", () => {
 
   // Add event listener for the "more" button
   document.addEventListener("DOMContentLoaded", () => {
-    const moreBtn = document.getElementById("mobile-nav-more");
+    const moreBtn = document.getElementById("mobile-nav-other");
     if (moreBtn) {
       moreBtn.onclick = function(event) {
         event.preventDefault();
@@ -303,33 +292,35 @@ closeBtn.addEventListener("click", () => {
   // Highlight active nav item for mobile navbar and sidebar
   function highlightActiveNav() {
     let path = window.location.pathname.split('/').pop();
-    if (!path || path === '') path = 'dashboard.html';
-    if (!path.includes('.')) path += '.html';
+    if (!path || path === '') path = 'dashboard.html'; // fallback for root
+    if (!path.includes('.')) path += '.html'; // handle clean URLs
 
+    // Sidebar map
     const sidebarMap = {
       'dashboard.html': 'sidebar-nav-dashboard',
       'ranking.html': 'sidebar-nav-ranking',
       'prestasi.html': 'sidebar-nav-prestasi',
       'organisasi.html': 'sidebar-nav-organisasi',
-      'data-siswa.html': 'sidebar-nav-data-siswa',
-      'guru-staff.html': 'sidebar-nav-guru-staff',
       'akun.html': 'sidebar-nav-akun'
     };
+    // Mobile navbar map
     const mobileMap = {
       'dashboard.html': 'mobile-nav-dashboard',
       'ranking.html': 'mobile-nav-ranking',
       'prestasi.html': 'mobile-nav-prestasi',
+      'organisasi.html': 'mobile-nav-organisasi',
       'akun.html': 'mobile-nav-akun'
     };
 
-    // Sidebar
+    // Highlight sidebar
     const sidebarId = sidebarMap[path];
     if (sidebarId) {
       const el = document.getElementById(sidebarId);
       el?.classList.add('active');
       el?.setAttribute('aria-current', 'page');
     }
-    // Mobile navbar
+
+    // Highlight mobile navbar
     const mobileId = mobileMap[path];
     if (mobileId) {
       const el = document.getElementById(mobileId);
@@ -337,9 +328,6 @@ closeBtn.addEventListener("click", () => {
       el?.setAttribute('aria-current', 'page');
     }
   }
-
-  // Call this after you insert the fetched HTML:
-  highlightActiveNav();
 }
 
 // Example: Fetch sidebar.html and insert into #sidebar-container
@@ -384,7 +372,7 @@ window.initializeSidebar = async function(user) {
 
     document.getElementById('sidebar-profile-container').innerHTML = `
       <div class="profile-picture">
-        <img id="profile-img" src="${avatar_url}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <img id="profile-img" src="${avatar_url || ''}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
         <i class="bx bx-user default-user-icon" style="display:${avatar_url ? 'none' : 'block'}"></i>
       </div>
       <div class="profile-details">
@@ -395,28 +383,7 @@ window.initializeSidebar = async function(user) {
       <button id="log_out" title="Logout"><i class="bx bx-log-out"></i></button>
     `;
     document.getElementById('sidebar-login-container').innerHTML = '';
-
-    // Mobile
-    const mobileProfileContainer = document.getElementById("mobile-profile-container");
-    const mobileLoginBtn = document.getElementById("log_in_mobile");
-    if (mobileProfileContainer) {
-      mobileProfileContainer.style.display = "flex";
-      mobileProfileContainer.innerHTML = `
-        <div class="profile-picture">
-          <img id="mobile-profile-img" src="${avatar_url}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-          <i class="bx bx-user default-user-icon" style="display:${avatar_url ? 'none' : 'block'}"></i>
-        </div>
-        <div class="profile-details">
-          <span class="name" id="mobile-username">${username}</span>
-          <span class="job" id="mobile-role">${role || ""}</span>
-          ${roleBadge.replace('select-role-btn', 'mobile-select-role-btn')}
-        </div>
-        <button id="mobile-log_out" title="Logout"><i class="bx bx-log-out"></i></button>
-      `;
-      if (mobileLoginBtn) mobileLoginBtn.style.display = "none";
-    }
   } else {
-    // Desktop
     document.getElementById('sidebar-profile-container').innerHTML = '';
     document.getElementById('sidebar-login-container').innerHTML = `
       <a href="login.html" class="nav-link">
@@ -424,11 +391,6 @@ window.initializeSidebar = async function(user) {
         <span class="link-text">Login</span>
       </a>
     `;
-    // Mobile
-    const mobileProfileContainer = document.getElementById("mobile-profile-container");
-    const mobileLoginBtn = document.getElementById("log_in_mobile");
-    if (mobileProfileContainer) mobileProfileContainer.style.display = "none";
-    if (mobileLoginBtn) mobileLoginBtn.style.display = "flex";
   }
 
   // Logout
@@ -485,135 +447,112 @@ window.initializeSidebar = async function(user) {
   } else if (loggedOutMenu) {
     loggedInMenu.style.display = "none";
     loggedOutMenu.style.display = "flex";
+    if (profileContainer) profileContainer.innerHTML = "";
+    // Mobile
+    const mobileProfileContainer = document.getElementById("mobile-profile-container");
+    const mobileLoginBtn = document.getElementById("log_in_mobile");
     if (mobileProfileContainer) mobileProfileContainer.style.display = "none";
     if (mobileLoginBtn) mobileLoginBtn.style.display = "flex";
   }
 
-  highlightActiveNav();
-};
-
-// Example: Call this after fetching sidebar/mobile navbar HTML
-function renderMenus(user) {
-  // Sidebar
-  if (user && user.isLoggedIn) {
-    const role = user.role || '';
-    const roleBadge = role
-      ? `<span class="role-badge role-${role}">${role.charAt(0).toUpperCase() + role.slice(1)}</span>`
-      : `<button class="role-badge role-unset" id="select-role-btn">Select Role</button>`;
-    document.getElementById('sidebar-profile-container').innerHTML = `
-      <div class="profile-picture">
-        <img id="profile-img" src="${user.avatar_url || ''}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
-      </div>
-      <div class="profile-details">
-        <span class="name" id="username">${user.username || 'User'}</span>
-        <span class="job" id="role">${role || ""}</span>
-        ${roleBadge}
-      </div>
-      <button id="log_out" title="Logout"><i class="bx bx-log-out"></i></button>
-    `;
-    document.getElementById('sidebar-login-container').innerHTML = '';
-  } else {
-    document.getElementById('sidebar-profile-container').innerHTML = '';
-    document.getElementById('sidebar-login-container').innerHTML = `
-      <a href="login.html" class="nav-link">
-        <i class="bx bx-log-in"></i>
-        <span class="link-text">Login</span>
-      </a>
-    `;
+  // Mobile "Others" menu
+  const moreBtn = document.getElementById("mobile-nav-other");
+  if (moreBtn) {
+    moreBtn.onclick = function(event) {
+      event.preventDefault();
+      const menu = document.getElementById("mobile-more-menu");
+      if (menu) menu.classList.toggle("hidden");
+      moreBtn.blur();
+    };
   }
 
-  // Mobile
-  const mobileProfileContainer = document.getElementById("mobile-profile-container");
-  const mobileLoginBtn = document.getElementById("log_in_mobile");
-  if (user && user.isLoggedIn) {
-    const role = user.role || '';
-    const roleBadge = role
-      ? `<span class="role-badge role-${role}">${role.charAt(0).toUpperCase() + role.slice(1)}</span>`
-      : `<button class="role-badge role-unset" id="mobile-select-role-btn">Select Role</button>`;
-    if (mobileProfileContainer) {
-      mobileProfileContainer.style.display = "flex";
-      mobileProfileContainer.innerHTML = `
-        <div class="profile-picture">
-          <img id="mobile-profile-img" src="${user.avatar_url || ''}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-          <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
-        </div>
-        <div class="profile-details">
-          <span class="name" id="mobile-username">${user.username || 'User'}</span>
-          <span class="job" id="mobile-role">${role || ""}</span>
-          ${roleBadge}
-        </div>
-        <button id="mobile-log_out" title="Logout"><i class="bx bx-log-out"></i></button>
-      `;
-      if (mobileLoginBtn) mobileLoginBtn.style.display = "none";
+  // Hide "Others" menu on outside click
+  document.addEventListener("click", function (e) {
+    const menu = document.getElementById("mobile-more-menu");
+    const btn = document.getElementById("mobile-nav-other");
+    if (menu && !menu.classList.contains("hidden") &&
+        !menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.add("hidden");
     }
-  } else {
-    if (mobileProfileContainer) mobileProfileContainer.style.display = "none";
-    if (mobileLoginBtn) mobileLoginBtn.style.display = "flex";
-  }
+  });
+
+  // Highlight active nav
+  highlightActiveNav();
 }
 
-// Example usage after fetching HTML and user session:
-renderMenus({
-  isLoggedIn: true,
-  username: "Brayen",
-  avatar_url: "https://your-supabase-url/storage/v1/object/public/avatars/yourimg.jpg",
-  role: "student"
-});
+// Place highlightActiveNav outside so it's accessible
+function highlightActiveNav() {
+  let path = window.location.pathname.split('/').pop();
+  if (!path || path === '') path = 'dashboard.html';
+  if (!path.includes('.')) path += '.html';
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Sidebar logout
-  const logoutBtn = document.getElementById('log_out');
-  if (logoutBtn) {
-    logoutBtn.onclick = async function() {
-      await supabase.auth.signOut();
-      window.location.href = "index.html";
-    };
-  }
-  // Mobile logout (bottom sheet)
-  const mobileLogoutBtn = document.getElementById('mobile-log_out');
-  if (mobileLogoutBtn) {
-    mobileLogoutBtn.onclick = async function() {
-      await supabase.auth.signOut();
-      window.location.href = "index.html";
-    };
-  }
-});
+  const sidebarMap = {
+    'dashboard.html': 'sidebar-nav-dashboard',
+    'ranking.html': 'sidebar-nav-ranking',
+    'prestasi.html': 'sidebar-nav-prestasi',
+    'organisasi.html': 'sidebar-nav-organisasi',
+    'akun.html': 'sidebar-nav-akun'
+  };
+  const mobileMap = {
+    'dashboard.html': 'mobile-nav-dashboard',
+    'ranking.html': 'mobile-nav-ranking',
+    'prestasi.html': 'mobile-nav-prestasi',
+    'organisasi.html': 'mobile-nav-organisasi',
+    'akun.html': 'mobile-nav-akun'
+  };
 
-function renderMobileMenu(user) {
-  const mobileProfileContainer = document.getElementById("mobile-profile-container");
-  const mobileLoginBtn = document.getElementById("mobile-log_in");
-  if (user && user.isLoggedIn) {
-    const role = user.role || '';
-    const roleBadge = role
-      ? `<span class="role-badge role-${role}">${role.charAt(0).toUpperCase() + role.slice(1)}</span>`
-      : `<button class="role-badge role-unset" id="mobile-select-role-btn">Select Role</button>`;
-    if (mobileProfileContainer) {
-      mobileProfileContainer.style.display = "flex";
-      mobileProfileContainer.innerHTML = `
-        <div class="profile-picture">
-          <img id="mobile-profile-img" src="${user.avatar_url || ''}" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-          <i class="bx bx-user default-user-icon" style="display:${user.avatar_url ? 'none' : 'block'}"></i>
-        </div>
-        <div class="profile-details">
-          <span class="name" id="mobile-username">${user.username || 'User'}</span>
-          <span class="job" id="mobile-role">${role || ""}</span>
-          ${roleBadge}
-        </div>
-        <button id="mobile-log_out" title="Logout"><i class="bx bx-log-out"></i></button>
-      `;
-      if (mobileLoginBtn) mobileLoginBtn.style.display = "none";
-      // Add logout event
-      const mobileLogoutBtn = document.getElementById("mobile-log_out");
-      if (mobileLogoutBtn) {
-        mobileLogoutBtn.onclick = async function() {
-          await supabase.auth.signOut();
-          window.location.href = "index.html";
-        };
-      }
-    }
-  } else {
-    if (mobileProfileContainer) mobileProfileContainer.style.display = "none";
-    if (mobileLoginBtn) mobileLoginBtn.style.display = "flex";
+  const sidebarId = sidebarMap[path];
+  if (sidebarId) {
+    const el = document.getElementById(sidebarId);
+    el?.classList.add('active');
+    el?.setAttribute('aria-current', 'page');
+  }
+
+  const mobileId = mobileMap[path];
+  if (mobileId) {
+    const el = document.getElementById(mobileId);
+    el?.classList.add('active');
+    el?.setAttribute('aria-current', 'page');
   }
 }}
+
+function setupMobileNavbar() {
+  const moreBtn = document.getElementById("mobile-nav-more");
+  const moreMenu = document.getElementById("mobile-more-menu");
+
+  if (!moreBtn || !moreMenu) return;
+
+  // Toggle menu on button click
+  moreBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    const isOpen = moreMenu.classList.toggle("hidden") === false;
+    moreBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    if (isOpen) {
+      moreMenu.focus();
+    }
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", function (e) {
+    if (
+      !moreMenu.classList.contains("hidden") &&
+      !moreMenu.contains(e.target) &&
+      !moreBtn.contains(e.target)
+    ) {
+      moreMenu.classList.add("hidden");
+      moreBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Optional: Close menu on Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !moreMenu.classList.contains("hidden")) {
+      moreMenu.classList.add("hidden");
+      moreBtn.setAttribute("aria-expanded", "false");
+      moreBtn.blur();
+    }
+  });
+}
+
+// Call this after sidebar HTML is injected
+setupMobileNavbar();

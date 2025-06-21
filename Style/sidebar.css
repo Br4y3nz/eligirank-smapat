@@ -8,28 +8,23 @@
 
 /* Sidebar container */
 .sidebar {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-  width: 64px;
-  transition: width 0.3s;
-  background: #f8fafc;
-  border-right: 1px solid #e2e8f0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 78px;
+    background-color: #F1F5F9; /* Light gray-blue */
+    padding: 0;
+    z-index: 1100;
+    transition: width 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #E2E8F0; /* Light gray border */
 }
 
-.sidebar.open { width: 240px; }
-
-.nav-list {
-  flex: 1 1 auto;
-  margin-bottom: 0;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.sidebar.open {
+    width: 250px;
 }
 
 /* Logo details */
@@ -157,31 +152,39 @@
     color: #2563EB; /* Bright blue */
 }
 
+/* Navigation list */
+.sidebar .nav-list {
+    margin-top: 20px;
+    height: 100%;
+    list-style: none;
+    padding-left: 0;
+}
+
 /* Navigation items */
 .sidebar li {
     position: relative;
-    margin: 2px 0; /* Smaller vertical margin */
+    margin: 8px 0;
 }
 
 /* Links */
 .sidebar li a {
     display: flex;
     align-items: center;
-    height: 48px;
-    color: #64748b;
+    height: 50px;
+    width: 50px;
+    border-radius: 12px;
+    padding: 0;
+    box-sizing: border-box;
     text-decoration: none;
-    border-radius: 10px;
-    margin: 2px 8px;
-    font-size: 1.1rem;
-    transition: background 0.2s, color 0.2s;
+    background: transparent;
+    color: #1E293B; /* Dark slate */
+    font-size: 15px;
+    font-weight: 400;
+    transition: width 0.5s ease, background-color 0.3s ease, color 0.3s ease;
     overflow: hidden;
     justify-content: center;
+    margin: 0 auto;
     position: relative;
-}
-
-.sidebar.open li a {
-    padding-left: 24px;
-    gap: 14px;
 }
 
 .sidebar li a i {
@@ -192,6 +195,23 @@
     line-height: 50px;
     text-align: center;
     font-size: 22px;
+    color: #475569; /* Slate gray */
+    transition: color 0.3s ease;
+}
+
+.sidebar.open li a {
+    width: 222px;
+    justify-content: flex-start;
+    padding-left: 51px; /* adjusted from 62px to 51px to align text closer to icon */
+}
+
+.sidebar li a i {
+    font-size: 22px;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 50px;
     color: #475569; /* Slate gray */
     transition: color 0.3s ease;
 }
@@ -341,220 +361,442 @@ li.search-item > a.search-link i.bx-search {
     pointer-events: auto;
 }
 
-/* Sidebar profile section */
-#sidebar-profile-container,
+/* Profile section */
+.sidebar li.profile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    width: 78px;
+    background-color: #F1F5F9;
+    border-top: 1px solid #E2E8F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s ease;
+    box-sizing: border-box;
+    border-radius: 0 0 12px 0;
+    overflow: hidden;
+}
+
+.sidebar.open li.profile {
+    width: 250px;
+    justify-content: flex-start;
+    padding: 0 16px;
+    gap: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-info {
+    margin-left: 12px;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+.sidebar:not(.open) .profile-info {
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
+}
+
+.sidebar.open li.profile {
+    width: 250px;
+    justify-content: flex-start;
+    padding: 0 16px;
+    gap: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar.open li.profile .profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.sidebar.open li.profile .profile-info .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E293B;
+    margin-bottom: 2px;
+}
+
+.sidebar.open li.profile .profile-info .job {
+    font-size: 12px;
+    color: #475569;
+    margin-top: 0;
+}
+
+.sidebar li.profile img#profile-img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2563EB;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar li.profile .profile-details {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar.open li.profile .profile-details {
+    display: flex;
+}
+
+.sidebar li.profile .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.sidebar li.profile .job {
+    font-size: 12px;
+    color: #475569;
+}
+
+.sidebar .profile #log_out {
+    display: none;
+    background: transparent;
+    color: #DC2626;
+    font-size: 22px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: color 0.3s ease-in-out;
+    margin-left: auto;
+}
+
+.sidebar.open .profile #log_out {
+    display: block;
+}
+
+.sidebar .profile #log_out:hover {
+    color: #B91C1C; /* Darker red */
+}
+
+/* Tooltip on avatar when sidebar is closed */
+.sidebar li.profile .tooltip {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #1E293B;
+    color: #F8FAFC;
+    padding: 6px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 100;
+}
+
+.sidebar.open li.profile .tooltip {
+    display: none;
+}
+
+.sidebar li.profile:hover .tooltip {
+    opacity: 1;
+}
+
+/* Optional: Add hover animation for profile image */
+.sidebar li.profile img#profile-img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Sidebar menu text */
+.sidebar li a .links_name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, width 0.5s ease-in-out;
+    width: auto;
+    display: inline-block;
+}
+
+.sidebar:not(.open) li a .links_name {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out, width 0.5s ease-in-out;
+    white-space: nowrap;
+    visibility: hidden;
+    display: inline-block;
+}
+
+/* Logged-in menu */
 #logged-in-menu {
-  position: relative; /* Bukan fixed */
-  margin-top: auto;
-  width: 100%;
-  height: 64px;
-  background: #f1f5f9;
-  border-top: 1px solid #e2e8f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: width 0.3s;
-  z-index: 1200;
-  padding: 0 12px;
-  gap: 12px;
+    display: none; /* Hidden by default */
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    transition: width 0.3s ease-in-out, padding 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 78px; /* Set to sidebar closed width */
+    box-sizing: border-box;
 }
-.sidebar.open #sidebar-profile-container,
+
 .sidebar.open #logged-in-menu {
-  width: 250px;
-  justify-content: flex-start;
-  padding: 0 16px;
+    display: flex; /* Show when sidebar is open */
+    opacity: 1;
+    transform: translateX(0);
+    width: 250px;
+    padding: 0 16px;
+    gap: 12px;
+    justify-content: flex-start;
+    transition: all 0.3s ease-in-out;
 }
 
-#sidebar-profile-container .profile-picture {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #cbd5e1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-#sidebar-profile-container .profile-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-}
-#sidebar-profile-container .profile-picture .default-user-icon {
-  font-size: 32px;
-  color: #64748b;
-  position: absolute;
-  left: 0; right: 0; top: 0; bottom: 0;
-  margin: auto;
-  display: none;
-}
-#sidebar-profile-container .profile-picture img[src=""], 
-#sidebar-profile-container .profile-picture img:not([src]) {
-  display: none;
-}
-#sidebar-profile-container .profile-picture img[src=""] + .default-user-icon,
-#sidebar-profile-container .profile-picture img:not([src]) + .default-user-icon {
-  display: block;
+.sidebar.open #logged-in-menu {
+    display: flex; /* Show when sidebar is open */
+    opacity: 1;
+    transform: translateX(0);
 }
 
-#sidebar-profile-container .profile-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 12px;
-  line-height: 1.2;
-  min-width: 0;
+/* Show only profile picture in logged-in menu when sidebar is closed */
+.sidebar:not(.open) #logged-in-menu {
+    display: flex; /* Show container */
+    opacity: 1;
+    transform: translateX(0);
+    justify-content: center;
+    padding: 0 8px;
 }
-#sidebar-profile-container .name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1E293B;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+
+.sidebar:not(.open) #logged-in-menu > *:not(.profile-picture) {
+    display: none; /* Hide all except profile picture */
 }
-#sidebar-profile-container .job {
-  font-size: 12px;
-  color: #475569;
-  margin-top: 2px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+
+#logged-in-menu .profile-picture {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #cbd5e1; /* fallback background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-#sidebar-profile-container .role-badge {
-  margin-top: 4px;
-  font-size: 12px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-weight: 600;
+
+#logged-in-menu .profile-picture img#profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+#logged-in-menu .profile-picture .default-user-icon {
+    font-size: 40px;
+    color: #64748b; /* slate-500 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#logged-in-menu .profile-picture img#profile-img:not([src=""]):not([src="null"]) {
+    display: block;
+}
+
+#logged-in-menu .profile-picture img#profile-img[src=""],
+#logged-in-menu .profile-picture img#profile-img[src="null"] {
+    display: none;
+}
+
+/* Logged-out menu */
+#logged-out-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    width: 78px;
+    background-color: #F1F5F9;
+    border-top: 1px solid #E2E8F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 0 0 12px 0;
+    transition: width 0.5s ease, background-color 0.3s ease;
+    z-index: 1101;
+}
+
+.sidebar.open #logged-out-menu {
+    width: 250px;
+    justify-content: flex-start;
+    padding-left: 16px; /* Adjusted to match logged-in menu padding */
+    background-color: #F1F5F9;
+    border-top: 1px solid #E2E8F0;
+}
+
+.sidebar:not(.open) #logged-out-menu {
+    width: 78px;
+    justify-content: center;
+    background-color: #F1F5F9;
+    border-top: 1px solid #E2E8F0;
+}
+
+/* Profile details inside logged-in menu */
+#logged-in-menu .profile-details {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Profile picture */
+#logged-in-menu .profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Username and role */
+#logged-in-menu .name,
+#logged-in-menu .job {
+    font-size: 14px;
+    color: #1E293B;
+    white-space: nowrap;
+}
+
+/* Logout button */
+#logged-in-menu #log_out {
+    background: transparent;
+    border: none;
+    color: #DC2626;
+    font-size: 22px;
+    cursor: pointer;
+    margin-left: auto;
+    transition: color 0.3s ease-in-out;
+}
+
+#logged-in-menu #log_out:hover {
+    color: #B91C1C;
+}
+
+/* Logged-out menu login button */
+#logged-out-menu a#log_in {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    background-color: #F3F4F6;
+    color: #475569;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Role badge styles */
+.role-badge {
   display: inline-block;
-  background: #e0e7ff;
-  color: #2563eb;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-#sidebar-profile-container .role-badge.role-admin { background: #f87171; color: #fff; }
-#sidebar-profile-container .role-badge.role-student { background: #60a5fa; color: #fff; }
-#sidebar-profile-container .role-badge.role-teacher { background: #fbbf24; color: #1f2937; }
-#sidebar-profile-container .role-badge.role-unset { background: #94a3b8; color: #fff; cursor: pointer; }
-
-#sidebar-profile-container #log_out {
-  background: transparent;
-  color: #dc2626;
-  font-size: 22px;
-  cursor: pointer;
-  border: none;
-  margin-left: auto;
-  margin-right: 0;
-  transition: color 0.3s;
-}
-#sidebar-profile-container #log_out:hover {
-  color: #b91c1c;
-}
-
-/* Mobile profile in more menu */
-.mobile-profile-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-top: 1px solid #e2e8f0;
-  color: #475569;
-  background: #f8fafc;
-  border-radius: 12px;
-  margin-top: 8px;
-}
-.mobile-profile-container .profile-picture {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #cbd5e1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-.mobile-profile-container .profile-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-}
-.mobile-profile-container .profile-picture .default-user-icon {
-  font-size: 32px;
-  color: #64748b;
-  position: absolute;
-  left: 0; right: 0; top: 0; bottom: 0;
-  margin: auto;
-  display: none;
-}
-.mobile-profile-container .profile-picture img[src=""], 
-.mobile-profile-container .profile-picture img:not([src]) {
-  display: none;
-}
-.mobile-profile-container .profile-picture img[src=""] + .default-user-icon,
-.mobile-profile-container .profile-picture img:not([src]) + .default-user-icon {
-  display: block;
-}
-.mobile-profile-container .profile-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 12px;
-  line-height: 1.2;
-  min-width: 0;
-}
-.mobile-profile-container .name {
-  font-size: 15px;
+  padding: 4px 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: #1E293B;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.mobile-profile_container .job {
-  font-size: 12px;
-  color: #475569;
-  margin-top: 2px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.mobile-profile-container .role-badge {
-  margin-top: 4px;
-  font-size: 12px;
-  padding: 2px 10px;
   border-radius: 999px;
-  font-weight: 600;
-  display: inline-block;
-  background: #e0e7ff;
-  color: #2563eb;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  color: #fff;
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
 }
-.mobile-profile-container .role-badge.role-admin { background: #f87171; color: #fff; }
-.mobile-profile-container .role-badge.role-student { background: #60a5fa; color: #fff; }
-.mobile-profile-container .role-badge.role-teacher { background: #fbbf24; color: #1f2937; }
-.mobile-profile-container .role-badge.role-unset { background: #94a3b8; color: #fff; cursor: pointer; }
 
-.mobile-profile-container #mobile-log_out {
-  background: transparent;
-  color: #dc2626;
-  font-size: 22px;
-  cursor: pointer;
-  border: none;
-  margin-left: auto;
-  transition: color 0.3s;
+.role-admin {
+  background-color: #F87171; /* Soft Red */
 }
-.mobile-profile-container #mobile-log_out:hover {
-  color: #b91c1c;
+
+.role-student {
+  background-color: #60A5FA; /* Blue */
+}
+
+.role-teacher {
+  background-color: #FBBF24; /* Amber */
+  color: #1F2937; /* Darker text on yellow */
+}
+
+.role-unset {
+  background-color: #94A3B8; /* Gray */
+  cursor: pointer;
+}
+
+#logged-out-menu a#log_in:hover {
+    background-color: #E0E7FF;
+    color: #111827;
+}
+
+/* Login button in logged-out menu */
+#logged-out-menu a#log_in {
+    width: 50px;
+    height: 50px;
+    background-color: #F3F4F6; /* Light neutral */
+    color: #475569;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 0 auto 12px auto;
+    padding: 0;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+    box-sizing: border-box;
+    transition: width 0.5s ease, height 0.5s ease, background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
+}
+
+.sidebar.open #logged-out-menu a#log_in {
+    width: 222px; /* Expand width */
+    height: 50px;
+    justify-content: center; /* Center icon and span horizontally */
+    padding-left: 0; /* Remove left padding */
+    margin: 0 0 12px 0; /* Remove auto margin to align left */
+    border-radius: 12px;
+    background-color: #F3F4F6;
+    color: #475569;
+    transition: width 0.5s ease, height 0.5s ease, background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
+    align-items: center; /* Ensure vertical centering */
+    gap: 8px; /* Add gap between icon and text */
+}
+
+.sidebar.open #logged-out-menu a#log_in i {
+    position: static !important; /* Remove absolute positioning */
+    width: auto !important;
+    height: auto !important;
+    line-height: normal !important;
+    text-align: center !important;
+    font-size: 22px;
+    color: #475569;
+    flex-shrink: 0;
+}
+
+#logged-out-menu a#log_in:hover {
+    background-color: #E0E7FF; /* Soft indigo */
+    color: #111827; /* Darker text */
+    border-left: 4px solid #2563EB; /* Bright blue left border on hover */
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.5); /* Soft blue glow */
+    transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* --- Desktop Sidebar styles above this --- */
@@ -741,7 +983,6 @@ li.search-item > a.search-link i.bx-search {
 @media (max-width: 767px) {
   main, .main-content, #main-content {
     margin-left: 0 !important;
-    padding-bottom: 64px; /* space for fixed mobile navbar */
   }
 }
 
@@ -775,112 +1016,5 @@ li.search-item > a.search-link i.bx-search {
 @media (hover: none) and (pointer: coarse) {
   .mobile-nav-item:active .mobile-tooltip {
     opacity: 1;
-  }
-}
-
-.sidebar li a,
-.sidebar li a i {
-  height: 48px;
-  min-height: 48px;
-  max-height: 48px;
-  line-height: 48px;
-}
-#sidebar-profile-container,
-#sidebar-login-container {
-  height: 64px;
-  min-height: 64px;
-  max-height: 64px;
-  border-top: 1px solid #e2e8f0;
-  background: #f1f5f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  gap: 12px;
-}
-.sidebar.open #sidebar-profile-container,
-.sidebar.open #sidebar-login-container {
-  justify-content: flex-start;
-  padding: 0 16px;
-}
-
-.link-text {
-  opacity: 0;
-  max-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: opacity 0.3s, max-width 0.3s;
-}
-
-.sidebar.open .link-text {
-  opacity: 1;
-  max-width: 160px; /* or whatever fits your sidebar */
-}
-
-/* Closed state: minimal left padding for both menu and profile */
-.sidebar:not(.open) .nav-link {
-  padding-left: 0.7rem; /* Example: 0.7rem or 12px */
-  justify-content: center;
-}
-.sidebar:not(.open) #sidebar-profile-container,
-.sidebar:not(.open) #sidebar-login-container {
-  padding-left: 0.7rem;
-  justify-content: center;
-}
-
-/* Open state: more left padding for both menu and profile */
-.sidebar.open .nav-link {
-  padding-left: 1.5rem; /* Example: 1.5rem or 24px */
-  justify-content: flex-start;
-}
-.sidebar.open #sidebar-profile-container,
-.sidebar.open #sidebar-login-container {
-  padding-left: 1.5rem;
-  justify-content: flex-start;
-}
-
-.nav-link.active,
-.mobile-nav-item.active {
-  background: #e0e7ff;
-  color: #2563eb;
-  box-shadow: 0 4px 16px rgba(37,99,235,0.13), 0 1.5px 6px rgba(0,0,0,0.06);
-}
-.nav-link.active i,
-.mobile-nav-item.active i {
-  color: #2563eb;
-  transform: scale(1.18);
-}
-
-.links_name {
-  opacity: 0;
-  max-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: opacity 0.3s, max-width 0.3s;
-}
-.sidebar.open .links_name {
-  opacity: 1;
-  max-width: 160px;
-}
-
-/* PATCH: Make main content shift when #sidebar-container is open */
-@media (min-width: 768px) {
-  #sidebar-container {
-    width: 64px;
-    transition: width 0.3s;
-  }
-  #sidebar-container.open {
-    width: 240px;
-  }
-  #sidebar-container ~ main,
-  #sidebar-container ~ .main-content,
-  #sidebar-container ~ #main-content {
-    margin-left: 64px;
-    transition: margin-left 0.3s;
-  }
-  #sidebar-container.open ~ main,
-  #sidebar-container.open ~ .main-content,
-  #sidebar-container.open ~ #main-content {
-    margin-left: 240px;
   }
 }
