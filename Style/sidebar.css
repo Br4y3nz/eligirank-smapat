@@ -538,57 +538,52 @@ li.search-item > a.search-link i.bx-search {
     display: inline-block;
 }
 
-/* Logged-in menu */
+/* --- Sidebar Login/Logout Menus --- */
+
+/* Hide both by default, show via JS */
+#logged-in-menu,
+#logged-out-menu {
+    display: none;
+}
+
+/* Show when toggled by JS */
+#logged-in-menu.active,
+#logged-out-menu.active {
+    display: flex !important;
+}
+
+/* Sidebar logged-in menu styles */
 #logged-in-menu {
-    display: none; /* Hidden by default */
     flex-direction: row;
     align-items: center;
     gap: 12px;
     padding: 8px 16px;
-    transition: width 0.3s ease-in-out, padding 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    width: 78px;
+    box-sizing: border-box;
     overflow: hidden;
     white-space: nowrap;
-    width: 78px; /* Set to sidebar closed width */
-    box-sizing: border-box;
+    transition: width 0.3s, padding 0.3s, opacity 0.3s;
 }
 
 .sidebar.open #logged-in-menu {
-    display: flex; /* Show when sidebar is open */
-    opacity: 1;
-    transform: translateX(0);
     width: 250px;
     padding: 0 16px;
     gap: 12px;
     justify-content: flex-start;
-    transition: all 0.3s ease-in-out;
 }
 
-.sidebar.open #logged-in-menu {
-    display: flex; /* Show when sidebar is open */
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* Show only profile picture in logged-in menu when sidebar is closed */
-.sidebar:not(.open) #logged-in-menu {
-    display: flex; /* Show container */
-    opacity: 1;
-    transform: translateX(0);
-    justify-content: center;
-    padding: 0 8px;
-}
-
+/* Only show profile picture when sidebar is closed */
 .sidebar:not(.open) #logged-in-menu > *:not(.profile-picture) {
-    display: none; /* Hide all except profile picture */
+    display: none;
 }
 
+/* Profile picture in logged-in menu */
 #logged-in-menu .profile-picture {
-    position: relative;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
-    background-color: #cbd5e1; /* fallback background */
+    background-color: #cbd5e1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -604,71 +599,10 @@ li.search-item > a.search-link i.bx-search {
 
 #logged-in-menu .profile-picture .default-user-icon {
     font-size: 40px;
-    color: #64748b; /* slate-500 */
+    color: #64748b;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     margin: auto;
-}
-
-#logged-in-menu .profile-picture img#profile-img:not([src=""]):not([src="null"]) {
-    display: block;
-}
-
-#logged-in-menu .profile-picture img#profile-img[src=""],
-#logged-in-menu .profile-picture img#profile-img[src="null"] {
-    display: none;
-}
-
-/* Logged-out menu */
-#logged-out-menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    height: 50px;
-    width: 78px;
-    background-color: #F1F5F9;
-    border-top: 1px solid #E2E8F0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    box-sizing: border-box;
-    border-radius: 0 0 12px 0;
-    transition: width 0.5s ease, background-color 0.3s ease;
-    z-index: 1101;
-}
-
-.sidebar.open #logged-out-menu {
-    width: 250px;
-    justify-content: flex-start;
-    padding-left: 16px; /* Adjusted to match logged-in menu padding */
-    background-color: #F1F5F9;
-    border-top: 1px solid #E2E8F0;
-}
-
-.sidebar:not(.open) #logged-out-menu {
-    width: 78px;
-    justify-content: center;
-    background-color: #F1F5F9;
-    border-top: 1px solid #E2E8F0;
-}
-
-/* Profile details inside logged-in menu */
-#logged-in-menu .profile-details {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Profile picture */
-#logged-in-menu .profile-picture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 /* Username and role */
@@ -687,101 +621,77 @@ li.search-item > a.search-link i.bx-search {
     font-size: 22px;
     cursor: pointer;
     margin-left: auto;
-    transition: color 0.3s ease-in-out;
+    transition: color 0.3s;
 }
-
 #logged-in-menu #log_out:hover {
     color: #B91C1C;
 }
 
-/* Logged-out menu login button */
-#logged-out-menu a#log_in {
+/* Sidebar logged-out menu styles */
+#logged-out-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    width: 78px;
+    background-color: #F1F5F9;
+    border-top: 1px solid #E2E8F0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 40px;
-    background-color: #F3F4F6;
-    color: #475569;
-    border-radius: 12px;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 400;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 0 0 12px 0;
+    transition: width 0.5s, background-color 0.3s;
+    z-index: 1101;
 }
 
-/* Role badge styles */
-.role-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 999px;
-  color: #fff;
-  white-space: nowrap;
-  text-align: center;
-  user-select: none;
+.sidebar.open #logged-out-menu {
+    width: 250px;
+    justify-content: flex-start;
+    padding-left: 16px;
 }
 
-.role-admin {
-  background-color: #F87171; /* Soft Red */
-}
-
-.role-student {
-  background-color: #60A5FA; /* Blue */
-}
-
-.role-teacher {
-  background-color: #FBBF24; /* Amber */
-  color: #1F2937; /* Darker text on yellow */
-}
-
-.role-unset {
-  background-color: #94A3B8; /* Gray */
-  cursor: pointer;
-}
-
-#logged-out-menu a#log_in:hover {
-    background-color: #E0E7FF;
-    color: #111827;
+.sidebar:not(.open) #logged-out-menu {
+    width: 78px;
+    justify-content: center;
 }
 
 /* Login button in logged-out menu */
 #logged-out-menu a#log_in {
-    width: 50px;
-    height: 50px;
-    background-color: #F3F4F6; /* Light neutral */
-    color: #475569;
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0;
-    margin: 0 auto 12px auto;
-    padding: 0;
+    width: 50px;
+    height: 50px;
+    background-color: #F3F4F6;
+    color: #475569;
+    border-radius: 12px;
     text-decoration: none;
     font-size: 15px;
     font-weight: 400;
+    gap: 0;
+    margin: 0 auto 12px auto;
+    padding: 0;
     box-sizing: border-box;
-    transition: width 0.5s ease, height 0.5s ease, background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
+    transition: width 0.5s, height 0.5s, background-color 0.3s, color 0.3s, padding 0.3s;
 }
 
 .sidebar.open #logged-out-menu a#log_in {
-    width: 222px; /* Expand width */
+    width: 222px;
     height: 50px;
-    justify-content: center; /* Center icon and span horizontally */
-    padding-left: 0; /* Remove left padding */
-    margin: 0 0 12px 0; /* Remove auto margin to align left */
+    justify-content: center;
+    padding-left: 0;
+    margin: 0 0 12px 0;
     border-radius: 12px;
     background-color: #F3F4F6;
     color: #475569;
-    transition: width 0.5s ease, height 0.5s ease, background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
-    align-items: center; /* Ensure vertical centering */
-    gap: 8px; /* Add gap between icon and text */
+    align-items: center;
+    gap: 8px;
 }
 
 .sidebar.open #logged-out-menu a#log_in i {
-    position: static !important; /* Remove absolute positioning */
+    position: static !important;
     width: auto !important;
     height: auto !important;
     line-height: normal !important;
@@ -792,11 +702,11 @@ li.search-item > a.search-link i.bx-search {
 }
 
 #logged-out-menu a#log_in:hover {
-    background-color: #E0E7FF; /* Soft indigo */
-    color: #111827; /* Darker text */
-    border-left: 4px solid #2563EB; /* Bright blue left border on hover */
-    box-shadow: 0 0 8px rgba(37, 99, 235, 0.5); /* Soft blue glow */
-    transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease, box-shadow 0.3s ease;
+    background-color: #E0E7FF;
+    color: #111827;
+    border-left: 4px solid #2563EB;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+    transition: background-color 0.3s, color 0.3s, border-left 0.3s, box-shadow 0.3s;
 }
 
 /* --- Desktop Sidebar styles above this --- */
@@ -1017,4 +927,115 @@ li.search-item > a.search-link i.bx-search {
   .mobile-nav-item:active .mobile-tooltip {
     opacity: 1;
   }
+}
+
+/* Hide both by default, show via JS */
+#mobile-logged-in-menu,
+#mobile-logged-out-menu {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Show when toggled by JS (add .active class in JS if you want, or use style.display) */
+#mobile-logged-in-menu.active,
+#mobile-logged-out-menu.active {
+  display: flex !important;
+}
+
+/* Mobile logged-in menu styles */
+#mobile-logged-in-menu {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f1f5f9;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: background 0.3s;
+}
+
+#mobile-logged-in-menu .profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mobile-logged-in-menu .profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#mobile-logged-in-menu .name,
+#mobile-logged-in-menu .job {
+  font-size: 15px;
+  color: #1e293b;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+#mobile-logged-in-menu #mobile-log_out {
+  background: transparent;
+  border: none;
+  color: #dc2626;
+  font-size: 22px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: color 0.3s;
+}
+#mobile-logged-in-menu #mobile-log_out:hover {
+  color: #b91c1c;
+}
+
+/* Mobile logged-out menu styles */
+#mobile-logged-out-menu {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f1f5f9;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: background 0.3s;
+}
+
+#mobile-logged-out-menu a#mobile-log_in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  background: #f3f4f6;
+  color: #475569;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  gap: 8px;
+  transition: background 0.3s, color 0.3s;
+}
+#mobile-logged-out-menu a#mobile-log_in:hover {
+  background: #e0e7ff;
+  color: #2563eb;
+}
+
+#mobile-logged-in-menu,
+#mobile-logged-out-menu {
+  margin-top: 16px;
+  /* Optionally: */
+  border-top: 1px solid #e2e8f0;
+  padding-top: 12px;
 }
