@@ -120,24 +120,15 @@
       <a href="/datasiswa.html"><i class='bx bx-user'></i> Data Siswa</a>
       <a href="/guru.html"><i class='bx bx-user-voice'></i> Guru & Staff</a>
 
-      <li id="mobile-logged-in-menu" class="mobile-profile" style="display: none;" role="region" aria-label="User profile">
-        <div id="mobile-profile-img-container" class="profile-picture">
-          <i class="bx bx-user-circle default-user-icon" aria-hidden="true"></i>
-          <img src="" alt="Profile Picture" id="mobile-profile-img" style="display:none;" />
-        </div>
-        <div class="profile-info">
-          <span class="name" id="mobile-username">User</span>
-          <span class="job" id="mobile-role">Role</span>
-        </div>
-        <button id="mobile-log_out" class="bx bx-log-out" aria-label="Log out"></button>
-      </li>
-
-      <li id="mobile-logged-out-menu" role="region" aria-label="Login menu">
-        <a href="index.html" id="mobile-log_in">
-          <i class="bx bx-log-in" aria-hidden="true"></i>
-          <span class="links_name">Login</span>
-        </a>
-      </li>
+      <div id="mobile-logged-in-menu" >
+        <span class="profile-picture"><img id="mobile-profile-img" src="" alt="Profile"></span>
+        <span class="name" id="mobile-username">Nama User</span>
+        <span class="job" id="mobile-role">Role</span>
+        <button id="mobile-log_out" title="Logout"><i class="bx bx-log-out"></i></button>
+      </div>
+      <div id="mobile-logged-out-menu">
+        <a href="login.html" id="mobile-log_in"><i class="bx bx-log-in"></i>Login</a>
+      </div>
 
     </div>
   </nav>
