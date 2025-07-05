@@ -153,16 +153,16 @@ export function initializeSidebar() {
     return error ? null : data;
   }
 
-  async function updateUserMenuDisplay() {
+async function updateUserMenuDisplay() {
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error || !session) {
-      toggleVisibility(loggedInMenu, false);
-      toggleVisibility(loggedOutMenu, true);
+      loggedInMenu?.classList.remove('active');
+      loggedOutMenu?.classList.add('active');
       return;
     }
 
-    toggleVisibility(loggedInMenu, true);
-    toggleVisibility(loggedOutMenu, false);
+    loggedInMenu?.classList.add('active');
+    loggedOutMenu?.classList.remove('active');
     console.log("Session user:", session.user.email);
 
     const profile = await fetchUserData(session);
@@ -171,8 +171,6 @@ export function initializeSidebar() {
 
       const profileImg = document.getElementById("profile-img");
       const defaultUserIcon = document.querySelector(".default-user-icon");
-      const loggedInMenu = document.getElementById("logged-in-menu");
-      const loggedOutMenu = document.getElementById("logged-out-menu");
       const loginBtn = document.getElementById("log_in");
       
       if (profileImg && profile.avatar_url) {
@@ -188,21 +186,17 @@ export function initializeSidebar() {
       }
 
       // Show profile image and logged-in menu, hide logged-out menu and login button
-      if (loggedInMenu) loggedInMenu.style.display = "block";
-      if (loggedOutMenu) loggedOutMenu.style.display = "none";
       if (loginBtn) loginBtn.style.display = "none";
     } else {
       // Hide profile image and show logged-out menu and login button
       const profileImg = document.getElementById("profile-img");
       const defaultUserIcon = document.querySelector(".default-user-icon");
-      const loggedInMenu = document.getElementById("logged-in-menu");
-      const loggedOutMenu = document.getElementById("logged-out-menu");
       const loginBtn = document.getElementById("log_in");
 
       if (profileImg) profileImg.style.display = "none";
       if (defaultUserIcon) defaultUserIcon.style.display = "block";
-      if (loggedInMenu) loggedInMenu.style.display = "none";
-      if (loggedOutMenu) loggedOutMenu.style.display = "block";
+      loggedInMenu?.classList.remove('active');
+      loggedOutMenu?.classList.add('active');
       if (loginBtn) loginBtn.style.display = "block";
     }
 
@@ -405,6 +399,9 @@ window.initializeSidebar = async function(user) {
 
   // Highlight active nav
   highlightActiveNav();
+
+  // Update user menu display based on session and profile
+  updateUserMenuDisplay();
 
   updateSidebarMenus(user.isLoggedIn, user);
 }
