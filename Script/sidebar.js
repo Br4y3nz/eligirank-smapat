@@ -154,6 +154,13 @@ export function initializeSidebar() {
   }
 
 async function updateUserMenuDisplay() {
+    const loggedInMenu = document.getElementById("logged-in-menu");
+    const loggedOutMenu = document.getElementById("logged-out-menu");
+    const mobileLoggedInMenu = document.getElementById("mobile-logged-in-menu");
+    const mobileLoggedOutMenu = document.getElementById("mobile-logged-out-menu");
+    const usernameElem = document.getElementById("username");
+    const roleElem = document.getElementById("role");
+
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error || !session) {
       loggedInMenu?.classList.remove('active');
