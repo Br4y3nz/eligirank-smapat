@@ -412,7 +412,7 @@ window.initializeSidebar = async function(user) {
 // Place highlightActiveNav outside so it's accessible
 function highlightActiveNav() {
   // Remove 'active' and 'aria-current' from all sidebar and mobile nav items
-  document.querySelectorAll('.sidebar .nav-list .active, .mobile-bottom-navbar .active').forEach(el => {
+  document.querySelectorAll('.sidebar .nav-list a.active, .mobile-bottom-navbar .active').forEach(el => {
     el.classList.remove('active');
     el.removeAttribute('aria-current');
   });
@@ -440,9 +440,10 @@ function highlightActiveNav() {
 
   const sidebarId = sidebarMap[path];
   if (sidebarId) {
-    const el = document.getElementById(sidebarId);
-    el?.classList.add('active');
-    el?.setAttribute('aria-current', 'page');
+    const liEl = document.getElementById(sidebarId);
+    const aEl = liEl?.querySelector('a');
+    aEl?.classList.add('active');
+    aEl?.setAttribute('aria-current', 'page');
   }
 
   const mobileId = mobileMap[path];
