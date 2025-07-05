@@ -158,11 +158,15 @@ async function updateUserMenuDisplay() {
     if (error || !session) {
       loggedInMenu?.classList.remove('active');
       loggedOutMenu?.classList.add('active');
+      mobileLoggedInMenu?.classList.remove('active');
+      mobileLoggedOutMenu?.classList.add('active');
       return;
     }
 
     loggedInMenu?.classList.add('active');
     loggedOutMenu?.classList.remove('active');
+    mobileLoggedInMenu?.classList.add('active');
+    mobileLoggedOutMenu?.classList.remove('active');
     console.log("Session user:", session.user.email);
 
     const profile = await fetchUserData(session);
@@ -197,6 +201,8 @@ async function updateUserMenuDisplay() {
       if (defaultUserIcon) defaultUserIcon.style.display = "block";
       loggedInMenu?.classList.remove('active');
       loggedOutMenu?.classList.add('active');
+      mobileLoggedInMenu?.classList.remove('active');
+      mobileLoggedOutMenu?.classList.add('active');
       if (loginBtn) loginBtn.style.display = "block";
     }
 
