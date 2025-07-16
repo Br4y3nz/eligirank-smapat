@@ -177,74 +177,48 @@
             </div>
         </section>
 
-        <!-- Highlights -->
-        <section class="highlights" aria-label="Highlights section">
-            <div class="highlight-card" id="top-siswa" tabindex="0"><i class='bx bxs-star'></i> Top Siswa Bulan Ini</div>
-            <div class="highlight-card" id="chart-nilai" tabindex="0">
-                <i class='bx bxs-bar-chart-alt-2'></i> Nilai Rata-rata Siswa per Kelas
-                <canvas id="chart-nilai-canvas" width="300" height="180" aria-label="Bar chart showing average student scores per class" role="img"></canvas>
-            </div>
-        </section>
-
+        <div class="dashboard-main-content">
         <!-- Announcements -->
-        <section class="announcements" aria-label="Announcements section">
-            <h2><i class='bx bxs-megaphone bx-tada'></i> Pengumuman</h2>
-            <ul id="announcement-list"></ul>
+        <section class="announcements scroll-fade" aria-label="Pengumuman">
+          <h2><i class='bx bxs-megaphone'></i> Pengumuman</h2>
+          <div class="announcement-vertical" id="announcement-list">
+            <!-- Cards will be inserted by JS -->
+          </div>
         </section>
 
-        <!-- Vision, Mission, Goals -->
-        <section class="vmg scroll-fade" aria-label="Vision, Mission, Goals section">
-            <div class="vmg-slider">
-                <div class="vmg-card stat-card" tabindex="0">
-                    <h3><i class='bx bxs-eye'></i> VISI</h3>
-                    <p>Menuju sekolah yang berimtaq, terampil, berprestasi dan peduli lingkungan.</p>
-                </div>
-                <div class="vmg-card stat-card" tabindex="0">
-                    <h3><i class='bx bxs-target-lock'></i> MISI</h3>
-                    <p>Menghasilkan lulusan yang beriman dan bertaqwa, terampil berwirausaha, berprestasi dan bersaing di perguruan tinggi serta peduli lingkungan.</p>
-                </div>
-                <div class="vmg-card stat-card" tabindex="0">
-                    <h3><i class='bx bxs-bullseye'></i> TUJUAN</h3>
-                    <ol>
-                        <li>Menyiapkan peserta didik yang berimtaq.</li>
-                        <li>Menyiapkan peserta didik yang terampil dalam berwirausaha.</li>
-                        <li>Menyiapkan Peserta didik berprestasi dibidang akademik dan non akademik.</li>
-                        <li>Menyiapkan peserta didik yang siap melanjutkan pendidikan ke Perguruan Tinggi Negeri  yang terbaik.</li>
-                        <li>Menciptakan suasana lingkungan sekolah yang bersih, sehat, asri, nyaman dan rindang.</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
+          <!-- Highlights -->
+          <section class="highlights" aria-label="Highlights section">
+              <div class="highlight-card" id="top-siswa" tabindex="0"><i class='bx bxs-star'></i> Top Siswa Bulan Ini</div>
+              <div class="highlight-card" id="chart-nilai" tabindex="0">
+                  <i class='bx bxs-bar-chart-alt-2'></i> Nilai Rata-rata Siswa per Kelas
+                  <canvas id="chart-nilai-canvas" width="300" height="180" aria-label="Bar chart showing average student scores per class" role="img"></canvas>
+              </div>
+          </section>
+        </div>
 
-        <!-- Footer -->
-        <footer class="footer-grid scroll-fade" aria-label="Footer section">
-            <div>
-                <h3><i class='bx bxs-info-circle'></i> Tentang Sekolah</h3>
-                <p>UPT SMA Negeri 4 Parepare adalah sekolah unggulan yang berkomitmen menghasilkan lulusan berprestasi dan berkarakter.</p>
-            </div>
-            <div>
-                <img src="Assets/Kepsek.jpeg" alt="Kepala Sekolah" class="rounded-full w-16 h-16" />
-                <p>Kepala Sekolah: Hamzah Wakkang S.Pd M.Pd</p>
-            </div>
-            <div>
-            <div class="rounded-xl overflow-hidden shadow-md mt-4 bg-white p-4 rounded-xl">
-                <h3 class="text-lg font-semibold mb-2 text-gray-800">Lokasi Sekolah</h3>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3980.036736437659!2d119.6275349749752!3d-4.012863895960881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d95bb19ee9a425b%3A0x5e519863212559f!2sUPT%20SMA%20Negeri%204%20Parepare!5e0!3m2!1sid!2sid!4v1750074125443!5m2!1sid!2sid"
-                      class="w-full h-64 md:h-80 lg:h-96"
-                       style="border:0;"
-                        allowfullscreen=""
-                       loading="lazy"
-                       referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
-            </div>
-            <div>
-                <a href="https://www.instagram.com/p/DKuGx_TPqlz/" target="_blank" class="social-link">
-                    <i class='bx bxl-instagram text-pink-600 text-2xl'></i> Instagram
-                </a>
-            </div>
-        </footer>
+<footer class="dashboard-footer scroll-fade" aria-label="Footer">
+  <div class="footer-grid">
+    <!-- Tentang Sekolah -->
+    <div class="footer-about">
+      <h3>Tentang Sekolah</h3>
+      <p>SMA Negeri 4 Parepare (SMAPAT) berkomitmen pada pendidikan berkualitas dan karakter unggul.</p>
+    </div>
+
+
+    <!-- Lokasi -->
+    <div class="footer-map">
+      <h3>Lokasi</h3>
+      <iframe src="https://maps.google.com/maps?q=SMA%204%20Parepare&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="120" style="border:0;" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <!-- Sosial Media -->
+  <div class="footer-social">
+    <a href="https://instagram.com/smapatpare" target="_blank" aria-label="Instagram SMAPAT">
+      <i class='bx bxl-instagram'></i> @smapatpare
+    </a>
+  </div>
+</footer>
     </main>
 </body>
 

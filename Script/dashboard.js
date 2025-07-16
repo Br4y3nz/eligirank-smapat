@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   observeScrollFade();
   animateStatsOnScroll();
   renderChart();
-  initVMGSlider();
+  // Removed initVMGSlider call as VMG section is removed
 });
 
 // Load username from Supabase profiles table
@@ -104,63 +104,42 @@ function observeScrollFade() {
   document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
 }
 
-// Load announcements - mock implementation
-async function loadAnnouncements() {
+// Render announcements as vertical cards
+function renderAnnouncements() {
   const announcements = [
-    { title: "Pengumuman 1: Libur sekolah tanggal 1 Mei" },
-    { title: "Pengumuman 2: Jadwal ujian semester" },
-    { title: "Pengumuman 3: Kegiatan ekstrakurikuler" },
+    { title: 'Libur sekolah tanggal 1 Mei', date: '2025-01-01' },
+    { title: 'Jadwal ujian semester', date: '2025-02-15' },
+    { title: 'Kegiatan ekstrakurikuler', date: '2025-03-20' },
+    { title: 'Pengumuman tambahan 1', date: '2025-04-10' },
+    { title: 'Pengumuman tambahan 2', date: '2025-05-05' }
   ];
 
-  const list = document.getElementById('announcement-list');
-  list.innerHTML = '';
+  const container = document.getElementById("announcement-list");
+  container.innerHTML = "";
 
   announcements.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = item.title;
-    list.appendChild(li);
-  });
-}
+    const card = document.createElement("div");
+    card.className = "announcement-card";
 
-// VMG slider for mobile: show one card at a time, auto-advance every 8 seconds
-function initVMGSlider() {
-  const slider = document.querySelector('.vmg-slider');
-  if (!slider) return;
+    const title = document.createElement("h4");
+    title.textContent = item.title;
 
-  const cards = slider.querySelectorAll('.vmg-card');
-  let currentIndex = 0;
-
-  function showCard(index) {
-    cards.forEach((card, i) => {
-      card.style.display = i === index ? 'flex' : 'none';
+    const date = document.createElement("span");
+    const formattedDate = new Date(item.date).toLocaleDateString("id-ID", {
+      day: "2-digit", month: "2-digit", year: "numeric"
     });
-  }
 
-  showCard(currentIndex);
+    date.textContent = formattedDate;
 
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % cards.length;
-    showCard(currentIndex);
-  }, 8000);
-
-  // Optional: add swipe support for mobile (left/right)
-  let startX = 0;
-  slider.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-  });
-  slider.addEventListener('touchend', e => {
-    const endX = e.changedTouches[0].clientX;
-    if (endX - startX > 50) {
-      // swipe right
-      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-      showCard(currentIndex);
-    } else if (startX - endX > 50) {
-      // swipe left
-      currentIndex = (currentIndex + 1) % cards.length;
-      showCard(currentIndex);
-    }
+    card.appendChild(title);
+    card.appendChild(date);
+    container.appendChild(card);
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderAnnouncements();
+});
 
 // Render chart for average student scores per class using Chart.js
 function renderChart() {
