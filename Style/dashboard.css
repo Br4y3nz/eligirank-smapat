@@ -909,6 +909,7 @@ footer.footer-grid a.social-link:focus {
   .dashboard-footer {
     padding: 1.5rem 1rem;
     text-align: center;
+    padding-bottom: 80px; /* Add bottom padding to avoid overlap with mobile navbar */
   }
   .footer-grid {
     grid-template-columns: 1fr;
