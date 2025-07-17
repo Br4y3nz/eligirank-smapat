@@ -1065,7 +1065,7 @@ li.search-item > a.search-link i.bx-search {
   border: none;
   color: #dc2626;
   font-size: 24px;
-  margin-left: 0;
+  margin-left: 8px;
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
@@ -1073,6 +1073,9 @@ li.search-item > a.search-link i.bx-search {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
 }
 
 #mobile-logged-in-menu .logout-btn:hover {
