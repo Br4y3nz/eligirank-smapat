@@ -1,9 +1,11 @@
 import supabase from '../Supabase/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOMContentLoaded event fired');
   loadUsername();
   loadStats();
-  loadAnnouncements();
+  renderAnnouncements();
+  renderTopSiswa();
   observeScrollFade();
   animateStatsOnScroll();
   renderChart();
@@ -104,7 +106,18 @@ function observeScrollFade() {
   document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
 }
 
-// Render announcements as vertical cards
+function renderTopSiswa() {
+  const topSiswaDiv = document.getElementById('top-siswa');
+  topSiswaDiv.innerHTML = `
+    <h3>Top Siswa Semester Lalu</h3>
+    <ul>
+      <li>Rina Putri</li>
+      <li>Agus Santoso</li>
+      <li>Dewi Lestari</li>
+    </ul>
+  `;
+}
+
 function renderAnnouncements() {
   const announcements = [
     { title: 'Libur sekolah tanggal 1 Mei', date: '2025-01-01' },
@@ -138,7 +151,14 @@ function renderAnnouncements() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadUsername();
+  loadStats();
   renderAnnouncements();
+  renderTopSiswa();
+  observeScrollFade();
+  animateStatsOnScroll();
+  renderChart();
+  // Removed initVMGSlider call as VMG section is removed
 });
 
 // Render chart for average student scores per class using Chart.js
