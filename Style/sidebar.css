@@ -998,7 +998,16 @@ li.search-item > a.search-link i.bx-search {
   margin-bottom: 12px;
   border-top: 1px solid #e2e8f0;
   box-shadow: 0 2px 8px rgba(37,99,235,0.04);
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+#mobile-logged-in-menu .profile-left-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 #mobile-logged-in-menu .profile-picture {
@@ -1025,7 +1034,7 @@ li.search-item > a.search-link i.bx-search {
 #mobile-logged-in-menu .profile-info-container {
   display: flex;
   flex-direction: column;
-  margin-left: 12px;
+  margin-left: 0;
   flex-grow: 1;
   overflow: hidden;
   justify-content: center;
@@ -1056,7 +1065,7 @@ li.search-item > a.search-link i.bx-search {
   border: none;
   color: #dc2626;
   font-size: 24px;
-  margin-left: auto;
+  margin-left: 0;
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
