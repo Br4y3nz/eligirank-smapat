@@ -1000,6 +1000,8 @@ li.search-item > a.search-link i.bx-search {
   box-shadow: 0 2px 8px rgba(37,99,235,0.04);
   justify-content: flex-start;
   gap: 12px;
+  position: relative;
+  top: 6px;
 }
 
 #mobile-logged-in-menu .profile-left-container {
