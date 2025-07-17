@@ -965,17 +965,19 @@ li.search-item > a.search-link i.bx-search {
   margin-bottom: 12px;
   border-top: 1px solid #e2e8f0;
   box-shadow: 0 2px 8px rgba(37,99,235,0.04);
+  flex-wrap: wrap;
 }
 
 #mobile-logged-in-menu .profile-picture {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   overflow: hidden;
   background: #e0e7ef;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 #mobile-logged-in-menu .profile-picture img {
@@ -990,13 +992,15 @@ li.search-item > a.search-link i.bx-search {
 #mobile-logged-in-menu .profile-info {
   display: flex;
   flex-direction: column;
-  margin-left: 8px;
+  margin-left: 12px;
   min-width: 0;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 #mobile-logged-in-menu .name {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: #1e293b;
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -1005,7 +1009,7 @@ li.search-item > a.search-link i.bx-search {
 }
 
 #mobile-logged-in-menu .job {
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
   margin-top: 2px;
   line-height: 1.1;
@@ -1018,7 +1022,7 @@ li.search-item > a.search-link i.bx-search {
   background: none;
   border: none;
   color: #dc2626;
-  font-size: 22px;
+  font-size: 24px;
   margin-left: auto;
   cursor: pointer;
   padding: 6px;

@@ -160,6 +160,10 @@ async function updateUserMenuDisplay() {
     const mobileLoggedOutMenu = document.getElementById("mobile-logged-out-menu");
     const usernameElem = document.getElementById("username");
     const roleElem = document.getElementById("role");
+    const mobileUsernameElem = document.getElementById("mobile-username");
+    const mobileRoleElem = document.getElementById("mobile-role");
+    const mobileProfileImg = document.getElementById("mobile-profile-img");
+    const mobileLogoutBtn = document.getElementById("mobile-log_out");
 
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error || !session) {
@@ -179,6 +183,7 @@ async function updateUserMenuDisplay() {
     const profile = await fetchUserData(session);
     if (profile && usernameElem) {
       usernameElem.textContent = profile.username || "User";
+      if (mobileUsernameElem) mobileUsernameElem.textContent = profile.username || "User";
 
       const profileImg = document.getElementById("profile-img");
       const defaultUserIcon = document.querySelector(".default-user-icon");
@@ -195,6 +200,15 @@ async function updateUserMenuDisplay() {
         profileImg.style.display = "block";
         if (defaultUserIcon) defaultUserIcon.style.display = "none";
       }
+      if (mobileProfileImg && profile.avatar_url) {
+        let avatar_url = profile?.avatar_url || '';
+        if (avatar_url && !avatar_url.startsWith('http')) {
+          const { data } = supabase.storage.from('avatars').getPublicUrl(avatar_url);
+          avatar_url = data.publicUrl;
+        }
+        mobileProfileImg.src = avatar_url;
+        mobileProfileImg.style.display = "block";
+      }
 
       // Show profile image and logged-in menu, hide logged-out menu and login button
       if (loginBtn) loginBtn.style.display = "none";
@@ -203,9 +217,13 @@ async function updateUserMenuDisplay() {
       const profileImg = document.getElementById("profile-img");
       const defaultUserIcon = document.querySelector(".default-user-icon");
       const loginBtn = document.getElementById("log_in");
+      const mobileProfileImg = document.getElementById("mobile-profile-img");
+      const mobileUsernameElem = document.getElementById("mobile-username");
 
       if (profileImg) profileImg.style.display = "none";
       if (defaultUserIcon) defaultUserIcon.style.display = "block";
+      if (mobileProfileImg) mobileProfileImg.style.display = "none";
+      if (mobileUsernameElem) mobileUsernameElem.textContent = "Nama User";
       loggedInMenu?.classList.remove('active');
       loggedOutMenu?.classList.add('active');
       mobileLoggedInMenu?.classList.remove('active');
@@ -217,12 +235,15 @@ async function updateUserMenuDisplay() {
     if (roleData && roleElem) {
       if (session.user.id === ADMIN_UID) {
         roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
+        if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
       } else if (roleData.length === 1 && roleData[0].role) {
         const role = roleData[0].role;
         const capitalized = role.charAt(0).toUpperCase() + role.slice(1);
         roleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span>`;
+        if (mobileRoleElem) mobileRoleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span>`;
       } else {
         roleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
+        if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
       }
     }
 
