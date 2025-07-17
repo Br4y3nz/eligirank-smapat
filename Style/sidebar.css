@@ -989,6 +989,20 @@ li.search-item > a.search-link i.bx-search {
   background: #fff;
 }
 
+#mobile-logged-in-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border-top: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.04);
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
 #mobile-logged-in-menu .profile-info {
   display: flex;
   flex-direction: column;
@@ -996,6 +1010,7 @@ li.search-item > a.search-link i.bx-search {
   min-width: 0;
   flex-grow: 1;
   overflow: hidden;
+  justify-content: center;
 }
 
 #mobile-logged-in-menu .name {
