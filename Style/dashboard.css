@@ -881,6 +881,10 @@ footer.footer-grid a.social-link:focus {
   color: #1e293b;
   border-top: 1px solid #e2e8f0;
   font-size: 0.95rem;
+  max-width: 100vw;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
 }
 .footer-grid {
   display: grid;
