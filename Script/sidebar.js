@@ -163,16 +163,27 @@ async function updateUserMenuDisplay() {
     const mobileUsernameElem = document.getElementById("mobile-username");
     const mobileRoleElem = document.getElementById("mobile-role");
     const mobileProfileImg = document.getElementById("mobile-profile-img");
-    const mobileLogoutBtn = document.getElementById("mobile-log_out");
+  const mobileLogoutBtn = document.getElementById("mobile-log_out");
 
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error || !session) {
-      loggedInMenu?.classList.remove('active');
-      loggedOutMenu?.classList.add('active');
-      mobileLoggedInMenu?.classList.remove('active');
-      mobileLoggedOutMenu?.classList.add('active');
-      return;
-    }
+  if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener("click", async () => {
+      const { error } = await supabase.auth.signOut();
+      if (!error) {
+        window.location.href = "index.html";
+      } else {
+        console.error("Logout error:", error);
+      }
+    });
+  }
+
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error || !session) {
+    loggedInMenu?.classList.remove('active');
+    loggedOutMenu?.classList.add('active');
+    mobileLoggedInMenu?.classList.remove('active');
+    mobileLoggedOutMenu?.classList.add('active');
+    return;
+  }
 
     loggedInMenu?.classList.add('active');
     loggedOutMenu?.classList.remove('active');
