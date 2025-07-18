@@ -196,17 +196,23 @@ async function renderAnnouncements() {
   // Fetch user role to determine if admin
   let isAdmin = false;
   try {
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    if (!session || sessionError) {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      console.error("User not authenticated");
       isAdmin = false;
     } else {
-      // Changed from 'roles' to 'akun' table to fix 404 error
-      const { data: roles, error } = await supabase
+      const { data, error } = await supabase
         .from("akun")
         .select("role")
-        .eq("id", session.user.id);
-      if (!error && roles && roles.length === 1 && roles[0].role === "admin") {
-        isAdmin = true;
+        .eq("id", user.id);
+      if (error) {
+        console.error("Supabase query error:", error);
+        isAdmin = false;
+      } else {
+        const userRole = data[0]?.role;
+        if (userRole === "admin") {
+          isAdmin = true;
+        }
       }
     }
   } catch (err) {
