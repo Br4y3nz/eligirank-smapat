@@ -381,3 +381,110 @@ function drawChart() {
     options: options
   });
 }
+
+// Role selection and dynamic fields
+const roleForm = document.getElementById('role-form');
+if (roleForm) {
+  // Add event listeners to role radio buttons to show/hide fields on change
+  const roleRadios = document.querySelectorAll('input[name="role"]');
+  const studentFields = document.getElementById("student-fields");
+  const teacherFields = document.getElementById("teacher-fields");
+
+  roleRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === "student" && radio.checked) {
+        if (studentFields) studentFields.style.display = "block";
+        if (teacherFields) teacherFields.style.display = "none";
+      } else if (radio.value === "teacher" && radio.checked) {
+        if (studentFields) studentFields.style.display = "none";
+        if (teacherFields) teacherFields.style.display = "block";
+      }
+    });
+  });
+
+  roleForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const role = document.querySelector('input[name="role"]:checked')?.value;
+    if (!role) {
+      alert("Please select a role.");
+      return;
+    }
+
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (!session || sessionError) {
+      console.error("Session fetch failed:", sessionError);
+      return;
+    }
+
+    if (role === "student") {
+      // Insert siswa data first
+      const nis = document.getElementById("nis")?.value.trim();
+      const nisn = document.getElementById("nisn")?.value.trim();
+      const selectedClassName = document.getElementById("class-select")?.value;
+      if (!nis || !nisn || !selectedClassName) {
+        alert("Please fill in all student fields.");
+        return;
+      }
+
+      // Fetch kelas id by class name
+      const { data: kelasData, error: kelasError } = await supabase
+        .from('kelas')
+        .select('id, nama')
+        .eq('nama', selectedClassName)
+        .single();
+
+      if (kelasError || !kelasData) {
+        alert("Selected class not found in database.");
+        console.error(kelasError);
+        return;
+      }
+
+      const { data: siswaData, error: siswaError } = await supabase
+        .from('siswa')
+        .upsert([
+          {
+            nis,
+            nisn,
+            kelas_id: kelasData.id
+          }
+        ], { onConflict: ['nis', 'nisn'] });
+
+      if (siswaError) {
+        alert("Error saving student data: " + siswaError.message);
+        console.error(siswaError);
+        return;
+      }
+
+      alert("Registration successful! You can now log in.");
+      // Optionally, redirect to login or auto-login
+      // window.location.href = '/login';
+    } else if (role === "teacher") {
+      // Insert guru data
+      const nip = document.getElementById("nip")?.value.trim();
+      const selectedMapel = document.getElementById("mapel-select")?.value;
+      if (!nip || !selectedMapel) {
+        alert("Please fill in all teacher fields.");
+        return;
+      }
+
+      const { data: guruData, error: guruError } = await supabase
+        .from('guru')
+        .upsert([
+          {
+            nip,
+            mapel_id: selectedMapel
+          }
+        ], { onConflict: ['nip'] });
+
+      if (guruError) {
+        alert("Error saving teacher data: " + guruError.message);
+        console.error(guruError);
+        return;
+      }
+
+      alert("Teacher registration successful!");
+      // Optionally, redirect or show success message
+    }
+  });
+}
