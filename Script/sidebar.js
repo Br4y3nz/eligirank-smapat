@@ -219,6 +219,12 @@ async function updateUserMenuDisplay() {
         }
         mobileProfileImg.src = avatar_url;
         mobileProfileImg.style.display = "block";
+        const mobileDefaultIcon = document.querySelector("#mobile-logged-in-menu .default-user-icon");
+        if (mobileDefaultIcon) mobileDefaultIcon.style.display = "none";
+      } else {
+        const mobileDefaultIcon = document.querySelector("#mobile-logged-in-menu .default-user-icon");
+        if (mobileDefaultIcon) mobileDefaultIcon.style.display = "inline-flex";
+        if (mobileProfileImg) mobileProfileImg.style.display = "none";
       }
 
       // Show profile image and logged-in menu, hide logged-out menu and login button

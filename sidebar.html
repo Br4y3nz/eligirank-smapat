@@ -74,7 +74,7 @@
             <span class="name" id="username">User</span>
             <span class="job" id="role">Role</span>
           </div>
-          <button id="log_out" class="bx bx-log-out" aria-label="Log out"></button>
+          <a href="index.html" id="log_out" class="bx bx-log-out" aria-label="Log out" role="link" tabindex="0"></a>
           <span class="tooltip" id="profile-tooltip">User</span>
         </li>
         <li id="logged-out-menu" role="region" aria-label="Login menu">
@@ -119,13 +119,16 @@
 
       <div id="mobile-logged-in-menu" >
         <div class="profile-left-container">
-          <span class="profile-picture"><img id="mobile-profile-img" src="" alt="Profile"></span>
+          <span class="profile-picture">
+            <i class="bx bx-user-circle default-user-icon" aria-hidden="true"></i>
+            <img id="mobile-profile-img" src="" alt="Profile" style="display:none;">
+          </span>
           <div class="profile-info-container">
             <span class="name" id="mobile-username">Nama User</span>
             <span class="job" id="mobile-role">Role</span>
           </div>
         </div>
-        <button id="mobile-log_out" title="Logout" class="logout-btn"><i class="bx bx-log-out"></i></button>
+        <a href="index.html" id="mobile-log_out" title="Logout" class="logout-btn" role="link" tabindex="0"><i class="bx bx-log-out"></i></a>
       </div>
       <div id="mobile-logged-out-menu">
         <a href="login.html" id="mobile-log_in"><i class="bx bx-log-in"></i>Login</a>
