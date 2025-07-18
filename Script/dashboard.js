@@ -451,15 +451,20 @@ if (roleForm) {
         return;
       }
 
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        alert("User not authenticated.");
+        return;
+      }
+
       const { data: siswaData, error: siswaError } = await supabase
         .from('siswa')
-        .upsert([
-          {
-            nis,
-            nisn,
-            kelas_id: kelasData.id
-          }
-        ], { onConflict: ['nis'] });
+        .insert({
+          id: user.id,
+          nis,
+          nisn,
+          kelas_id: kelasData.id
+        });
 
       if (siswaError) {
         alert("Error saving student data: " + siswaError.message);
@@ -479,18 +484,36 @@ if (roleForm) {
         return;
       }
 
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        alert("User not authenticated.");
+        return;
+      }
+
       const { data: guruData, error: guruError } = await supabase
         .from('guru')
-        .upsert([
-          {
-            nip,
-            mapel_id: selectedMapel
-          }
-        ], { onConflict: ['nip'] });
+        .insert({
+          id: user.id,
+          nip
+        });
 
       if (guruError) {
         alert("Error saving teacher data: " + guruError.message);
         console.error(guruError);
+        return;
+      }
+
+      // Insert into guru_mapel
+      const { error: guruMapelError } = await supabase
+        .from('guru_mapel')
+        .insert({
+          guru_id: user.id,
+          mapel_id: selectedMapel
+        });
+
+      if (guruMapelError) {
+        alert("Error saving teacher subject data: " + guruMapelError.message);
+        console.error(guruMapelError);
         return;
       }
 
