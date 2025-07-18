@@ -55,11 +55,19 @@ export function initializeSidebar() {
       const updateData = { role };
 
       if (role === "student") {
-        updateData.nis = document.getElementById("nis")?.value.trim() || null;
-        updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
+        const selectedClass = document.getElementById("class-select")?.value;
+        if (!selectedClass) {
+          alert("Please select your class.");
+          return;
+        }
+        updateData.class = selectedClass;
       } else if (role === "teacher") {
-        updateData.nik = document.getElementById("nik")?.value.trim() || null;
-        updateData.nip = document.getElementById("nip")?.value.trim() || null;
+        const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el => el.value);
+        if (selectedSubjects.length === 0) {
+          alert("Please select at least one subject.");
+          return;
+        }
+        updateData.subjects = selectedSubjects;
       }
 
       const { error } = await supabase.from("roles").upsert({
@@ -251,21 +259,21 @@ async function updateUserMenuDisplay() {
     const roleData = await fetchUserRole(session);
     if (roleData && roleElem) {
       if (session.user.id === ADMIN_UID) {
-        roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
-        if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-admin">Admin</span>';
+        roleElem.innerHTML = '<span class="role-badge role-admin">Admin</span><button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:none;">Select Role</button>';
+        if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-admin">Admin</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:none;">Select Role</button>';
       } else if (roleData.length === 1 && roleData[0].role) {
         const role = roleData[0].role;
         const capitalized = role.charAt(0).toUpperCase() + role.slice(1);
-        roleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span>`;
-        if (mobileRoleElem) mobileRoleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span>`;
+        roleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span><button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:none;">Select Role</button>`;
+        if (mobileRoleElem) mobileRoleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:none;">Select Role</button>`;
       } else {
-        roleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
-        if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
+        roleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
+        if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
       }
     } else {
       // No role data, show select role button enabled
-      roleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
-      if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
+      roleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
+      if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
     }
 
   // Show modal if username or phone missing
