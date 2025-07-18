@@ -442,14 +442,33 @@ window.initializeSidebar = async function(user) {
   // Role selection
   const selectRoleBtn = document.getElementById("select-role-btn");
   if (selectRoleBtn) {
-    // Disable the select role button as per user request
-    selectRoleBtn.disabled = true;
-    selectRoleBtn.style.opacity = "0.5";
-    selectRoleBtn.style.cursor = "not-allowed";
+    // Update select role button visibility and state based on user role
+    const roleElem = document.getElementById("role");
+    const roleBadge = roleElem ? roleElem.querySelector(".role-badge") : null;
+    const hasRole = roleBadge && !roleBadge.classList.contains("role-unset");
 
-    // Remove existing click event listeners if any
-    const newSelectRoleBtn = selectRoleBtn.cloneNode(true);
-    selectRoleBtn.parentNode.replaceChild(newSelectRoleBtn, selectRoleBtn);
+    if (hasRole) {
+      // User has a role, disable select role button
+      selectRoleBtn.disabled = true;
+      selectRoleBtn.style.opacity = "0.5";
+      selectRoleBtn.style.cursor = "not-allowed";
+    } else {
+      // User has no role, enable select role button
+      selectRoleBtn.disabled = false;
+      selectRoleBtn.style.opacity = "1";
+      selectRoleBtn.style.cursor = "pointer";
+
+      selectRoleBtn.addEventListener("click", () => {
+        const roleModal = document.getElementById("role-modal");
+        const overlay = document.getElementById("overlay");
+        if (roleModal && overlay) {
+          roleModal.classList.add("open");
+          roleModal.classList.remove("close");
+          overlay.classList.add("open");
+          overlay.classList.remove("close");
+        }
+      });
+    }
   }
 
   // Highlight active nav
