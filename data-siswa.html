@@ -30,5 +30,52 @@
         .catch(err => console.error('Failed to load sidebar:', err));
     });
   </script>
+
+  <!-- Table Controls -->
+  <div class="table-controls">
+    <input type="text" id="search-siswa" placeholder="Cari nama/NIS/NISN..." />
+    <select id="sort-siswa">
+      <option value="nama">Sort: Nama</option>
+      <option value="nis">Sort: NIS</option>
+      <option value="nisn">Sort: NISN</option>
+    </select>
+    <button id="btn-tambah-siswa" type="button" style="display:none">Tambah Siswa</button>
+  </div>
+
+  <!-- Siswa Table -->
+  <div class="table-responsive">
+    <table id="siswa-table">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Kelas</th>
+          <th>Jenis Kelamin</th>
+          <th>NIS</th>
+          <th>NISN</th>
+          <th>Rapor</th>
+        </tr>
+      </thead>
+      <tbody id="siswa-body"></tbody>
+    </table>
+  </div>
+
+  <!-- Modal Tambah Siswa -->
+  <div id="modal-tambah-siswa" class="modal">
+    <div class="modal-content">
+      <form id="form-tambah-siswa">
+        <input type="text" id="nama-input" placeholder="Nama" required />
+        <select id="kelas-input" required></select>
+        <select id="jk-input" required>
+          <option value="">Jenis Kelamin</option>
+          <option value="L">Laki-laki</option>
+          <option value="P">Perempuan</option>
+        </select>
+        <input type="text" id="nis-input" placeholder="NIS" required />
+        <input type="text" id="nisn-input" placeholder="NISN" required />
+        <button type="submit">Simpan</button>
+        <button type="button" id="close-modal">Batal</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

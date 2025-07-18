@@ -1,0 +1,16 @@
+/* Table Styles */
+.table-responsive { overflow-x: auto; }
+#siswa-table { border-radius: 8px; box-shadow: 0 2px 8px #0001; width: 100%; border-collapse: separate; }
+#siswa-table th, #siswa-table td { padding: 12px; }
+#siswa-table tbody tr:hover { background: #f0f4ff; }
+@media (max-width: 768px) {
+  #siswa-table th, #siswa-table td { padding: 8px; font-size: 14px; }
+}
+
+/* Modal Styles */
+.modal { display: none; position: fixed; inset: 0; background: #0008; z-index: 1000; align-items: center; justify-content: center; }
+.modal.open { display: flex; }
+.modal-content { background: #fff; border-radius: 8px; padding: 24px; min-width: 300px; max-width: 90vw; }
+@media (max-width: 500px) {
+  .modal-content { padding: 12px; }
+}
