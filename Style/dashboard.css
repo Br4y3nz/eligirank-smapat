@@ -976,3 +976,44 @@ footer.footer-grid a.social-link:focus {
     height: 180px;
   }
 }
+
+/* Editable Pengumuman inputs and buttons */
+.announcement-title-input, .announcement-date-input {
+  font-size: 1rem;
+  padding: 0.4rem 0.6rem;
+  margin-right: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  width: auto;
+  max-width: 60%;
+  box-sizing: border-box;
+}
+
+.announcement-date-input {
+  max-width: 30%;
+}
+
+.announcement-save-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.announcement-save-btn:hover {
+  background-color: #1e40af;
+}
+
+@media (max-width: 600px) {
+  .announcement-title-input, .announcement-date-input {
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .announcement-save-btn {
+    width: 100%;
+  }
+}

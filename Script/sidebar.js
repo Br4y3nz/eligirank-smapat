@@ -442,16 +442,14 @@ window.initializeSidebar = async function(user) {
   // Role selection
   const selectRoleBtn = document.getElementById("select-role-btn");
   if (selectRoleBtn) {
-    selectRoleBtn.addEventListener("click", () => {
-      const roleModal = document.getElementById("role-modal");
-      const overlay = document.getElementById("overlay");
-      if (roleModal && overlay) {
-        roleModal.classList.add("open");
-        roleModal.classList.remove("close");
-        overlay.classList.add("open");
-        overlay.classList.remove("close");
-      }
-    });
+    // Disable the select role button as per user request
+    selectRoleBtn.disabled = true;
+    selectRoleBtn.style.opacity = "0.5";
+    selectRoleBtn.style.cursor = "not-allowed";
+
+    // Remove existing click event listeners if any
+    const newSelectRoleBtn = selectRoleBtn.cloneNode(true);
+    selectRoleBtn.parentNode.replaceChild(newSelectRoleBtn, selectRoleBtn);
   }
 
   // Highlight active nav

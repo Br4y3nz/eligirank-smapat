@@ -180,37 +180,82 @@ function renderTopSiswa() {
   `;
 }
 
-function renderAnnouncements() {
-  const announcements = [
-    { title: 'Libur sekolah tanggal 1 Mei', date: '2025-01-01' },
-    { title: 'Jadwal ujian semester', date: '2025-02-15' },
-    { title: 'Kegiatan ekstrakurikuler', date: '2025-03-20' },
-    { title: 'Pengumuman tambahan 1', date: '2025-04-10' },
-    { title: 'Pengumuman tambahan 2', date: '2025-05-05' }
-  ];
+let isEditingAnnouncements = false;
+let announcements = [
+  { title: 'Libur sekolah tanggal 1 Mei', date: '2025-01-01' },
+  { title: 'Jadwal ujian semester', date: '2025-02-15' },
+  { title: 'Kegiatan ekstrakurikuler', date: '2025-03-20' },
+  { title: 'Pengumuman tambahan 1', date: '2025-04-10' },
+  { title: 'Pengumuman tambahan 2', date: '2025-05-05' }
+];
 
+function renderAnnouncements() {
   const container = document.getElementById("announcement-list");
   container.innerHTML = "";
 
-  announcements.forEach(item => {
+  announcements.forEach((item, index) => {
     const card = document.createElement("div");
     card.className = "announcement-card";
 
-    const title = document.createElement("h4");
-    title.textContent = item.title;
+    if (isEditingAnnouncements) {
+      const titleInput = document.createElement("input");
+      titleInput.type = "text";
+      titleInput.value = item.title;
+      titleInput.className = "announcement-title-input";
+      titleInput.dataset.index = index;
 
-    const date = document.createElement("span");
-    const formattedDate = new Date(item.date).toLocaleDateString("id-ID", {
-      day: "2-digit", month: "2-digit", year: "numeric"
-    });
+      const dateInput = document.createElement("input");
+      dateInput.type = "date";
+      dateInput.value = item.date;
+      dateInput.className = "announcement-date-input";
+      dateInput.dataset.index = index;
 
-    date.textContent = formattedDate;
+      card.appendChild(titleInput);
+      card.appendChild(dateInput);
+    } else {
+      const title = document.createElement("h4");
+      title.textContent = item.title;
 
-    card.appendChild(title);
-    card.appendChild(date);
+      const date = document.createElement("span");
+      const formattedDate = new Date(item.date).toLocaleDateString("id-ID", {
+        day: "2-digit", month: "2-digit", year: "numeric"
+      });
+      date.textContent = formattedDate;
+
+      card.appendChild(title);
+      card.appendChild(date);
+    }
+
     container.appendChild(card);
   });
 }
+
+document.getElementById('edit-announcements-btn').addEventListener('click', () => {
+  isEditingAnnouncements = true;
+  document.getElementById('edit-announcements-btn').style.display = 'none';
+  document.getElementById('save-announcements-btn').style.display = 'inline-block';
+  renderAnnouncements();
+});
+
+document.getElementById('save-announcements-btn').addEventListener('click', () => {
+  const titleInputs = document.querySelectorAll('.announcement-title-input');
+  const dateInputs = document.querySelectorAll('.announcement-date-input');
+
+  titleInputs.forEach(input => {
+    const index = input.dataset.index;
+    announcements[index].title = input.value;
+  });
+
+  dateInputs.forEach(input => {
+    const index = input.dataset.index;
+    announcements[index].date = input.value;
+  });
+
+  isEditingAnnouncements = false;
+  document.getElementById('edit-announcements-btn').style.display = 'inline-block';
+  document.getElementById('save-announcements-btn').style.display = 'none';
+  renderAnnouncements();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   loadUsername();
