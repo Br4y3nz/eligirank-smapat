@@ -567,7 +567,7 @@ li.search-item > a.search-link i.bx-search {
     padding: 10px 16px;
     box-sizing: border-box;
     gap: 12px;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-bottom: 0;
     margin-top: 8px;
 }
@@ -595,6 +595,7 @@ li.search-item > a.search-link i.bx-search {
     align-items: center;
     justify-content: center;
     position: relative;
+    flex-shrink: 0;
 }
 
 #logged-in-menu .profile-picture img#profile-img {
@@ -623,6 +624,7 @@ li.search-item > a.search-link i.bx-search {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: block;
 }
 
 /* Logout button */
@@ -632,7 +634,7 @@ li.search-item > a.search-link i.bx-search {
     color: #DC2626;
     font-size: 22px;
     cursor: pointer;
-    margin-left: 0;
+    margin-left: auto;
     transition: color 0.3s;
     position: relative;
     bottom: -4px;
