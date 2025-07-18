@@ -554,20 +554,20 @@ li.search-item > a.search-link i.bx-search {
 
 /* Sidebar logged-in menu styles */
 #logged-in-menu {
-    position: fixed;
-    bottom: 0;
-    width: 250px;
-    height: 80px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    width: 78px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: width 0.3s, padding 0.3s, opacity 0.3s;
     background: #f8fafc;
     border-top: 1px solid #e2e8f0;
     border-radius: 0 0 12px 0;
     box-shadow: 0 -2px 8px rgba(37,99,235,0.04);
-    display: flex;
-    align-items: center;
-    padding: 10px 16px;
-    box-sizing: border-box;
-    gap: 12px;
-    justify-content: space-between;
+    min-height: 56px;
     margin-bottom: 0;
     margin-top: 8px;
 }
@@ -586,8 +586,8 @@ li.search-item > a.search-link i.bx-search {
 
 /* Profile picture in logged-in menu */
 #logged-in-menu .profile-picture {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     background: #e0e7ef;
@@ -621,8 +621,6 @@ li.search-item > a.search-link i.bx-search {
     font-size: 14px;
     color: #1E293B;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* Logout button */
@@ -632,7 +630,7 @@ li.search-item > a.search-link i.bx-search {
     color: #DC2626;
     font-size: 22px;
     cursor: pointer;
-    margin-left: 0;
+    margin-left: auto;
     transition: color 0.3s;
 }
 #logged-in-menu #log_out:hover {
