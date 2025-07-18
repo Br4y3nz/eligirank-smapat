@@ -69,36 +69,146 @@ export function initializeSidebar() {
         return;
       }
 
-      const updateData = { role };
-
-      if (role === "student") {
-        const selectedClass = document.getElementById("class-select")?.value;
-        if (!selectedClass) {
-          alert("Please select your class.");
+      if (role === "siswa") {
+        // Insert siswa data first
+        const nis = document.getElementById("nis")?.value.trim();
+        const nisn = document.getElementById("nisn")?.value.trim();
+        const selectedClassName = document.getElementById("class-select")?.value;
+        if (!nis || !nisn || !selectedClassName) {
+          alert("Please fill in all student fields.");
           return;
         }
-        updateData.class = selectedClass;
-      }
-      if (role === "teacher") {
-        const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el => el.value);
-        if (selectedSubjects.length === 0) {
-          alert("Please select at least one subject.");
+
+        // Fetch kelas id by class name
+        const { data: kelasData, error: kelasError } = await supabase
+          .from('kelas')
+          .select('id, nama')
+          .eq('nama', selectedClassName)
+          .single();
+
+        if (kelasError || !kelasData) {
+          alert("Selected class not found in database.");
+          console.error(kelasError);
           return;
         }
-        updateData.subjects = selectedSubjects;
-      }
 
-      const { error } = await supabase.from("akun").upsert({
-        id: session.user.id,
-        ...updateData
-      });
+        const { data: siswaData, error: siswaError } = await supabase
+          .from('siswa')
+          .upsert([
+            {
+              nis,
+              nisn,
+              kelas_id: kelasData.id
+            }
+          ])
+          .select();
 
-      if (!error) {
+        if (siswaError) {
+          alert("Error saving student data.");
+          console.error(siswaError);
+          return;
+        }
+
+        const siswaId = siswaData?.[0]?.id;
+
+        // Upsert akun with role and role_id
+        const { error: akunError } = await supabase
+          .from('akun')
+          .upsert([
+            {
+              id: session.user.id,
+              role: 'siswa',
+              role_id: siswaId
+            }
+          ]);
+
+        if (akunError) {
+          alert("Error saving akun data.");
+          console.error(akunError);
+          return;
+        }
+
         alert("Role saved!");
         location.reload();
+
+      } else if (role === "guru") {
+        // Insert guru data first
+        const nik = document.getElementById("nik")?.value.trim();
+        const nip = document.getElementById("nip")?.value.trim();
+        const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el => el.value);
+        if (!nik || !nip || selectedSubjects.length === 0) {
+          alert("Please fill in all teacher fields.");
+          return;
+        }
+
+        const { data: guruData, error: guruError } = await supabase
+          .from('guru')
+          .upsert([
+            {
+              nik,
+              nip
+            }
+          ])
+          .select();
+
+        if (guruError) {
+          alert("Error saving teacher data.");
+          console.error(guruError);
+          return;
+        }
+
+        const guruId = guruData?.[0]?.id;
+
+        // Fetch mapel ids for selected subjects
+        const { data: mapelData, error: mapelError } = await supabase
+          .from('mapel')
+          .select('id, nama')
+          .in('nama', selectedSubjects);
+
+        if (mapelError) {
+          alert("Error fetching subjects.");
+          console.error(mapelError);
+          return;
+        }
+
+        // Upsert guru_mapel entries
+        const guruMapelInserts = mapelData.map(mapel => ({
+          guru_id: guruId,
+          mapel_id: mapel.id
+        }));
+
+        const { error: guruMapelError } = await supabase
+          .from('guru_mapel')
+          .upsert(guruMapelInserts);
+
+        if (guruMapelError) {
+          alert("Error saving teacher subjects.");
+          console.error(guruMapelError);
+          return;
+        }
+
+        // Upsert akun with role and role_id
+        const { error: akunError } = await supabase
+          .from('akun')
+          .upsert([
+            {
+              id: session.user.id,
+              role: 'guru',
+              role_id: guruId
+            }
+          ]);
+
+        if (akunError) {
+          alert("Error saving akun data.");
+          console.error(akunError);
+          return;
+        }
+
+        alert("Role saved!");
+        location.reload();
+
       } else {
-        alert("Error saving role.");
-        console.error(error);
+        alert("Invalid role selected.");
       }
     });
   }
