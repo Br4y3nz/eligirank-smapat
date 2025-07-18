@@ -61,7 +61,8 @@ export function initializeSidebar() {
           return;
         }
         updateData.class = selectedClass;
-      } else if (role === "teacher") {
+      }
+      if (role === "teacher") {
         const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(el => el.value);
         if (selectedSubjects.length === 0) {
           alert("Please select at least one subject.");

@@ -200,10 +200,11 @@ async function renderAnnouncements() {
     if (!session || sessionError) {
       isAdmin = false;
     } else {
+      // Changed from 'roles' to 'akun' table to fix 404 error
       const { data: roles, error } = await supabase
-        .from("roles")
+        .from("akun")
         .select("role")
-        .eq("user_id", session.user.id);
+        .eq("id", session.user.id);
       if (!error && roles && roles.length === 1 && roles[0].role === "admin") {
         isAdmin = true;
       }
