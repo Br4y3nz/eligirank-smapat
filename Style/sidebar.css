@@ -584,6 +584,11 @@ li.search-item > a.search-link i.bx-search {
   display: inline-block;
   text-align: center;
   user-select: none;
+  min-width: 100px;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .btn-select-role:hover {

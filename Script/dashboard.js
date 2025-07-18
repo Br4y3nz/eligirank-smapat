@@ -1,10 +1,10 @@
 import supabase from '../Supabase/client.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('DOMContentLoaded event fired');
   loadUsername();
   loadStats();
-  renderAnnouncements();
+  await renderAnnouncements();
   renderTopSiswa();
   observeScrollFade();
   animateStatsOnScroll();
@@ -189,15 +189,35 @@ let announcements = [
   { title: 'Pengumuman tambahan 2', date: '2025-05-05' }
 ];
 
-function renderAnnouncements() {
+async function renderAnnouncements() {
   const container = document.getElementById("announcement-list");
   container.innerHTML = "";
+
+  // Fetch user role to determine if admin
+  let isAdmin = false;
+  try {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (!session || sessionError) {
+      isAdmin = false;
+    } else {
+      const { data: roles, error } = await supabase
+        .from("roles")
+        .select("role")
+        .eq("user_id", session.user.id);
+      if (!error && roles && roles.length === 1 && roles[0].role === "admin") {
+        isAdmin = true;
+      }
+    }
+  } catch (err) {
+    console.error("Error fetching user role:", err);
+    isAdmin = false;
+  }
 
   announcements.forEach((item, index) => {
     const card = document.createElement("div");
     card.className = "announcement-card";
 
-    if (isEditingAnnouncements) {
+    if (isEditingAnnouncements && isAdmin) {
       const titleInput = document.createElement("input");
       titleInput.type = "text";
       titleInput.value = item.title;
@@ -228,6 +248,17 @@ function renderAnnouncements() {
 
     container.appendChild(card);
   });
+
+  // Show or hide edit/save buttons based on admin status
+  const editBtn = document.getElementById('edit-announcements-btn');
+  const saveBtn = document.getElementById('save-announcements-btn');
+  if (isAdmin) {
+    editBtn.style.display = isEditingAnnouncements ? 'none' : 'inline-block';
+    saveBtn.style.display = isEditingAnnouncements ? 'inline-block' : 'none';
+  } else {
+    editBtn.style.display = 'none';
+    saveBtn.style.display = 'none';
+  }
 }
 
 document.getElementById('edit-announcements-btn').addEventListener('click', () => {

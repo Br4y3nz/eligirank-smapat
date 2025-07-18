@@ -271,9 +271,37 @@ async function updateUserMenuDisplay() {
         if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
       }
     } else {
-      // No role data, show select role button enabled
-      roleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
-      if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
+      // No role data, show only select role button without text
+      roleElem.innerHTML = '<button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
+      if (mobileRoleElem) mobileRoleElem.innerHTML = '<button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
+    }
+
+    // Attach click event listener to select role button(s)
+    const selectRoleBtn = document.getElementById("select-role-btn");
+    if (selectRoleBtn) {
+      selectRoleBtn.addEventListener("click", () => {
+        const roleModal = document.getElementById("role-modal");
+        const overlay = document.getElementById("overlay");
+        if (roleModal && overlay) {
+          roleModal.classList.add("open");
+          roleModal.classList.remove("close");
+          overlay.classList.add("open");
+          overlay.classList.remove("close");
+        }
+      });
+    }
+    const mobileSelectRoleBtn = document.getElementById("mobile-select-role-btn");
+    if (mobileSelectRoleBtn) {
+      mobileSelectRoleBtn.addEventListener("click", () => {
+        const roleModal = document.getElementById("role-modal");
+        const overlay = document.getElementById("overlay");
+        if (roleModal && overlay) {
+          roleModal.classList.add("open");
+          roleModal.classList.remove("close");
+          overlay.classList.add("open");
+          overlay.classList.remove("close");
+        }
+      });
     }
 
   // Show modal if username or phone missing

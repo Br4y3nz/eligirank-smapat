@@ -514,6 +514,44 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
   border: 1px solid #e5e7eb;
   margin-bottom: 2rem;
+  position: relative;
+  padding-top: 3.5rem; /* space for buttons on top */
+}
+
+.announcement-buttons {
+  position: absolute;
+  top: 0.75rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  z-index: 10;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1e40af;
+}
+
+@media (max-width: 600px) {
+  .announcement-buttons {
+    position: static;
+    padding-bottom: 1rem;
+    justify-content: center;
+  }
 }
 
 .announcements h2 {
