@@ -618,7 +618,7 @@ li.search-item > a.search-link i.bx-search {
     margin-left: 12px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: clip;
 }
 
 .sidebar.open #logged-in-menu .profile-info {
@@ -676,13 +676,22 @@ li.search-item > a.search-link i.bx-search {
 }
 
 /* Username and role */
-#logged-in-menu .name,
-#logged-in-menu .job {
+#logged-in-menu .name {
     font-size: 14px;
     color: #1E293B;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: block;
+    max-width: 20ch;
+}
+
+#logged-in-menu .job {
+    font-size: 14px;
+    color: #1E293B;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
     display: block;
 }
 
@@ -696,8 +705,8 @@ li.search-item > a.search-link i.bx-search {
     margin-left: auto;
     transition: color 0.3s;
     position: relative;
-    bottom: -4px;
-    left: -6px;
+    bottom: 0;
+    left: 0;
 }
 #logged-in-menu #log_out:hover {
     color: #B91C1C;
