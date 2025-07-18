@@ -365,6 +365,80 @@ li.search-item > a.search-link i.bx-search {
 .sidebar li.profile {
     position: fixed;
     bottom: 0;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #fff;
+    box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+    gap: 10px;
+}
+
+.sidebar li.profile .profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.sidebar li.profile .profile-picture img#profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sidebar li.profile .default-user-icon {
+    font-size: 40px;
+    color: #6b7280;
+}
+
+.sidebar li.profile .profile-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.sidebar li.profile .profile-info .name {
+    font-weight: 600;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar li.profile .profile-info .job {
+    font-size: 0.875rem;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar li.profile #log_out {
+    font-size: 1.5rem;
+    color: #ef4444;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+}
+
+.sidebar li.profile #log_out:hover {
+    color: #b91c1c;
+}
+
+.sidebar.open li.profile {
+    position: relative;
+    bottom: auto;
+    width: 100%;
+    padding: 15px 20px;
+    box-shadow: none;
+    border-top: 1px solid #e5e7eb;
+    gap: 15px;
+    bottom: 0;
     left: 0;
     height: 50px;
     width: 78px;
