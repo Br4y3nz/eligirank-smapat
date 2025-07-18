@@ -411,6 +411,9 @@ if (roleForm) {
       return;
     }
 
+    // Clear any previous alerts or error messages here if applicable
+    // Prevent multiple alerts by ensuring only one alert per validation failure
+
     // Disable/enable fields based on role to avoid HTML validation errors
     const classSelect = document.getElementById("class-select");
     const classWrapper = document.getElementById("class-wrapper");
@@ -419,6 +422,7 @@ if (roleForm) {
       if (classSelect) {
         classSelect.removeAttribute("required");
         classSelect.disabled = true;
+        classSelect.style.display = "none"; // hide the select element
       }
       if (classWrapper) classWrapper.style.display = "none";
       if (subjectCheckboxes) {
@@ -430,6 +434,7 @@ if (roleForm) {
       if (classSelect) {
         classSelect.setAttribute("required", "true");
         classSelect.disabled = false;
+        classSelect.style.display = "block"; // show the select element
       }
       if (classWrapper) classWrapper.style.display = "block";
       if (subjectCheckboxes) {
