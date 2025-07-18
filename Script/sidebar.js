@@ -71,8 +71,8 @@ export function initializeSidebar() {
         updateData.subjects = selectedSubjects;
       }
 
-      const { error } = await supabase.from("roles").upsert({
-        user_id: session.user.id,
+      const { error } = await supabase.from("akun").upsert({
+        id: session.user.id,
         ...updateData
       });
 
@@ -156,9 +156,9 @@ export function initializeSidebar() {
 
   async function fetchUserRole(session) {
     const { data, error } = await supabase
-      .from("roles")
+      .from("akun")
       .select("role")
-      .eq("user_id", session.user.id);
+      .eq("id", session.user.id);
     return error ? null : data;
   }
 
