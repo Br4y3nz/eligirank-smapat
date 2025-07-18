@@ -411,6 +411,17 @@ if (roleForm) {
       return;
     }
 
+    // Remove required attribute from class select if role is teacher
+    const classSelect = document.getElementById("class-select");
+    const classWrapper = document.getElementById("class-wrapper");
+    if (role === "teacher") {
+      if (classSelect) classSelect.removeAttribute("required");
+      if (classWrapper) classWrapper.style.display = "none";
+    } else {
+      if (classSelect) classSelect.setAttribute("required", "true");
+      if (classWrapper) classWrapper.style.display = "block";
+    }
+
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (!session || sessionError) {
       console.error("Session fetch failed:", sessionError);
@@ -448,7 +459,7 @@ if (roleForm) {
             nisn,
             kelas_id: kelasData.id
           }
-        ], { onConflict: ['nis', 'nisn'] });
+        ], { onConflict: ['nis'] });
 
       if (siswaError) {
         alert("Error saving student data: " + siswaError.message);
