@@ -702,11 +702,17 @@ li.search-item > a.search-link i.bx-search {
     color: #DC2626;
     font-size: 22px;
     cursor: pointer;
-    margin-left: auto;
-    transition: color 0.3s;
+    margin-left: 8px;
+    padding: 6px;
+    border-radius: 6px;
+    transition: color 0.3s, background-color 0.3s;
     position: relative;
     bottom: 0;
     left: 0;
+}
+#logged-in-menu #log_out:hover {
+    background-color: #fee2e2;
+    color: #B91C1C;
 }
 #logged-in-menu #log_out:hover {
     color: #B91C1C;
