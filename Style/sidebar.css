@@ -584,6 +584,19 @@ li.search-item > a.search-link i.bx-search {
     display: none;
 }
 
+.sidebar:not(.open) #logged-in-menu {
+    width: 78px;
+    justify-content: center;
+    padding: 10px 8px;
+}
+
+.sidebar.open #logged-in-menu {
+    width: 250px;
+    padding: 0 16px;
+    gap: 12px;
+    justify-content: flex-start;
+}
+
 #logged-in-menu .profile-picture {
     width: 50px;
     height: 50px;
