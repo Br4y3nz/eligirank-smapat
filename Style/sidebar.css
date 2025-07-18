@@ -572,6 +572,24 @@ li.search-item > a.search-link i.bx-search {
     margin-top: 8px;
 }
 
+.btn-select-role {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  user-select: none;
+}
+
+.btn-select-role:hover {
+  background-color: #1e40af;
+}
+
 .sidebar.open #logged-in-menu {
     width: 250px;
     padding: 0 16px;
