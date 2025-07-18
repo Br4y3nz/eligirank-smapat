@@ -55,11 +55,11 @@ export function initializeSidebar() {
       const updateData = { role };
 
       if (role === "student") {
-        updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
         updateData.nis = document.getElementById("nis")?.value.trim() || null;
+        updateData.nisn = document.getElementById("nisn")?.value.trim() || null;
       } else if (role === "teacher") {
         updateData.nik = document.getElementById("nik")?.value.trim() || null;
-        updateData.nuptk = document.getElementById("nuptk")?.value.trim() || null;
+        updateData.nip = document.getElementById("nip")?.value.trim() || null;
       }
 
       const { error } = await supabase.from("roles").upsert({
@@ -442,10 +442,16 @@ window.initializeSidebar = async function(user) {
   // Role selection
   const selectRoleBtn = document.getElementById("select-role-btn");
   if (selectRoleBtn) {
-    selectRoleBtn.onclick = () => {
-      // Show your role selection modal here
-      alert("Show role selection modal here!");
-    };
+    selectRoleBtn.addEventListener("click", () => {
+      const roleModal = document.getElementById("role-modal");
+      const overlay = document.getElementById("overlay");
+      if (roleModal && overlay) {
+        roleModal.classList.add("open");
+        roleModal.classList.remove("close");
+        overlay.classList.add("open");
+        overlay.classList.remove("close");
+      }
+    });
   }
 
   // Highlight active nav
