@@ -31,13 +31,34 @@
                 Student
             </label>
             <div id="student-fields" style="display:none; margin-left: 20px;">
+                <label for="nis">NIS:</label>
+                <input type="text" id="nis" name="nis" />
+                <label for="nisn">NISN:</label>
+                <input type="text" id="nisn" name="nisn" />
                 <label for="class-select">Class:</label>
                 <select id="class-select" name="class" required>
                   <option value="" disabled selected>Select your class</option>
-                  <option value="X Macca">X Macca</option>
-                  <option value="XI Mattinulu">XI Mattinulu</option>
-                  <option value="XII Malempu">XII Malempu</option>
-                  <!-- Add more classes as needed -->
+                  <option value="X Macca 1">X Macca 1</option>
+                  <option value="X Macca 2">X Macca 2</option>
+                  <option value="X Macca 3">X Macca 3</option>
+                  <option value="X Macca 4">X Macca 4</option>
+                  <option value="X Macca 5">X Macca 5</option>
+                  <option value="X Macca 6">X Macca 6</option>
+                  <option value="X Macca 7">X Macca 7</option>
+                  <option value="XI Mattinulu 1">XI Mattinulu 1</option>
+                  <option value="XI Mattinulu 2">XI Mattinulu 2</option>
+                  <option value="XI Mattinulu 3">XI Mattinulu 3</option>
+                  <option value="XI Mattinulu 4">XI Mattinulu 4</option>
+                  <option value="XI Mattinulu 5">XI Mattinulu 5</option>
+                  <option value="XI Mattinulu 6">XI Mattinulu 6</option>
+                  <option value="XI Mattinulu 7">XI Mattinulu 7</option>
+                  <option value="XII Malempu 1">XII Malempu 1</option>
+                  <option value="XII Malempu 2">XII Malempu 2</option>
+                  <option value="XII Malempu 3">XII Malempu 3</option>
+                  <option value="XII Malempu 4">XII Malempu 4</option>
+                  <option value="XII Malempu 5">XII Malempu 5</option>
+                  <option value="XII Malempu 6">XII Malempu 6</option>
+                  <option value="XII Malempu 7">XII Malempu 7</option>
                 </select>
             </div>
             <label>
@@ -45,28 +66,32 @@
                 Teacher
             </label>
                 <div id="teacher-fields" style="display:none; margin-left: 20px;">
+                    <label for="nik">NIK:</label>
+                    <input type="text" id="nik" name="nik" />
+                    <label for="nip">NIP:</label>
+                    <input type="text" id="nip" name="nip" />
                     <label>Subjects you teach:</label>
-                    <div id="subject-checkboxes" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-                      <label><input type="checkbox" name="subjects" value="PAIBP" /> PAIBP</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Bahasa Indonesia" /> Bahasa Indonesia</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Bahasa Inggris" /> Bahasa Inggris</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Matematika Wajib" /> Matematika Wajib</label><br/>
-                      <label><input type="checkbox" name="subjects" value="PKN" /> PKN</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Sejarah Indonesia" /> Sejarah Indonesia</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Seni Budaya" /> Seni Budaya</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Penjasorkes" /> Penjasorkes</label><br/>
-                      <label><input type="checkbox" name="subjects" value="BK" /> BK</label><br/>
-                      <label><input type="checkbox" name="subjects" value="TIK" /> TIK</label><br/>
-                      <label><input type="checkbox" name="subjects" value="PKW" /> PKW</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Biologi" /> Biologi</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Fisika" /> Fisika</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Kimia" /> Kimia</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Matematika TL" /> Matematika TL</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Ekonomi" /> Ekonomi</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Sosiologi" /> Sosiologi</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Geografi" /> Geografi</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Bahasa Jerman" /> Bahasa Jerman</label><br/>
-                      <label><input type="checkbox" name="subjects" value="Bahasa Inggris TL" /> Bahasa Inggris TL</label><br/>
+                    <div id="subject-checkboxes" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 5px 10px; border-radius: 5px;">
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="PAIBP" /> PAIBP</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Indonesia" /> Bahasa Indonesia</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Inggris" /> Bahasa Inggris</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Matematika Wajib" /> Matematika Wajib</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="PKN" /> PKN</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Sejarah Indonesia" /> Sejarah Indonesia</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Seni Budaya" /> Seni Budaya</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Penjasorkes" /> Penjasorkes</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="BK" /> BK</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="TIK" /> TIK</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="PKW" /> PKW</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Biologi" /> Biologi</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Fisika" /> Fisika</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Kimia" /> Kimia</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Matematika TL" /> Matematika TL</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Ekonomi" /> Ekonomi</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Sosiologi" /> Sosiologi</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Geografi" /> Geografi</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Jerman" /> Bahasa Jerman</label>
+                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Inggris TL" /> Bahasa Inggris TL</label>
                     </div>
                 </div>
             <button type="submit">Save</button>
