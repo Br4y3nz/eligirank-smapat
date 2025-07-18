@@ -37,6 +37,23 @@ export function initializeSidebar() {
   // Add submit event listener for role form to save role data
   let roleForm = document.getElementById("role-form");
   if (roleForm) {
+    // Add event listeners to role radio buttons to show/hide fields on change
+    const roleRadios = document.querySelectorAll('input[name="role"]');
+    const studentFields = document.getElementById("student-fields");
+    const teacherFields = document.getElementById("teacher-fields");
+
+    roleRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === "student" && radio.checked) {
+          if (studentFields) studentFields.style.display = "block";
+          if (teacherFields) teacherFields.style.display = "none";
+        } else if (radio.value === "teacher" && radio.checked) {
+          if (studentFields) studentFields.style.display = "none";
+          if (teacherFields) teacherFields.style.display = "block";
+        }
+      });
+    });
+
     roleForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -44,20 +61,6 @@ export function initializeSidebar() {
       if (!role) {
         alert("Please select a role.");
         return;
-      }
-
-      // Show/hide form fields based on selected role
-      const studentFields = document.getElementById("student-fields");
-      const teacherFields = document.getElementById("teacher-fields");
-      if (role === "student") {
-        if (studentFields) studentFields.style.display = "block";
-        if (teacherFields) teacherFields.style.display = "none";
-      } else if (role === "teacher") {
-        if (studentFields) studentFields.style.display = "none";
-        if (teacherFields) teacherFields.style.display = "block";
-      } else {
-        if (studentFields) studentFields.style.display = "none";
-        if (teacherFields) teacherFields.style.display = "none";
       }
 
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
