@@ -220,7 +220,18 @@ async function renderAnnouncements() {
     isAdmin = false;
   }
 
-  announcements.forEach((item, index) => {
+  // Deduplicate announcements by title and date
+  const uniqueAnnouncements = [];
+  const seen = new Set();
+  for (const item of announcements) {
+    const key = item.title + '|' + item.date;
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniqueAnnouncements.push(item);
+    }
+  }
+
+  uniqueAnnouncements.forEach((item, index) => {
     const card = document.createElement("div");
     card.className = "announcement-card";
 

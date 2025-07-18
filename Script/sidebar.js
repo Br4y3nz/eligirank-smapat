@@ -46,6 +46,20 @@ export function initializeSidebar() {
         return;
       }
 
+      // Show/hide form fields based on selected role
+      const studentFields = document.getElementById("student-fields");
+      const teacherFields = document.getElementById("teacher-fields");
+      if (role === "student") {
+        if (studentFields) studentFields.style.display = "block";
+        if (teacherFields) teacherFields.style.display = "none";
+      } else if (role === "teacher") {
+        if (studentFields) studentFields.style.display = "none";
+        if (teacherFields) teacherFields.style.display = "block";
+      } else {
+        if (studentFields) studentFields.style.display = "none";
+        if (teacherFields) teacherFields.style.display = "none";
+      }
+
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       if (!session || sessionError) {
         console.error("Session fetch failed:", sessionError);
@@ -267,10 +281,10 @@ async function updateUserMenuDisplay() {
         const capitalized = role.charAt(0).toUpperCase() + role.slice(1);
         roleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span><button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:none;">Select Role</button>`;
         if (mobileRoleElem) mobileRoleElem.innerHTML = `<span class="role-badge role-${role}">${capitalized}</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:none;">Select Role</button>`;
-      } else {
-        roleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
-        if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">No Role Assigned</span><button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
-      }
+    } else {
+      roleElem.innerHTML = '<button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
+      if (mobileRoleElem) mobileRoleElem.innerHTML = '<button id="mobile-select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
+    }
     } else {
       // No role data, show only select role button without text
       roleElem.innerHTML = '<button id="select-role-btn" class="btn-select-role" aria-label="Select Role" type="button" style="display:inline-block;">Select Role</button>';
