@@ -313,6 +313,8 @@ function renderChart() {
   }
 }
 
+let chartInstance = null;
+
 function drawChart() {
   const canvas = document.getElementById('chart-nilai-canvas');
   if (!canvas) {
@@ -320,6 +322,12 @@ function drawChart() {
     return;
   }
   const ctx = canvas.getContext('2d');
+
+  // Destroy existing chart instance if exists to prevent error
+  if (chartInstance) {
+    chartInstance.destroy();
+    chartInstance = null;
+  }
 
   // Mock data for average scores per class
   const data = {
@@ -350,7 +358,7 @@ function drawChart() {
     }
   };
 
-  new Chart(ctx, {
+  chartInstance = new Chart(ctx, {
     type: 'bar',
     data: data,
     options: options
