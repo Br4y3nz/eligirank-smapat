@@ -262,6 +262,10 @@ async function updateUserMenuDisplay() {
         roleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
         if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
       }
+    } else {
+      // No role data, show select role button enabled
+      roleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
+      if (mobileRoleElem) mobileRoleElem.innerHTML = '<span class="role-badge role-unset">Select Role</span>';
     }
 
   // Show modal if username or phone missing
