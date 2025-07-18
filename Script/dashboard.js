@@ -40,6 +40,68 @@ async function loadUsername() {
   }
 }
 
+// Save profile data from modal
+document.addEventListener('DOMContentLoaded', () => {
+  const userInfoForm = document.getElementById('user-info-form');
+  if (userInfoForm) {
+    userInfoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const usernameInput = document.getElementById('username-input');
+      const phoneInput = document.getElementById('phone-input');
+
+      const username = usernameInput?.value.trim();
+      const phone = phoneInput?.value.trim();
+
+      if (!username) {
+        alert('Username is required.');
+        return;
+      }
+      if (!phone) {
+        alert('Phone number is required.');
+        return;
+      }
+
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError || !session) {
+          alert('You must be logged in to save your profile.');
+          return;
+        }
+
+        const { error } = await supabase
+          .from('profiles')
+          .upsert({
+            id: session.user.id,
+            username: username,
+            phone: phone,
+          }, { onConflict: 'id' });
+
+        if (error) {
+          alert('Failed to save profile: ' + error.message);
+          console.error('Profile save error:', error);
+          return;
+        }
+
+        alert('Profile saved successfully!');
+        // Close modal and overlay
+        const userInfoModal = document.getElementById('user-info-modal');
+        const overlay = document.getElementById('overlay');
+        if (userInfoModal && overlay) {
+          userInfoModal.classList.remove('open');
+          userInfoModal.classList.add('close');
+          overlay.classList.remove('open');
+          overlay.classList.add('close');
+        }
+        // Optionally reload or update UI
+        loadUsername();
+      } catch (err) {
+        alert('Unexpected error saving profile.');
+        console.error('Unexpected error:', err);
+      }
+    });
+  }
+});
+
 // Load stats - mock implementation
 async function loadStats() {
   const stats = {
