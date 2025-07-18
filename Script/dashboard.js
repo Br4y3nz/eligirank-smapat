@@ -420,9 +420,10 @@ if (roleForm) {
     const subjectCheckboxes = document.getElementById("subject-checkboxes");
     if (role === "teacher") {
       if (classSelect) {
+        // Instead of hiding, disable and remove required attribute to avoid validation error
         classSelect.removeAttribute("required");
         classSelect.disabled = true;
-        classSelect.style.display = "none"; // hide the select element
+        classSelect.style.display = "block"; // keep visible but disabled
       }
       if (classWrapper) classWrapper.style.display = "none";
       if (subjectCheckboxes) {
