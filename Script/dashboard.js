@@ -204,7 +204,7 @@ async function renderAnnouncements() {
       const { data: roles, error } = await supabase
         .from("akun")
         .select("role")
-        .eq("user_id", session.user.id);
+        .eq("id", session.user.id);
       if (!error && roles && roles.length === 1 && roles[0].role === "admin") {
         isAdmin = true;
       }
