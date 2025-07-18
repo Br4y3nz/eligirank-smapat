@@ -969,8 +969,8 @@ li.search-item > a.search-link i.bx-search {
 }
 
 #mobile-logged-in-menu .profile-picture {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   overflow: hidden;
   background: #e0e7ef;
