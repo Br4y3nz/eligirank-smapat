@@ -15,14 +15,34 @@ async function checkRole() {
   }
 }
 
-// Fetch kelas list for dropdown
-async function loadKelas() {
-  const { data } = await supabase.from('kelas').select('id, nama').order('nama');
-  kelasList = data || [];
-  const kelasInput = document.getElementById('kelas-input');
-  kelasInput.innerHTML = '<option value="">Pilih Kelas</option>' +
-    kelasList.map(k => `<option value="${k.id}">${k.nama}</option>`).join('');
+// Role check to show button
+const role = sessionStorage.getItem("role");
+if (role === "admin" || role === "guru") {
+  document.getElementById("btn-tambah-siswa").style.display = "inline-block";
 }
+
+// Open modal
+document.getElementById("btn-tambah-siswa").onclick = () => {
+  document.getElementById("modal-tambah-siswa").classList.remove("hidden");
+};
+
+// Close modal
+document.getElementById("batal-tambah").onclick = () => {
+  document.getElementById("modal-tambah-siswa").classList.add("hidden");
+};
+
+// Populate kelas select
+async function loadKelas() {
+  const { data, error } = await supabase.from("kelas").select("id, nama, tingkat");
+  const select = document.getElementById("kelas-select");
+  data.forEach(k => {
+    const option = document.createElement("option");
+    option.value = k.id;
+    option.textContent = `${k.tingkat} ${k.nama}`;
+    select.appendChild(option);
+  });
+}
+loadKelas();
 
 // Fetch siswa data with kelas join
 async function loadSiswa() {
@@ -87,6 +107,22 @@ document.getElementById('form-tambah-siswa').onsubmit = async (e) => {
   await loadSiswa();
 };
 
+// Handle submit
+document.getElementById("form-tambah-siswa").onsubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const siswaData = Object.fromEntries(formData.entries());
+
+  const { error } = await supabase.from("siswa").insert([siswaData]);
+  if (error) {
+    alert("Gagal menyimpan data siswa.");
+    console.error(error);
+  } else {
+    alert("Siswa berhasil ditambahkan.");
+    location.reload(); // or refresh list
+  }
+};
+
 // Search & sort
 document.getElementById('search-siswa').oninput = debounce(function () {
   renderSiswaTable(this.value, document.getElementById('sort-siswa').value);
@@ -94,6 +130,18 @@ document.getElementById('search-siswa').oninput = debounce(function () {
 document.getElementById('sort-siswa').onchange = function () {
   renderSiswaTable(document.getElementById('search-siswa').value, this.value);
 };
+
+// Add this in your siswa-list.js after rendering the table header
+document.querySelectorAll('.sort-arrows').forEach(span => {
+  span.onclick = function() {
+    const sortKey = this.getAttribute('data-sort');
+    document.getElementById('sort-siswa').value = sortKey;
+    document.getElementById('sort-siswa').dispatchEvent(new Event('change'));
+    // Highlight the active arrow
+    document.querySelectorAll('.sort-arrows').forEach(s => s.classList.remove('active'));
+    this.classList.add('active');
+  };
+});
 
 // Debounce helper
 function debounce(fn, ms) {
