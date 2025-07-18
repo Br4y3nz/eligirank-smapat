@@ -411,15 +411,32 @@ if (roleForm) {
       return;
     }
 
-    // Remove required attribute from class select if role is teacher
+    // Disable/enable fields based on role to avoid HTML validation errors
     const classSelect = document.getElementById("class-select");
     const classWrapper = document.getElementById("class-wrapper");
+    const subjectCheckboxes = document.getElementById("subject-checkboxes");
     if (role === "teacher") {
-      if (classSelect) classSelect.removeAttribute("required");
+      if (classSelect) {
+        classSelect.removeAttribute("required");
+        classSelect.disabled = true;
+      }
       if (classWrapper) classWrapper.style.display = "none";
+      if (subjectCheckboxes) {
+        subjectCheckboxes.style.display = "block";
+        // Enable all checkboxes inside subjectCheckboxes
+        subjectCheckboxes.querySelectorAll("input[type=checkbox]").forEach(cb => cb.disabled = false);
+      }
     } else {
-      if (classSelect) classSelect.setAttribute("required", "true");
+      if (classSelect) {
+        classSelect.setAttribute("required", "true");
+        classSelect.disabled = false;
+      }
       if (classWrapper) classWrapper.style.display = "block";
+      if (subjectCheckboxes) {
+        subjectCheckboxes.style.display = "none";
+        // Disable all checkboxes inside subjectCheckboxes
+        subjectCheckboxes.querySelectorAll("input[type=checkbox]").forEach(cb => cb.disabled = true);
+      }
     }
 
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
