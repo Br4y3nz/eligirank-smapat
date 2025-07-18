@@ -457,7 +457,19 @@ if (roleForm) {
         return;
       }
 
-      const { data: siswaData, error: siswaError } = await supabase
+      // Check if siswa already exists
+      const { data: existingSiswa } = await supabase
+        .from('siswa')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (existingSiswa) {
+        alert("You have already registered as a student.");
+        return;
+      }
+
+      const { error: siswaError } = await supabase
         .from('siswa')
         .insert({
           id: user.id,
@@ -469,6 +481,21 @@ if (roleForm) {
       if (siswaError) {
         alert("Error saving student data: " + siswaError.message);
         console.error(siswaError);
+        return;
+      }
+
+      // Upsert role in akun table
+      const { error: akunError } = await supabase
+        .from('akun')
+        .upsert({
+          id: user.id,
+          role: 'siswa',
+          role_id: user.id
+        });
+
+      if (akunError) {
+        alert("Error saving user role: " + akunError.message);
+        console.error(akunError);
         return;
       }
 
@@ -490,7 +517,19 @@ if (roleForm) {
         return;
       }
 
-      const { data: guruData, error: guruError } = await supabase
+      // Check if guru already exists
+      const { data: existingGuru } = await supabase
+        .from('guru')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (existingGuru) {
+        alert("You have already registered as a teacher.");
+        return;
+      }
+
+      const { error: guruError } = await supabase
         .from('guru')
         .insert({
           id: user.id,
@@ -514,6 +553,21 @@ if (roleForm) {
       if (guruMapelError) {
         alert("Error saving teacher subject data: " + guruMapelError.message);
         console.error(guruMapelError);
+        return;
+      }
+
+      // Upsert role in akun table
+      const { error: akunError } = await supabase
+        .from('akun')
+        .upsert({
+          id: user.id,
+          role: 'guru',
+          role_id: user.id
+        });
+
+      if (akunError) {
+        alert("Error saving user role: " + akunError.message);
+        console.error(akunError);
         return;
       }
 
