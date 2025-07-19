@@ -15,12 +15,6 @@ async function checkRole() {
   }
 }
 
-// Role check to show button
-const role = sessionStorage.getItem("role");
-if (role === "admin" || role === "guru") {
-  document.getElementById("btn-tambah-siswa").style.display = "inline-block";
-}
-
 // Open modal
 document.getElementById("btn-tambah-siswa").onclick = () => {
   document.getElementById("modal-tambah-siswa").classList.remove("hidden");
