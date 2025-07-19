@@ -213,7 +213,7 @@ document.getElementById('search-siswa').oninput = debounce(function () {
   renderSiswaTable(this.value, currentSort);
 }, 300);
 
-// Sort by clicking header arrows (toggle direction)
+// Attach sort event to all sort-arrows
 document.querySelectorAll('.sort-arrows').forEach(span => {
   span.onclick = function() {
     const key = this.getAttribute('data-sort');

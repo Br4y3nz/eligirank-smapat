@@ -215,15 +215,19 @@
 
 /* Sort arrows styling */
 .sort-arrows {
+  display: inline-block;
+  min-width: 1.2em;      /* Reserve space for arrow */
+  text-align: center;
   font-size: 1.1em;
   margin-left: 6px;
   cursor: pointer;
-  color: #ffffff;
+  color: #64748b;         /* Neutral color for inactive */
   user-select: none;
   transition: color 0.2s;
+  vertical-align: middle;
 }
 .sort-arrows.active {
-  color: #fdfdff;
+  color: #2563eb;         /* Highlight color for active */
   font-weight: bold;
 }
 .sort-arrows:hover {
