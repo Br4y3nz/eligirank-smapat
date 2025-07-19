@@ -223,7 +223,7 @@
   transition: color 0.2s;
 }
 .sort-arrows.active {
-  color: #2563eb;
+  color: #fdfdff;
   font-weight: bold;
 }
 .sort-arrows:hover {
