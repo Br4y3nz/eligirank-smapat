@@ -140,6 +140,14 @@ function attachRowButtonEvents() {
   });
 }
 
+function generateUUID() {
+  // Simple UUID generator
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 // Form submit (Add/Edit)
 document.getElementById("form-tambah-siswa").onsubmit = async (e) => {
   e.preventDefault();
@@ -151,6 +159,7 @@ document.getElementById("form-tambah-siswa").onsubmit = async (e) => {
     result = await supabase.from("siswa").update(siswaData).eq('id', editId);
     delete e.target.dataset.editId;
   } else {
+    siswaData.id = generateUUID();
     result = await supabase.from("siswa").insert([siswaData]);
   }
   if (result.error) {
