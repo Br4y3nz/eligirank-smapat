@@ -37,12 +37,16 @@ async function checkRole() {
 // Show modal when "Tambah Siswa" is clicked
 document.getElementById("btn-tambah-siswa").onclick = () => {
   resetForm();
-  document.getElementById("modal-tambah-siswa").classList.remove("hidden");
+  const modal = document.getElementById("modal-tambah-siswa");
+  modal.classList.remove("hidden");
+  modal.classList.add("open");
 };
 
 // Hide modal when "Batal" is clicked
 document.getElementById("batal-tambah").onclick = () => {
-  document.getElementById("modal-tambah-siswa").classList.add("hidden");
+  const modal = document.getElementById("modal-tambah-siswa");
+  modal.classList.remove("open");
+  modal.classList.add("hidden");
   resetForm();
 };
 
