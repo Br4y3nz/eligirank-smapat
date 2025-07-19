@@ -177,3 +177,4 @@ function resetForm() {
 checkRole();
 loadKelas();
 loadSiswa();
+supabase.auth.getSession().then(console.log);
