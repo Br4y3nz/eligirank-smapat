@@ -3,7 +3,8 @@ import supabase from '../Supabase/client.js';
 let siswaData = [];
 let kelasList = [];
 let userRole = null;
-let currentSort = 'nama';
+// Sorting state
+let currentSort = { key: 'nama', dir: 'asc' };
 
 // Fetch user role and show "Tambah Siswa" button if allowed
 async function checkRole() {
@@ -76,8 +77,22 @@ async function loadSiswa() {
   renderSiswaTable(document.getElementById('search-siswa')?.value || '', currentSort);
 }
 
-// Render table rows
-function renderSiswaTable(filter = '', sort = 'nama') {
+// Update table header to show only one arrow for the active sort column
+function updateSortArrows() {
+  document.querySelectorAll('.sort-arrows').forEach(span => {
+    const key = span.getAttribute('data-sort');
+    if (key === currentSort.key) {
+      span.textContent = currentSort.dir === 'asc' ? '▲' : '▼';
+      span.classList.add('active');
+    } else {
+      span.textContent = '';
+      span.classList.remove('active');
+    }
+  });
+}
+
+// Render table rows with improved sorting
+function renderSiswaTable(filter = '', sortObj = currentSort) {
   let rows = siswaData;
   if (filter) {
     const f = filter.toLowerCase();
@@ -87,7 +102,26 @@ function renderSiswaTable(filter = '', sort = 'nama') {
       s.nisn?.toLowerCase().includes(f)
     );
   }
-  rows = [...rows].sort((a, b) => (a[sort] || '').localeCompare(b[sort] || ''));
+  // Sorting
+  rows = [...rows].sort((a, b) => {
+    let aVal = a[sortObj.key];
+    let bVal = b[sortObj.key];
+    // For kelas, sort by kelas.nama
+    if (sortObj.key === 'kelas') {
+      aVal = a.kelas?.nama || '';
+      bVal = b.kelas?.nama || '';
+    }
+    // For jk, sort by string value
+    if (sortObj.key === 'jk') {
+      aVal = a.jk === 'L' ? 'Laki-laki' : 'Perempuan';
+      bVal = b.jk === 'L' ? 'Laki-laki' : 'Perempuan';
+    }
+    if (aVal === undefined) aVal = '';
+    if (bVal === undefined) bVal = '';
+    return sortObj.dir === 'asc'
+      ? aVal.localeCompare(bVal)
+      : bVal.localeCompare(aVal);
+  });
   document.getElementById('siswa-body').innerHTML = rows.map(s => `
     <tr>
       <td>${s.nama}</td>
@@ -104,6 +138,7 @@ function renderSiswaTable(filter = '', sort = 'nama') {
       </td>
     </tr>
   `).join('');
+  updateSortArrows();
   attachRowButtonEvents();
 }
 
@@ -178,13 +213,18 @@ document.getElementById('search-siswa').oninput = debounce(function () {
   renderSiswaTable(this.value, currentSort);
 }, 300);
 
-// Sort by clicking header arrows
+// Sort by clicking header arrows (toggle direction)
 document.querySelectorAll('.sort-arrows').forEach(span => {
   span.onclick = function() {
-    currentSort = this.getAttribute('data-sort');
+    const key = this.getAttribute('data-sort');
+    if (currentSort.key === key) {
+      currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort.key = key;
+      currentSort.dir = 'asc';
+    }
     renderSiswaTable(document.getElementById('search-siswa').value, currentSort);
-    document.querySelectorAll('.sort-arrows').forEach(s => s.classList.remove('active'));
-    this.classList.add('active');
+    updateSortArrows();
   };
 });
 

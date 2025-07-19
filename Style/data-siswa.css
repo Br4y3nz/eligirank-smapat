@@ -215,10 +215,10 @@
 
 /* Sort arrows styling */
 .sort-arrows {
-  font-size: 0.95em;
+  font-size: 1.1em;
   margin-left: 6px;
   cursor: pointer;
-  color: #64748b;
+  color: #ffffff;
   user-select: none;
   transition: color 0.2s;
 }
@@ -242,16 +242,10 @@
 }
 @media (max-width: 600px) {
   #siswa-table {
+    font-size: 13px;
     min-width: 480px;
-    font-size: 14px;
   }
-  .modal-content {
-    padding: 0.7rem;
-    min-width: 90vw;
-  }
-  .table-controls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
+  .table-responsive {
+    overflow-x: auto;
   }
 }
