@@ -10,7 +10,16 @@ async function checkRole() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
   const userId = session.user.id;
-  const { data } = await supabase.from('akun').select('role').eq('id', userId).single();
+  // Use .single() to ensure you get an object, not an array
+  const { data, error } = await supabase
+    .from('akun')
+    .select('role')
+    .eq('id', userId)
+    .single();
+  if (error) {
+    console.error('Error fetching role:', error);
+    return;
+  }
   userRole = data?.role;
   if (userRole === 'admin' || userRole === 'guru') {
     document.getElementById('btn-tambah-siswa').style.display = 'inline-block';
