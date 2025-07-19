@@ -8,8 +8,12 @@ let currentSort = 'nama';
 // Fetch user role and show "Tambah Siswa" button if allowed
 async function checkRole() {
   const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return;
+  if (!session) {
+    console.log('No active session found');
+    return;
+  }
   const userId = session.user.id;
+  console.log('Current userId:', userId);
   // Use .single() to ensure you get an object, not an array
   const { data, error } = await supabase
     .from('akun')
@@ -20,7 +24,11 @@ async function checkRole() {
     console.error('Error fetching role:', error);
     return;
   }
-  userRole = data?.role;
+  if (!data) {
+    console.warn('No role data found for user:', userId);
+    return;
+  }
+  userRole = data.role;
   if (userRole === 'admin' || userRole === 'guru') {
     document.getElementById('btn-tambah-siswa').style.display = 'inline-block';
   }
