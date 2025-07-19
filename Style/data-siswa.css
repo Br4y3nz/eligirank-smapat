@@ -102,12 +102,14 @@
 .modal.hidden { display: none; }
 .modal {
   position: fixed;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1300;
 }
 
 /* Modal content */
