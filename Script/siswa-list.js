@@ -9,7 +9,8 @@ let currentSort = 'nama';
 async function checkRole() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
-  const { data } = await supabase.from('akun').select('role').eq('id', session.user.id).single();
+  const userId = session.user.id;
+  const { data } = await supabase.from('akun').select('role').eq('id', userId).single();
   userRole = data?.role;
   if (userRole === 'admin' || userRole === 'guru') {
     document.getElementById('btn-tambah-siswa').style.display = 'inline-block';
