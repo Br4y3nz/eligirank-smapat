@@ -96,7 +96,7 @@ function renderSiswaTable(filter = '', sort = 'nama') {
       <td>${s.nis}</td>
       <td>${s.nisn}</td>
       <td>
-        <a href="rapor.html?id=${s.id}">Lihat</a>
+        <a href="rapor.html?id=${s.id}" class="btn-view">Lihat</a>
         ${userRole === 'admin' || userRole === 'guru' ? `
           <button class="btn-edit" data-id="${s.id}">Edit</button>
           <button class="btn-delete" data-id="${s.id}">Hapus</button>
@@ -208,3 +208,4 @@ checkRole();
 loadKelas();
 loadSiswa();
 supabase.auth.getSession().then(console.log);
+
