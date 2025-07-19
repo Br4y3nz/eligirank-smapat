@@ -227,11 +227,11 @@
   vertical-align: middle;
 }
 .sort-arrows.active {
-  color: #2563eb;         /* Highlight color for active */
+  color: #fdfdfd;         /* Highlight color for active */
   font-weight: bold;
 }
 .sort-arrows:hover {
-  color: #1d4ed8;
+  color: #87a4f3;
 }
 
 /* Responsive */
