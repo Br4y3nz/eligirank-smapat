@@ -154,7 +154,7 @@ document.getElementById("form-tambah-siswa").onsubmit = async (e) => {
     result = await supabase.from("siswa").insert([siswaData]);
   }
   if (result.error) {
-    alert("Gagal menyimpan data siswa.");
+    alert("Gagal menyimpan data siswa: " + result.error.message);
     console.error(result.error);
   } else {
     alert("Siswa berhasil disimpan.");
