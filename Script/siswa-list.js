@@ -130,11 +130,17 @@ function renderSiswaTable(filter = '', sortObj = currentSort) {
       <td>${s.nis}</td>
       <td>${s.nisn}</td>
       <td>
-        <a href="rapor.html?id=${s.id}" class="btn-view">Lihat</a>
-        ${userRole === 'admin' || userRole === 'guru' ? `
-          <button class="btn-edit" data-id="${s.id}">Edit</button>
-          <button class="btn-delete" data-id="${s.id}">Hapus</button>
-        ` : ''}
+        <div class="action-buttons">
+          <a href="rapor.html?id=${s.id}" class="btn-view" aria-label="Lihat Rapor ${s.nama}">Lihat</a>
+          ${(userRole === 'admin' || userRole === 'guru') ? `
+            <button class="btn-edit" data-id="${s.id}" aria-label="Edit ${s.nama}" title="Edit">
+              <i class="bx bx-edit"></i><span class="sr-only">Edit</span>
+            </button>
+            <button class="btn-delete" data-id="${s.id}" aria-label="Hapus ${s.nama}" title="Hapus">
+              <i class="bx bx-trash"></i><span class="sr-only">Hapus</span>
+            </button>
+          ` : ''}
+        </div>
       </td>
     </tr>
   `).join('');

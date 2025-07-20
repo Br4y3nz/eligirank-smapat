@@ -49,22 +49,29 @@
   transition: box-shadow 0.2s, transform 0.2s;
 }
 
+#siswa-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+/* Slightly more pronounced hover */
 #siswa-table tbody tr:hover {
-  box-shadow: 0 4px 16px #2563eb22;
+  box-shadow: 0 6px 24px #2563eb22;
   transform: translateY(-2px) scale(1.01);
+  background: #e0e7ff;
 }
 
 /* Action Buttons */
 .btn-edit, .btn-delete, .btn-view {
   display: inline-block;
   margin: 0 2px;
-  padding: 6px 14px;
-  font-size: 0.95em;
-  border-radius: 5px;
+  padding: 8px 18px;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 4px #0001;
+  box-shadow: 0 2px 8px #0001;
 }
 .btn-edit {
   background: #fbbf24;
@@ -88,6 +95,19 @@
   background: #1d4ed8;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-edit i, .btn-delete i {
+  font-size: 1.1em;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
 /* Table Controls */
 .table-controls {
   display: flex;
@@ -99,17 +119,17 @@
 
 .table-controls input[type="text"],
 .table-controls select {
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  border: 1.5px solid #d1d5db;
   background: #f9fafb;
   transition: border 0.2s;
 }
 .table-controls input[type="text"]:focus,
 .table-controls select:focus {
   border-color: #2563eb;
-  outline: none;
+  background: #fff;
 }
 
 #btn-tambah-siswa {
@@ -144,37 +164,37 @@
 /* Modal content */
 .modal-content {
   background: #fff;
-  border-radius: 1rem;
-  padding: 2rem 2.5rem;
+  border-radius: 1.5rem;
+  padding: 2.5rem 2rem;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 4px 32px #0003;
+  box-shadow: 0 8px 40px #0003;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 /* Form fields */
 .modal-content form label {
-  font-weight: 500;
-  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 0.2rem;
   display: block;
 }
 .modal-content form input,
 .modal-content form select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 1.05rem;
   background: #f9fafb;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
   transition: border 0.2s;
 }
 .modal-content form input:focus,
 .modal-content form select:focus {
   border-color: #2563eb;
-  outline: none;
+  background: #fff;
 }
 
 /* Modal actions (buttons) */
@@ -218,16 +238,16 @@
   display: inline-block;
   min-width: 1.2em;      /* Reserve space for arrow */
   text-align: center;
-  font-size: 1.1em;
-  margin-left: 6px;
+  font-size: 1.3em;
+  margin-left: 8px;
   cursor: pointer;
-  color: #64748b;         /* Neutral color for inactive */
+  color: #fff;
   user-select: none;
   transition: color 0.2s;
   vertical-align: middle;
 }
 .sort-arrows.active {
-  color: #fdfdfd;         /* Highlight color for active */
+  color: #ffd700;
   font-weight: bold;
 }
 .sort-arrows:hover {
@@ -246,10 +266,21 @@
 }
 @media (max-width: 600px) {
   #siswa-table {
-    font-size: 13px;
+    font-size: 12px;
     min-width: 480px;
   }
-  .table-responsive {
-    overflow-x: auto;
+  .btn-edit, .btn-delete, .btn-view {
+    padding: 6px 10px;
+    font-size: 0.95em;
   }
+}
+
+/* Hidden accessibility class */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
