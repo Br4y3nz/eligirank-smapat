@@ -173,21 +173,21 @@
 }
 
 /* Mobile portrait 9:16 aspect ratio specific styles */
-@media (max-width: 600px) and (orientation: portrait) and (aspect-ratio: 9/16) {
+@media (max-width: 600px) and (orientation: portrait) and (max-device-width: 360px) {
   body, html {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
   .search-sort-add > input#search-siswa,
   .search-sort-add > select#sort-dropdown,
   .search-sort-add > button#btn-tambah-siswa {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
   }
   #siswa-table {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
   #siswa-table th, #siswa-table td {
-    padding: 6px 4px;
+    padding: 5px 3px;
   }
 }
 
