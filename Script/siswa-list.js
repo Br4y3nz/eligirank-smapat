@@ -219,20 +219,13 @@ document.getElementById('search-siswa').oninput = debounce(function () {
   renderSiswaTable(this.value, currentSort);
 }, 300);
 
-// Attach sort event to all sort-arrows
-document.querySelectorAll('.sort-arrows').forEach(span => {
-  span.onclick = function() {
-    const key = this.getAttribute('data-sort');
-    if (currentSort.key === key) {
-      currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
-    } else {
-      currentSort.key = key;
-      currentSort.dir = 'asc';
-    }
-    renderSiswaTable(document.getElementById('search-siswa').value, currentSort);
-    updateSortArrows();
-  };
-});
+const sortDropdown = document.getElementById('sort-dropdown');
+
+sortDropdown.onchange = function() {
+  const [key, dir] = this.value.split('-');
+  currentSort = { key, dir };
+  renderSiswaTable(document.getElementById('search-siswa').value, currentSort);
+};
 
 // Debounce helper
 function debounce(fn, ms) {

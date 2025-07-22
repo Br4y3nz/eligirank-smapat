@@ -17,10 +17,20 @@
 
   <main style="padding:2rem;">
     <h1 style="margin-bottom:1.5rem;">Data Siswa</h1>
-    <!-- Table Controls -->
+    <!-- Controls: Search, Add, Sort -->
     <section class="table-controls" aria-label="Kontrol Tabel Siswa">
-      <input type="text" id="search-siswa" placeholder="Search..." aria-label="Cari Siswa" />
-      <button id="btn-tambah-siswa" type="button" style="display:none">+ Tambah Siswa</button>
+      <div class="search-sort-add">
+        <input type="text" id="search-siswa" placeholder="Search..." aria-label="Cari Siswa" />
+        <select id="sort-dropdown" aria-label="Urutkan Data" title="Urutkan Data">
+          <option value="nama-asc">Nama (A-Z)</option>
+          <option value="nama-desc">Nama (Z-A)</option>
+          <option value="nis-asc">NIS Terkecil</option>
+          <option value="nis-desc">NIS Terbesar</option>
+          <option value="nisn-asc">NISN Terkecil</option>
+          <option value="nisn-desc">NISN Terbesar</option>
+        </select>
+        <button id="btn-tambah-siswa" type="button" style="display:none" aria-label="Tambah Siswa" title="Tambah Siswa">+</button>
+      </div>
     </section>
 
     <!-- Siswa Table -->
@@ -31,11 +41,11 @@
         </caption>
         <thead>
           <tr>
-            <th scope="col">Nama <span class="sort-arrows" data-sort="nama"></span></th>
-            <th scope="col">Kelas <span class="sort-arrows" data-sort="kelas"></span></th>
-            <th scope="col">Jenis Kelamin <span class="sort-arrows" data-sort="jk"></span></th>
-            <th scope="col">NIS <span class="sort-arrows" data-sort="nis"></span></th>
-            <th scope="col">NISN <span class="sort-arrows" data-sort="nisn"></span></th>
+            <th scope="col">Nama</th>
+            <th scope="col">Kelas</th>
+            <th scope="col">Jenis Kelamin</th>
+            <th scope="col">NIS</th>
+            <th scope="col">NISN</th>
             <th scope="col">Aksi</th>
           </tr>
         </thead>

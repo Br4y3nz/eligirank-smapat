@@ -117,6 +117,56 @@
   margin-bottom: 1rem;
 }
 
+.search-sort-add {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.search-sort-add > input#search-siswa {
+  flex-grow: 1;
+  min-width: 0;
+  max-width: 300px;
+}
+
+.search-sort-add > select#sort-dropdown {
+  flex-shrink: 0;
+  min-width: 150px;
+}
+
+.search-sort-add > button#btn-tambah-siswa {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-sort-add > button#btn-tambah-siswa:hover {
+  background-color: #1e40af;
+}
+
+@media (max-width: 600px) {
+  .search-sort-add {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-sort-add > input#search-siswa,
+  .search-sort-add > select#sort-dropdown,
+  .search-sort-add > button#btn-tambah-siswa {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 .table-controls input[type="text"],
 .table-controls select {
   padding: 10px 16px;
@@ -264,6 +314,7 @@
     padding: 1.2rem;
   }
 }
+
 @media (max-width: 600px) {
   #siswa-table {
     font-size: 12px;
@@ -273,6 +324,84 @@
     padding: 6px 10px;
     font-size: 0.95em;
   }
+}
+
+/* Additional responsive styles for mobile to make table and controls smaller */
+@media (max-width: 600px) {
+  #siswa-table {
+    min-width: 100% !important;
+    font-size: 10px !important;
+    table-layout: fixed !important;
+  }
+  #siswa-table th, #siswa-table td {
+    padding: 6px 4px !important;
+    font-size: 10px !important;
+  }
+  .table-controls {
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+  }
+  .table-controls input[type="text"],
+  .table-controls select {
+    padding: 6px 8px !important;
+    font-size: 10px !important;
+  }
+  #btn-tambah-siswa {
+    padding: 6px 10px !important;
+    font-size: 10px !important;
+  }
+}
+
+/* New styles for search and buttons container */
+.search-and-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+#search-siswa {
+  flex-grow: 1;
+  min-width: 0;
+  max-width: 300px;
+}
+
+#btn-tambah-siswa {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 24px;
+  line-height: 1;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+#btn-tambah-siswa:hover {
+  background-color: #1e40af;
+}
+
+.sort-button {
+  background-color: transparent;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+.sort-button:hover {
+  color: #1e40af;
 }
 
 /* Hidden accessibility class */
