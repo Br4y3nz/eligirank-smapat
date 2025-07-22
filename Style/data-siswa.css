@@ -170,6 +170,32 @@
     max-width: 100%;
     width: 100%;
   }
+  .table-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  #siswa-table {
+    min-width: 100% !important;
+    font-size: 12px !important;
+    table-layout: fixed !important;
+  }
+  #siswa-table th, #siswa-table td {
+    padding: 8px 6px !important;
+    font-size: 12px !important;
+  }
+  .btn-edit, .btn-delete, .btn-view {
+    padding: 6px 10px !important;
+    font-size: 1rem !important;
+  }
+  .action-buttons {
+    gap: 0.5rem !important;
+  }
+  .modal-content {
+    padding: 1rem !important;
+    font-size: 1rem !important;
+    min-width: 95vw !important;
+  }
 }
 
 /* Mobile portrait 9:16 aspect ratio specific styles */
