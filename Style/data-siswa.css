@@ -2,6 +2,7 @@
 .table-responsive {
   overflow-x: auto;
   margin: 2rem 0;
+  white-space: nowrap;
 }
 
 /* Table Styles */
