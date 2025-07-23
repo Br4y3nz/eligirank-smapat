@@ -161,6 +161,22 @@ function attachRowButtonEvents() {
     btn.onclick = async function() {
       const id = this.dataset.id;
       try {
+        // Wait for edit modal form to be in DOM
+        await new Promise((resolve, reject) => {
+          const interval = 50;
+          let elapsed = 0;
+          const timer = setInterval(() => {
+            if (document.getElementById('form-edit-siswa')) {
+              clearInterval(timer);
+              resolve();
+            } else if (elapsed >= 3000) {
+              clearInterval(timer);
+              reject(new Error('Edit form not found in DOM'));
+            }
+            elapsed += interval;
+          }, interval);
+        });
+
         // Fetch siswa data by id
         const { data, error } = await supabase.from('siswa').select('*').eq('id', id).single();
         if (error) {
@@ -177,50 +193,7 @@ function attachRowButtonEvents() {
           const editNisnInput = document.getElementById('edit-nisn-input');
 
           if (!editNamaInput || !editKelasSelect || !editJkInput || !editNisInput || !editNisnInput) {
-            // Try to wait for the elements to be available before alerting
-            const waitForElement = (selector, timeout = 3000) => {
-              return new Promise((resolve, reject) => {
-                const interval = 50;
-                let elapsed = 0;
-                const timer = setInterval(() => {
-                  const el = document.querySelector(selector);
-                  if (el) {
-                    clearInterval(timer);
-                    resolve(el);
-                  } else if (elapsed >= timeout) {
-                    clearInterval(timer);
-                    reject(new Error(`Element ${selector} not found within timeout`));
-                  }
-                  elapsed += interval;
-                }, interval);
-              });
-            };
-            try {
-              await waitForElement('#edit-nama-input');
-              await waitForElement('#edit-kelas-select');
-              await waitForElement('#edit-jk-input');
-              await waitForElement('#edit-nis-input');
-              await waitForElement('#edit-nisn-input');
-              // After waiting, try to get elements again
-              const editNamaInput2 = document.getElementById('edit-nama-input');
-              const editKelasSelect2 = document.getElementById('edit-kelas-select');
-              const editJkInput2 = document.getElementById('edit-jk-input');
-              const editNisInput2 = document.getElementById('edit-nis-input');
-              const editNisnInput2 = document.getElementById('edit-nisn-input');
-              if (!editNamaInput2 || !editKelasSelect2 || !editJkInput2 || !editNisInput2 || !editNisnInput2) {
-                alert('Form edit tidak lengkap atau belum dimuat.');
-                return;
-              }
-              // Assign values after waiting
-              editNamaInput2.value = data.nama || '';
-              editKelasSelect2.value = data.kelas_id || '';
-              editJkInput2.value = data.jk || '';
-              editNisInput2.value = data.nis || '';
-              editNisnInput2.value = data.nisn || '';
-            } catch (waitError) {
-              alert('Form edit tidak lengkap atau belum dimuat.');
-              return;
-            }
+            alert('Form edit tidak lengkap atau belum dimuat.');
             return;
           }
 
