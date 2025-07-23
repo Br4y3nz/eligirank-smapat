@@ -12,7 +12,8 @@
   border-spacing: 0 12px;
   background: transparent;
   font-family: 'Segoe UI', Arial, sans-serif;
-  min-width: 700px;
+  min-width: unset;
+  table-layout: auto;
 }
 
 #siswa-table thead {
@@ -262,7 +263,21 @@
   }
 
   #siswa-table {
-    width: 1000px;
+    width: 100%;
+    table-layout: auto;
+    min-width: 100%;
+    font-size: 12px;
+  }
+
+  #siswa-table th,
+  #siswa-table td {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
   }
 
   .search-bar-container > input#search-siswa,
