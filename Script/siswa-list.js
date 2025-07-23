@@ -65,17 +65,23 @@ function resetEditForm() {
   delete document.getElementById('form-edit-siswa').dataset.editId;
 }
 
-// Populate kelas select
 async function loadKelas() {
   const { data } = await supabase.from("kelas").select("id, nama, tingkat");
-  const select = document.getElementById("kelas-select");
-  select.innerHTML = '<option value="">Pilih Kelas</option>';
+  const selectAdd = document.getElementById("kelas-select");
+  const selectEdit = document.getElementById("edit-kelas-select");
+  selectAdd.innerHTML = '<option value="">Pilih Kelas</option>';
+  selectEdit.innerHTML = '<option value="">Pilih Kelas</option>';
   if (data) {
     data.forEach(k => {
-      const option = document.createElement("option");
-      option.value = k.id;
-      option.textContent = k.tingkat ? `${k.tingkat} ${k.nama}` : k.nama;
-      select.appendChild(option);
+      const optionAdd = document.createElement("option");
+      optionAdd.value = k.id;
+      optionAdd.textContent = k.tingkat ? `${k.tingkat} ${k.nama}` : k.nama;
+      selectAdd.appendChild(optionAdd);
+
+      const optionEdit = document.createElement("option");
+      optionEdit.value = k.id;
+      optionEdit.textContent = k.tingkat ? `${k.tingkat} ${k.nama}` : k.nama;
+      selectEdit.appendChild(optionEdit);
     });
   }
 }
