@@ -161,19 +161,42 @@ function attachRowButtonEvents() {
     btn.onclick = async function() {
       const id = this.dataset.id;
       try {
-        const { data } = await supabase.from('siswa').select('*').eq('id', id).single();
+        // Fetch siswa data by id
+        const { data, error } = await supabase.from('siswa').select('*').eq('id', id).single();
+        if (error) {
+          console.error('Error fetching siswa data for edit:', error);
+          alert('Gagal mengambil data siswa untuk diedit.');
+          return;
+        }
         if (data) {
-          // Populate edit modal form
-          document.getElementById('edit-nama-input').value = data.nama;
-          document.getElementById('edit-kelas-select').value = data.kelas_id;
-          document.getElementById('edit-jk-input').value = data.jk;
-          document.getElementById('edit-nis-input').value = data.nis;
-          document.getElementById('edit-nisn-input').value = data.nisn;
+          // Populate edit modal form fields
+          const editNamaInput = document.getElementById('edit-nama-input');
+          const editKelasSelect = document.getElementById('edit-kelas-select');
+          const editJkInput = document.getElementById('edit-jk-input');
+          const editNisInput = document.getElementById('edit-nis-input');
+          const editNisnInput = document.getElementById('edit-nisn-input');
+
+          if (!editNamaInput || !editKelasSelect || !editJkInput || !editNisInput || !editNisnInput) {
+            alert('Form edit tidak lengkap atau belum dimuat.');
+            return;
+          }
+
+          editNamaInput.value = data.nama || '';
+          editKelasSelect.value = data.kelas_id || '';
+          editJkInput.value = data.jk || '';
+          editNisInput.value = data.nis || '';
+          editNisnInput.value = data.nisn || '';
+
           // Show edit modal
-          document.getElementById('modal-edit-siswa').classList.remove('hidden');
-          document.getElementById('modal-edit-siswa').classList.add('open');
+          const editModal = document.getElementById('modal-edit-siswa');
+          editModal.classList.remove('hidden');
+          editModal.classList.add('open');
+
           // Hide add modal if open
-          document.getElementById('modal-tambah-siswa').classList.add('hidden');
+          const addModal = document.getElementById('modal-tambah-siswa');
+          addModal.classList.add('hidden');
+
+          // Store edit id in form dataset
           document.getElementById('form-edit-siswa').dataset.editId = id;
         }
       } catch (error) {
