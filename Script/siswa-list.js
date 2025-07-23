@@ -69,10 +69,15 @@ loadKelas();
 
 // Fetch siswa data with kelas join
 async function loadSiswa() {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('siswa')
-    .select('id, nama, nis, nisn, jk, kelas_id, kelas:kelas_id(nama)')
+    .select('id, nama, nis, nisn, jk, kelas_id, kelas(*)')
     .order('nama');
+  if (error) {
+    console.error('Error fetching siswa data:', error);
+  } else {
+    console.log('Fetched siswa data:', data);
+  }
   siswaData = data || [];
   renderSiswaTable(document.getElementById('search-siswa')?.value || '', currentSort);
 }
