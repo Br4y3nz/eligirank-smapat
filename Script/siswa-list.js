@@ -126,7 +126,7 @@ function renderSiswaTable(filter = '', sortObj = currentSort) {
     <tr>
       <td>${s.nama}</td>
       <td>${s.kelas?.nama || '-'}</td>
-      <td>${s.jk === 'L' ? 'Laki-laki' : 'Perempuan'}</td>
+      <td>${s.jk}</td>
       <td>${s.nis}</td>
       <td>${s.nisn}</td>
       <td>
