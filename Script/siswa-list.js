@@ -160,26 +160,7 @@ function attachRowButtonEvents() {
   document.querySelectorAll('.btn-edit').forEach(btn => {
     btn.onclick = async function() {
       const id = this.dataset.id;
-      // Wait for the edit modal elements to be available
-      const waitForElement = (selector, timeout = 3000) => {
-        return new Promise((resolve, reject) => {
-          const interval = 50;
-          let elapsed = 0;
-          const timer = setInterval(() => {
-            const el = document.querySelector(selector);
-            if (el) {
-              clearInterval(timer);
-              resolve(el);
-            } else if (elapsed >= timeout) {
-              clearInterval(timer);
-              reject(new Error(`Element ${selector} not found within timeout`));
-            }
-            elapsed += interval;
-          }, interval);
-        });
-      };
       try {
-        await waitForElement('#edit-nama-input');
         const { data } = await supabase.from('siswa').select('*').eq('id', id).single();
         if (data) {
           // Populate edit modal form
