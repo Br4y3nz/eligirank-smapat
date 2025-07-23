@@ -116,33 +116,53 @@
 /* Table Controls */
 .table-controls {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
-.search-sort-add {
+.search-bar-container {
+  width: 100%;
+}
+
+.search-bar-container > input#search-siswa {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  border: 1.5px solid #d1d5db;
+  background: #f9fafb;
+  transition: border 0.2s;
+}
+
+.search-bar-container > input#search-siswa:focus {
+  border-color: #2563eb;
+  background: #fff;
+}
+
+.sort-add-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.search-sort-add > input#search-siswa {
-  flex-grow: 1;
-  min-width: 0;
-  max-width: 300px;
-}
-
-.search-sort-add > select#sort-dropdown {
-  flex-shrink: 0;
+.sort-add-container > select#sort-dropdown {
   min-width: 150px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  border: 1.5px solid #d1d5db;
+  background: #f9fafb;
+  transition: border 0.2s;
 }
 
-.search-sort-add > button#btn-tambah-siswa {
-  flex-shrink: 0;
+.sort-add-container > select#sort-dropdown:focus {
+  border-color: #2563eb;
+  background: #fff;
+}
+
+.sort-add-container > button#btn-tambah-siswa {
   width: 36px;
   height: 36px;
   font-size: 24px;
@@ -155,7 +175,7 @@
   transition: background-color 0.3s ease;
 }
 
-.search-sort-add > button#btn-tambah-siswa:hover {
+.sort-add-container > button#btn-tambah-siswa:hover {
   background-color: #1e40af;
 }
 
