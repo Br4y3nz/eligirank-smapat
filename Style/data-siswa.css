@@ -446,6 +446,72 @@ input, select {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-sizing: border-box;
+}
+
+/* Responsive modal content for smaller screens */
+@media (max-width: 600px) {
+  .modal-content {
+    max-width: 95vw;
+    padding: 1rem;
+  }
+}
+
+/* Modal form inputs */
+.modal-content form input,
+.modal-content form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  font-size: 1rem;
+  background: #f9fafb;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+
+.modal-content form input:focus,
+.modal-content form select:focus {
+  border-color: #2563eb;
+  background: #fff;
+}
+
+/* Modal actions buttons */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.modal-actions button[type="submit"],
+.modal-actions button[type="button"] {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.modal-actions button[type="submit"] {
+  background: #2563eb;
+  color: #fff;
+}
+
+.modal-actions button[type="submit"]:hover {
+  background: #1d4ed8;
+}
+
+.modal-actions button[type="button"] {
+  background: #f87171;
+  color: #fff;
+}
+
+.modal-actions button[type="button"]:hover {
+  background: #dc2626;
 }
 
 /* Form fields */

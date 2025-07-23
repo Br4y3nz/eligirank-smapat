@@ -43,13 +43,27 @@ document.getElementById("btn-tambah-siswa").onclick = () => {
   modal.classList.add("open");
 };
 
-// Hide modal when "Batal" is clicked
+// Hide modal when "Batal" is clicked (Add modal)
 document.getElementById("batal-tambah").onclick = () => {
   const modal = document.getElementById("modal-tambah-siswa");
   modal.classList.remove("open");
   modal.classList.add("hidden");
   resetForm();
 };
+
+// Hide modal when "Batal" is clicked (Edit modal)
+document.getElementById("batal-edit").onclick = () => {
+  const modal = document.getElementById("modal-edit-siswa");
+  modal.classList.remove("open");
+  modal.classList.add("hidden");
+  resetEditForm();
+};
+
+// Reset edit form fields and editId
+function resetEditForm() {
+  document.getElementById('form-edit-siswa').reset();
+  delete document.getElementById('form-edit-siswa').dataset.editId;
+}
 
 // Populate kelas select
 async function loadKelas() {
