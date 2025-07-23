@@ -169,7 +169,7 @@ function attachRowButtonEvents() {
             if (document.getElementById('form-edit-siswa')) {
               clearInterval(timer);
               resolve();
-            } else if (elapsed >= 3000) {
+            } else if (elapsed >= 5000) { // increased timeout to 5 seconds
               clearInterval(timer);
               reject(new Error('Edit form not found in DOM'));
             }
