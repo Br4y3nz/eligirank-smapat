@@ -90,7 +90,7 @@ input, select {
 #siswa-table td:nth-child(1),
 #siswa-table td:nth-child(2),
 #siswa-table td:nth-child(3) {
-  text-align: left;
+  text-align: center;
 }
 #siswa-table td:nth-child(4),
 #siswa-table td:nth-child(5),
@@ -106,13 +106,13 @@ input, select {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 36px;
-  height: 36px;
-  margin: 0 4px;
+  width: 28px;
+  height: 28px;
+  margin: 0 3px;
   padding: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
@@ -189,9 +189,9 @@ input, select {
 
 .sort-add-container > select#sort-dropdown {
   min-width: 150px;
-  padding: 10px 16px;
+  padding: 6px 12px;
   border-radius: 8px;
-  font-size: 1.05rem;
+  font-size: 1rem;
   border: 1.5px solid #d1d5db;
   background: #f9fafb;
   transition: border 0.2s;
