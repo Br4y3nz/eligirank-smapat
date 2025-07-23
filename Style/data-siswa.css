@@ -317,9 +317,24 @@ input, select {
   }
   #siswa-table {
     font-size: 0.85rem;
+    min-width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
   }
   #siswa-table th, #siswa-table td {
     padding: 6px 4px;
+    white-space: normal;
+  }
+  /* Make action buttons smaller and stacked vertically */
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .btn-edit, .btn-delete, .btn-view {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    padding: 0;
   }
 }
 
