@@ -160,20 +160,44 @@ function attachRowButtonEvents() {
   document.querySelectorAll('.btn-edit').forEach(btn => {
     btn.onclick = async function() {
       const id = this.dataset.id;
-      const { data } = await supabase.from('siswa').select('*').eq('id', id).single();
-      if (data) {
-        // Populate edit modal form
-        document.getElementById('edit-nama-input').value = data.nama;
-        document.getElementById('edit-kelas-select').value = data.kelas_id;
-        document.getElementById('edit-jk-input').value = data.jk;
-        document.getElementById('edit-nis-input').value = data.nis;
-        document.getElementById('edit-nisn-input').value = data.nisn;
-        // Show edit modal
-        document.getElementById('modal-edit-siswa').classList.remove('hidden');
-        document.getElementById('modal-edit-siswa').classList.add('open');
-        // Hide add modal if open
-        document.getElementById('modal-tambah-siswa').classList.add('hidden');
-        document.getElementById('form-edit-siswa').dataset.editId = id;
+      // Wait for the edit modal elements to be available
+      const waitForElement = (selector, timeout = 3000) => {
+        return new Promise((resolve, reject) => {
+          const interval = 50;
+          let elapsed = 0;
+          const timer = setInterval(() => {
+            const el = document.querySelector(selector);
+            if (el) {
+              clearInterval(timer);
+              resolve(el);
+            } else if (elapsed >= timeout) {
+              clearInterval(timer);
+              reject(new Error(`Element ${selector} not found within timeout`));
+            }
+            elapsed += interval;
+          }, interval);
+        });
+      };
+      try {
+        await waitForElement('#edit-nama-input');
+        const { data } = await supabase.from('siswa').select('*').eq('id', id).single();
+        if (data) {
+          // Populate edit modal form
+          document.getElementById('edit-nama-input').value = data.nama;
+          document.getElementById('edit-kelas-select').value = data.kelas_id;
+          document.getElementById('edit-jk-input').value = data.jk;
+          document.getElementById('edit-nis-input').value = data.nis;
+          document.getElementById('edit-nisn-input').value = data.nisn;
+          // Show edit modal
+          document.getElementById('modal-edit-siswa').classList.remove('hidden');
+          document.getElementById('modal-edit-siswa').classList.add('open');
+          // Hide add modal if open
+          document.getElementById('modal-tambah-siswa').classList.add('hidden');
+          document.getElementById('form-edit-siswa').dataset.editId = id;
+        }
+      } catch (error) {
+        console.error('Error showing edit modal:', error);
+        alert('Gagal membuka form edit. Silakan coba lagi.');
       }
     };
   });
