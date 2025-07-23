@@ -336,6 +336,8 @@ input, select {
   border: 1.5px solid #d1d5db;
   background: #f9fafb;
   transition: border 0.2s;
+  text-align: center;
+  vertical-align: middle;
 }
 .table-controls input[type="text"]:focus,
 .table-controls select:focus {
