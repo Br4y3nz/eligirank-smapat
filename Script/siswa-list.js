@@ -161,27 +161,21 @@ function attachRowButtonEvents() {
     btn.onclick = async function() {
       const id = this.dataset.id;
       try {
-        // Wait for edit modal form to be in DOM
-        await new Promise((resolve, reject) => {
-          const interval = 50;
-          let elapsed = 0;
-          const timer = setInterval(() => {
-            if (document.getElementById('form-edit-siswa')) {
-              clearInterval(timer);
-              resolve();
-            } else if (elapsed >= 5000) { // increased timeout to 5 seconds
-              clearInterval(timer);
-              reject(new Error('Edit form not found in DOM'));
-            }
-            elapsed += interval;
-          }, interval);
-        });
+        // Check if modal is hidden by display:none and temporarily show it to access elements
+        const editModal = document.getElementById('modal-edit-siswa');
+        const wasHidden = editModal.classList.contains('hidden');
+        if (wasHidden) {
+          editModal.style.display = 'block';
+        }
 
         // Fetch siswa data by id
         const { data, error } = await supabase.from('siswa').select('*').eq('id', id).single();
         if (error) {
           console.error('Error fetching siswa data for edit:', error);
           alert('Gagal mengambil data siswa untuk diedit.');
+          if (wasHidden) {
+            editModal.style.display = '';
+          }
           return;
         }
         if (data) {
@@ -194,6 +188,9 @@ function attachRowButtonEvents() {
 
           if (!editNamaInput || !editKelasSelect || !editJkInput || !editNisInput || !editNisnInput) {
             alert('Form edit tidak lengkap atau belum dimuat.');
+            if (wasHidden) {
+              editModal.style.display = '';
+            }
             return;
           }
 
@@ -204,7 +201,6 @@ function attachRowButtonEvents() {
           editNisnInput.value = data.nisn || '';
 
           // Show edit modal
-          const editModal = document.getElementById('modal-edit-siswa');
           editModal.classList.remove('hidden');
           editModal.classList.add('open');
 
@@ -214,6 +210,10 @@ function attachRowButtonEvents() {
 
           // Store edit id in form dataset
           document.getElementById('form-edit-siswa').dataset.editId = id;
+
+          if (wasHidden) {
+            editModal.style.display = '';
+          }
         }
       } catch (error) {
         console.error('Error showing edit modal:', error);
