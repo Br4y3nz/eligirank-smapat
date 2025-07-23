@@ -159,6 +159,8 @@ input, select {
   align-items: center;
   margin: 0;
   font-size: 1.3rem;
+  position: relative;
+  left: 3px; /* adjust to center icons */
 }
 .btn-edit {
   background: #fbbf24;
