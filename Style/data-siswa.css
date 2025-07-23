@@ -91,6 +91,7 @@ input, select {
 #siswa-table td:nth-child(2),
 #siswa-table td:nth-child(3) {
   text-align: center;
+  font-weight: 600;
 }
 #siswa-table td:nth-child(4),
 #siswa-table td:nth-child(5),
