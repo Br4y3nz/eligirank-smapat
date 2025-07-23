@@ -1,4 +1,4 @@
-import supabase from '../Supabase/client.js';
+  import supabase from '../Supabase/client.js';
 
 let siswaData = [];
 let kelasList = [];
@@ -162,13 +162,18 @@ function attachRowButtonEvents() {
       const id = this.dataset.id;
       const { data } = await supabase.from('siswa').select('*').eq('id', id).single();
       if (data) {
-        document.getElementById('nama-input').value = data.nama;
-        document.getElementById('kelas-select').value = data.kelas_id;
-        document.getElementById('jk-input').value = data.jk;
-        document.getElementById('nis-input').value = data.nis;
-        document.getElementById('nisn-input').value = data.nisn;
-        document.getElementById('modal-tambah-siswa').classList.remove('hidden');
-        document.getElementById('form-tambah-siswa').dataset.editId = id;
+        // Populate edit modal form
+        document.getElementById('edit-nama-input').value = data.nama;
+        document.getElementById('edit-kelas-select').value = data.kelas_id;
+        document.getElementById('edit-jk-input').value = data.jk;
+        document.getElementById('edit-nis-input').value = data.nis;
+        document.getElementById('edit-nisn-input').value = data.nisn;
+        // Show edit modal
+        document.getElementById('modal-edit-siswa').classList.remove('hidden');
+        document.getElementById('modal-edit-siswa').classList.add('open');
+        // Hide add modal if open
+        document.getElementById('modal-tambah-siswa').classList.add('hidden');
+        document.getElementById('form-edit-siswa').dataset.editId = id;
       }
     };
   });
@@ -196,20 +201,13 @@ function generateUUID() {
   });
 }
 
-// Form submit (Add/Edit)
+// Form submit (Add)
 document.getElementById("form-tambah-siswa").onsubmit = async (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);
   const siswaData = Object.fromEntries(formData.entries());
-  const editId = e.target.dataset.editId;
-  let result;
-  if (editId) {
-    result = await supabase.from("siswa").update(siswaData).eq('id', editId);
-    delete e.target.dataset.editId;
-  } else {
-    siswaData.id = generateUUID();
-    result = await supabase.from("siswa").insert([siswaData]);
-  }
+  siswaData.id = generateUUID();
+  const result = await supabase.from("siswa").insert([siswaData]);
   if (result.error) {
     alert("Gagal menyimpan data siswa: " + result.error.message);
     console.error(result.error);
@@ -217,6 +215,28 @@ document.getElementById("form-tambah-siswa").onsubmit = async (e) => {
     alert("Siswa berhasil disimpan.");
     document.getElementById("modal-tambah-siswa").classList.add("hidden");
     resetForm();
+    await loadSiswa();
+  }
+};
+
+// Form submit (Edit)
+document.getElementById("form-edit-siswa").onsubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const siswaData = Object.fromEntries(formData.entries());
+  const editId = e.target.dataset.editId;
+  if (!editId) {
+    alert("ID siswa tidak ditemukan.");
+    return;
+  }
+  const result = await supabase.from("siswa").update(siswaData).eq('id', editId);
+  if (result.error) {
+    alert("Gagal mengupdate data siswa: " + result.error.message);
+    console.error(result.error);
+  } else {
+    alert("Siswa berhasil diupdate.");
+    document.getElementById("modal-edit-siswa").classList.add("hidden");
+    resetEditForm();
     await loadSiswa();
   }
 };
