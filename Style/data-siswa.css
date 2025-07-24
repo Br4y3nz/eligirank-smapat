@@ -153,7 +153,7 @@ input, select {
   transition: background 0.3s, color 0.3s, box-shadow 0.3s;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.btn-edit i, .btn-delete i, .btn-view i {
+.btn-edit i, .btn-delete i {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -161,6 +161,15 @@ input, select {
   font-size: 1.3rem;
   position: relative;
   left: 3px; /* adjust to center icons */
+}
+.btn-view i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-size: 1.3rem;
+  position: relative;
+  left: 0; /* reset left offset for view icon */
 }
 .btn-edit {
   background: #fbbf24;
