@@ -124,7 +124,7 @@ body {
 }
 
 /* Responsive data-label for mobile */
-@media (max-width: 360px) {
+@media (max-width: 359px) {
   .rapor-table thead {
     display: none;
   }
