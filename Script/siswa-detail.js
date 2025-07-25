@@ -124,7 +124,7 @@ document.getElementById('semester-select').addEventListener('change', async (e) 
   await loadCurrentRapor();
 });
 
-document.getElementById('btn-add-mapel').onclick = async function() {
+document.getElementById('btn-add-mapel').addEventListener('click', async () => {
   if (!currentSiswaId) {
     alert("ID siswa tidak ditemukan.");
     return;
@@ -154,22 +154,21 @@ document.getElementById('btn-add-mapel').onclick = async function() {
     addMapelSelect.appendChild(option);
   });
 
-  // Show add modal
+  // Show add modal by removing hidden class
   const addModal = document.getElementById('modal-add-mapel');
-  addModal.style.display = 'block';
+  addModal.classList.remove('hidden');
   addModal.setAttribute('aria-hidden', 'false');
 
   // Clear previous form inputs and errors
   document.getElementById('form-add-mapel').reset();
   clearAddFormErrors();
-};
+});
 
-// Cancel add modal
-document.getElementById('btn-cancel-add').onclick = () => {
+document.getElementById('btn-cancel-add').addEventListener('click', () => {
   const addModal = document.getElementById('modal-add-mapel');
-  addModal.style.display = 'none';
+  addModal.classList.add('hidden');
   addModal.setAttribute('aria-hidden', 'true');
-};
+});
 
 // Add form submit handler
 document.getElementById('form-add-mapel').onsubmit = async (e) => {
@@ -318,18 +317,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   await fetchStudentInfo(siswaId);
   await main();
 
-  // Adjust margins if navbar and sidebar are detected
+  // Adjust margins based on sidebar presence and screen size
   const sidebar = document.getElementById('sidebar-container');
   const navbar = document.querySelector('nav'); // Assuming navbar is a <nav> element
   const mainContent = document.querySelector('main.rapor-container');
 
-  if (navbar) {
-    if (window.innerWidth <= 768) {
-      // Mobile: add bottom margin to main content to avoid overlap with navbar
-      mainContent.style.marginBottom = '70px';
-    } else {
-      // Desktop: add left margin to main content to avoid overlap with sidebar
-      mainContent.style.marginLeft = '80px';
-    }
+  if (sidebar && sidebar.children.length > 0) {
+    // Sidebar present, add left margin
+    mainContent.style.marginLeft = '80px';
+    mainContent.style.marginBottom = '0';
+  } else if (navbar && window.innerWidth <= 768) {
+    // No sidebar, mobile navbar present, add bottom margin
+    mainContent.style.marginBottom = '70px';
+    mainContent.style.marginLeft = '0';
+  } else {
+    // Default no margin
+    mainContent.style.marginLeft = '0';
+    mainContent.style.marginBottom = '0';
   }
 });
