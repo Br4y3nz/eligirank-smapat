@@ -43,7 +43,7 @@
             <th scope="col">Mapel</th>
             <th scope="col">Nilai</th>
             <th scope="col">Grade</th>
-            <th scope="col">Aksi</th>
+            <th scope="col" class="action-column">Aksi</th>
           </tr>
         </thead>
         <tbody id="tabel-rapor">
@@ -70,9 +70,7 @@
         .then(res => res.text())
         .then(html => {
           document.getElementById('sidebar-container').innerHTML = html;
-          console.log('Sidebar loaded ✅');
           initializeSidebar();
-          console.log('Sidebar initialized ✅');
         })
         .catch(err => console.error('Failed to load sidebar:', err));
     });
@@ -82,11 +80,13 @@
   <div id="modal-edit-mapel" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-edit-title" aria-modal="true" style="display:none;">
     <div class="modal-content" role="document">
       <h2 id="modal-edit-title">Edit Mapel</h2>
-      <form id="form-edit-mapel">
+      <form id="form-edit-mapel" novalidate>
         <label for="edit-mapel-name">Nama Mapel:</label>
-        <input type="text" id="edit-mapel-name" name="mapel" required />
+        <input type="text" id="edit-mapel-name" name="mapel" required aria-required="true" aria-describedby="edit-mapel-name-error" />
+        <span id="edit-mapel-name-error" class="error-message" aria-live="polite"></span>
         <label for="edit-mapel-nilai">Nilai (0-100):</label>
-        <input type="number" id="edit-mapel-nilai" name="nilai" min="0" max="100" required />
+        <input type="number" id="edit-mapel-nilai" name="nilai" min="0" max="100" required aria-required="true" aria-describedby="edit-mapel-nilai-error" />
+        <span id="edit-mapel-nilai-error" class="error-message" aria-live="polite"></span>
         <div class="modal-buttons">
           <button type="submit" class="btn-submit">Simpan</button>
           <button type="button" id="btn-cancel-edit" class="btn-cancel">Batal</button>
@@ -99,13 +99,15 @@
   <div id="modal-add-mapel" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-add-title" aria-modal="true" style="display:none;">
     <div class="modal-content" role="document">
       <h2 id="modal-add-title">Tambah Mapel</h2>
-      <form id="form-add-mapel">
+      <form id="form-add-mapel" novalidate>
         <label for="add-mapel-select">Pilih Mapel:</label>
-        <select id="add-mapel-select" name="mapel" required>
+        <select id="add-mapel-select" name="mapel" required aria-required="true" aria-describedby="add-mapel-select-error">
           <!-- Options will be populated dynamically -->
         </select>
+        <span id="add-mapel-select-error" class="error-message" aria-live="polite"></span>
         <label for="add-mapel-nilai">Nilai (0-100):</label>
-        <input type="number" id="add-mapel-nilai" name="nilai" min="0" max="100" required />
+        <input type="number" id="add-mapel-nilai" name="nilai" min="0" max="100" required aria-required="true" aria-describedby="add-mapel-nilai-error" />
+        <span id="add-mapel-nilai-error" class="error-message" aria-live="polite"></span>
         <div class="modal-buttons">
           <button type="submit" class="btn-submit">Tambah</button>
           <button type="button" id="btn-cancel-add" class="btn-cancel">Batal</button>
