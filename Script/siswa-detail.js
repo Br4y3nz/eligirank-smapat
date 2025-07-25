@@ -62,6 +62,7 @@ async function loadRapor(siswaId) {
     .single();
 
   if (siswaError || !siswa) {
+    console.error("Error fetching siswa:", siswaError);
     alert("Data siswa tidak ditemukan.");
     return;
   }
@@ -73,6 +74,7 @@ async function loadRapor(siswaId) {
     .eq("semester", currentSemester);
 
   if (raporError) {
+    console.error("Error fetching rapor:", raporError);
     alert("Gagal mengambil data rapor.");
     return;
   }
