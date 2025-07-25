@@ -134,9 +134,10 @@ function attachEventDelegation() {
 async function loadCurrentRapor() {
   if (!currentSiswaId) return;
   showLoading(true);
+  // Join rapor with mapel table to get mapel name
   const { data: rapor, error } = await supabase
     .from('rapor')
-    .select('id, mapel, nilai')
+    .select('id, nilai, mapel:mapel_id(nama)')
     .eq('siswa_id', currentSiswaId)
     .eq('semester', currentSemester);
   showLoading(false);
@@ -145,7 +146,13 @@ async function loadCurrentRapor() {
     console.error(error);
     return;
   }
-  tampilkanRapor(rapor || []);
+  // Map data to include mapel name at top level
+  const mappedRapor = rapor.map(item => ({
+    id: item.id,
+    nilai: item.nilai,
+    mapel: item.mapel ? item.mapel.nama : 'Unknown'
+  }));
+  tampilkanRapor(mappedRapor || []);
 }
 
 document.getElementById('semester-select').addEventListener('change', async (e) => {
