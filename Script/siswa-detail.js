@@ -134,10 +134,10 @@ function attachEventDelegation() {
 async function loadCurrentRapor() {
   if (!currentSiswaId) return;
   showLoading(true);
-  // Join rapor with mapel table to get mapel name
+  // Fetch rapor data without join
   const { data: rapor, error } = await supabase
     .from('rapor')
-    .select('id, nilai, mapel:mapel_id(nama)')
+    .select('id, nilai, mapel_id')
     .eq('siswa_id', currentSiswaId)
     .eq('semester', currentSemester);
   showLoading(false);
@@ -146,11 +146,27 @@ async function loadCurrentRapor() {
     console.error(error);
     return;
   }
-  // Map data to include mapel name at top level
+  // Fetch mapel names separately
+  const mapelIds = rapor.map(r => r.mapel_id);
+  const { data: mapelData, error: mapelError } = await supabase
+    .from('mapel')
+    .select('id, nama')
+    .in('id', mapelIds);
+  if (mapelError) {
+    alert("Gagal mengambil data mapel.");
+    console.error(mapelError);
+    return;
+  }
+  // Map mapel_id to nama
+  const mapelMap = {};
+  mapelData.forEach(m => {
+    mapelMap[m.id] = m.nama;
+  });
+  // Map rapor data with mapel names
   const mappedRapor = rapor.map(item => ({
     id: item.id,
     nilai: item.nilai,
-    mapel: item.mapel ? item.mapel.nama : 'Unknown'
+    mapel: mapelMap[item.mapel_id] || 'Unknown'
   }));
   tampilkanRapor(mappedRapor || []);
 }
