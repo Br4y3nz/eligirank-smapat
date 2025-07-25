@@ -125,15 +125,46 @@ document.getElementById('btn-add-mapel').onclick = async function() {
     alert("ID siswa tidak ditemukan.");
     return;
   }
-  const mapel = prompt("Masukkan nama mapel:");
-  if (!mapel) return;
+  // Fetch mapel options from supabase
+  const { data: mapelOptions, error: mapelError } = await supabase
+    .from('mapel')
+    .select('id, nama')
+    .order('nama', { ascending: true });
+  if (mapelError) {
+    alert("Gagal mengambil daftar mapel.");
+    console.error(mapelError);
+    return;
+  }
+  if (!mapelOptions || mapelOptions.length === 0) {
+    alert("Daftar mapel kosong.");
+    return;
+  }
+  // Create a prompt with options
+  const mapelNames = mapelOptions.map(m => m.nama);
+  let mapelChoice = prompt("Pilih mapel:\n" + mapelNames.map((name, i) => `${i + 1}. ${name}`).join('\n'));
+  if (!mapelChoice) return;
+  // If user entered a number, convert to mapel name
+  const mapelIndex = parseInt(mapelChoice);
+  if (!isNaN(mapelIndex) && mapelIndex >= 1 && mapelIndex <= mapelNames.length) {
+    mapelChoice = mapelNames[mapelIndex - 1];
+  }
+  if (!mapelNames.includes(mapelChoice)) {
+    alert("Mapel tidak valid.");
+    return;
+  }
+  // Find mapel id by name
+  const selectedMapel = mapelOptions.find(m => m.nama === mapelChoice);
+  if (!selectedMapel) {
+    alert("Mapel tidak ditemukan.");
+    return;
+  }
   const nilaiStr = prompt("Masukkan nilai (0-100):");
   const nilai = parseInt(nilaiStr);
   if (isNaN(nilai) || nilai < 0 || nilai > 100) {
     alert("Nilai tidak valid.");
     return;
   }
-  const { error } = await supabase.from('rapor').insert([{ siswa_id: currentSiswaId, semester: currentSemester, mapel, nilai }]);
+  const { error } = await supabase.from('rapor').insert([{ siswa_id: currentSiswaId, semester: currentSemester, mapel_id: selectedMapel.id, nilai }]);
   if (error) {
     alert("Gagal menambahkan data mapel.");
     console.error(error);

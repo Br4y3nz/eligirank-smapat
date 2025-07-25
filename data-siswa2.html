@@ -16,16 +16,17 @@
 <body>
   <div id="sidebar-container"></div>
 
-  <main class="rapor-container">
-    <h1 class="rapor-title">Rapor Siswa</h1>
+  <main class="rapor-container" role="main" aria-labelledby="rapor-title">
+    <h1 id="rapor-title" class="rapor-title">Rapor Siswa</h1>
 
-    <div class="student-info">
-      <div class="info-box">Nama: <span id="student-name">-</span></div>
-      <div class="info-box">Kelas: <span id="student-class">-</span></div>
-    </div>
+    <section class="student-info" aria-label="Informasi Siswa">
+      <div class="info-box" role="region" aria-live="polite">Nama: <span id="student-name">-</span></div>
+      <div class="info-box" role="region" aria-live="polite">Kelas: <span id="student-class">-</span></div>
+    </section>
 
-    <div class="semester-filter">
-      <select id="semester-select" aria-label="Pilih Semester">
+    <section class="semester-filter" aria-label="Filter Semester">
+      <label for="semester-select" class="visually-hidden">Pilih Semester</label>
+      <select id="semester-select" aria-controls="tabel-rapor" aria-describedby="semester-desc">
         <option value="1" selected>Semester 1</option>
         <option value="2">Semester 2</option>
         <option value="3">Semester 3</option>
@@ -33,23 +34,25 @@
         <option value="5">Semester 5</option>
         <option value="6">Semester 6</option>
       </select>
-    </div>
+      <p id="semester-desc" class="visually-hidden">Pilih semester untuk menampilkan rapor siswa sesuai semester</p>
+    </section>
 
-    <section class="rapor-table-section">
-      <table class="rapor-table">
+    <section class="rapor-table-section" aria-label="Tabel Rapor Siswa">
+      <table class="rapor-table" role="table" aria-describedby="rata-rata">
+        <caption class="visually-hidden">Tabel nilai dan grade mapel siswa</caption>
         <thead>
           <tr>
-            <th>Mapel</th>
-            <th>Nilai</th>
-            <th>Grade</th>
-            <th>Aksi</th>
+            <th scope="col">Mapel</th>
+            <th scope="col">Nilai</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody id="tabel-rapor">
           <!-- Rows will be inserted here -->
         </tbody>
       </table>
-      <table class="rata-rata-table">
+      <table class="rata-rata-table" role="table" aria-label="Rata-rata nilai">
         <tbody>
           <tr>
             <td><strong>Rata-rata</strong></td>
@@ -57,7 +60,7 @@
           </tr>
         </tbody>
       </table>
-      <button id="btn-add-mapel" class="btn-add">Tambah Mapel</button>
+      <button id="btn-add-mapel" class="btn-add" aria-label="Tambah Mapel dan Nilai">Tambah Mapel</button>
     </section>
   </main>
 
