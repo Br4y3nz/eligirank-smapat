@@ -9,7 +9,7 @@ body {
 }
 
 .rapor-container {
-  max-width: 720px;
+  max-width: 9999px;
   min-width: 359px;
   margin: 1rem auto;
   padding: 0.5rem 1rem;
