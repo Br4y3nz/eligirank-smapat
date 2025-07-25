@@ -106,4 +106,26 @@ async function main() {
   await loadRapor(siswaId);
 }
 
-document.addEventListener("DOMContentLoaded", main);
+const urlParams = new URLSearchParams(window.location.search);
+const studentId = urlParams.get('id');
+
+async function fetchStudentInfo() {
+  const { data, error } = await supabase
+    .from('siswa')
+    .select('nama, kelas')
+    .eq('id', studentId)
+    .single();
+
+  if (error) {
+    console.error('Failed to fetch student info:', error);
+    return;
+  }
+
+  document.getElementById('student-name').textContent = data.nama;
+  document.getElementById('student-class').textContent = data.kelas;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchStudentInfo();
+  main();
+});

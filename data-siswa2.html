@@ -17,11 +17,17 @@
   <div id="sidebar-container"></div>
 
   <main class="rapor-container">
-    <h1>Rapor Siswa</h1>
-    <section class="info-siswa">
-      <p><strong>Nama:</strong> <span id="nama">-</span></p>
-      <p><strong>Kelas:</strong> <span id="kelas">-</span></p>
-    </section>
+    <h1 class="rapor-title">Rapor Siswa</h1>
+
+    <div class="student-info">
+      <div class="info-box">Nama: <span id="student-name">-</span></div>
+      <div class="info-box">Kelas: <span id="student-class">-</span></div>
+    </div>
+
+    <div class="semester-filter">
+      <button id="semester-button" class="active">Semester 1</button>
+      <!-- You can add more semesters later -->
+    </div>
 
     <section class="rapor-table-section">
       <table class="rapor-table">
