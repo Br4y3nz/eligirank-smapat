@@ -10,13 +10,43 @@
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="Style/role-modal.css" />
   <link rel="stylesheet" href="Style/user-info-modal.css" />
+  <link rel="stylesheet" href="Style/rapor.css" />
+  <script type="module" src="/Script/siswa-detail.js" defer></script>
 </head>
 <body>
   <div id="sidebar-container"></div>
 
+  <main class="rapor-container">
+    <h1>Rapor Siswa</h1>
+    <section class="info-siswa">
+      <p><strong>Nama:</strong> <span id="nama">-</span></p>
+      <p><strong>Kelas:</strong> <span id="kelas">-</span></p>
+    </section>
+
+    <section class="rapor-table-section">
+      <table class="rapor-table">
+        <thead>
+          <tr>
+            <th>Mapel</th>
+            <th>Nilai</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-rapor">
+          <!-- Rows will be inserted here -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>Rata-rata</strong></td>
+            <td id="rata-rata" colspan="2">-</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+  </main>
+
   <script type="module">
     import { initializeSidebar } from '/Script/sidebar.js';
-    import supabase from '/Supabase/client.js';
 
     document.addEventListener('DOMContentLoaded', () => {
       fetch('/sidebar.html')

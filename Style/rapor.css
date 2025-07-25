@@ -1,0 +1,56 @@
+.rapor-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: var(--color-bg);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.rapor-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+
+.info-siswa {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.info-siswa p {
+  margin: 0.3rem 0;
+}
+
+.rapor-table-section {
+  overflow-x: auto;
+}
+
+.rapor-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.rapor-table th,
+.rapor-table td {
+  border: 1px solid var(--color-border);
+  padding: 0.75rem 1rem;
+  text-align: center;
+}
+
+.rapor-table th {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.rapor-table tbody tr:nth-child(even) {
+  background-color: var(--color-bg-alt);
+}
+
+.rapor-table tfoot td {
+  font-weight: bold;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  text-align: center;
+}
