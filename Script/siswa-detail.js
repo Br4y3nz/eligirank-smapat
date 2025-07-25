@@ -154,9 +154,10 @@ document.getElementById('btn-add-mapel').addEventListener('click', async () => {
     addMapelSelect.appendChild(option);
   });
 
-  // Show add modal by removing hidden class
+  // Show add modal by removing hidden class and setting display flex
   const addModal = document.getElementById('modal-add-mapel');
   addModal.classList.remove('hidden');
+  addModal.style.display = 'flex';
   addModal.setAttribute('aria-hidden', 'false');
 
   // Clear previous form inputs and errors
