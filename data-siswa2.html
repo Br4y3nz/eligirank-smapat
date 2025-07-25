@@ -79,5 +79,41 @@
         .catch(err => console.error('Failed to load sidebar:', err));
     });
   </script>
+
+  <!-- Modal for editing mapel -->
+  <div id="modal-edit-mapel" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-edit-title" aria-modal="true" style="display:none;">
+    <div class="modal-content" role="document">
+      <h2 id="modal-edit-title">Edit Mapel</h2>
+      <form id="form-edit-mapel">
+        <label for="edit-mapel-name">Nama Mapel:</label>
+        <input type="text" id="edit-mapel-name" name="mapel" required />
+        <label for="edit-mapel-nilai">Nilai (0-100):</label>
+        <input type="number" id="edit-mapel-nilai" name="nilai" min="0" max="100" required />
+        <div class="modal-buttons">
+          <button type="submit" class="btn-submit">Simpan</button>
+          <button type="button" id="btn-cancel-edit" class="btn-cancel">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal for adding mapel -->
+  <div id="modal-add-mapel" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-add-title" aria-modal="true" style="display:none;">
+    <div class="modal-content" role="document">
+      <h2 id="modal-add-title">Tambah Mapel</h2>
+      <form id="form-add-mapel">
+        <label for="add-mapel-select">Pilih Mapel:</label>
+        <select id="add-mapel-select" name="mapel" required>
+          <!-- Options will be populated dynamically -->
+        </select>
+        <label for="add-mapel-nilai">Nilai (0-100):</label>
+        <input type="number" id="add-mapel-nilai" name="nilai" min="0" max="100" required />
+        <div class="modal-buttons">
+          <button type="submit" class="btn-submit">Tambah</button>
+          <button type="button" id="btn-cancel-add" class="btn-cancel">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
