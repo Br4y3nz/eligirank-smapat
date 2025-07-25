@@ -246,6 +246,21 @@ body {
   position: relative;
   padding-bottom: 3.5rem;
 }
+
+/* Rata-rata box styling */
+.rata-rata-box {
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: right;
+  margin-top: 1rem;
+  max-width: 200px;
+  margin-left: auto;
+}
+
 .btn-add {
   position: absolute;
   bottom: 0.5rem;
