@@ -1,5 +1,24 @@
 import supabase from '../Supabase/client.js';
 
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.getElementById('sidebar-container');
+  const navbar = document.querySelector('nav'); // Assuming navbar is a <nav> element
+  const mainContent = document.querySelector('main');
+
+  if (!mainContent) return;
+
+  if (navbar) {
+    if (window.innerWidth <= 768) {
+      // Mobile: add bottom margin to main content to avoid overlap with navbar
+      mainContent.style.marginBottom = '75px';
+    } else {
+      // Desktop: add left margin to main content to avoid overlap with sidebar
+      mainContent.style.marginLeft = '80px';
+    }
+  }
+});
+
+
 // If you don't have real auth, use a dummy function for now:
 function checkAuth() {
   return supabase.auth.getSession().then(({ data: { session } }) => {

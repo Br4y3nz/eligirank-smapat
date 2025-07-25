@@ -53,7 +53,11 @@ function tampilkanRapor(data) {
   });
 
   const rata2 = data.length > 0 ? total / data.length : 0;
-  document.getElementById("rata-rata").textContent = rata2.toFixed(2);
+  const rataElem = document.getElementById("rata-rata");
+  if (rataElem) {
+    rataElem.textContent = rata2.toFixed(2);
+    rataElem.classList.add("rata-rata-box");
+  }
 
   attachMapelRowEvents();
 }
@@ -139,39 +143,75 @@ document.getElementById('btn-add-mapel').onclick = async function() {
     alert("Daftar mapel kosong.");
     return;
   }
-  // Create a prompt with options
-  const mapelNames = mapelOptions.map(m => m.nama);
-  let mapelChoice = prompt("Pilih mapel:\n" + mapelNames.map((name, i) => `${i + 1}. ${name}`).join('\n'));
-  if (!mapelChoice) return;
-  // If user entered a number, convert to mapel name
-  const mapelIndex = parseInt(mapelChoice);
-  if (!isNaN(mapelIndex) && mapelIndex >= 1 && mapelIndex <= mapelNames.length) {
-    mapelChoice = mapelNames[mapelIndex - 1];
+
+  // Populate add modal select options
+  const addMapelSelect = document.getElementById('add-mapel-select');
+  addMapelSelect.innerHTML = '';
+  mapelOptions.forEach(m => {
+    const option = document.createElement('option');
+    option.value = m.id;
+    option.textContent = m.nama;
+    addMapelSelect.appendChild(option);
+  });
+
+  // Show add modal
+  const addModal = document.getElementById('modal-add-mapel');
+  addModal.style.display = 'block';
+  addModal.setAttribute('aria-hidden', 'false');
+
+  // Clear previous form inputs and errors
+  document.getElementById('form-add-mapel').reset();
+  clearAddFormErrors();
+};
+
+// Cancel add modal
+document.getElementById('btn-cancel-add').onclick = () => {
+  const addModal = document.getElementById('modal-add-mapel');
+  addModal.style.display = 'none';
+  addModal.setAttribute('aria-hidden', 'true');
+};
+
+// Add form submit handler
+document.getElementById('form-add-mapel').onsubmit = async (e) => {
+  e.preventDefault();
+  clearAddFormErrors();
+
+  const mapelId = document.getElementById('add-mapel-select').value;
+  const nilaiInput = document.getElementById('add-mapel-nilai');
+  const nilai = parseInt(nilaiInput.value);
+
+  let valid = true;
+  if (!mapelId) {
+    showAddFormError('add-mapel-select-error', 'Pilih mapel.');
+    valid = false;
   }
-  if (!mapelNames.includes(mapelChoice)) {
-    alert("Mapel tidak valid.");
-    return;
-  }
-  // Find mapel id by name
-  const selectedMapel = mapelOptions.find(m => m.nama === mapelChoice);
-  if (!selectedMapel) {
-    alert("Mapel tidak ditemukan.");
-    return;
-  }
-  const nilaiStr = prompt("Masukkan nilai (0-100):");
-  const nilai = parseInt(nilaiStr);
   if (isNaN(nilai) || nilai < 0 || nilai > 100) {
-    alert("Nilai tidak valid.");
-    return;
+    showAddFormError('add-mapel-nilai-error', 'Nilai harus antara 0 dan 100.');
+    valid = false;
   }
-  const { error } = await supabase.from('rapor').insert([{ siswa_id: currentSiswaId, semester: currentSemester, mapel_id: selectedMapel.id, nilai }]);
+  if (!valid) return;
+
+  const { error } = await supabase.from('rapor').insert([{ siswa_id: currentSiswaId, semester: currentSemester, mapel_id: mapelId, nilai }]);
   if (error) {
     alert("Gagal menambahkan data mapel.");
     console.error(error);
   } else {
     alert("Data mapel berhasil ditambahkan.");
     loadCurrentRapor();
+    // Hide add modal
+    const addModal = document.getElementById('modal-add-mapel');
+    addModal.style.display = 'none';
+    addModal.setAttribute('aria-hidden', 'true');
   }
+};
+
+function clearAddFormErrors() {
+  document.getElementById('add-mapel-select-error').textContent = '';
+  document.getElementById('add-mapel-nilai-error').textContent = '';
+};
+function showAddFormError(id, message) {
+  const elem = document.getElementById(id);
+  if (elem) elem.textContent = message;
 };
 
 async function loadRapor(siswaId) {

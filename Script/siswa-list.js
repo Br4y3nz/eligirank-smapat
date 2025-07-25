@@ -72,15 +72,21 @@ async function loadKelas() {
   selectAdd.innerHTML = '<option value="">Pilih Kelas</option>';
   selectEdit.innerHTML = '<option value="">Pilih Kelas</option>';
   if (data) {
+    // Use a Set to track unique display names to avoid duplicates
+    const seen = new Set();
     data.forEach(k => {
+      const displayName = k.tingkat ? `${k.tingkat} ${k.nama}` : k.nama;
+      if (seen.has(displayName)) return; // skip duplicates
+      seen.add(displayName);
+
       const optionAdd = document.createElement("option");
       optionAdd.value = k.id;
-      optionAdd.textContent = k.tingkat ? `${k.tingkat} ${k.nama}` : k.nama;
+      optionAdd.textContent = displayName;
       selectAdd.appendChild(optionAdd);
 
       const optionEdit = document.createElement("option");
       optionEdit.value = k.id;
-      optionEdit.textContent = k.tingkat ? `${k.tingkat} ${k.nama}` : k.nama;
+      optionEdit.textContent = displayName;
       selectEdit.appendChild(optionEdit);
     });
   }
