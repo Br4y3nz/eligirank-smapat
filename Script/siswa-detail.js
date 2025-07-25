@@ -88,7 +88,9 @@ function tampilkanRapor(data) {
     });
 
     const rata2 = data.length > 0 ? total / data.length : 0;
-    document.getElementById("rata-rata").textContent = rata2.toFixed(2);
+    // Round rata2 to 2 decimal places, rounding last digit properly
+    const roundedRata2 = Math.round(rata2 * 100) / 100;
+    document.getElementById("rata-rata").textContent = roundedRata2.toFixed(2);
   });
 }
 
