@@ -289,11 +289,6 @@ async function loadRapor(siswaId) {
     .eq("siswa_id", siswaId)
     .eq("semester", currentSemester);
 
-  if (raporError) {
-    console.error("Error fetching rapor:", raporError);
-    alert("Gagal mengambil data rapor.");
-    return;
-  }
 
   document.getElementById("student-name").textContent = siswa.nama;
   document.getElementById("student-class").textContent = siswa.kelas || "-";
