@@ -255,23 +255,23 @@ body {
 /* Responsive */
 @media (max-width: 600px) {
   .rapor-table {
-    font-size: 14px;
+    font-size: 12px;
   }
   .btn-edit-mapel, .btn-delete-mapel {
-    width: 36px;
-    height: 36px;
-    font-size: 1.2rem;
-    margin: 0 6px;
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    margin: 0 4px;
   }
-.btn-add {
-  width: 36px;
-  height: 36px;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  margin: 0;
-  position: static;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
+  .btn-add {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    margin: 0;
+    position: static;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
