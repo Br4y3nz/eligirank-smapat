@@ -201,8 +201,15 @@ async function loadRapor(siswaId) {
     return;
   }
 
-  document.getElementById("nama").textContent = siswa.nama;
-  document.getElementById("kelas").textContent = siswa.kelas || "-";
+  // Check if elements exist before setting textContent
+  const namaElem = document.getElementById("nama");
+  if (namaElem) {
+    namaElem.textContent = siswa.nama;
+  }
+  const kelasElem = document.getElementById("kelas");
+  if (kelasElem) {
+    kelasElem.textContent = siswa.kelas || "-";
+  }
 
   tampilkanRapor(rapor || []);
 }
