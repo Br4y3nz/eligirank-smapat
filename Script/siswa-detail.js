@@ -43,6 +43,10 @@ function tampilkanRapor(data) {
       <td>${item.mapel}</td>
       <td>${item.nilai}</td>
       <td>${konversiGrade(item.nilai)}</td>
+      <td>
+        <button class="btn-edit-mapel" data-id="${item.id}">Edit</button>
+        <button class="btn-delete-mapel" data-id="${item.id}">Hapus</button>
+      </td>
     `;
     total += item.nilai;
     tbody.appendChild(tr);
@@ -50,7 +54,89 @@ function tampilkanRapor(data) {
 
   const rata2 = data.length > 0 ? total / data.length : 0;
   document.getElementById("rata-rata").textContent = rata2.toFixed(2);
+
+  attachMapelRowEvents();
 }
+
+function attachMapelRowEvents() {
+  document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
+    btn.onclick = async function() {
+      const id = this.dataset.id;
+      const mapel = prompt("Masukkan nama mapel baru:");
+      if (!mapel) return;
+      const nilaiStr = prompt("Masukkan nilai baru (0-100):");
+      const nilai = parseInt(nilaiStr);
+      if (isNaN(nilai) || nilai < 0 || nilai > 100) {
+        alert("Nilai tidak valid.");
+        return;
+      }
+      const { error } = await supabase.from('rapor').update({ mapel, nilai }).eq('id', id);
+      if (error) {
+        alert("Gagal mengupdate data mapel.");
+        console.error(error);
+      } else {
+        alert("Data mapel berhasil diupdate.");
+        loadCurrentRapor();
+      }
+    };
+  });
+
+  document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
+    btn.onclick = async function() {
+      const id = this.dataset.id;
+      if (!confirm("Yakin ingin menghapus mapel ini?")) return;
+      const { error } = await supabase.from('rapor').delete().eq('id', id);
+      if (error) {
+        alert("Gagal menghapus data mapel.");
+        console.error(error);
+      } else {
+        alert("Data mapel berhasil dihapus.");
+        loadCurrentRapor();
+      }
+    };
+  });
+}
+
+let currentSiswaId = null;
+let currentSemester = 1;
+
+async function loadCurrentRapor() {
+  if (!currentSiswaId) return;
+  const { data: rapor, error } = await supabase
+    .from('rapor')
+    .select('*')
+    .eq('siswa_id', currentSiswaId)
+    .eq('semester', currentSemester);
+  if (error) {
+    alert("Gagal mengambil data rapor.");
+    console.error(error);
+    return;
+  }
+  tampilkanRapor(rapor || []);
+}
+
+document.getElementById('btn-add-mapel').onclick = async function() {
+  if (!currentSiswaId) {
+    alert("ID siswa tidak ditemukan.");
+    return;
+  }
+  const mapel = prompt("Masukkan nama mapel:");
+  if (!mapel) return;
+  const nilaiStr = prompt("Masukkan nilai (0-100):");
+  const nilai = parseInt(nilaiStr);
+  if (isNaN(nilai) || nilai < 0 || nilai > 100) {
+    alert("Nilai tidak valid.");
+    return;
+  }
+  const { error } = await supabase.from('rapor').insert([{ siswa_id: currentSiswaId, semester: currentSemester, mapel, nilai }]);
+  if (error) {
+    alert("Gagal menambahkan data mapel.");
+    console.error(error);
+  } else {
+    alert("Data mapel berhasil ditambahkan.");
+    loadCurrentRapor();
+  }
+};
 
 async function loadRapor(siswaId) {
   const currentSemester = 1; // You can adjust this or make dynamic
