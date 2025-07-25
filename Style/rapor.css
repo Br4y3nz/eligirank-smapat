@@ -1,289 +1,156 @@
-/* Base styles */
-.rapor-container {
-  padding: 24px;
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: 'Poppins', sans-serif;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.rapor-title {
-  font-size: 36px;
-  font-weight: 700;
-  color: #d32f2f;
-  margin-bottom: 24px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.student-info {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.info-box {
-  background-color: #1976d2;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.4);
-  min-width: 180px;
-  text-align: center;
-}
-
-.semester-filter {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 32px;
-}
-
-#semester-select {
-  padding: 10px 16px;
-  font-size: 1.1rem;
-  border-radius: 12px;
-  border: 2px solid #1976d2;
-  background-color: white;
-  color: #1976d2;
-  font-weight: 600;
-  cursor: pointer;
-  min-width: 180px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-#semester-select:hover,
-#semester-select:focus {
-  background-color: #1976d2;
-  color: white;
-  outline: none;
-}
 
 .rapor-table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 12px;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  background-color: white;
+  border-spacing: 0;
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  font-size: 0.9rem;
+  background: #e0e7ff; /* light blue background for table */
 }
 
 .rapor-table thead tr {
-  background-color: #d32f2f;
+  background: linear-gradient(90deg, #2563eb, #3b82f6); /* blue gradient header */
   color: white;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-align: center;
 }
 
-.rapor-table th,
-.rapor-table td {
-  padding: 16px 20px;
-  text-align: center;
-  vertical-align: middle;
+.rapor-table thead th {
+  padding: 12px 16px;
+  border-bottom: 2px solid #1e40af;
+  user-select: none;
 }
 
 .rapor-table tbody tr {
-  background-color: #fafafa;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: white;
   transition: background-color 0.3s ease;
+}
+
+.rapor-table tbody tr:nth-child(even) {
+  background-color: #f3f4f6; /* light gray for even rows */
 }
 
 .rapor-table tbody tr:hover {
-  background-color: #f1f1f1;
+  background-color: #dbeafe; /* light blue hover */
 }
 
-.btn-edit-mapel,
-.btn-delete-mapel {
-  padding: 8px 14px;
-  font-size: 0.95rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-  margin: 0 6px;
-  min-width: 70px;
-}
-
-.btn-edit-mapel {
-  background-color: #388e3c;
-  color: white;
-}
-
-.btn-edit-mapel:hover {
-  background-color: #2e7d32;
-}
-
-.btn-delete-mapel {
-  background-color: #d32f2f;
-  color: white;
-}
-
-.btn-delete-mapel:hover {
-  background-color: #b71c1c;
-}
-
-.rata-rata-table {
-  width: 100%;
-  margin-top: 24px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #1976d2;
-  text-align: right;
-  border-collapse: collapse;
-}
-
-.rata-rata-table td {
-  padding: 12px 20px;
-  border-top: 2px solid #1976d2;
-}
-
-.btn-add {
-  display: block;
-  margin: 32px auto 0;
-  padding: 14px 28px;
-  background-color: #1976d2;
-  color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.6);
-  transition: background-color 0.3s ease;
-  min-width: 200px;
+.rapor-table td {
+  padding: 12px 16px;
   text-align: center;
-}
-
-.btn-add:hover {
-  background-color: #1565c0;
-}
-
-/* Desktop styles */
-@media (min-width: 769px) {
-  .rapor-container {
-    padding: 32px 48px;
-    max-width: 900px;
-  }
-  .student-info {
-    gap: 32px;
-  }
-  .info-box {
-    min-width: 220px;
-    font-size: 1.2rem;
-  }
-  #semester-select {
-    min-width: 220px;
-    font-size: 1.2rem;
-  }
-  .rapor-table th,
-  .rapor-table td {
-    padding: 20px 24px;
-    font-size: 1.2rem;
-  }
-  .btn-edit-mapel,
-  .btn-delete-mapel {
-    padding: 10px 16px;
-    font-size: 1rem;
-    min-width: 90px;
-  }
-  .btn-add {
-    min-width: 240px;
-    font-size: 1.2rem;
-    padding: 16px 32px;
-  }
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-  .rapor-container {
-    padding: 16px;
-    max-width: 100%;
-  }
-  .student-info {
-    flex-direction: column;
-    align-items: center;
-  }
-  .info-box {
-    min-width: auto;
-    width: 100%;
-    font-size: 1rem;
-  }
-  #semester-select {
-    min-width: auto;
-    font-size: 1rem;
-  }
-  .rapor-table th,
-  .rapor-table td {
-    padding: 12px 8px;
-    font-size: 1rem;
-  }
-  .btn-edit-mapel,
-  .btn-delete-mapel {
-    padding: 6px 10px;
-    font-size: 0.85rem;
-    min-width: 60px;
-  }
-  .btn-add {
-    width: 100%;
-    padding: 12px 0;
-    font-size: 1rem;
-  }
-}
-
-/* Additional UI improvements */
-.rapor-table tbody tr td:first-child {
-  text-align: left;
-  padding-left: 24px;
-}
-
-.rapor-table tbody tr td:nth-child(2),
-.rapor-table tbody tr td:nth-child(3) {
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e7ff;
   font-weight: 600;
-  color: #333;
+  color: #1e293b;
+  user-select: text;
 }
 
-/* Scrollbar styling for table body if needed */
-.rapor-table tbody {
-  display: block;
-  max-height: 400px;
-  overflow-y: auto;
+/* Rounded corners for first and last cells in header and body */
+.rapor-table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+.rapor-table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+.rapor-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+.rapor-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
 }
 
-.rapor-table thead,
-.rapor-table tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
+/* Action Buttons */
+.btn-edit-mapel, .btn-delete-mapel {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 4px;
+  padding: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 6px; /* less round to match add button */
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.btn-edit-mapel i, .btn-delete-mapel i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-size: 1.3rem;
+  position: relative;
+  left: 3px; /* adjust to center icons */
+}
+.btn-edit-mapel {
+  background: #fbbf24;
+  color: #fff;
+}
+.btn-edit-mapel:hover {
+  background: #f59e42;
+  box-shadow: 0 6px 16px rgba(251, 191, 36, 0.5);
+}
+.btn-delete-mapel {
+  background: #ef4444;
+  color: #fff;
+}
+.btn-delete-mapel:hover {
+  background: #dc2626;
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
 }
 
-/* Focus styles for accessibility */
-.btn-add:focus,
-.btn-edit-mapel:focus,
-.btn-delete-mapel:focus,
-#semester-select:focus {
-  outline: 3px solid #1976d2;
-  outline-offset: 2px;
+/* Add Mapel Button */
+.btn-add {
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0 0 0;
+}
+.btn-add:hover {
+  background-color: #1e40af;
 }
 
-/* Smooth transitions */
-.rapor-table tbody tr,
-.btn-add,
-.btn-edit-mapel,
-.btn-delete-mapel,
-#semester-select {
-  transition: all 0.3s ease;
+/* Position add button bottom left */
+.rapor-table-section {
+  position: relative;
+}
+.btn-add {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
-/* Placeholder for future enhancements */
-/* Add animations, tooltips, or other UI elements as needed */
+/* Responsive */
+@media (max-width: 600px) {
+  .rapor-table {
+    font-size: 12px;
+  }
+  .btn-edit-mapel, .btn-delete-mapel {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+  .btn-add {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    margin: 1rem auto 0 auto;
+    position: static;
+  }
+}
