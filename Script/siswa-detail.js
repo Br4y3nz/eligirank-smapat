@@ -115,6 +115,11 @@ async function loadCurrentRapor() {
   tampilkanRapor(rapor || []);
 }
 
+document.getElementById('semester-select').addEventListener('change', async (e) => {
+  currentSemester = parseInt(e.target.value);
+  await loadCurrentRapor();
+});
+
 document.getElementById('btn-add-mapel').onclick = async function() {
   if (!currentSiswaId) {
     alert("ID siswa tidak ditemukan.");
@@ -192,12 +197,10 @@ async function main() {
   await loadRapor(siswaId);
 }
 
-let currentSiswaId = null;
-
 async function fetchStudentInfo(siswaId) {
   const { data, error } = await supabase
     .from('siswa')
-    .select('nama, kelas')
+    .select('nama, kelas_id')
     .eq('id', siswaId)
     .single();
 
@@ -207,7 +210,23 @@ async function fetchStudentInfo(siswaId) {
   }
 
   document.getElementById('student-name').textContent = data.nama;
-  document.getElementById('student-class').textContent = data.kelas;
+
+  // Fetch kelas name from kelas_id
+  if (data.kelas_id) {
+    const { data: kelasData, error: kelasError } = await supabase
+      .from('kelas')
+      .select('nama')
+      .eq('id', data.kelas_id)
+      .single();
+    if (kelasError) {
+      console.error('Failed to fetch kelas info:', kelasError);
+      document.getElementById('student-class').textContent = '-';
+    } else {
+      document.getElementById('student-class').textContent = kelasData.nama;
+    }
+  } else {
+    document.getElementById('student-class').textContent = '-';
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

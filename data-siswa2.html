@@ -25,8 +25,14 @@
     </div>
 
     <div class="semester-filter">
-      <button id="semester-button" class="active">Semester 1</button>
-      <!-- You can add more semesters later -->
+      <select id="semester-select" aria-label="Pilih Semester">
+        <option value="1" selected>Semester 1</option>
+        <option value="2">Semester 2</option>
+        <option value="3">Semester 3</option>
+        <option value="4">Semester 4</option>
+        <option value="5">Semester 5</option>
+        <option value="6">Semester 6</option>
+      </select>
     </div>
 
     <section class="rapor-table-section">
@@ -42,12 +48,14 @@
         <tbody id="tabel-rapor">
           <!-- Rows will be inserted here -->
         </tbody>
-        <tfoot>
+      </table>
+      <table class="rata-rata-table">
+        <tbody>
           <tr>
             <td><strong>Rata-rata</strong></td>
-            <td id="rata-rata" colspan="3">-</td>
+            <td id="rata-rata">-</td>
           </tr>
-        </tfoot>
+        </tbody>
       </table>
       <button id="btn-add-mapel" class="btn-add">Tambah Mapel</button>
     </section>
