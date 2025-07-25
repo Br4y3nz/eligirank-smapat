@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (sidebar && sidebar.children.length > 0) {
     // Sidebar present, add left margin
-    mainContent.style.marginLeft = '80px';
+    mainContent.style.marginLeft = '85px';
     mainContent.style.marginBottom = '0';
   } else if (navbar && window.innerWidth <= 768) {
     // No sidebar, mobile navbar present, add bottom margin

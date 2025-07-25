@@ -75,7 +75,10 @@ async function loadKelas() {
     // Use a Set to track unique display names to avoid duplicates
     const seen = new Set();
     data.forEach(k => {
-      const displayName = k.tingkat ? `${k.tingkat} ${k.nama}` : k.nama;
+      // Fix duplication by trimming and normalizing displayName
+      const tingkatTrimmed = k.tingkat ? k.tingkat.trim() : '';
+      const namaTrimmed = k.nama ? k.nama.trim() : '';
+      const displayName = tingkatTrimmed ? `${tingkatTrimmed} ${namaTrimmed}` : namaTrimmed;
       if (seen.has(displayName)) return; // skip duplicates
       seen.add(displayName);
 
