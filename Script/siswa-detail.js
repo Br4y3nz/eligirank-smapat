@@ -125,6 +125,7 @@ document.getElementById('semester-select').addEventListener('change', async (e) 
 });
 
 document.getElementById('btn-add-mapel').addEventListener('click', async () => {
+  console.log('Add Mapel button clicked');
   if (!currentSiswaId) {
     alert("ID siswa tidak ditemukan.");
     return;
