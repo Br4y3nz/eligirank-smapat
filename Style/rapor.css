@@ -32,9 +32,15 @@ body {
 .student-info {
   display: block;
   margin-bottom: 0.75rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #334155;
+}
+
+@media (max-width: 600px) {
+  .student-info {
+    font-size: 0.8rem;
+  }
 }
 
 .info-box {
