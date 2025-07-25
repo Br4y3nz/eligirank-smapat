@@ -192,14 +192,13 @@ async function main() {
   await loadRapor(siswaId);
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const studentId = urlParams.get('id');
+let currentSiswaId = null;
 
-async function fetchStudentInfo() {
+async function fetchStudentInfo(siswaId) {
   const { data, error } = await supabase
     .from('siswa')
     .select('nama, kelas')
-    .eq('id', studentId)
+    .eq('id', siswaId)
     .single();
 
   if (error) {
@@ -211,7 +210,14 @@ async function fetchStudentInfo() {
   document.getElementById('student-class').textContent = data.kelas;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchStudentInfo();
-  main();
+document.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(window.location.search);
+  const siswaId = params.get('id');
+  if (!siswaId) {
+    alert("ID siswa tidak ditemukan.");
+    return;
+  }
+  currentSiswaId = siswaId;
+  await fetchStudentInfo(siswaId);
+  await main();
 });
