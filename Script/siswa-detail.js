@@ -65,12 +65,12 @@ function tampilkanRapor(data) {
   data.forEach((item) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${item.mapel}</td>
-      <td>${item.nilai}</td>
-      <td>${konversiGrade(item.nilai)}</td>
-      <td>
-        <button class="btn-edit-mapel" data-id="${item.id}">Edit</button>
-        <button class="btn-delete-mapel" data-id="${item.id}">Hapus</button>
+      <td data-label="Mapel">${item.mapel}</td>
+      <td data-label="Nilai">${item.nilai}</td>
+      <td data-label="Grade">${konversiGrade(item.nilai)}</td>
+      <td data-label="Aksi">
+        <button class="btn-edit-mapel" data-id="${item.id}" aria-label="Edit mapel ${item.mapel}">Edit</button>
+        <button class="btn-delete-mapel" data-id="${item.id}" aria-label="Hapus mapel ${item.mapel}">Hapus</button>
       </td>
     `;
     total += item.nilai;
