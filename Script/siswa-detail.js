@@ -62,23 +62,34 @@ function tampilkanRapor(data) {
 
   let total = 0;
 
-  data.forEach((item) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td data-label="Mapel">${item.mapel}</td>
-      <td data-label="Nilai">${item.nilai}</td>
-      <td data-label="Grade">${konversiGrade(item.nilai)}</td>
-      <td data-label="Aksi">
-        <button class="btn-edit-mapel" data-id="${item.id}" aria-label="Edit mapel ${item.mapel}">Edit</button>
-        <button class="btn-delete-mapel" data-id="${item.id}" aria-label="Hapus mapel ${item.mapel}">Hapus</button>
-      </td>
-    `;
-    total += item.nilai;
-    tbody.appendChild(tr);
-  });
+  // Get user role to conditionally show action buttons
+  getUserRoleAndId().then(({ role }) => {
+    data.forEach((item) => {
+      const tr = document.createElement("tr");
+      let actionButtons = '';
+      if (role === 'admin' || role === 'teacher') {
+        actionButtons = `
+          <td data-label="Aksi">
+            <button class="btn-edit-mapel" data-id="${item.id}" aria-label="Edit mapel ${item.mapel}">Edit</button>
+            <button class="btn-delete-mapel" data-id="${item.id}" aria-label="Hapus mapel ${item.mapel}">Hapus</button>
+          </td>
+        `;
+      } else {
+        actionButtons = '';
+      }
+      tr.innerHTML = `
+        <td data-label="Mapel">${item.mapel}</td>
+        <td data-label="Nilai">${item.nilai}</td>
+        <td data-label="Grade">${konversiGrade(item.nilai)}</td>
+        ${actionButtons}
+      `;
+      total += item.nilai;
+      tbody.appendChild(tr);
+    });
 
-  const rata2 = data.length > 0 ? total / data.length : 0;
-  document.getElementById("rata-rata").textContent = rata2.toFixed(2);
+    const rata2 = data.length > 0 ? total / data.length : 0;
+    document.getElementById("rata-rata").textContent = rata2.toFixed(2);
+  });
 }
 
 function openModal(modalId) {
@@ -273,7 +284,7 @@ async function loadRapor(siswaId) {
 
   const { data: siswa, error: siswaError } = await supabase
     .from("siswa")
-    .select("*")
+    .select("nama, kelas_id")
     .eq("id", siswaId)
     .single();
 
@@ -285,15 +296,57 @@ async function loadRapor(siswaId) {
 
   const { data: rapor, error: raporError } = await supabase
     .from("rapor")
-    .select("id, mapel, nilai")
+    .select("id, nilai, mapel_id")
     .eq("siswa_id", siswaId)
     .eq("semester", currentSemester);
 
+  if (raporError) {
+    console.error("Error fetching rapor:", raporError);
+    alert("Gagal mengambil data rapor.");
+    return;
+  }
+
+  // Fetch kelas name from kelas_id
+  if (siswa.kelas_id) {
+    const { data: kelasData, error: kelasError } = await supabase
+      .from('kelas')
+      .select('nama')
+      .eq('id', siswa.kelas_id)
+      .single();
+    if (kelasError) {
+      console.error('Failed to fetch kelas info:', kelasError);
+      document.getElementById('student-class').textContent = '-';
+    } else {
+      document.getElementById('student-class').textContent = kelasData.nama;
+    }
+  } else {
+    document.getElementById('student-class').textContent = '-';
+  }
 
   document.getElementById("student-name").textContent = siswa.nama;
-  document.getElementById("student-class").textContent = siswa.kelas || "-";
 
-  tampilkanRapor(rapor || []);
+  // Map mapel_id to mapel name
+  const mapelIds = rapor.map(r => r.mapel_id);
+  const { data: mapelData, error: mapelError } = await supabase
+    .from('mapel')
+    .select('id, nama')
+    .in('id', mapelIds);
+  if (mapelError) {
+    alert("Gagal mengambil data mapel.");
+    console.error(mapelError);
+    return;
+  }
+  const mapelMap = {};
+  mapelData.forEach(m => {
+    mapelMap[m.id] = m.nama;
+  });
+  const mappedRapor = rapor.map(item => ({
+    id: item.id,
+    nilai: item.nilai,
+    mapel: mapelMap[item.mapel_id] || 'Unknown'
+  }));
+
+  tampilkanRapor(mappedRapor || []);
   attachEventDelegation();
 }
 
