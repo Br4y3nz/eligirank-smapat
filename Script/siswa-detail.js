@@ -1,7 +1,7 @@
 import supabase from '../Supabase/client.js';
 
 const urlParams = new URLSearchParams(window.location.search);
-const currentSiswaId = urlParams.get('id');
+const currentSiswaId = urlParams.get('id') || null;
 
 let currentSemester = 1;
 
