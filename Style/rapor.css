@@ -298,6 +298,22 @@ body {
   }
 }
 
+/* Fix add button and rata-rata box layout above 600px */
+@media (min-width: 601px) {
+  .btn-add {
+    position: static !important;
+    margin: 0 !important;
+  }
+  .rapor-table-footer {
+    align-items: center;
+  }
+  .rata-rata-box {
+    display: flex;
+    align-items: center;
+    height: 48px;
+  }
+}
+
 /* Extra small mobile adjustments for 360px width */
 @media (max-width: 360px) {
   .rapor-table {
