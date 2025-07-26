@@ -124,9 +124,12 @@ document.getElementById('semester-select').addEventListener('change', async (e) 
   await loadCurrentRapor();
 });
 
-document.getElementById('btn-add-mapel')?.addEventListener('click', async () => {
-  alert("Fitur tambah mapel telah dihapus dan akan dibuat ulang.");
-});
+const btnAddMapel = document.getElementById('btn-add-mapel');
+if (btnAddMapel) {
+  btnAddMapel.addEventListener('click', async () => {
+    alert("Fitur tambah mapel telah dihapus dan akan dibuat ulang.");
+  });
+}
 
 document.getElementById('btn-cancel-add').addEventListener('click', () => {
   const addModal = document.getElementById('modal-add-mapel');
