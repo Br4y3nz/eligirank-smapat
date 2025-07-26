@@ -366,6 +366,11 @@ body {
   justify-content: center;
   gap: 0.5rem;
   white-space: nowrap;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1rem;
+  box-sizing: border-box;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .rapor-table-wrapper {
