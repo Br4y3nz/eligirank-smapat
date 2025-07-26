@@ -1227,3 +1227,16 @@ li.search-item > a.search-link i.bx-search {
   background: #fee2e2;
   color: #b91c1c;
 }
+
+main {
+  margin-left: 80px; /* default for desktop */
+  margin-bottom: 0;
+}
+
+/* Mobile layout fix */
+@media (max-width: 768px) {
+  main {
+    margin-left: 0 !important;       /* remove sidebar space */
+    margin-bottom: 75px !important;  /* space for bottom nav */
+  }
+}

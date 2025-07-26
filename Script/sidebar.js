@@ -7,24 +7,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!mainContent) return;
 
-  if (navbar) {
-    if (window.innerWidth <= 768) {
-      // Mobile: add bottom margin to main content to avoid overlap with navbar
-      mainContent.style.marginBottom = '75px';
-    } else {
-      // Desktop: add left margin to main content to avoid overlap with sidebar
-      mainContent.style.marginLeft = '80px';
-    }
-  }
-});
-
 
 // If you don't have real auth, use a dummy function for now:
 function checkAuth() {
   return supabase.auth.getSession().then(({ data: { session } }) => {
     return { isLoggedIn: !!session, session };
   });
-}
+}});
 
 export function initializeSidebar() {
   const sidebar = document.querySelector(".sidebar");
