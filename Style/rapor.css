@@ -277,3 +277,46 @@ body {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+
+/* Responsive layout margin fix */
+@media (min-width: 769px) {
+  .rapor-container {
+    margin-left: 85px; /* apply left margin only on desktop */
+  }
+}
+
+@media (max-width: 768px) {
+  .rapor-container {
+    margin-left: 0 !important; /* remove it on mobile */
+    margin-bottom: 70px;       /* account for bottom navbar */
+  }
+}
+
+/* Footer layout for add button and rata-rata box */
+.rapor-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0 1rem;
+  min-height: 48px;
+  background-color: #cce4ff;
+  border-radius: 0 0 10px 10px;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .rapor-table-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .btn-add {
+    align-self: flex-start;
+  }
+  .rapor-ratarata-box {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+}
