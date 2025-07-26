@@ -298,6 +298,45 @@ body {
   }
 }
 
+/* Extra small mobile adjustments for 360px width */
+@media (max-width: 360px) {
+  .rapor-table {
+    font-size: 10px;
+  }
+  .btn-edit-mapel, .btn-delete-mapel {
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+    margin: 0 2px;
+  }
+  .btn-add {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+}
+
+/* Layout for add button left and rata-rata right on same line */
+.rapor-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+/* Rata-rata box with blue background and white text */
+.rata-rata-box {
+  background-color: #2563eb !important;
+  color: white !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.6);
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  text-align: right;
+  max-width: 200px;
+  margin-left: auto;
+}
+
 .rapor-table-wrapper {
   overflow-x: auto;
   width: 100%;
