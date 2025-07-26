@@ -44,7 +44,7 @@ function tampilkanRapor(data) {
       <td>${item.nilai}</td>
       <td>${konversiGrade(item.nilai)}</td>
       <td>
-        <button class="btn-edit-mapel" data-id="${item.id}">Edit</button>
+        <button class="btn-edit-mapel" data-id="${item.id}" data-mapel-id="${item.mapel_id}" data-semester="${item.semester}">Edit</button>
         <button class="btn-delete-mapel" data-id="${item.id}">Hapus</button>
       </td>
     `;
@@ -64,24 +64,34 @@ function tampilkanRapor(data) {
 
 function attachMapelRowEvents() {
   document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
-    btn.onclick = async function() {
+    btn.onclick = function() {
       const id = this.dataset.id;
-      const mapel = prompt("Masukkan nama mapel baru:");
-      if (!mapel) return;
-      const nilaiStr = prompt("Masukkan nilai baru (0-100):");
-      const nilai = parseInt(nilaiStr);
-      if (isNaN(nilai) || nilai < 0 || nilai > 100) {
-        alert("Nilai tidak valid.");
+      const mapelId = this.dataset.mapelId;
+      const semester = this.dataset.semester;
+
+      // Show edit modal and populate fields
+      const editModal = document.getElementById('modal-edit-mapel');
+      if (!editModal) {
+        alert("Edit modal tidak ditemukan.");
         return;
       }
-      const { error } = await supabase.from('rapor').update({ mapel, nilai }).eq('id', id);
-      if (error) {
-        alert("Gagal mengupdate data mapel.");
-        console.error(error);
-      } else {
-        alert("Data mapel berhasil diupdate.");
-        loadCurrentRapor();
-      }
+      editModal.classList.remove('hidden');
+      editModal.setAttribute('aria-hidden', 'false');
+
+      // Set dataset for form to use on submit
+      const formEditMapel = document.getElementById('form-edit-mapel');
+      formEditMapel.dataset.mapelId = mapelId;
+      formEditMapel.dataset.semester = semester;
+      formEditMapel.dataset.raporId = id;
+
+      // Optionally, fetch current nilai to populate input
+      // For simplicity, assume nilai is in a data attribute or fetch from table row
+      // Here, just clear input
+      const nilaiInput = document.getElementById('edit-mapel-nilai');
+      if (nilaiInput) nilaiInput.value = '';
+
+      // Focus input
+      nilaiInput.focus();
     };
   });
 
@@ -174,19 +184,13 @@ if (btnAddMapel) {
   });
 }
 
-await supabase.from('rapor')
-  .update({ nilai: parseInt(updatedNilai) })
-  .eq('siswa_id', siswaId)
-  .eq('mapel_id', mapelId)
-  .eq('semester', currentSemester);
-
 document.getElementById('btn-cancel-add').addEventListener('click', () => {
   const addModal = document.getElementById('modal-add-mapel');
   addModal.classList.add('hidden');
   addModal.setAttribute('aria-hidden', 'true');
 });
 
-// Add form submit handler
+// Add form submit handler for adding mapel
 document.getElementById('form-add-mapel').onsubmit = async (e) => {
   e.preventDefault();
   clearAddFormErrors();
@@ -222,7 +226,6 @@ document.getElementById('form-add-mapel').onsubmit = async (e) => {
     const addModal = document.getElementById('modal-add-mapel');
     addModal.classList.add('hidden');
     addModal.setAttribute('aria-hidden', 'true');
-
   }
 };
 
@@ -234,6 +237,50 @@ function showAddFormError(id, message) {
   const elem = document.getElementById(id);
   if (elem) elem.textContent = message;
 };
+
+// Add form submit handler for editing mapel nilai
+const formEditMapel = document.getElementById('form-edit-mapel');
+if (formEditMapel) {
+  formEditMapel.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const siswaId = currentSiswaId;
+    const mapelId = formEditMapel.dataset.mapelId;
+    const semester = formEditMapel.dataset.semester;
+    const raporId = formEditMapel.dataset.raporId;
+    const updatedNilai = document.getElementById('edit-mapel-nilai').value;
+    const nilai = parseInt(updatedNilai);
+
+    if (!mapelId || !semester || !raporId) {
+      console.error("Missing mapelId, semester, or raporId in form dataset");
+      return;
+    }
+    if (isNaN(nilai) || nilai < 0 || nilai > 100) {
+      alert("Nilai tidak valid.");
+      return;
+    }
+
+    const { error } = await supabase
+      .from('rapor')
+      .update({ nilai })
+      .eq('id', raporId)
+      .eq('siswa_id', siswaId)
+      .eq('mapel_id', mapelId)
+      .eq('semester', semester);
+
+    if (error) {
+      alert("Gagal update nilai.");
+      console.error(error);
+    } else {
+      alert("Nilai berhasil diupdate.");
+      // Hide edit modal
+      const editModal = document.getElementById('modal-edit-mapel');
+      editModal.classList.add('hidden');
+      editModal.setAttribute('aria-hidden', 'true');
+      loadCurrentRapor();
+    }
+  });
+}
 
 async function loadRapor(siswaId) {
   const currentSemester = 1; // You can adjust this or make dynamic
@@ -296,8 +343,6 @@ async function main() {
   await fetchStudentInfo(siswaId);   // ✅ This fetches and shows the student info
   await loadCurrentRapor();          // ✅ This fetches and shows rapor data for semester
 }
-
-
 
 async function fetchStudentInfo(siswaId) {
   const { data, error } = await supabase
