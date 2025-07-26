@@ -338,17 +338,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const navbar = document.querySelector('nav'); // Assuming navbar is a <nav> element
   const mainContent = document.querySelector('main.rapor-container');
 
-  if (sidebar && sidebar.children.length > 0) {
-    // Sidebar present, add left margin
-    mainContent.style.marginLeft = '85px';
-    mainContent.style.marginBottom = '0';
-  } else if (navbar && window.innerWidth <= 768) {
-    // No sidebar, mobile navbar present, add bottom margin
-    mainContent.style.marginBottom = '70px';
-    mainContent.style.marginLeft = '0';
-  } else {
-    // Default no margin
-    mainContent.style.marginLeft = '0';
-    mainContent.style.marginBottom = '0';
-  }
-});
+  if (sidebar && sidebar.children.length > 0 && window.innerWidth > 768) {
+  mainContent.style.marginLeft = '85px';
+  mainContent.style.marginBottom = '0';
+} else if (navbar && window.innerWidth <= 768) {
+  mainContent.style.marginBottom = '70px';
+  mainContent.style.marginLeft = '0';  // prevent left margin on mobile
+} else {
+  mainContent.style.marginLeft = '0';
+  mainContent.style.marginBottom = '0';
+}});
