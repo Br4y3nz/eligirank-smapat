@@ -467,3 +467,20 @@ body {
     max-width: 140px;
   }
 }
+
+@media (max-width: 359px) {
+  .rapor-table-footer {
+    padding: 0 0.25rem;
+    gap: 0.25rem;
+  }
+  .btn-add {
+    width: 36px;
+    height: 36px;
+    font-size: 1.25rem;
+  }
+  .rapor-ratarata-box {
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+    max-width: 120px;
+  }
+}
