@@ -230,13 +230,20 @@ function showAddFormError(id, message) {
 };
 
 async function loadRapor(siswaId) {
-  const currentSemester = 1; // You can adjust this or make dynamic
-
-  const { data: siswa, error: siswaError } = await supabase
-    .from("siswa")
+  const { data: rapor, error: raporError } = await supabase
+    .from("rapor")
     .select("*")
-    .eq("id", siswaId)
-    .single();
+    .eq("siswa_id", siswaId)
+    .eq("semester", currentSemester);
+
+  if (raporError) {
+    console.error("Error fetching rapor:", raporError);
+    alert("Gagal mengambil data rapor.");
+    return;
+  }
+
+  tampilkanRapor(rapor || []);
+}
 
   if (siswaError || !siswa) {
     console.error("Error fetching siswa:", siswaError);
@@ -267,7 +274,7 @@ async function loadRapor(siswaId) {
   }
 
   tampilkanRapor(rapor || []);
-}
+
 
 async function main() {
   const params = new URLSearchParams(window.location.search);
@@ -287,7 +294,6 @@ async function main() {
     return;
   }
 
-  await loadRapor(siswaId);
 }
 
 async function fetchStudentInfo(siswaId) {
