@@ -509,7 +509,7 @@ body {
   .rapor-ratarata-box {
     align-self: center;
     margin-left: auto;
-    font-size: 1rem;
+    font-size: 0.8rem;
     padding: 0.25rem 0.75rem;
     max-width: 140px;
   }
