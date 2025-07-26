@@ -126,8 +126,53 @@ body {
   vertical-align: middle;
   border-bottom: 1px solid #cbd5e1;
   font-weight: 600;
-  color: #334155;
   user-select: text;
+}
+
+/* Grade colors based on value */
+.rapor-table td.grade-Aplus {
+  color: #16a34a; /* green */
+  font-weight: 700;
+}
+.rapor-table td.grade-A {
+  color: #22c55e; /* lighter green */
+  font-weight: 700;
+}
+.rapor-table td.grade-Aminus {
+  color: #4ade80; /* light green */
+  font-weight: 700;
+}
+.rapor-table td.grade-Bplus {
+  color: #eab308; /* yellow */
+  font-weight: 700;
+}
+.rapor-table td.grade-B {
+  color: #facc15; /* lighter yellow */
+  font-weight: 700;
+}
+.rapor-table td.grade-Bminus {
+  color: #fde68a; /* pale yellow */
+  font-weight: 700;
+}
+.rapor-table td.grade-Cplus {
+  color: #f97316; /* orange */
+  font-weight: 700;
+}
+.rapor-table td.grade-C {
+  color: #fb923c; /* lighter orange */
+  font-weight: 700;
+}
+.rapor-table td.grade-Cminus {
+  color: #fdba74; /* pale orange */
+  font-weight: 700;
+}
+.rapor-table td.grade-D {
+  color: #ef4444; /* red */
+  font-weight: 700;
+}
+.rapor-table td.grade-F {
+  color: #b91c1c; /* dark red */
+  font-weight: 700;
 }
 
 /* Responsive data-label for mobile */
