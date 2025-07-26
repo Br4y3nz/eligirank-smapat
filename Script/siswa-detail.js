@@ -127,6 +127,13 @@ document.getElementById('semester-select').addEventListener('change', async (e) 
 const btnAddMapel = document.getElementById('btn-add-mapel');
 if (btnAddMapel) {
   btnAddMapel.addEventListener('click', async () => {
+    console.log("Add Mapel button clicked");
+    const siswaId = new URLSearchParams(window.location.search).get('id');
+    if (!siswaId) {
+      alert("ID siswa tidak ditemukan.");
+      return;
+    }
+
     // Fetch mapel options from supabase
     const { data: mapelOptions, error: mapelError } = await supabase
       .from('mapel')
@@ -154,6 +161,7 @@ if (btnAddMapel) {
 
     // Show add modal by removing hidden class and setting display flex
     const addModal = document.getElementById('modal-add-mapel');
+    console.log("Modal innerHTML before showing:", addModal.innerHTML);
     addModal.classList.remove('hidden');
     addModal.style.display = 'flex';
     addModal.setAttribute('aria-hidden', 'false');
