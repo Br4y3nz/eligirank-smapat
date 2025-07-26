@@ -78,7 +78,8 @@ body {
 /* Table styling */
 .rapor-table {
   width: 100%;
-  min-width: 320px;
+  min-width: unset; 
+  max-width: 100%;
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
@@ -297,6 +298,11 @@ body {
   }
 }
 
+.rapor-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
 .hidden {
   display: none !important;
 }
@@ -312,5 +318,13 @@ body {
   .rapor-container {
     margin-left: 0 !important; /* remove it on mobile */
     margin-bottom: 70px;       /* account for bottom navbar */
+  }
+}
+
+@media (max-width: 400px) {
+  .rapor-table td,
+  .rapor-table th {
+    padding: 6px;
+    word-break: break-word;
   }
 }
