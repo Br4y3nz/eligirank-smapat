@@ -140,6 +140,7 @@ document.getElementById('btn-add-mapel').addEventListener('click', async () => {
     alert("Gagal mengambil daftar mapel.");
     // Show modal anyway with warning
     const addModal = document.getElementById('modal-add-mapel');
+    console.log("Modal innerHTML before showing:", addModal.innerHTML);
     addModal.classList.remove('hidden');
     addModal.style.display = 'flex';
     addModal.setAttribute('aria-hidden', 'false');
@@ -153,6 +154,7 @@ document.getElementById('btn-add-mapel').addEventListener('click', async () => {
     alert("Daftar mapel kosong.");
     // Show modal anyway with warning
     const addModal = document.getElementById('modal-add-mapel');
+    console.log("Modal innerHTML before showing:", addModal.innerHTML);
     addModal.classList.remove('hidden');
     addModal.style.display = 'flex';
     addModal.setAttribute('aria-hidden', 'false');
@@ -174,6 +176,7 @@ document.getElementById('btn-add-mapel').addEventListener('click', async () => {
 
   // Show add modal by removing hidden class and setting display flex
   const addModal = document.getElementById('modal-add-mapel');
+  console.log("Modal innerHTML before showing:", addModal.innerHTML);
   addModal.classList.remove('hidden');
   addModal.style.display = 'flex';
   addModal.setAttribute('aria-hidden', 'false');
