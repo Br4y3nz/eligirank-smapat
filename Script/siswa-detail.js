@@ -64,10 +64,27 @@ function tampilkanRapor(data) {
 
   data.forEach(item => {
     const tr = document.createElement('tr');
+    // Determine grade class for color
+    let gradeText = konversiGrade(item.nilai);
+    let gradeClass = '';
+    switch (gradeText) {
+      case 'A+': gradeClass = 'grade-Aplus'; break;
+      case 'A': gradeClass = 'grade-A'; break;
+      case 'A–': gradeClass = 'grade-Aminus'; break;
+      case 'B+': gradeClass = 'grade-Bplus'; break;
+      case 'B': gradeClass = 'grade-B'; break;
+      case 'B–': gradeClass = 'grade-Bminus'; break;
+      case 'C+': gradeClass = 'grade-Cplus'; break;
+      case 'C': gradeClass = 'grade-C'; break;
+      case 'C–': gradeClass = 'grade-Cminus'; break;
+      case 'D': gradeClass = 'grade-D'; break;
+      case 'F': gradeClass = 'grade-F'; break;
+      default: gradeClass = ''; break;
+    }
     tr.innerHTML = `
       <td>${item.mapel?.nama || '-'}</td>
       <td>${item.nilai}</td>
-      <td>${konversiGrade(item.nilai)}</td>
+      <td class="${gradeClass}">${gradeText}</td>
       <td>
         <button class="btn-edit-mapel" data-id="${item.id}" aria-label="Edit Mapel">
           <i class='bx bx-edit'></i>
