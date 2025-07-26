@@ -289,5 +289,40 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   await loadCurrentRapor();
   await populateMapelSelects();
+
+  // Load student info for info box
+  const { data: siswa, error } = await supabase
+    .from('siswa')
+    .select('nama, kelas_id')
+    .eq('id', currentSiswaId)
+    .single();
+
+  if (error || !siswa) {
+    console.error('Gagal mengambil data siswa:', error);
+    return;
+  }
+
+  const namaElem = document.getElementById('student-name');
+  const kelasElem = document.getElementById('student-class');
+
+  if (namaElem) namaElem.textContent = siswa.nama || '-';
+
+  if (kelasElem) {
+    if (siswa.kelas_id) {
+      const { data: kelasData, error: kelasError } = await supabase
+        .from('kelas')
+        .select('nama')
+        .eq('id', siswa.kelas_id)
+        .single();
+      if (kelasError || !kelasData) {
+        console.error('Gagal mengambil data kelas:', kelasError);
+        kelasElem.textContent = '-';
+      } else {
+        kelasElem.textContent = kelasData.nama || '-';
+      }
+    } else {
+      kelasElem.textContent = '-';
+    }
+  }
 });
 
