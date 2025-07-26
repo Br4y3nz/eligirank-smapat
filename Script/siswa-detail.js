@@ -57,10 +57,13 @@ function tampilkanRapor(data) {
   });
 
   const rata2 = data.length > 0 ? total / data.length : 0;
-  const rataElem = document.getElementById("rata-rata");
+  const rataElem = document.getElementById("rata-rata-unique");
   if (rataElem) {
     rataElem.textContent = rata2.toFixed(2);
-    rataElem.classList.add("rata-rata-box");
+    const rataContainer = document.getElementById("rata-rata-unique-container");
+    if (rataContainer) {
+      rataContainer.classList.add("rapor-ratarata-box");
+    }
   }
 
   attachMapelRowEvents();
