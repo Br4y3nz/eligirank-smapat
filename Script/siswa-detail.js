@@ -70,13 +70,13 @@ function tampilkanRapor(data) {
     switch (gradeText) {
       case 'A+': gradeClass = 'grade-Aplus'; break;
       case 'A': gradeClass = 'grade-A'; break;
-      case 'A–': gradeClass = 'grade-Aminus'; break;
+      case 'A-': gradeClass = 'grade-Aminus'; break;
       case 'B+': gradeClass = 'grade-Bplus'; break;
       case 'B': gradeClass = 'grade-B'; break;
-      case 'B–': gradeClass = 'grade-Bminus'; break;
+      case 'B-': gradeClass = 'grade-Bminus'; break;
       case 'C+': gradeClass = 'grade-Cplus'; break;
       case 'C': gradeClass = 'grade-C'; break;
-      case 'C–': gradeClass = 'grade-Cminus'; break;
+      case 'C-': gradeClass = 'grade-Cminus'; break;
       case 'D': gradeClass = 'grade-D'; break;
       case 'F': gradeClass = 'grade-F'; break;
       default: gradeClass = ''; break;
@@ -110,13 +110,13 @@ function tampilkanRapor(data) {
 function konversiGrade(nilai) {
   if (nilai >= 98) return 'A+';
   if (nilai >= 94) return 'A';
-  if (nilai >= 90) return 'A–';
+  if (nilai >= 90) return 'A-';
   if (nilai >= 86) return 'B+';
   if (nilai >= 82) return 'B';
-  if (nilai >= 78) return 'B–';
+  if (nilai >= 78) return 'B-';
   if (nilai >= 74) return 'C+';
   if (nilai >= 70) return 'C';
-  if (nilai >= 66) return 'C–';
+  if (nilai >= 66) return 'C-';
   if (nilai >= 50) return 'D';
   return 'F';
 }
@@ -178,132 +178,134 @@ function attachMapelRowEvents() {
   });
 }
 
-document.getElementById('semester-select').addEventListener('change', async e => {
-  currentSemester = parseInt(e.target.value);
-  await loadCurrentRapor();
-});
-
-document.getElementById('btn-add-mapel').addEventListener('click', async () => {
-  await populateMapelSelects();
-  const addModal = document.getElementById('modal-add-mapel');
-  if (!addModal) return;
-  addModal.classList.remove('hidden');
-  addModal.setAttribute('aria-hidden', 'false');
-
-  // Reset add form
-  const formAdd = document.getElementById('form-add-mapel');
-  if (formAdd) {
-    formAdd.reset();
-  }
-});
-
-document.getElementById('btn-cancel-add').addEventListener('click', () => {
-  const addModal = document.getElementById('modal-add-mapel');
-  if (!addModal) return;
-  addModal.classList.add('hidden');
-  addModal.setAttribute('aria-hidden', 'true');
-});
-
-document.getElementById('btn-cancel-edit').addEventListener('click', () => {
-  const editModal = document.getElementById('modal-edit-mapel');
-  if (!editModal) return;
-  editModal.classList.add('hidden');
-  editModal.setAttribute('aria-hidden', 'true');
-});
-
-document.getElementById('form-add-mapel').addEventListener('submit', async e => {
-  e.preventDefault();
-  if (!currentSiswaId) {
-    alert('ID siswa tidak ditemukan.');
-    return;
-  }
-  const mapelId = document.getElementById('add-mapel-select').value;
-  const nilai = parseFloat(document.getElementById('add-mapel-nilai').value);
-  const semester = parseInt(document.getElementById('add-semester-select').value);
-
-  if (!mapelId) {
-    alert('Pilih mapel.');
-    return;
-  }
-  if (isNaN(nilai) || nilai < 0 || nilai > 100) {
-    alert('Nilai harus antara 0 dan 100.');
-    return;
-  }
-  if (isNaN(semester) || semester < 1 || semester > 6) {
-    alert('Semester tidak valid.');
-    return;
-  }
-
-  const { error } = await supabase.from('rapor').insert([{
-    siswa_id: currentSiswaId,
-    mapel_id: mapelId,
-    nilai,
-    semester
-  }]);
-  if (error) {
-    alert('Gagal menambahkan data rapor.');
-    console.error(error);
-  } else {
-    alert('Data rapor berhasil ditambahkan.');
-    const addModal = document.getElementById('modal-add-mapel');
-    if (addModal) {
-      addModal.classList.add('hidden');
-      addModal.setAttribute('aria-hidden', 'true');
-    }
-    await loadCurrentRapor();
-  }
-});
-
-document.getElementById('form-edit-mapel').addEventListener('submit', async e => {
-  e.preventDefault();
-  const form = e.target;
-  const raporId = form.dataset.raporId;
-  if (!raporId) {
-    alert('ID rapor tidak ditemukan.');
-    return;
-  }
-  const mapelId = document.getElementById('edit-mapel-select').value;
-  const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
-  const semester = parseInt(document.getElementById('edit-semester-select').value);
-
-  if (!mapelId) {
-    alert('Pilih mapel.');
-    return;
-  }
-  if (isNaN(nilai) || nilai < 0 || nilai > 100) {
-    alert('Nilai harus antara 0 dan 100.');
-    return;
-  }
-  if (isNaN(semester) || semester < 1 || semester > 6) {
-    alert('Semester tidak valid.');
-    return;
-  }
-
-  const { error } = await supabase.from('rapor').update({
-    mapel_id: mapelId,
-    nilai,
-    semester
-  }).eq('id', raporId);
-
-  if (error) {
-    alert('Gagal mengupdate data rapor.');
-    console.error(error);
-  } else {
-    alert('Data rapor berhasil diupdate.');
-    const editModal = document.getElementById('modal-edit-mapel');
-    if (editModal) {
-      editModal.classList.add('hidden');
-      editModal.setAttribute('aria-hidden', 'true');
-    }
-    await loadCurrentRapor();
-  }
-});
-
 document.addEventListener('DOMContentLoaded', async () => {
-  if (!currentSiswaId) {
-    alert('ID siswa tidak ditemukan di URL.');
-    return;
-  }
+  console.log('DOMContentLoaded event fired');
+  console.log('currentSiswaId:', currentSiswaId);
+
+  document.getElementById('semester-select').addEventListener('change', async e => {
+    currentSemester = parseInt(e.target.value);
+    await loadCurrentRapor();
+  });
+
+  document.getElementById('btn-add-mapel').addEventListener('click', async () => {
+    console.log('btn-add-mapel clicked');
+    await populateMapelSelects();
+    const addModal = document.getElementById('modal-add-mapel');
+    if (!addModal) return;
+    addModal.classList.remove('hidden');
+    addModal.setAttribute('aria-hidden', 'false');
+
+    // Reset add form
+    const formAdd = document.getElementById('form-add-mapel');
+    if (formAdd) {
+      formAdd.reset();
+    }
+  });
+
+  document.getElementById('btn-cancel-add').addEventListener('click', () => {
+    console.log('btn-cancel-add clicked');
+    const addModal = document.getElementById('modal-add-mapel');
+    if (!addModal) return;
+    addModal.classList.add('hidden');
+    addModal.setAttribute('aria-hidden', 'true');
+  });
+
+  document.getElementById('btn-cancel-edit').addEventListener('click', () => {
+    console.log('btn-cancel-edit clicked');
+    const editModal = document.getElementById('modal-edit-mapel');
+    if (!editModal) return;
+    editModal.classList.add('hidden');
+    editModal.setAttribute('aria-hidden', 'true');
+  });
+
+  document.getElementById('form-add-mapel').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!currentSiswaId) {
+      alert('ID siswa tidak ditemukan.');
+      return;
+    }
+    const mapelId = document.getElementById('add-mapel-select').value;
+    const nilai = parseFloat(document.getElementById('add-mapel-nilai').value);
+    const semester = parseInt(document.getElementById('add-semester-select').value);
+
+    if (!mapelId) {
+      alert('Pilih mapel.');
+      return;
+    }
+    if (isNaN(nilai) || nilai < 0 || nilai > 100) {
+      alert('Nilai harus antara 0 dan 100.');
+      return;
+    }
+    if (isNaN(semester) || semester < 1 || semester > 6) {
+      alert('Semester tidak valid.');
+      return;
+    }
+
+    const { error } = await supabase.from('rapor').insert([{
+      siswa_id: currentSiswaId,
+      mapel_id: mapelId,
+      nilai,
+      semester
+    }]);
+    if (error) {
+      alert('Gagal menambahkan data rapor.');
+      console.error(error);
+    } else {
+      alert('Data rapor berhasil ditambahkan.');
+      const addModal = document.getElementById('modal-add-mapel');
+      if (addModal) {
+        addModal.classList.add('hidden');
+        addModal.setAttribute('aria-hidden', 'true');
+      }
+      await loadCurrentRapor();
+    }
+  });
+
+  document.getElementById('form-edit-mapel').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target;
+    const raporId = form.dataset.raporId;
+    if (!raporId) {
+      alert('ID rapor tidak ditemukan.');
+      return;
+    }
+    const mapelId = document.getElementById('edit-mapel-select').value;
+    const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
+    const semester = parseInt(document.getElementById('edit-semester-select').value);
+
+    if (!mapelId) {
+      alert('Pilih mapel.');
+      return;
+    }
+    if (isNaN(nilai) || nilai < 0 || nilai > 100) {
+      alert('Nilai harus antara 0 dan 100.');
+      return;
+    }
+    if (isNaN(semester) || semester < 1 || semester > 6) {
+      alert('Semester tidak valid.');
+      return;
+    }
+
+    const { error } = await supabase.from('rapor').update({
+      mapel_id: mapelId,
+      nilai,
+      semester
+    }).eq('id', raporId);
+
+    if (error) {
+      alert('Gagal mengupdate data rapor.');
+      console.error(error);
+    } else {
+      alert('Data rapor berhasil diupdate.');
+      const editModal = document.getElementById('modal-edit-mapel');
+      if (editModal) {
+        editModal.classList.add('hidden');
+        editModal.setAttribute('aria-hidden', 'true');
+      }
+      await loadCurrentRapor();
+    }
+  });
+
   await loadCurrentRapor();
   await populateMapelSelects();
 
@@ -342,4 +344,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 });
-
