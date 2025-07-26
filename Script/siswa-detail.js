@@ -127,7 +127,40 @@ document.getElementById('semester-select').addEventListener('change', async (e) 
 const btnAddMapel = document.getElementById('btn-add-mapel');
 if (btnAddMapel) {
   btnAddMapel.addEventListener('click', async () => {
-    alert("Fitur tambah mapel telah dihapus dan akan dibuat ulang.");
+    // Fetch mapel options from supabase
+    const { data: mapelOptions, error: mapelError } = await supabase
+      .from('mapel')
+      .select('id, nama')
+      .order('nama', { ascending: true });
+    if (mapelError) {
+      console.error("Failed to fetch mapel:", mapelError);
+      alert("Gagal mengambil daftar mapel.");
+      return;
+    }
+    if (!mapelOptions || mapelOptions.length === 0) {
+      alert("Daftar mapel kosong.");
+      return;
+    }
+
+    // Populate add modal select options
+    const addMapelSelect = document.getElementById('add-mapel-select');
+    addMapelSelect.innerHTML = '';
+    mapelOptions.forEach(m => {
+      const option = document.createElement('option');
+      option.value = m.id;
+      option.textContent = m.nama;
+      addMapelSelect.appendChild(option);
+    });
+
+    // Show add modal by removing hidden class and setting display flex
+    const addModal = document.getElementById('modal-add-mapel');
+    addModal.classList.remove('hidden');
+    addModal.style.display = 'flex';
+    addModal.setAttribute('aria-hidden', 'false');
+
+    // Clear previous form inputs and errors
+    document.getElementById('form-add-mapel').reset();
+    clearAddFormErrors();
   });
 }
 
