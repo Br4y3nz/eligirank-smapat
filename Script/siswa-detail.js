@@ -136,12 +136,29 @@ document.getElementById('btn-add-mapel').addEventListener('click', async () => {
     .select('id, nama')
     .order('nama', { ascending: true });
   if (mapelError) {
+    console.error("Failed to fetch mapel:", mapelError);
     alert("Gagal mengambil daftar mapel.");
-    console.error(mapelError);
+    // Show modal anyway with warning
+    const addModal = document.getElementById('modal-add-mapel');
+    addModal.classList.remove('hidden');
+    addModal.style.display = 'flex';
+    addModal.setAttribute('aria-hidden', 'false');
+    // Clear form and errors
+    document.getElementById('form-add-mapel').reset();
+    clearAddFormErrors();
     return;
   }
   if (!mapelOptions || mapelOptions.length === 0) {
+    console.warn("Mapel list is empty.");
     alert("Daftar mapel kosong.");
+    // Show modal anyway with warning
+    const addModal = document.getElementById('modal-add-mapel');
+    addModal.classList.remove('hidden');
+    addModal.style.display = 'flex';
+    addModal.setAttribute('aria-hidden', 'false');
+    // Clear form and errors
+    document.getElementById('form-add-mapel').reset();
+    clearAddFormErrors();
     return;
   }
 
