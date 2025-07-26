@@ -287,7 +287,10 @@ async function main() {
     return;
   }
 
+  await loadRapor(siswaId);          // ✅ Load student info & rapor (with mapel name)
+  await loadCurrentRapor();          // ✅ Load the current semester's rapor table
 }
+
 
 async function fetchStudentInfo(siswaId) {
   const { data, error } = await supabase
