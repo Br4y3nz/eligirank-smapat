@@ -326,6 +326,8 @@ body {
   min-height: 48px;
   background-color: #cce4ff;
   border-radius: 0 0 10px 10px;
+  flex-wrap: nowrap;
+  gap: 1rem;
 }
 
 /* Rata-rata box with blue background and white text */
