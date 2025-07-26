@@ -292,6 +292,146 @@ body {
   }
 }
 
+/* Modal overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Hide modal by default */
+.modal.hidden {
+  display: none !important;
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1e293b;
+}
+
+/* Modal title */
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2563eb;
+  text-align: center;
+}
+
+/* Form labels */
+.modal-content label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Form inputs and selects */
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content input[type="number"]:focus,
+.modal-content select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.5);
+}
+
+/* Error messages */
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: -0.75rem;
+  margin-bottom: 1rem;
+  min-height: 1.25rem;
+}
+
+/* Modal buttons container */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* Buttons */
+.btn-submit,
+.btn-cancel {
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 100px;
+}
+
+/* Submit button */
+.btn-submit {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-submit:hover,
+.btn-submit:focus {
+  background-color: #1e40af;
+  outline: 2px solid #2563eb;
+}
+
+/* Cancel button */
+.btn-cancel {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus {
+  background-color: #d1d5db;
+  outline: 2px solid #9ca3af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem 1rem;
+    width: 95%;
+  }
+  .modal-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .btn-submit,
+  .btn-cancel {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
 /* Footer layout for add button and rata-rata box */
 .rapor-table-footer {
   display: flex;
@@ -311,12 +451,19 @@ body {
     flex-direction: column;
     align-items: stretch;
     gap: 0.5rem;
+    padding: 0 0.5rem;
   }
   .btn-add {
     align-self: flex-start;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
   }
   .rapor-ratarata-box {
     align-self: flex-end;
     margin-left: 0;
+    font-size: 1rem;
+    padding: 0.25rem 0.75rem;
+    max-width: 140px;
   }
 }
