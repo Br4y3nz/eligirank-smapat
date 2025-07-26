@@ -45,10 +45,10 @@ function tampilkanRapor(data) {
       <td>${konversiGrade(item.nilai)}</td>
       <td>
         <button class="btn-edit-mapel" data-id="${item.id}" data-mapel-id="${item.mapel_id}" data-semester="${item.semester}" aria-label="Edit Mapel">
-          &#9998;
+          <i class='bx bx-edit'></i>
         </button>
         <button class="btn-delete-mapel" data-id="${item.id}" aria-label="Hapus Mapel">
-          &#128465;
+          <i class='bx bx-trash'></i>
         </button>
       </td>
     `;
