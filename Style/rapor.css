@@ -300,3 +300,17 @@ body {
 .hidden {
   display: none !important;
 }
+
+/* Responsive layout margin fix */
+@media (min-width: 769px) {
+  .rapor-container {
+    margin-left: 85px; /* apply left margin only on desktop */
+  }
+}
+
+@media (max-width: 768px) {
+  .rapor-container {
+    margin-left: 0 !important; /* remove it on mobile */
+    margin-bottom: 70px;       /* account for bottom navbar */
+  }
+}

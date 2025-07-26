@@ -332,19 +332,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   currentSiswaId = siswaId;
   await fetchStudentInfo(siswaId);
   await main();
-
-  // Adjust margins based on sidebar presence and screen size
-  const sidebar = document.getElementById('sidebar-container');
-  const navbar = document.querySelector('nav'); // Assuming navbar is a <nav> element
-  const mainContent = document.querySelector('main.rapor-container');
-
-  if (sidebar && sidebar.children.length > 0 && window.innerWidth > 768) {
-  mainContent.style.marginLeft = '85px';
-  mainContent.style.marginBottom = '0';
-} else if (navbar && window.innerWidth <= 768) {
-  mainContent.style.marginBottom = '70px';
-  mainContent.style.marginLeft = '0';  // prevent left margin on mobile
-} else {
-  mainContent.style.marginLeft = '0';
-  mainContent.style.marginBottom = '0';
-}});
+});
