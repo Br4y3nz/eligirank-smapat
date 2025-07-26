@@ -174,6 +174,12 @@ if (btnAddMapel) {
   });
 }
 
+await supabase.from('rapor')
+  .update({ nilai: parseInt(updatedNilai) })
+  .eq('siswa_id', siswaId)
+  .eq('mapel_id', mapelId)
+  .eq('semester', currentSemester);
+
 document.getElementById('btn-cancel-add').addEventListener('click', () => {
   const addModal = document.getElementById('modal-add-mapel');
   addModal.classList.add('hidden');
