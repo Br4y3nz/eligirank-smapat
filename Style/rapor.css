@@ -322,6 +322,10 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-top: 1rem;
+  padding: 0 1rem;
+  min-height: 48px;
+  background-color: #cce4ff;
+  border-radius: 0 0 10px 10px;
 }
 
 /* Rata-rata box with blue background and white text */
