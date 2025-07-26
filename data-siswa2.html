@@ -36,7 +36,7 @@
       </select>
     </section>
 
-    <section class="rapor-table-section" aria-label="Tabel Rapor Siswa">
+  <section class="rapor-table-section" aria-label="Tabel Rapor Siswa">
       <table class="rapor-table" role="table" aria-describedby="rata-rata">
         <thead>
           <tr>
@@ -53,11 +53,8 @@
       <table class="rata-rata-table" role="table" aria-label="Rata-rata nilai" style="width: 100%; margin-top: 1rem;">
         <tbody>
           <tr>
-            <td colspan="2" style="display: flex; justify-content: space-between; align-items: center;">
-              <button id="btn-add-mapel" class="btn-add" aria-label="Tambah Mapel dan Nilai" style="margin: 0;">+</button>
-              <span style="font-weight: bold;">
-                Rata-rata: <span id="rata-rata">-</span>
-              </span>
+            <td colspan="2" style="text-align: right; font-weight: bold;">
+              Rata-rata: <span id="rata-rata">-</span>
             </td>
           </tr>
         </tbody>
@@ -102,20 +99,10 @@
   <div id="modal-add-mapel" class="modal hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-add-title" aria-modal="true">
     <div class="modal-content" role="document">
       <h2 id="modal-add-title">Tambah Mapel</h2>
-      <form id="form-add-mapel" novalidate>
-        <label for="add-mapel-select">Pilih Mapel:</label>
-        <select id="add-mapel-select" name="mapel" required aria-required="true" aria-describedby="add-mapel-select-error">
-          <!-- Options will be populated dynamically -->
-        </select>
-        <span id="add-mapel-select-error" class="error-message" aria-live="polite"></span>
-        <label for="add-mapel-nilai">Nilai (0-100):</label>
-        <input type="number" id="add-mapel-nilai" name="nilai" min="0" max="100" required aria-required="true" aria-describedby="add-mapel-nilai-error" />
-        <span id="add-mapel-nilai-error" class="error-message" aria-live="polite"></span>
-        <div class="modal-buttons">
-          <button type="submit" class="btn-submit">Tambah</button>
-          <button type="button" id="btn-cancel-add" class="btn-cancel">Batal</button>
-        </div>
-      </form>
+      <p>Fitur tambah mapel telah dihapus dan akan dibuat ulang.</p>
+      <div class="modal-buttons">
+        <button type="button" id="btn-close-add" class="btn-cancel">Tutup</button>
+      </div>
     </div>
   </div>
 </body>
