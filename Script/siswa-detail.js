@@ -101,7 +101,10 @@ function attachMapelRowEvents() {
   });
 }
 
-let currentSiswaId = null;
+const urlParams = new URLSearchParams(window.location.search);
+const siswaIdFromUrl = urlParams.get('id');
+
+let currentSiswaId = siswaIdFromUrl || null;
 let currentSemester = 1;
 
 async function loadCurrentRapor() {
@@ -197,6 +200,11 @@ document.getElementById('form-add-mapel').onsubmit = async (e) => {
     valid = false;
   }
   if (!valid) return;
+
+  if (!currentSiswaId) {
+    alert("ID siswa tidak ditemukan.");
+    return;
+  }
 
   const { error } = await supabase.from('rapor').insert([{ siswa_id: currentSiswaId, semester: currentSemester, mapel_id: mapelId, nilai }]);
   if (error) {
