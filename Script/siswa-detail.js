@@ -40,7 +40,7 @@ function tampilkanRapor(data) {
   data.forEach((item) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${item.mapel}</td>
+      <td>${item.mapel?.nama || '-'}</td>
       <td>${item.nilai}</td>
       <td>${konversiGrade(item.nilai)}</td>
       <td>
@@ -111,7 +111,7 @@ async function loadCurrentRapor() {
   if (!currentSiswaId) return;
   const { data: rapor, error } = await supabase
     .from('rapor')
-    .select('*')
+    .select('*, mapel(nama)')
     .eq('siswa_id', currentSiswaId)
     .eq('semester', currentSemester);
   if (error) {
