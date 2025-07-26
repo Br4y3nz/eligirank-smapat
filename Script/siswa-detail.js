@@ -166,7 +166,6 @@ if (btnAddMapel) {
     const addModal = document.getElementById('modal-add-mapel');
     console.log("Modal innerHTML before showing:", addModal.innerHTML);
     addModal.classList.remove('hidden');
-    addModal.style.display = 'flex';
     addModal.setAttribute('aria-hidden', 'false');
 
     // Clear previous form inputs and errors
@@ -215,8 +214,9 @@ document.getElementById('form-add-mapel').onsubmit = async (e) => {
     loadCurrentRapor();
     // Hide add modal
     const addModal = document.getElementById('modal-add-mapel');
-    addModal.style.display = 'none';
+    addModal.classList.add('hidden');
     addModal.setAttribute('aria-hidden', 'true');
+
   }
 };
 
@@ -257,11 +257,11 @@ async function loadRapor(siswaId) {
   }
 
   // Check if elements exist before setting textContent
-  const namaElem = document.getElementById("nama");
+  const namaElem = document.getElementById("student-name");
   if (namaElem) {
     namaElem.textContent = siswa.nama;
   }
-  const kelasElem = document.getElementById("kelas");
+  const kelasElem = document.getElementById("student-class");
   if (kelasElem) {
     kelasElem.textContent = siswa.kelas || "-";
   }
