@@ -163,7 +163,7 @@ if (btnAddMapel) {
     });
 
     // Show add modal by removing hidden class and setting display flex
-    const addModal = document.getElementById('modal-add-rapor');
+    const addModal = document.getElementById('modal-add-mapel');
     console.log("Modal innerHTML before showing:", addModal.innerHTML);
     addModal.classList.remove('hidden');
     addModal.style.display = 'flex';
@@ -176,7 +176,7 @@ if (btnAddMapel) {
 }
 
 document.getElementById('btn-cancel-add').addEventListener('click', () => {
-  const addModal = document.getElementById('modal-add-rapor');
+  const addModal = document.getElementById('modal-add-mapel');
   addModal.classList.add('hidden');
   addModal.setAttribute('aria-hidden', 'true');
 });
@@ -214,7 +214,7 @@ document.getElementById('form-add-mapel').onsubmit = async (e) => {
     alert("Data mapel berhasil ditambahkan.");
     loadCurrentRapor();
     // Hide add modal
-    const addModal = document.getElementById('modal-add-rapor');
+    const addModal = document.getElementById('modal-add-mapel');
     addModal.style.display = 'none';
     addModal.setAttribute('aria-hidden', 'true');
   }
