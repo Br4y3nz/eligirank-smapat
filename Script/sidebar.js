@@ -1,19 +1,19 @@
 import supabase from '../Supabase/client.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const sidebar = document.getElementById('sidebar-container');
-  const navbar = document.querySelector('nav'); // Assuming navbar is a <nav> element
-  const mainContent = document.querySelector('main');
-
-  if (!mainContent) return;
-
-
-// If you don't have real auth, use a dummy function for now:
 function checkAuth() {
   return supabase.auth.getSession().then(({ data: { session } }) => {
     return { isLoggedIn: !!session, session };
   });
-}});
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.getElementById('sidebar-container');
+  const navbar = document.querySelector('nav');
+  const mainContent = document.querySelector('main');
+
+  if (!mainContent) return;
+});
+
 
 export function initializeSidebar() {
   const sidebar = document.querySelector(".sidebar");
