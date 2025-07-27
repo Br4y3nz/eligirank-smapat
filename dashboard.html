@@ -264,6 +264,12 @@
       document.getElementById('user-info-modal')?.classList.add('open');
       document.getElementById('overlay')?.classList.add('open');
     }
+
+    document.querySelectorAll('#user-info-form .btn, #role-form .btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+      });
+    });
   });
 </script>
 
