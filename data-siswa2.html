@@ -4,30 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rapor Siswa - EligiRank SMAPAT</title>
+  <link rel="stylesheet" href="Style/sidebar.css" />
+  <link rel="stylesheet" href="Style/rapor.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <script type="module" src="/Supabase/client.js" defer></script>
   <script type="module" src="/Script/sidebar.js" defer></script>
-  <link rel="stylesheet" href="Style/sidebar.css" />
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="Style/role-modal.css" />
-  <link rel="stylesheet" href="Style/user-info-modal.css" />
-  <link rel="stylesheet" href="Style/rapor.css" />
   <script type="module" src="/Script/siswa-detail.js" defer></script>
 </head>
 <body>
   <div id="sidebar-container"></div>
 
-  <main class="rapor-container" role="main" aria-labelledby="rapor-title">
-    <h1 id="rapor-title" class="rapor-title">Rapor Siswa</h1>
+  <main class="rapor-container">
+    <h1 class="rapor-title">Rapor Siswa</h1>
 
-    <section class="student-info" aria-label="Informasi Siswa">
-      <div class="info-box" role="region" aria-live="polite">Nama: <span id="student-name">-</span></div>
-      <div class="info-box" role="region" aria-live="polite">Kelas: <span id="student-class">-</span></div>
+    <section class="student-info">
+      <div class="info-box">Nama: <span id="student-name">-</span></div>
+      <div class="info-box">Kelas: <span id="student-class">-</span></div>
     </section>
 
-    <section class="semester-filter" aria-label="Filter Semester">
-      <label for="semester-select" class="visually-hidden">Pilih Semester</label>
-      <select id="semester-select" aria-controls="tabel-rapor" aria-describedby="semester-desc">
-        <option value="1" selected>Semester 1</option>
+    <section class="semester-filter">
+      <select id="semester-select">
+        <option value="1">Semester 1</option>
         <option value="2">Semester 2</option>
         <option value="3">Semester 3</option>
         <option value="4">Semester 4</option>
@@ -36,96 +33,64 @@
       </select>
     </section>
 
-  <section class="rapor-table-section" aria-label="Tabel Rapor Siswa">
+    <section class="rapor-table-section">
       <div class="rapor-table-wrapper">
-         <table class="rapor-table" role="table" aria-describedby="rata-rata">
-        <thead>
-          <tr>
-            <th scope="col">Mapel</th>
-            <th scope="col">Nilai</th>
-            <th scope="col">Grade</th>
-            <th scope="col" class="action-column">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="tabel-rapor">
-          <!-- Rows will be inserted here -->
-        </tbody>
-      </table>
-      <table class="rata-rata-table" role="table" aria-label="Rata-rata nilai" style="width: 100%; margin-top: 1rem;">
-        <tbody>
-          <tr>
-            <td colspan="2" style="text-align: right; font-weight: bold;">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="rapor-table-footer">
-        <button id="btn-add-mapel" class="btn-add" aria-label="Tambah Mapel dan Nilai" style="margin: 0;">+</button>
-      <div class="rapor-ratarata-box" role="region" aria-live="polite" aria-atomic="true" id="rata-rata-unique-container">
-        <span>Rata-Rata:  </span><span id="rata-rata-unique">-</span>
+        <table class="rapor-table">
+          <thead>
+            <tr>
+              <th>Mapel</th>
+              <th>Nilai</th>
+              <th>Grade</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabel-rapor"></tbody>
+        </table>
+        <div class="rapor-table-footer">
+          <button id="btn-add-mapel" class="btn-add">+</button>
+          <div class="rapor-ratarata-box">
+            <span>Rata-Rata: </span><span id="rata-rata-unique">-</span>
+          </div>
+        </div>
       </div>
-      </div>
-     </div>
     </section>
   </main>
 
-  <script type="module">
-    import { initializeSidebar } from '/Script/sidebar.js';
-
-    document.addEventListener('DOMContentLoaded', () => {
-      fetch('/sidebar.html')
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById('sidebar-container').innerHTML = html;
-          initializeSidebar();
-        })
-        .catch(err => console.error('Failed to load sidebar:', err));
-    });
-  </script>
-
-  <!-- Modal for editing mapel -->
-  <div id="modal-edit-mapel" class="modal hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-edit-title" aria-modal="true">
-    <div class="modal-content" role="document">
-      <h2 id="modal-edit-title">Edit Mapel</h2>
-      <form id="form-edit-mapel" novalidate>
-        <label for="edit-mapel-select">Pilih Mapel:</label>
-        <select id="edit-mapel-select" name="mapel" required aria-required="true" aria-describedby="edit-mapel-select-error">
-          <!-- Options will be populated dynamically -->
-        </select>
-        <span id="edit-mapel-select-error" class="error-message" aria-live="polite"></span>
-        <label for="edit-mapel-nilai">Nilai (0-100):</label>
-        <input type="number" id="edit-mapel-nilai" name="nilai" min="0" max="100" required aria-required="true" aria-describedby="edit-mapel-nilai-error" />
-        <span id="edit-mapel-nilai-error" class="error-message" aria-live="polite"></span>
-        <span id="edit-semester-select-error" class="error-message" aria-live="polite"></span>
+  <!-- MODAL ADD -->
+  <div id="modal-add-mapel" class="modal hidden">
+    <div class="modal-content">
+      <button type="button" id="btn-close-add" class="modal-close">&times;</button>
+      <h2>Tambah Mapel</h2>
+      <p id="form-info-text">Data akan disimpan ke <strong id="semester-info">Semester 1</strong> untuk siswa <strong id="siswa-info">-</strong></p>
+      <form id="form-add-mapel">
+        <input type="hidden" id="add-siswa-id" name="siswa_id" />
+        <input type="hidden" id="add-semester" name="semester" />
+        <label for="add-mapel-select">Mapel:</label>
+        <select id="add-mapel-select" required></select>
+        <label for="add-mapel-nilai">Nilai:</label>
+        <input type="number" id="add-mapel-nilai" min="0" max="100" required />
         <div class="modal-buttons">
-          <button type="submit" class="btn-submit">Simpan</button>
-          <button type="button" id="btn-cancel-edit" class="btn-cancel">Batal</button>
+          <button type="submit">Tambah</button>
+          <button type="button" id="btn-cancel-add">Batal</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal for adding mapel -->
-  <div id="modal-add-mapel" class="modal hidden z-50 fixed inset-0 flex items-center justify-center bg-black bg-opacity-40" aria-hidden="true" role="dialog" aria-labelledby="modal-add-title" aria-modal="true">
-    <div class="modal-content" role="document">
-      <h2 id="modal-add-title">Tambah Mapel</h2>
-      <p id="form-info-text" class="text-sm text-gray-500 mb-4">
-        Data akan disimpan ke <strong>Semester 1</strong> untuk siswa <strong>Brayen Marcell</strong>
-      </p>
-      <form id="form-add-mapel" novalidate>
-        <input type="hidden" id="add-siswa-id" name="siswa_id" />
-        <input type="hidden" id="add-semester" name="semester" />
-        <label for="add-mapel-select">Pilih Mapel:</label>
-        <select id="add-mapel-select" name="mapel" required aria-required="true" aria-describedby="add-mapel-select-error">
-          <!-- Options will be populated dynamically -->
-        </select>
-        <span id="add-mapel-select-error" class="error-message" aria-live="polite"></span>
-        <label for="add-mapel-nilai">Nilai (0-100):</label>
-        <input type="number" id="add-mapel-nilai" name="nilai" min="0" max="100" required aria-required="true" aria-describedby="add-mapel-nilai-error" />
-        <span id="add-mapel-nilai-error" class="error-message" aria-live="polite"></span>
+  <!-- MODAL EDIT -->
+  <div id="modal-edit-mapel" class="modal hidden">
+    <div class="modal-content">
+      <button type="button" id="btn-close-edit" class="modal-close">&times;</button>
+      <h2>Edit Mapel</h2>
+      <form id="form-edit-mapel">
+        <input type="hidden" id="edit-rapor-id" />
+        <label for="edit-mapel-select">Mapel:</label>
+        <select id="edit-mapel-select" required></select>
+        <label for="edit-mapel-nilai">Nilai:</label>
+        <input type="number" id="edit-mapel-nilai" min="0" max="100" required />
         <div class="modal-buttons">
-          <button type="submit" class="btn-submit">Tambah</button>
-          <button type="button" id="btn-cancel-add" class="btn-cancel">Batal</button>
+          <button type="submit">Simpan</button>
+          <button type="button" id="btn-cancel-edit">Batal</button>
         </div>
       </form>
     </div>

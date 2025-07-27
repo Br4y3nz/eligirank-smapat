@@ -1,14 +1,10 @@
-// siswa-detail.js
 import supabase from '../Supabase/client.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const currentSiswaId = urlParams.get('id') || null;
 const currentSemester = parseInt(urlParams.get('semester')) || 1;
 
-// Main Init
-
 document.addEventListener('DOMContentLoaded', async () => {
-  // Append current id to all links to data-siswa2.html
   if (currentSiswaId) {
     document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
       const baseUrl = link.getAttribute('href').split('?')[0];
@@ -49,6 +45,8 @@ function attachModalListeners() {
 
   document.getElementById('btn-cancel-add')?.addEventListener('click', closeModal('modal-add-mapel'));
   document.getElementById('btn-cancel-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
+  document.getElementById('btn-close-add')?.addEventListener('click', closeModal('modal-add-mapel'));
+  document.getElementById('btn-close-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
 
   formAdd?.addEventListener('submit', handleAddSubmit);
   formEdit?.addEventListener('submit', handleEditSubmit);
@@ -85,7 +83,6 @@ async function openAddModal() {
 
 async function handleAddSubmit(e) {
   e.preventDefault();
-  const form = e.target;
 
   const siswa_id = document.getElementById('add-siswa-id').value;
   const mapel_id = document.getElementById('add-mapel-select').value;
@@ -111,14 +108,13 @@ async function handleEditSubmit(e) {
 
   const mapel_id = document.getElementById('edit-mapel-select').value;
   const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
-  const semester = parseInt(document.getElementById('edit-semester-select').value);
 
-  if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100 || isNaN(semester)) {
+  if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100) {
     alert('Pastikan semua field valid.');
     return;
   }
 
-  const { error } = await supabase.from('rapor').update({ mapel_id, nilai, semester }).eq('id', raporId);
+  const { error } = await supabase.from('rapor').update({ mapel_id, nilai }).eq('id', raporId);
   if (error) return alert('Gagal mengupdate.');
 
   closeModal('modal-edit-mapel')();
@@ -155,12 +151,13 @@ async function loadCurrentRapor() {
 function tampilkanRapor(data = []) {
   const tbody = document.getElementById('tabel-rapor');
   tbody.innerHTML = '';
-
   let total = 0;
+
   data.forEach(item => {
     const tr = document.createElement('tr');
     const grade = konversiGrade(item.nilai);
     const gradeClass = `grade-${grade.replace('+', 'plus').replace('-', 'minus')}`;
+
     tr.innerHTML = `
       <td>${item.mapel?.nama || '-'}</td>
       <td>${item.nilai}</td>
@@ -170,6 +167,7 @@ function tampilkanRapor(data = []) {
         <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
       </td>
     `;
+
     tbody.appendChild(tr);
     total += item.nilai;
   });
@@ -200,10 +198,10 @@ function attachMapelRowEvents() {
       const form = document.getElementById('form-edit-mapel');
 
       await populateMapelSelects();
+
       form.dataset.raporId = raporId;
       document.getElementById('edit-mapel-select').value = data.mapel_id;
       document.getElementById('edit-mapel-nilai').value = data.nilai;
-      document.getElementById('edit-semester-select').value = data.semester;
 
       const modal = document.getElementById('modal-edit-mapel');
       modal.classList.remove('hidden');
