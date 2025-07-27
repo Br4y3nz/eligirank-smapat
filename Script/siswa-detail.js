@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!isAuthorized()) {
     document.getElementById('btn-add-mapel')?.remove();
-    const aksiHeader = document.querySelector('th.aksi');
+    const aksiHeader = document.querySelector('th.aksi') || document.querySelector('th:last-child');
     aksiHeader?.remove();
   }
 });
@@ -161,6 +161,11 @@ async function loadCurrentRapor() {
 }
 
 function tampilkanRapor(data = []) {
+  const theadRow = document.querySelector('.rapor-table thead tr');
+  if (!isAuthorized() && theadRow.children.length === 4) {
+    theadRow.removeChild(theadRow.lastElementChild);
+  }
+
   const tbody = document.getElementById('tabel-rapor');
   tbody.innerHTML = '';
   let total = 0;
