@@ -95,5 +95,18 @@
       </form>
     </div>
   </div>
+
+    <script type="module">
+    import { initializeSidebar } from '/Script/sidebar.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('/sidebar.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('sidebar-container').innerHTML = html;
+          initializeSidebar();
+        })
+        .catch(err => console.error('Failed to load sidebar:', err));
+    });
+  </script>
 </body>
 </html>
