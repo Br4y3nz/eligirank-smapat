@@ -7,7 +7,7 @@ const currentSemester = parseInt(urlParams.get('semester')) || 1;
 const userRole = localStorage.getItem('user_role');
 
 function isAuthorized() {
-  return userRole === 'admin' || userRole === 'teacher';
+  return userRole === 'admin' || userRole === 'guru';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
