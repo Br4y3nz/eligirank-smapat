@@ -4,6 +4,12 @@ const urlParams = new URLSearchParams(window.location.search);
 const currentSiswaId = urlParams.get('id') || null;
 const currentSemester = parseInt(urlParams.get('semester')) || 1;
 
+const userRole = localStorage.getItem('user_role'); // e.g. 'admin' or 'teacher'
+
+function isAuthorized() {
+  return userRole === 'admin' || userRole === 'teacher';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   if (currentSiswaId) {
     document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
@@ -17,6 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadCurrentRapor();
   syncSemesterDropdown();
   attachModalListeners();
+
+  if (!isAuthorized()) {
+    document.getElementById('btn-add-mapel')?.remove();
+  }
 });
 
 function syncSemesterDropdown() {
@@ -163,8 +173,10 @@ function tampilkanRapor(data = []) {
       <td>${item.nilai}</td>
       <td class="${gradeClass}">${grade}</td>
       <td>
-        <button class="btn-edit-mapel" data-id="${item.id}"><i class='bx bx-edit'></i></button>
-        <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
+        ${isAuthorized() ? `
+          <button class="btn-edit-mapel" data-id="${item.id}"><i class='bx bx-edit'></i></button>
+          <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
+        ` : ''}
       </td>
     `;
 
@@ -191,6 +203,8 @@ function konversiGrade(nilai) {
 }
 
 function attachMapelRowEvents() {
+  if (!isAuthorized()) return;
+
   document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
@@ -236,5 +250,3 @@ async function loadStudentInfo() {
     kelasElem.textContent = '-';
   }
 }
-document.body.classList.add('modal-open');
-document.body.classList.remove('modal-open');
