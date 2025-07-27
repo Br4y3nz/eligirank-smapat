@@ -1,111 +1,180 @@
+// siswa-detail.js
 import supabase from '../Supabase/client.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const currentSiswaId = urlParams.get('id') || null;
+const currentSemester = parseInt(urlParams.get('semester')) || 1;
 
-let currentSemester = parseInt(urlParams.get('semester')) || 1;
+// Main Init
 
-async function loadMapelOptions() {
-  const { data: mapelOptions, error } = await supabase
-    .from('mapel')
-    .select('id, nama')
-    .order('nama', { ascending: true });
-  if (error) {
-    console.error('Failed to fetch mapel options:', error);
-    return [];
+document.addEventListener('DOMContentLoaded', async () => {
+  // Append current id to all links to data-siswa2.html
+  if (currentSiswaId) {
+    document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
+      const baseUrl = link.getAttribute('href').split('?')[0];
+      link.setAttribute('href', `${baseUrl}?id=${currentSiswaId}&semester=${currentSemester}`);
+    });
   }
-  return mapelOptions || [];
+
+  await loadStudentInfo();
+  await populateMapelSelects();
+  await loadCurrentRapor();
+  syncSemesterDropdown();
+  attachModalListeners();
+});
+
+function syncSemesterDropdown() {
+  const semSelect = document.getElementById('semester-select');
+  if (!semSelect) return;
+
+  const semesterStr = currentSemester.toString();
+  const optionExists = Array.from(semSelect.options).some(opt => opt.value === semesterStr);
+
+  semSelect.value = optionExists ? semesterStr : semSelect.options[0].value;
+
+  semSelect.addEventListener('change', e => {
+    const newSemester = parseInt(e.target.value);
+    if (!isNaN(newSemester) && currentSiswaId) {
+      window.location.href = `data-siswa2.html?id=${currentSiswaId}&semester=${newSemester}`;
+    }
+  });
+}
+
+function attachModalListeners() {
+  const btnAdd = document.getElementById('btn-add-mapel');
+  const formAdd = document.getElementById('form-add-mapel');
+  const formEdit = document.getElementById('form-edit-mapel');
+
+  btnAdd?.addEventListener('click', openAddModal);
+
+  document.getElementById('btn-cancel-add')?.addEventListener('click', closeModal('modal-add-mapel'));
+  document.getElementById('btn-cancel-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
+
+  formAdd?.addEventListener('submit', handleAddSubmit);
+  formEdit?.addEventListener('submit', handleEditSubmit);
+}
+
+function closeModal(modalId) {
+  return () => {
+    const modal = document.getElementById(modalId);
+    modal?.classList.add('hidden');
+    modal?.setAttribute('aria-hidden', 'true');
+  };
+}
+
+async function openAddModal() {
+  await populateMapelSelects();
+  const modal = document.getElementById('modal-add-mapel');
+  const form = document.getElementById('form-add-mapel');
+  const infoText = document.getElementById('form-info-text');
+
+  const siswaInput = document.getElementById('add-siswa-id');
+  const semesterInput = document.getElementById('add-semester');
+
+  form.reset();
+  siswaInput.value = currentSiswaId;
+  semesterInput.value = currentSemester;
+
+  const nama = document.getElementById('student-name')?.textContent || '';
+  const kelas = document.getElementById('student-class')?.textContent || '';
+  infoText.innerHTML = `Data akan disimpan ke <strong>Semester ${currentSemester}</strong> untuk siswa <strong>${nama}</strong> (${kelas})`;
+
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+async function handleAddSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+
+  const siswa_id = document.getElementById('add-siswa-id').value;
+  const mapel_id = document.getElementById('add-mapel-select').value;
+  const nilai = parseFloat(document.getElementById('add-mapel-nilai').value);
+  const semester = parseInt(document.getElementById('add-semester').value);
+
+  if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100 || isNaN(semester)) {
+    alert('Pastikan semua field valid.');
+    return;
+  }
+
+  const { error } = await supabase.from('rapor').insert([{ siswa_id, mapel_id, nilai, semester }]);
+  if (error) return alert('Gagal menambahkan.');
+
+  closeModal('modal-add-mapel')();
+  await loadCurrentRapor();
+}
+
+async function handleEditSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const raporId = form.dataset.raporId;
+
+  const mapel_id = document.getElementById('edit-mapel-select').value;
+  const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
+  const semester = parseInt(document.getElementById('edit-semester-select').value);
+
+  if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100 || isNaN(semester)) {
+    alert('Pastikan semua field valid.');
+    return;
+  }
+
+  const { error } = await supabase.from('rapor').update({ mapel_id, nilai, semester }).eq('id', raporId);
+  if (error) return alert('Gagal mengupdate.');
+
+  closeModal('modal-edit-mapel')();
+  await loadCurrentRapor();
 }
 
 async function populateMapelSelects() {
-  console.log('populateMapelSelects called');
-  const mapelOptions = await loadMapelOptions();
-  console.log('mapelOptions loaded:', mapelOptions);
-  const addSelect = document.getElementById('add-mapel-select');
-  const editSelect = document.getElementById('edit-mapel-select');
-  if (addSelect) {
-    addSelect.innerHTML = '';
-    mapelOptions.forEach(m => {
+  const { data: options } = await supabase.from('mapel').select('id, nama').order('nama');
+  const selects = ['add-mapel-select', 'edit-mapel-select'];
+  selects.forEach(id => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    select.innerHTML = '';
+    options?.forEach(opt => {
       const option = document.createElement('option');
-      option.value = m.id;
-      option.textContent = m.nama;
-      addSelect.appendChild(option);
+      option.value = opt.id;
+      option.textContent = opt.nama;
+      select.appendChild(option);
     });
-  }
-  if (editSelect) {
-    editSelect.innerHTML = '';
-    mapelOptions.forEach(m => {
-      const option = document.createElement('option');
-      option.value = m.id;
-      option.textContent = m.nama;
-      editSelect.appendChild(option);
-    });
-  }
+  });
 }
 
 async function loadCurrentRapor() {
   if (!currentSiswaId) return;
-  const { data: rapor, error } = await supabase
+  const { data, error } = await supabase
     .from('rapor')
     .select('*, mapel(nama)')
     .eq('siswa_id', currentSiswaId)
     .eq('semester', currentSemester);
-  if (error) {
-    alert('Gagal mengambil data rapor.');
-    console.error(error);
-    return;
-  }
-  tampilkanRapor(rapor || []);
+  if (error) return alert('Gagal mengambil rapor.');
+  tampilkanRapor(data);
 }
 
-function tampilkanRapor(data) {
+function tampilkanRapor(data = []) {
   const tbody = document.getElementById('tabel-rapor');
   tbody.innerHTML = '';
 
   let total = 0;
-
   data.forEach(item => {
     const tr = document.createElement('tr');
-    // Determine grade class for color
-    let gradeText = konversiGrade(item.nilai);
-    let gradeClass = '';
-    switch (gradeText) {
-      case 'A+': gradeClass = 'grade-Aplus'; break;
-      case 'A': gradeClass = 'grade-A'; break;
-      case 'A-': gradeClass = 'grade-Aminus'; break;
-      case 'B+': gradeClass = 'grade-Bplus'; break;
-      case 'B': gradeClass = 'grade-B'; break;
-      case 'B-': gradeClass = 'grade-Bminus'; break;
-      case 'C+': gradeClass = 'grade-Cplus'; break;
-      case 'C': gradeClass = 'grade-C'; break;
-      case 'C-': gradeClass = 'grade-Cminus'; break;
-      case 'D': gradeClass = 'grade-D'; break;
-      case 'F': gradeClass = 'grade-F'; break;
-      default: gradeClass = ''; break;
-    }
+    const grade = konversiGrade(item.nilai);
+    const gradeClass = `grade-${grade.replace('+', 'plus').replace('-', 'minus')}`;
     tr.innerHTML = `
       <td>${item.mapel?.nama || '-'}</td>
       <td>${item.nilai}</td>
-      <td class="${gradeClass}">${gradeText}</td>
+      <td class="${gradeClass}">${grade}</td>
       <td>
-        <button class="btn-edit-mapel" data-id="${item.id}" aria-label="Edit Mapel">
-          <i class='bx bx-edit'></i>
-        </button>
-        <button class="btn-delete-mapel" data-id="${item.id}" aria-label="Hapus Mapel">
-          <i class='bx bx-trash'></i>
-        </button>
+        <button class="btn-edit-mapel" data-id="${item.id}"><i class='bx bx-edit'></i></button>
+        <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
       </td>
     `;
-    total += item.nilai;
     tbody.appendChild(tr);
+    total += item.nilai;
   });
 
-  const rata2 = data.length > 0 ? total / data.length : 0;
-  const rataElem = document.getElementById('rata-rata-unique');
-  if (rataElem) {
-    rataElem.textContent = rata2.toFixed(2);
-  }
-
+  document.getElementById('rata-rata-unique').textContent = (total / data.length || 0).toFixed(2);
   attachMapelRowEvents();
 }
 
@@ -127,266 +196,45 @@ function attachMapelRowEvents() {
   document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
-      if (!raporId) return;
-
-      // Fetch rapor data
-      const { data, error } = await supabase
-        .from('rapor')
-        .select('*')
-        .eq('id', raporId)
-        .single();
-      if (error || !data) {
-        alert('Gagal mengambil data rapor untuk diedit.');
-        return;
-      }
-
-      // Populate edit modal form
-      const editModal = document.getElementById('modal-edit-mapel');
+      const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
       const form = document.getElementById('form-edit-mapel');
-      if (!editModal || !form) return;
 
       await populateMapelSelects();
-
       form.dataset.raporId = raporId;
+      document.getElementById('edit-mapel-select').value = data.mapel_id;
+      document.getElementById('edit-mapel-nilai').value = data.nilai;
+      document.getElementById('edit-semester-select').value = data.semester;
 
-      const selectMapel = document.getElementById('edit-mapel-select');
-      const inputNilai = document.getElementById('edit-mapel-nilai');
-      const selectSemester = document.getElementById('edit-semester-select');
-
-      if (selectMapel) selectMapel.value = data.mapel_id || '';
-      if (inputNilai) inputNilai.value = data.nilai || '';
-      if (selectSemester) selectSemester.value = data.semester || '1';
-
-      editModal.classList.remove('hidden');
-      editModal.setAttribute('aria-hidden', 'false');
+      const modal = document.getElementById('modal-edit-mapel');
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
     };
   });
 
   document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
-      if (!raporId) return;
-      if (!confirm('Yakin ingin menghapus data mapel ini?')) return;
-
-      const { error } = await supabase.from('rapor').delete().eq('id', raporId);
-      if (error) {
-        alert('Gagal menghapus data mapel.');
-        console.error(error);
-      } else {
-        alert('Data mapel berhasil dihapus.');
+      if (confirm('Yakin ingin menghapus data ini?')) {
+        await supabase.from('rapor').delete().eq('id', raporId);
         await loadCurrentRapor();
       }
     };
   });
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  console.log('DOMContentLoaded event fired');
-  console.log('currentSiswaId:', currentSiswaId);
-
-  // Append current id to all links to data-siswa2.html
-  const currentId = new URLSearchParams(window.location.search).get('id');
-  if (currentId) {
-    document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
-      const baseUrl = link.getAttribute('href').split('?')[0];
-      link.setAttribute('href', `${baseUrl}?id=${currentId}`);
-    });
-  }
-
-  // Set semester select dropdown to currentSemester
-  const semSelect = document.getElementById('semester-select');
-  if (semSelect) {
-    // Convert currentSemester to string for comparison
-    const semesterStr = currentSemester.toString();
-    // Check if option exists
-    const optionExists = Array.from(semSelect.options).some(opt => opt.value === semesterStr);
-    if (optionExists) {
-      semSelect.value = semesterStr;
-    } else {
-      console.warn('Semester value not found in select options:', semesterStr);
-      // Default to first option if not found
-      semSelect.selectedIndex = 0;
-    }
-  }
-
-  document.getElementById('semester-select').addEventListener('change', async e => {
-    const newSemester = parseInt(e.target.value);
-    if (!isNaN(newSemester)) {
-      const id = new URLSearchParams(window.location.search).get('id');
-      if (id) {
-        window.location.href = `data-siswa2.html?id=${id}&semester=${newSemester}`;
-      }
-    }
-  });
-
-document.getElementById('btn-add-mapel').addEventListener('click', async () => {
-  await populateMapelSelects();
-
-  const addModal = document.getElementById('modal-add-mapel');
-  const siswaInput = document.getElementById('add-siswa-id');
-  const semesterInput = document.getElementById('add-semester');
-  const infoText = document.getElementById('form-info-text');
-  const formAdd = document.getElementById('form-add-mapel');
-
-  if (!addModal || !siswaInput || !semesterInput || !formAdd) return;
-
-  // Reset + Set hidden inputs
-  formAdd.reset();
-  siswaInput.value = currentSiswaId;
-  semesterInput.value = currentSemester;
-
-  // Show readable info
-  const namaElem = document.getElementById('student-name');
-  const kelasElem = document.getElementById('student-class');
-  const namaText = namaElem ? namaElem.textContent : '';
-  const kelasText = kelasElem ? kelasElem.textContent : '';
-
-  infoText.innerHTML = `Data akan disimpan ke <strong>Semester ${currentSemester}</strong> untuk siswa <strong>${namaText}</strong> (${kelasText})`;
-
-  // Show modal
-  addModal.classList.remove('hidden');
-  addModal.setAttribute('aria-hidden', 'false');
-});
-
-  document.getElementById('btn-cancel-add').addEventListener('click', () => {
-    console.log('btn-cancel-add clicked');
-    const addModal = document.getElementById('modal-add-mapel');
-    if (!addModal) return;
-    addModal.classList.add('hidden');
-    addModal.setAttribute('aria-hidden', 'true');
-  });
-
-  document.getElementById('btn-cancel-edit').addEventListener('click', () => {
-    console.log('btn-cancel-edit clicked');
-    const editModal = document.getElementById('modal-edit-mapel');
-    if (!editModal) return;
-    editModal.classList.add('hidden');
-    editModal.setAttribute('aria-hidden', 'true');
-  });
-
-  document.getElementById('form-add-mapel').addEventListener('submit', async e => {
-    e.preventDefault();
-    if (!currentSiswaId) {
-      alert('ID siswa tidak ditemukan.');
-      return;
-    }
-    const mapelId = document.getElementById('add-mapel-select').value;
-    const nilai = parseFloat(document.getElementById('add-mapel-nilai').value);
-    const semester = parseInt(document.getElementById('add-semester-select').value);
-
-    if (!mapelId) {
-      alert('Pilih mapel.');
-      return;
-    }
-    if (isNaN(nilai) || nilai < 0 || nilai > 100) {
-      alert('Nilai harus antara 0 dan 100.');
-      return;
-    }
-    if (isNaN(semester) || semester < 1 || semester > 6) {
-      alert('Semester tidak valid.');
-      return;
-    }
-
-    const { error } = await supabase.from('rapor').insert([{
-      siswa_id: currentSiswaId,
-      mapel_id: mapelId,
-      nilai,
-      semester
-    }]);
-    if (error) {
-      alert('Gagal menambahkan data rapor.');
-      console.error(error);
-    } else {
-      alert('Data rapor berhasil ditambahkan.');
-      const addModal = document.getElementById('modal-add-mapel');
-      if (addModal) {
-        addModal.classList.add('hidden');
-        addModal.setAttribute('aria-hidden', 'true');
-      }
-      await loadCurrentRapor();
-    }
-  });
-
-  document.getElementById('form-edit-mapel').addEventListener('submit', async e => {
-    e.preventDefault();
-    const form = e.target;
-    const raporId = form.dataset.raporId;
-    if (!raporId) {
-      alert('ID rapor tidak ditemukan.');
-      return;
-    }
-    const mapelId = document.getElementById('edit-mapel-select').value;
-    const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
-    const semester = parseInt(document.getElementById('edit-semester-select').value);
-
-    if (!mapelId) {
-      alert('Pilih mapel.');
-      return;
-    }
-    if (isNaN(nilai) || nilai < 0 || nilai > 100) {
-      alert('Nilai harus antara 0 dan 100.');
-      return;
-    }
-    if (isNaN(semester) || semester < 1 || semester > 6) {
-      alert('Semester tidak valid.');
-      return;
-    }
-
-    const { error } = await supabase.from('rapor').update({
-      mapel_id: mapelId,
-      nilai,
-      semester
-    }).eq('id', raporId);
-
-    if (error) {
-      alert('Gagal mengupdate data rapor.');
-      console.error(error);
-    } else {
-      alert('Data rapor berhasil diupdate.');
-      const editModal = document.getElementById('modal-edit-mapel');
-      if (editModal) {
-        editModal.classList.add('hidden');
-        editModal.setAttribute('aria-hidden', 'true');
-      }
-      await loadCurrentRapor();
-    }
-  });
-
-  await loadCurrentRapor();
-  await populateMapelSelects();
-
-  // Load student info for info box
-  const { data: siswa, error } = await supabase
-    .from('siswa')
-    .select('nama, kelas_id')
-    .eq('id', currentSiswaId)
-    .single();
-
-  if (error || !siswa) {
-    console.error('Gagal mengambil data siswa:', error);
-    return;
-  }
+async function loadStudentInfo() {
+  const { data: siswa } = await supabase.from('siswa').select('nama, kelas_id').eq('id', currentSiswaId).single();
+  if (!siswa) return;
 
   const namaElem = document.getElementById('student-name');
   const kelasElem = document.getElementById('student-class');
 
-  if (namaElem) namaElem.textContent = siswa.nama || '-';
+  namaElem.textContent = siswa.nama || '-';
 
-  if (kelasElem) {
-    if (siswa.kelas_id) {
-      const { data: kelasData, error: kelasError } = await supabase
-        .from('kelas')
-        .select('nama')
-        .eq('id', siswa.kelas_id)
-        .single();
-      if (kelasError || !kelasData) {
-        console.error('Gagal mengambil data kelas:', kelasError);
-        kelasElem.textContent = '-';
-      } else {
-        kelasElem.textContent = kelasData.nama || '-';
-      }
-    } else {
-      kelasElem.textContent = '-';
-    }
+  if (siswa.kelas_id) {
+    const { data: kelas } = await supabase.from('kelas').select('nama').eq('id', siswa.kelas_id).single();
+    kelasElem.textContent = kelas?.nama || '-';
+  } else {
+    kelasElem.textContent = '-';
   }
-});
+}
