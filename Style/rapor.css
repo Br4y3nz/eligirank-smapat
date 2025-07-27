@@ -115,6 +115,14 @@ body {
 .grade-F { color: #b91c1c; }
 
 /* === RATA-RATA BOX === */
+.rapor-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
 .rapor-ratarata-box {
   background-color: #2563eb;
   color: white;
@@ -129,6 +137,7 @@ body {
   white-space: nowrap;
   height: 32px;
   max-width: 160px;
+  margin-left: auto;
 }
 
 /* === BUTTONS === */
