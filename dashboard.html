@@ -213,115 +213,75 @@
   </script>
 
 <script type="module">
-  import supabase from '/Supabase/client.js';
+import supabase from '/Supabase/client.js';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const roleModal = document.getElementById('role-modal');
-    const roleForm = document.getElementById('role-form');
-    const siswaFields = document.getElementById('siswa-fields');
-    const guruFields = document.getElementById('guru-fields');
+document.addEventListener('DOMContentLoaded', async () => {
+  const userInfoModal = document.getElementById('user-info-modal');
+  const roleModal = document.getElementById('role-modal');
+  const overlay = document.getElementById('overlay');
 
-    const nisInput = document.getElementById('nis');
-    const nisnInput = document.getElementById('nisn');
-    const nikInput = document.getElementById('nik');
-    const nipInput = document.getElementById('nip');
-
-    document.querySelectorAll('input[name="role"]').forEach(input => {
-      input.addEventListener('change', () => {
-        if (input.value === 'siswa') {
-          siswaFields.style.display = 'block';
-          guruFields.style.display = 'none';
-          nisInput.required = true;
-          nisnInput.required = true;
-          nikInput.required = false;
-          nipInput.required = false;
-        } else if (input.value === 'guru') {
-          siswaFields.style.display = 'none';
-          guruFields.style.display = 'block';
-          nisInput.required = false;
-          nisnInput.required = false;
-          nikInput.required = true;
-          nipInput.required = true;
-        }
-      });
-    });
-
-    document.getElementById('cancel-role').addEventListener('click', () => {
-      roleModal.classList.remove('open');
-    });
-
-    roleForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const role = new FormData(roleForm).get('role');
-      const payload = { role };
-
-      if (role === 'siswa') {
-        payload.nis = nisInput.value;
-        payload.nisn = nisnInput.value;
-        if (!payload.nis || !payload.nisn) return alert('Harap lengkapi NIS dan NISN');
-      } else if (role === 'guru') {
-        payload.nik = nikInput.value;
-        payload.nip = nipInput.value;
-        if (!payload.nik || !payload.nip) return alert('Harap lengkapi NIK dan NIP');
-      }
-
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return alert('Login diperlukan.');
-      await supabase.from('akun').update(payload).eq('id', user.id);
-      roleModal.classList.remove('open');
-    });
-
-    document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('username, phone')
-      .eq('id', user.id)
-      .maybeSingle();
-
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { data: profile } = await supabase.from('profiles').select('username, phone').eq('id', user.id).maybeSingle();
     if (!profile?.username || !profile?.phone) {
-      document.getElementById('user-info-modal')?.classList.add('open');
-      document.getElementById('overlay')?.classList.add('open');
+      userInfoModal.classList.add('open');
+      overlay.classList.add('open');
     }
-    });
+  }
 
-    
-    const userInfoModal = document.getElementById('user-info-modal');
-    const userInfoForm = document.getElementById('user-info-form');
-    const usernameInput = document.getElementById('username');
-    const phoneInput = document.getElementById('phone');
+  // Role form dynamic field toggle
+  const roleRadios = document.querySelectorAll('input[name="role"]');
+  const siswaFields = document.getElementById('siswa-fields');
+  const guruFields = document.getElementById('guru-fields');
 
-    document.getElementById('cancel-user').addEventListener('click', () => {
-      userInfoModal.classList.remove('open');
-    });
-
-    userInfoForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = usernameInput.value;
-      const phone = phoneInput.value;
-      if (!username || !phone) return alert('Lengkapi semua data');
-
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return alert('Login diperlukan.');
-
-      await supabase.from('profiles').update({ username, phone }).eq('id', user.id);
-      userInfoModal.classList.remove('open');
-    });
-
-    (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data: profile } = await supabase.from('profiles').select('username, phone').eq('id', user.id).maybeSingle();
-      if (!profile?.username || !profile?.phone) {
-        userInfoModal.classList.add('open');
+  roleRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === 'siswa') {
+        siswaFields.style.display = 'block';
+        guruFields.style.display = 'none';
+        siswaFields.querySelectorAll('input').forEach(el => el.required = true);
+        guruFields.querySelectorAll('input').forEach(el => el.required = false);
+      } else if (radio.value === 'guru') {
+        siswaFields.style.display = 'none';
+        guruFields.style.display = 'block';
+        siswaFields.querySelectorAll('input').forEach(el => el.required = false);
+        guruFields.querySelectorAll('input').forEach(el => el.required = true);
       }
-    })();
+    });
   });
 
-  
+  // Cancel buttons for modals
+  document.querySelectorAll('.cancel').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.modal').classList.remove('open');
+      overlay.classList.remove('open');
+    });
+  });
+
+  // User Info form submission
+  document.getElementById('user-info-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const phone = document.getElementById('phone').value;
+
+    if (!username || !phone) return alert('Lengkapi semua kolom');
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return alert('User belum login');
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ username, phone })
+      .eq('id', user.id);
+
+    if (error) return alert('Gagal menyimpan data');
+
+    document.getElementById('user-info-modal').classList.remove('open');
+    overlay.classList.remove('open');
+  });
+});
 </script>
+
 
 
 </body>
