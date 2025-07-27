@@ -243,7 +243,7 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 0.4rem;
-  flex-direction: row-reverse;
+  flex-direction: row;
 }
 
 .btn-submit,
@@ -261,6 +261,7 @@ body {
   background-color: #2563eb;
   color: white;
   box-shadow: 0 3px 8px rgba(37, 99, 235, 0.4);
+  order: 0;
 }
 
 .btn-submit:hover {
@@ -272,6 +273,7 @@ body {
   background-color: #f3f4f6;
   color: #374151;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  order: 1;
 }
 
 .btn-cancel:hover {
@@ -299,7 +301,7 @@ body {
     padding: 1rem;
   }
   .modal-buttons {
-    flex-direction: row-reverse;
+    flex-direction: row;
     justify-content: space-between;
   }
   .btn-submit,
