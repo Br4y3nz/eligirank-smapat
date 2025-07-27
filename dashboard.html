@@ -229,7 +229,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Role form dynamic field toggle
   const roleRadios = document.querySelectorAll('input[name="role"]');
   const siswaFields = document.getElementById('siswa-fields');
   const guruFields = document.getElementById('guru-fields');
@@ -250,7 +249,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Cancel buttons for modals
   document.querySelectorAll('.cancel').forEach(btn => {
     btn.addEventListener('click', () => {
       btn.closest('.modal').classList.remove('open');
@@ -258,11 +256,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // User Info form submission
   document.getElementById('user-info-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const username = document.getElementById('username').value;
-    const phone = document.getElementById('phone').value;
+    const usernameInput = document.getElementById('username');
+    const phoneInput = document.getElementById('phone');
+
+    if (!usernameInput || !phoneInput) {
+      console.error('Could not find username or phone input elements.');
+      return alert('Internal error: missing form elements.');
+    }
+
+    const username = usernameInput.value.trim();
+    const phone = phoneInput.value.trim();
 
     if (!username || !phone) return alert('Lengkapi semua kolom');
 
@@ -281,6 +286,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 </script>
+
 
 
 
