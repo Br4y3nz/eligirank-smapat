@@ -115,6 +115,49 @@
     </footer>
   </main>
 
+  
+<!-- Role Modal HTML -->
+<div id="role-modal" class="modal">
+  <div class="modal-content">
+    <h2>Pilih Peran Anda</h2>
+    <form id="role-form">
+      <label><input type="radio" name="role" value="siswa"> Siswa</label><br>
+      <label><input type="radio" name="role" value="guru"> Guru</label><br>
+      <div id="siswa-fields" style="display: none;">
+        <label>NIS: <input type="text" name="nis" /></label><br>
+        <label>NISN: <input type="text" name="nisn" /></label><br>
+      </div>
+      <div id="guru-fields" style="display: none;">
+        <label>NIK: <input type="text" name="nik" /></label><br>
+        <label>NIP: <input type="text" name="nip" /></label><br>
+      </div>
+      <div class="modal-buttons">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn btn-secondary" id="cancel-role-selection">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- User Info Modal HTML -->
+<div id="user-info-modal" class="modal">
+  <div class="modal-content">
+    <h2>Informasi Pengguna</h2>
+    <form id="user-info-form">
+      <label>Username: <input type="text" name="username" required /></label><br>
+      <label>No. Telepon: <input type="tel" name="phone_number" required /></label><br>
+      <div class="modal-buttons">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn btn-secondary" id="cancel-user-info">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="overlay"></div>
+
+
+  
   <script type="module">
     import { initializeSidebar } from '/Script/sidebar.js';
     document.addEventListener('DOMContentLoaded', () => {

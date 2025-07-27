@@ -294,3 +294,115 @@ function drawChart() {
     }
   });
 }
+
+export function initializeRoleModal() {
+  const modal = document.getElementById('role-modal');
+  const overlay = document.getElementById('overlay');
+  const roleForm = modal?.querySelector('form');
+  const radioButtons = modal?.querySelectorAll('input[name="role"]');
+  const siswaFields = document.getElementById('siswa-fields');
+  const guruFields = document.getElementById('guru-fields');
+
+  radioButtons?.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === 'siswa') {
+        siswaFields.style.display = 'block';
+        guruFields.style.display = 'none';
+      } else if (radio.value === 'guru') {
+        siswaFields.style.display = 'none';
+        guruFields.style.display = 'block';
+      } else {
+        siswaFields.style.display = 'none';
+        guruFields.style.display = 'none';
+      }
+    });
+  });
+
+  const openBtn = document.getElementById('open-role-modal');
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('open');
+      overlay.classList.add('open');
+    });
+  }
+
+  document.getElementById('cancel-role-selection')?.addEventListener('click', () => {
+    modal.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  overlay?.addEventListener('click', () => {
+    modal?.classList.remove('open');
+    document.getElementById('user-info-modal')?.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  if (roleForm) {
+    roleForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const selected = [...radioButtons].find(r => r.checked)?.value;
+      if (!selected) return alert('Pilih peran terlebih dahulu.');
+
+      const formData = new FormData(roleForm);
+      const nis = formData.get('nis') || null;
+      const nisn = formData.get('nisn') || null;
+      const nik = formData.get('nik') || null;
+      const nip = formData.get('nip') || null;
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('User belum login');
+
+        const payload = { role: selected };
+        if (selected === 'siswa') Object.assign(payload, { nis, nisn });
+        if (selected === 'guru') Object.assign(payload, { nik, nip });
+
+        const { error } = await supabase
+          .from('akun')
+          .update(payload)
+          .eq('id', user.id);
+
+        if (error) throw error;
+
+        modal.classList.remove('open');
+        overlay.classList.remove('open');
+        alert(`Peran berhasil diperbarui menjadi: ${selected}`);
+      } catch (err) {
+        console.error('Gagal mengupdate role:', err);
+        alert('Terjadi kesalahan saat memperbarui role.');
+      }
+    });
+  }
+
+  const userModal = document.getElementById('user-info-modal');
+  const userForm = document.getElementById('user-info-form');
+  document.getElementById('cancel-user-info')?.addEventListener('click', () => {
+    userModal.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+  userForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(userForm);
+    const username = formData.get('username');
+    const phone_number = formData.get('phone_number');
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('User belum login');
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ username, phone_number })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      userModal.classList.remove('open');
+      overlay.classList.remove('open');
+      alert('Informasi pengguna berhasil diperbarui');
+    } catch (err) {
+      console.error('Gagal mengupdate informasi pengguna:', err);
+      alert('Terjadi kesalahan saat memperbarui informasi pengguna.');
+    }
+  });
+}
