@@ -206,11 +206,15 @@ async function renderAnnouncements() {
         }).eq('id', item.id);
 
         if (!error) {
+          original.title = title.value;
+          original.date = date.value;
           title.disabled = true;
           date.disabled = true;
           editBtn.style.display = 'inline-block';
           confirmBtn.style.display = 'none';
           cancelBtn.style.display = 'none';
+        } else {
+          console.error('Update failed:', error);
         }
       });
 
