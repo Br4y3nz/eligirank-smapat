@@ -256,11 +256,11 @@
 
     const { data: profile } = await supabase
       .from('profiles')
-      .select('username, phone_number')
+      .select('username, phone')
       .eq('id', user.id)
       .maybeSingle();
 
-    if (!profile?.username || !profile?.phone_number) {
+    if (!profile?.username || !profile?.phone) {
       document.getElementById('user-info-modal')?.classList.add('open');
       document.getElementById('overlay')?.classList.add('open');
     }
