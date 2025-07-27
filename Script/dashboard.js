@@ -160,13 +160,13 @@ async function renderAnnouncements() {
 
     const title = document.createElement("input");
     title.className = "announcement-title";
-    title.value = item.judul;
+    title.value = item.title;
     title.disabled = true;
 
     const date = document.createElement("input");
     date.className = "announcement-date";
     date.type = "date";
-    date.value = item.tanggal;
+    date.value = item.created_at.split('T')[0];
     date.disabled = true;
 
     const content = document.createElement("div");
@@ -178,21 +178,18 @@ async function renderAnnouncements() {
       const editBtn = document.createElement("button");
       editBtn.className = "edit-btn";
       editBtn.innerHTML = "<i class='bx bx-pencil'></i>";
-      editBtn.title = "Edit Pengumuman";
 
       const confirmBtn = document.createElement("button");
       confirmBtn.className = "confirm-btn";
       confirmBtn.innerHTML = "<i class='bx bx-check'></i>";
-      confirmBtn.title = "Simpan";
       confirmBtn.style.display = 'none';
 
       const cancelBtn = document.createElement("button");
       cancelBtn.className = "cancel-btn";
       cancelBtn.innerHTML = "<i class='bx bx-x'></i>";
-      cancelBtn.title = "Batal";
       cancelBtn.style.display = 'none';
 
-      const original = { title: item.judul, date: item.tanggal };
+      const original = { title: title.value, date: date.value };
 
       editBtn.addEventListener('click', () => {
         title.disabled = false;
@@ -203,16 +200,16 @@ async function renderAnnouncements() {
       });
 
       confirmBtn.addEventListener('click', async () => {
+        await supabase.from('pengumuman').update({
+          title: title.value,
+          updated_at: new Date().toISOString()
+        }).eq('id', item.id);
+
         title.disabled = true;
         date.disabled = true;
         editBtn.style.display = 'inline-block';
         confirmBtn.style.display = 'none';
         cancelBtn.style.display = 'none';
-
-        await supabase.from('pengumuman').update({
-          judul: title.value,
-          tanggal: date.value
-        }).eq('id', item.id);
       });
 
       cancelBtn.addEventListener('click', () => {
@@ -256,7 +253,7 @@ function drawChart() {
       labels: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
       datasets: [{
         label: 'Nilai Rata-rata',
-        data: [78, 85, 82],
+        data: [85, 88, 90],
         backgroundColor: 'rgba(37, 99, 235, 0.6)',
         borderColor: 'rgba(37, 99, 235, 1)',
         borderWidth: 1,
