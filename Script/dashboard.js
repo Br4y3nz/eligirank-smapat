@@ -374,35 +374,34 @@ export function initializeRoleModal() {
     });
   }
 
-  const userModal = document.getElementById('user-info-modal');
-  const userForm = document.getElementById('user-info-form');
-  document.getElementById('cancel-user-info')?.addEventListener('click', () => {
-    userModal.classList.remove('open');
-    overlay.classList.remove('open');
-  });
-  userForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(userForm);
-    const username = formData.get('username');
-    const phone_number = formData.get('phone_number');
+  document.addEventListener('DOMContentLoaded', () => {
+    const siswaFields = document.getElementById('siswa-fields');
+    const guruFields = document.getElementById('guru-fields');
+    const roleInputs = document.querySelectorAll('input[name="role"]');
+    const nisInput = document.getElementById('nis');
+    const nisnInput = document.getElementById('nisn');
+    const nikInput = document.getElementById('nik');
+    const nipInput = document.getElementById('nip');
 
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('User belum login');
+    roleInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.value === 'siswa') {
+          siswaFields.style.display = 'block';
+          guruFields.style.display = 'none';
 
-      const { error } = await supabase
-        .from('profiles')
-        .update({ username, phone_number })
-        .eq('id', user.id);
+          nisInput.required = true;
+          nisnInput.required = true;
+          nikInput.required = false;
+          nipInput.required = false;
+        } else if (input.value === 'guru') {
+          siswaFields.style.display = 'none';
+          guruFields.style.display = 'block';
 
-      if (error) throw error;
-
-      userModal.classList.remove('open');
-      overlay.classList.remove('open');
-      alert('Informasi pengguna berhasil diperbarui');
-    } catch (err) {
-      console.error('Gagal mengupdate informasi pengguna:', err);
-      alert('Terjadi kesalahan saat memperbarui informasi pengguna.');
-    }
-  });
-}
+          nisInput.required = false;
+          nisnInput.required = false;
+          nikInput.required = true;
+          nipInput.required = true;
+        }
+      });
+    });
+  });}
