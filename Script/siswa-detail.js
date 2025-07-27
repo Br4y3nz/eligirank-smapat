@@ -161,6 +161,14 @@ async function loadCurrentRapor() {
 }
 
 function tampilkanRapor(data = []) {
+  const thead = document.querySelector('.rapor-table thead tr');
+  if (thead) {
+    if (!isAuthorized()) {
+      const aksiTh = thead.querySelector('th.action-header');
+      aksiTh?.remove();
+    }
+  }
+
   const tbody = document.getElementById('tabel-rapor');
   tbody.innerHTML = '';
   let total = 0;
