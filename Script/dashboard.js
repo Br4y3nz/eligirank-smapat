@@ -9,7 +9,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   observeScrollFade();
   animateStatsOnScroll();
   renderChart();
+  setupRoleSelector();
 });
+
+function setupRoleSelector() {
+  document.querySelectorAll('.role-select-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const selectedRole = btn.dataset.role;
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) return alert('Login diperlukan');
+
+      const { error: updateErr } = await supabase
+        .from('akun')
+        .update({ role: selectedRole })
+        .eq('id', user.id);
+
+      if (updateErr) return alert('Gagal memperbarui peran');
+      alert('Peran berhasil diperbarui ke: ' + selectedRole);
+      location.reload();
+    });
+  });
+}
 
 async function loadUsername() {
   try {
