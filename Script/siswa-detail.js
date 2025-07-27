@@ -3,7 +3,7 @@ import supabase from '../Supabase/client.js';
 const urlParams = new URLSearchParams(window.location.search);
 const currentSiswaId = urlParams.get('id') || null;
 
-let currentSemester = 1;
+let currentSemester = parseInt(urlParams.get('semester')) || 1;
 
 async function loadMapelOptions() {
   const { data: mapelOptions, error } = await supabase
@@ -193,10 +193,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  document.getElementById('semester-select').addEventListener('change', async e => {
-    currentSemester = parseInt(e.target.value);
-    await loadCurrentRapor();
-  });
+document.getElementById('semester-select').addEventListener('change', async e => {
+  const newSemester = parseInt(e.target.value);
+  if (!isNaN(newSemester)) {
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (id) {
+      window.location.href = `data-siswa2.html?id=${id}&semester=${newSemester}`;
+    }
+  }
+});
 
   document.getElementById('btn-add-mapel').addEventListener('click', async () => {
     console.log('btn-add-mapel clicked');
