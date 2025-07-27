@@ -230,10 +230,18 @@
         siswaFields.style.display = isSiswa ? 'block' : 'none';
         guruFields.style.display = isGuru ? 'block' : 'none';
 
-        nisInput.required = isSiswa;
-        nisnInput.required = isSiswa;
-        nikInput.required = isGuru;
-        nipInput.required = isGuru;
+        nisInput.required = false;
+        nisnInput.required = false;
+        nikInput.required = false;
+        nipInput.required = false;
+
+        if (isSiswa) {
+          nisInput.required = true;
+          nisnInput.required = true;
+        } else if (isGuru) {
+          nikInput.required = true;
+          nipInput.required = true;
+        }
       });
     });
   });
