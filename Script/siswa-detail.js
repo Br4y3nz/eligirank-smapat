@@ -4,7 +4,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const currentSiswaId = urlParams.get('id') || null;
 const currentSemester = parseInt(urlParams.get('semester')) || 1;
 
-const userRole = localStorage.getItem('user_role'); // e.g. 'admin' or 'teacher'
+const userRole = localStorage.getItem('user_role');
 
 function isAuthorized() {
   return userRole === 'admin' || userRole === 'teacher';
