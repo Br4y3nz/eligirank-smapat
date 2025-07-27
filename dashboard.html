@@ -115,21 +115,27 @@
     </footer>
   </main>
 
-  
+
 <!-- Role Modal HTML -->
 <div id="role-modal" class="modal">
   <div class="modal-content">
     <h2>Pilih Peran Anda</h2>
     <form id="role-form">
-      <label><input type="radio" name="role" value="siswa"> Siswa</label><br>
-      <label><input type="radio" name="role" value="guru"> Guru</label><br>
-      <div id="siswa-fields" style="display: none;">
-        <label>NIS: <input type="text" name="nis" /></label><br>
-        <label>NISN: <input type="text" name="nisn" /></label><br>
+      <div class="role-options">
+        <label><input type="radio" name="role" value="siswa"> Siswa</label>
+        <label><input type="radio" name="role" value="guru"> Guru</label>
       </div>
-      <div id="guru-fields" style="display: none;">
-        <label>NIK: <input type="text" name="nik" /></label><br>
-        <label>NIP: <input type="text" name="nip" /></label><br>
+      <div id="siswa-fields" class="role-fields" style="display: none;">
+        <label for="nis">NIS:</label>
+        <input type="text" name="nis" id="nis" required><br>
+        <label for="nisn">NISN:</label>
+        <input type="text" name="nisn" id="nisn" required><br>
+      </div>
+      <div id="guru-fields" class="role-fields" style="display: none;">
+        <label for="nik">NIK:</label>
+        <input type="text" name="nik" id="nik" required><br>
+        <label for="nip">NIP:</label>
+        <input type="text" name="nip" id="nip" required><br>
       </div>
       <div class="modal-buttons">
         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -144,8 +150,10 @@
   <div class="modal-content">
     <h2>Informasi Pengguna</h2>
     <form id="user-info-form">
-      <label>Username: <input type="text" name="username" required /></label><br>
-      <label>No. Telepon: <input type="tel" name="phone_number" required /></label><br>
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" required><br>
+      <label for="phone_number">No. Telepon:</label>
+      <input type="tel" name="phone_number" id="phone_number" required><br>
       <div class="modal-buttons">
         <button type="submit" class="btn btn-primary">Simpan</button>
         <button type="button" class="btn btn-secondary" id="cancel-user-info">Batal</button>
@@ -153,8 +161,6 @@
     </form>
   </div>
 </div>
-
-<div id="overlay"></div>
 
 
   
@@ -205,5 +211,25 @@
       });
     });
   </script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const siswaFields = document.getElementById('siswa-fields');
+    const guruFields = document.getElementById('guru-fields');
+    const roleInputs = document.querySelectorAll('input[name="role"]');
+
+    roleInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.value === 'siswa') {
+          siswaFields.style.display = 'block';
+          guruFields.style.display = 'none';
+        } else if (input.value === 'guru') {
+          guruFields.style.display = 'block';
+          siswaFields.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
 </body>
 </html>
