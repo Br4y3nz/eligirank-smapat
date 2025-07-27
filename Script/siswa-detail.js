@@ -83,19 +83,16 @@ function tampilkanRapor(data) {
       case 'F': gradeClass = 'grade-F'; break;
       default: gradeClass = ''; break;
     }
-    tr.innerHTML = `
-      <td>${item.mapel?.nama || '-'}</td>
-      <td>${item.nilai}</td>
-      <td class="${gradeClass}">${gradeText}</td>
-      <td>
+    tr.innerHTML = 
+      <><td>${item.mapel?.nama || '-'}</td><td>${item.nilai}</td><td class="${gradeClass}">${gradeText}</td><td>
         <button class="btn-edit-mapel" data-id="${item.id}" aria-label="Edit Mapel">
           <i class='bx bx-edit'></i>
         </button>
         <button class="btn-delete-mapel" data-id="${item.id}" aria-label="Hapus Mapel">
           <i class='bx bx-trash'></i>
         </button>
-      </td>
-    `;
+      </td></>
+    ;
     total += item.nilai;
     tbody.appendChild(tr);
   });
