@@ -45,31 +45,28 @@
     </section>
 
     <div class="dashboard-main-content">
-            <div class="left-section">
+      <div class="left-section">
         <section class="announcements scroll-fade">
           <div class="announcement-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 style="text-align: center; flex-grow: 1;"><i class='bx bxs-megaphone'></i> Pengumuman</h2>
-            <div class="announcement-buttons" style="flex-shrink: 0;">
-              <button id="edit-announcements-btn" class="btn btn-primary">Edit</button>
-              <button id="save-announcements-btn" class="btn btn-primary" style="display:none;">Simpan</button>
-            </div>
           </div>
           <div class="announcement-container">
             <div class="announcement-vertical" id="announcement-list">
               <div class="announcement-card">
                 <div class="announcement-content">
-                  <input type="text" value="Contoh Pengumuman" class="announcement-title" />
-                  <input type="date" value="2025-08-01" class="announcement-date" />
+                  <input type="text" value="Contoh Pengumuman" class="announcement-title" disabled />
+                  <input type="date" value="2025-08-01" class="announcement-date" disabled />
                 </div>
-                <button class="edit-btn" title="Edit Pengumuman"><i class='bx bx-pencil'></i></button>
+                <div class="edit-control">
+                  <button class="edit-card-btn" title="Edit"><i class='bx bx-pencil'></i></button>
+                  <button class="confirm-card-edit" title="Simpan" style="display: none;"><i class='bx bx-check'></i></button>
+                  <button class="cancel-card-edit" title="Batal" style="display: none;"><i class='bx bx-x'></i></button>
+                </div>
               </div>
             </div>
           </div>
         </section>
       </div>
-
-    </div>
-
 
       <div class="right-section">
         <section class="highlights scroll-fade">
@@ -118,7 +115,7 @@
     </footer>
   </main>
 
-    <script type="module">
+  <script type="module">
     import { initializeSidebar } from '/Script/sidebar.js';
     document.addEventListener('DOMContentLoaded', () => {
       fetch('/sidebar.html')
@@ -128,6 +125,41 @@
           initializeSidebar();
         })
         .catch(err => console.error('Failed to load sidebar:', err));
+
+      const cards = document.querySelectorAll('.announcement-card');
+
+      cards.forEach(card => {
+        const titleInput = card.querySelector('.announcement-title');
+        const dateInput = card.querySelector('.announcement-date');
+        const editBtn = card.querySelector('.edit-card-btn');
+        const cancelBtn = card.querySelector('.cancel-card-edit');
+        const confirmBtn = card.querySelector('.confirm-card-edit');
+
+        editBtn.addEventListener('click', () => {
+          titleInput.disabled = false;
+          dateInput.disabled = false;
+          editBtn.style.display = 'none';
+          cancelBtn.style.display = 'inline-block';
+          confirmBtn.style.display = 'inline-block';
+        });
+
+        cancelBtn.addEventListener('click', () => {
+          titleInput.disabled = true;
+          dateInput.disabled = true;
+          editBtn.style.display = 'inline-block';
+          cancelBtn.style.display = 'none';
+          confirmBtn.style.display = 'none';
+        });
+
+        confirmBtn.addEventListener('click', () => {
+          titleInput.disabled = true;
+          dateInput.disabled = true;
+          editBtn.style.display = 'inline-block';
+          cancelBtn.style.display = 'none';
+          confirmBtn.style.display = 'none';
+          // Add save logic here
+        });
+      });
     });
   </script>
 </body>

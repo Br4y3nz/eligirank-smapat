@@ -31,10 +31,10 @@ async function loadUsername() {
 
 async function loadStats() {
   const stats = {
-    siswa: 120,
-    guru: 15,
-    prestasi: 30,
-    organisasi: 5,
+    siswa: 710,
+    guru: 52,
+    prestasi: 92,
+    organisasi: 7,
   };
   Object.entries(stats).forEach(([key, val]) => {
     document.getElementById(`stat-${key}`).setAttribute('data-count', val);
