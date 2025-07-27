@@ -95,8 +95,27 @@
   transition: background-color 0.3s ease, transform 0.2s;
 }
 
+#user-info-modal button[type="cancel"] {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px 0;
+  background-color: #f63b3b;
+  border: none;
+  border-radius: 12px;
+  color: #F8FAFC;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
 #user-info-modal button[type="submit"]:hover {
   background-color: #2563EB;
+  transform: translateY(-1px);
+}
+
+#user-info-modal button[type="cancel"]:hover {
+  background-color: #c53030;
   transform: translateY(-1px);
 }
 
