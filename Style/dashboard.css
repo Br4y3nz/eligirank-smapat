@@ -376,6 +376,29 @@
   background-color: #1e40af;
 }
 
+.announcement-card button {
+  margin-left: 4px;
+  background-color: #f0f0f0;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.announcement-card button:hover {
+  background-color: #e2e8f0;
+}
+
+.announcement-card .confirm-btn {
+  color: #22c55e;
+}
+
+.announcement-card .cancel-btn {
+  color: #ef4444;
+}
+
+
 /* ========== Highlight Section ========== */
 .podium-wrapper {
   display: flex;

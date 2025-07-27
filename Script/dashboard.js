@@ -1,4 +1,4 @@
-// Improved Dashboard JS with Supabase-based highlight logic
+// Improved Dashboard JS with Supabase-based highlight logic and editable + persistent announcements
 import supabase from '../Supabase/client.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -133,22 +133,16 @@ async function renderTopSiswa() {
   }
 }
 
-const announcements = [
-  { title: 'Libur sekolah tanggal 1 Mei', date: '2025-01-01' },
-  { title: 'Jadwal ujian semester', date: '2025-02-15' },
-  { title: 'Kegiatan ekstrakurikuler', date: '2025-03-20' },
-  { title: 'Pengumuman tambahan 1', date: '2025-04-10' },
-  { title: 'Pengumuman tambahan 2', date: '2025-05-05' }
-];
-
 async function renderAnnouncements() {
   const container = document.getElementById("announcement-list");
   container.innerHTML = "";
 
   let isAdmin = false;
+  let userId = null;
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
+      userId = user.id;
       const { data } = await supabase
         .from("akun")
         .select("role")
@@ -158,31 +152,29 @@ async function renderAnnouncements() {
     }
   } catch {}
 
-  announcements.slice(0, 5).forEach((item, idx) => {
+  const { data: dbAnnouncements } = await supabase.from('pengumuman').select('*').order('created_at', { ascending: false });
+
+  dbAnnouncements?.forEach((item) => {
     const card = document.createElement("div");
     card.className = "announcement-card";
 
     const title = document.createElement("input");
     title.className = "announcement-title";
-    title.value = item.title;
+    title.value = item.judul;
     title.disabled = true;
 
     const date = document.createElement("input");
     date.className = "announcement-date";
     date.type = "date";
-    date.value = item.date;
+    date.value = item.tanggal;
     date.disabled = true;
 
     const content = document.createElement("div");
     content.className = "announcement-content";
     content.append(title, date);
-
     card.appendChild(content);
 
     if (isAdmin) {
-      const buttonContainer = document.createElement("div");
-      buttonContainer.className = "announcement-btn-group";
-
       const editBtn = document.createElement("button");
       editBtn.className = "edit-btn";
       editBtn.innerHTML = "<i class='bx bx-pencil'></i>";
@@ -191,12 +183,16 @@ async function renderAnnouncements() {
       const confirmBtn = document.createElement("button");
       confirmBtn.className = "confirm-btn";
       confirmBtn.innerHTML = "<i class='bx bx-check'></i>";
+      confirmBtn.title = "Simpan";
       confirmBtn.style.display = 'none';
 
       const cancelBtn = document.createElement("button");
       cancelBtn.className = "cancel-btn";
       cancelBtn.innerHTML = "<i class='bx bx-x'></i>";
+      cancelBtn.title = "Batal";
       cancelBtn.style.display = 'none';
+
+      const original = { title: item.judul, date: item.tanggal };
 
       editBtn.addEventListener('click', () => {
         title.disabled = false;
@@ -206,17 +202,22 @@ async function renderAnnouncements() {
         cancelBtn.style.display = 'inline-block';
       });
 
-      confirmBtn.addEventListener('click', () => {
+      confirmBtn.addEventListener('click', async () => {
         title.disabled = true;
         date.disabled = true;
         editBtn.style.display = 'inline-block';
         confirmBtn.style.display = 'none';
         cancelBtn.style.display = 'none';
+
+        await supabase.from('pengumuman').update({
+          judul: title.value,
+          tanggal: date.value
+        }).eq('id', item.id);
       });
 
       cancelBtn.addEventListener('click', () => {
-        title.value = item.title;
-        date.value = item.date;
+        title.value = original.title;
+        date.value = original.date;
         title.disabled = true;
         date.disabled = true;
         editBtn.style.display = 'inline-block';
@@ -224,8 +225,7 @@ async function renderAnnouncements() {
         cancelBtn.style.display = 'none';
       });
 
-      buttonContainer.append(editBtn, confirmBtn, cancelBtn);
-      card.appendChild(buttonContainer);
+      card.append(editBtn, confirmBtn, cancelBtn);
     }
 
     container.appendChild(card);
