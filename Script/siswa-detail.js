@@ -193,15 +193,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-document.getElementById('semester-select').addEventListener('change', async e => {
-  const newSemester = parseInt(e.target.value);
-  if (!isNaN(newSemester)) {
-    const id = new URLSearchParams(window.location.search).get('id');
-    if (id) {
-      window.location.href = `data-siswa2.html?id=${id}&semester=${newSemester}`;
+  // Set semester select dropdown to currentSemester
+  const semSelect = document.getElementById('semester-select');
+  if (semSelect) {
+    // Convert currentSemester to string for comparison
+    const semesterStr = currentSemester.toString();
+    // Check if option exists
+    const optionExists = Array.from(semSelect.options).some(opt => opt.value === semesterStr);
+    if (optionExists) {
+      semSelect.value = semesterStr;
+    } else {
+      console.warn('Semester value not found in select options:', semesterStr);
+      // Default to first option if not found
+      semSelect.selectedIndex = 0;
     }
   }
-});
+
+  document.getElementById('semester-select').addEventListener('change', async e => {
+    const newSemester = parseInt(e.target.value);
+    if (!isNaN(newSemester)) {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (id) {
+        window.location.href = `data-siswa2.html?id=${id}&semester=${newSemester}`;
+      }
+    }
+  });
 
   document.getElementById('btn-add-mapel').addEventListener('click', async () => {
     console.log('btn-add-mapel clicked');
@@ -216,6 +232,13 @@ document.getElementById('semester-select').addEventListener('change', async e =>
     if (formAdd) {
       console.log('Resetting form-add-mapel');
       formAdd.reset();
+
+      // Pre-fill and disable semester select in add form
+      const selectSemester = document.getElementById('add-semester-select');
+      if (selectSemester) {
+        selectSemester.value = currentSemester;
+        selectSemester.disabled = true;
+      }
     }
   });
 
