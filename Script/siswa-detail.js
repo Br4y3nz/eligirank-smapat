@@ -18,7 +18,9 @@ async function loadMapelOptions() {
 }
 
 async function populateMapelSelects() {
+  console.log('populateMapelSelects called');
   const mapelOptions = await loadMapelOptions();
+  console.log('mapelOptions loaded:', mapelOptions);
   const addSelect = document.getElementById('add-mapel-select');
   const editSelect = document.getElementById('edit-mapel-select');
   if (addSelect) {
@@ -182,6 +184,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log('DOMContentLoaded event fired');
   console.log('currentSiswaId:', currentSiswaId);
 
+  // Append current id to all links to data-siswa2.html
+  const currentId = new URLSearchParams(window.location.search).get('id');
+  if (currentId) {
+    document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
+      const baseUrl = link.getAttribute('href').split('?')[0];
+      link.setAttribute('href', `${baseUrl}?id=${currentId}`);
+    });
+  }
+
   document.getElementById('semester-select').addEventListener('change', async e => {
     currentSemester = parseInt(e.target.value);
     await loadCurrentRapor();
@@ -198,6 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Reset add form
     const formAdd = document.getElementById('form-add-mapel');
     if (formAdd) {
+      console.log('Resetting form-add-mapel');
       formAdd.reset();
     }
   });
