@@ -89,7 +89,7 @@ async function renderTopSiswa() {
   try {
     const { data, error } = await supabase
       .from('rapor')
-      .select('id, semester, nilai, mapel, siswa_id')
+      .select('id, semester, nilai, siswa_id')
       .order('nilai', { ascending: false });
 
     if (error || !data) throw error;
@@ -256,7 +256,7 @@ function drawChart() {
       labels: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
       datasets: [{
         label: 'Nilai Rata-rata',
-        data: [85, 88, 90],
+        data: [78, 85, 82],
         backgroundColor: 'rgba(37, 99, 235, 0.6)',
         borderColor: 'rgba(37, 99, 235, 1)',
         borderWidth: 1,
