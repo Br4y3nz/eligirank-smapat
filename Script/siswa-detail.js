@@ -4,13 +4,29 @@ const urlParams = new URLSearchParams(window.location.search);
 const currentSiswaId = urlParams.get('id') || null;
 const currentSemester = parseInt(urlParams.get('semester')) || 1;
 
-const userRole = localStorage.getItem('user_role');
+let userRole = null;
+
+async function getUserRole() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return;
+  const userId = session.user.id;
+  const { data, error } = await supabase
+    .from('akun')
+    .select('role')
+    .eq('id', userId)
+    .single();
+  if (error || !data) return;
+  userRole = data.role;
+  return userRole;
+}
 
 function isAuthorized() {
   return userRole === 'admin' || userRole === 'guru';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  await getUserRole();
+
   if (currentSiswaId) {
     document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
       const baseUrl = link.getAttribute('href').split('?')[0];
