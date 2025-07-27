@@ -152,7 +152,7 @@ async function renderAnnouncements() {
     }
   } catch {}
 
-  const { data: dbAnnouncements } = await supabase.from('pengumuman').select('*').order('created_at', { ascending: false });
+  const { data: dbAnnouncements } = await supabase.from('pengumuman').select('*').order('announcement_date', { ascending: false });
 
   dbAnnouncements?.forEach((item) => {
     const card = document.createElement("div");
