@@ -247,6 +247,26 @@
   });
 </script>
 
+<script type="module">
+  import supabase from '/Supabase/client.js';
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('username, phone_number')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (!profile?.username || !profile?.phone_number) {
+      document.getElementById('user-info-modal')?.classList.add('open');
+      document.getElementById('overlay')?.classList.add('open');
+    }
+  });
+</script>
+
 
 </body>
 </html>
