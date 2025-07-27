@@ -1,11 +1,11 @@
-// Improved Dashboard JS with cleaner logic and no redundancy
+// Improved Dashboard JS with Supabase-based highlight logic
 import supabase from '../Supabase/client.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   loadUsername();
   loadStats();
   await renderAnnouncements();
-  renderTopSiswa();
+  await renderTopSiswa();
   observeScrollFade();
   animateStatsOnScroll();
   renderChart();
@@ -82,31 +82,55 @@ function observeScrollFade() {
   document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
 }
 
-function renderTopSiswa() {
-  const topSiswa = [
-    { name: 'Agus', score: 92 },
-    { name: 'Rina', score: 95 },
-    { name: 'Dewi', score: 90 },
-  ];
+async function renderTopSiswa() {
+  const container = document.querySelector('.highlights');
+  if (!container) return;
 
-  const podiumHTML = `
-    <div class="podium-wrapper">
-      <div class="podium-card second-place">
-        <span class="rank">2</span>
-        <div class="student-info">${topSiswa[0].name}<br><small>${topSiswa[0].score}</small></div>
-      </div>
-      <div class="podium-card first-place">
-        <span class="rank">1</span>
-        <div class="student-info">${topSiswa[1].name}<br><small>${topSiswa[1].score}</small></div>
-      </div>
-      <div class="podium-card third-place">
-        <span class="rank">3</span>
-        <div class="student-info">${topSiswa[2].name}<br><small>${topSiswa[2].score}</small></div>
-      </div>
-    </div>`;
+  try {
+    const { data, error } = await supabase
+      .from('rapor')
+      .select('id, semester, nilai, mapel, siswa_id')
+      .order('nilai', { ascending: false });
 
-  const highlightSection = document.querySelector('.highlights');
-  if (highlightSection) highlightSection.innerHTML += podiumHTML;
+    if (error || !data) throw error;
+
+    const siswaMap = new Map();
+
+    for (const row of data) {
+      if (!siswaMap.has(row.siswa_id)) siswaMap.set(row.siswa_id, []);
+      siswaMap.get(row.siswa_id).push(row.nilai);
+    }
+
+    const avgList = [];
+    for (const [siswaId, nilaiList] of siswaMap.entries()) {
+      const avg = nilaiList.reduce((a, b) => a + b, 0) / nilaiList.length;
+      const { data: siswa } = await supabase.from('profiles').select('username').eq('id', siswaId).maybeSingle();
+      avgList.push({ id: siswaId, name: siswa?.username || '-', avg: Math.round(avg) });
+    }
+
+    avgList.sort((a, b) => b.avg - a.avg);
+    const top = avgList.slice(0, 3);
+
+    const podiumHTML = `
+      <div class="podium-wrapper">
+        <div class="podium-card second-place">
+          <span class="rank">2</span>
+          <div class="student-info">${top[1]?.name || '-'}<br><small>${top[1]?.avg || '-'}</small></div>
+        </div>
+        <div class="podium-card first-place">
+          <span class="rank">1</span>
+          <div class="student-info">${top[0]?.name || '-'}<br><small>${top[0]?.avg || '-'}</small></div>
+        </div>
+        <div class="podium-card third-place">
+          <span class="rank">3</span>
+          <div class="student-info">${top[2]?.name || '-'}<br><small>${top[2]?.avg || '-'}</small></div>
+        </div>
+      </div>`;
+
+    container.innerHTML = '<h2 style="text-align:center;"><i class="bx bxs-star"></i> Siswa Teratas</h2>' + podiumHTML;
+  } catch (err) {
+    console.error('Gagal memuat siswa teratas', err);
+  }
 }
 
 const announcements = [
@@ -156,11 +180,52 @@ async function renderAnnouncements() {
     card.appendChild(content);
 
     if (isAdmin) {
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "announcement-btn-group";
+
       const editBtn = document.createElement("button");
       editBtn.className = "edit-btn";
       editBtn.innerHTML = "<i class='bx bx-pencil'></i>";
       editBtn.title = "Edit Pengumuman";
-      card.appendChild(editBtn);
+
+      const confirmBtn = document.createElement("button");
+      confirmBtn.className = "confirm-btn";
+      confirmBtn.innerHTML = "<i class='bx bx-check'></i>";
+      confirmBtn.style.display = 'none';
+
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "cancel-btn";
+      cancelBtn.innerHTML = "<i class='bx bx-x'></i>";
+      cancelBtn.style.display = 'none';
+
+      editBtn.addEventListener('click', () => {
+        title.disabled = false;
+        date.disabled = false;
+        editBtn.style.display = 'none';
+        confirmBtn.style.display = 'inline-block';
+        cancelBtn.style.display = 'inline-block';
+      });
+
+      confirmBtn.addEventListener('click', () => {
+        title.disabled = true;
+        date.disabled = true;
+        editBtn.style.display = 'inline-block';
+        confirmBtn.style.display = 'none';
+        cancelBtn.style.display = 'none';
+      });
+
+      cancelBtn.addEventListener('click', () => {
+        title.value = item.title;
+        date.value = item.date;
+        title.disabled = true;
+        date.disabled = true;
+        editBtn.style.display = 'inline-block';
+        confirmBtn.style.display = 'none';
+        cancelBtn.style.display = 'none';
+      });
+
+      buttonContainer.append(editBtn, confirmBtn, cancelBtn);
+      card.appendChild(buttonContainer);
     }
 
     container.appendChild(card);
@@ -191,7 +256,7 @@ function drawChart() {
       labels: ['Kelas 10', 'Kelas 11', 'Kelas 12'],
       datasets: [{
         label: 'Nilai Rata-rata',
-        data: [78, 85, 82],
+        data: [85, 88, 90],
         backgroundColor: 'rgba(37, 99, 235, 0.6)',
         borderColor: 'rgba(37, 99, 235, 1)',
         borderWidth: 1,
