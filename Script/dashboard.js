@@ -166,7 +166,7 @@ async function renderAnnouncements() {
     const date = document.createElement("input");
     date.className = "announcement-date";
     date.type = "date";
-    date.value = item.created_at.split('T')[0];
+    date.value = item.announcement_date;
     date.disabled = true;
 
     const content = document.createElement("div");
@@ -200,16 +200,18 @@ async function renderAnnouncements() {
       });
 
       confirmBtn.addEventListener('click', async () => {
-        await supabase.from('pengumuman').update({
+        const { error } = await supabase.from('pengumuman').update({
           title: title.value,
-          updated_at: new Date().toISOString()
+          announcement_date: date.value
         }).eq('id', item.id);
 
-        title.disabled = true;
-        date.disabled = true;
-        editBtn.style.display = 'inline-block';
-        confirmBtn.style.display = 'none';
-        cancelBtn.style.display = 'none';
+        if (!error) {
+          title.disabled = true;
+          date.disabled = true;
+          editBtn.style.display = 'inline-block';
+          confirmBtn.style.display = 'none';
+          cancelBtn.style.display = 'none';
+        }
       });
 
       cancelBtn.addEventListener('click', () => {
