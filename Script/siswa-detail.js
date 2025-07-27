@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!isAuthorized()) {
     document.getElementById('btn-add-mapel')?.remove();
-    document.querySelectorAll('.action-header').forEach(el => el.remove());
+    const aksiHeader = document.querySelector('th.action-header');
+    aksiHeader?.remove();
   }
 });
 
