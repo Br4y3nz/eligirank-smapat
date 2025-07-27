@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!isAuthorized()) {
     document.getElementById('btn-add-mapel')?.remove();
+    document.querySelectorAll('.action-header').forEach(el => el.remove());
   }
 });
 
@@ -172,12 +173,10 @@ function tampilkanRapor(data = []) {
       <td>${item.mapel?.nama || '-'}</td>
       <td>${item.nilai}</td>
       <td class="${gradeClass}">${grade}</td>
-      <td>
-        ${isAuthorized() ? `
-          <button class="btn-edit-mapel" data-id="${item.id}"><i class='bx bx-edit'></i></button>
-          <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
-        ` : ''}
-      </td>
+      ${isAuthorized() ? `<td>
+        <button class="btn-edit-mapel" data-id="${item.id}"><i class='bx bx-edit'></i></button>
+        <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
+      </td>` : ''}
     `;
 
     tbody.appendChild(tr);
