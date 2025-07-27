@@ -271,6 +271,23 @@
       roleModal.classList.remove('open');
     });
 
+    document.addEventListener('DOMContentLoaded', async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('username, phone')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (!profile?.username || !profile?.phone) {
+      document.getElementById('user-info-modal')?.classList.add('open');
+      document.getElementById('overlay')?.classList.add('open');
+    }
+    });
+
+    
     const userInfoModal = document.getElementById('user-info-modal');
     const userInfoForm = document.getElementById('user-info-form');
     const usernameInput = document.getElementById('username');
@@ -302,6 +319,8 @@
       }
     })();
   });
+
+  
 </script>
 
 
