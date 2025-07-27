@@ -1,5 +1,16 @@
 import supabase from '../Supabase/client.js';
 
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/sidebar.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      initializeSidebar(); // Pastikan ini ada di sidebar.js
+    })
+    .catch(err => console.error('Failed to load sidebar:', err));
+});
+
+
 const urlParams = new URLSearchParams(window.location.search);
 const currentSiswaId = urlParams.get('id') || null;
 const currentSemester = parseInt(urlParams.get('semester')) || 1;
