@@ -212,66 +212,85 @@
     });
   </script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const siswaFields = document.getElementById('siswa-fields');
-    const guruFields = document.getElementById('guru-fields');
-    const roleInputs = document.querySelectorAll('input[name="role"]');
-    const nisInput = document.getElementById('nis');
-    const nisnInput = document.getElementById('nisn');
-    const nikInput = document.getElementById('nik');
-    const nipInput = document.getElementById('nip');
-
-    roleInputs.forEach(input => {
-      input.addEventListener('change', () => {
-        const isSiswa = input.value === 'siswa';
-        const isGuru = input.value === 'guru';
-
-        siswaFields.style.display = isSiswa ? 'block' : 'none';
-        guruFields.style.display = isGuru ? 'block' : 'none';
-
-        nisInput.required = false;
-        nisnInput.required = false;
-        nikInput.required = false;
-        nipInput.required = false;
-
-        if (isSiswa) {
-          nisInput.required = true;
-          nisnInput.required = true;
-        } else if (isGuru) {
-          nikInput.required = true;
-          nipInput.required = true;
-        }
-      });
-    });
-  });
-</script>
-
 <script type="module">
   import supabase from '/Supabase/client.js';
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+  document.addEventListener('DOMContentLoaded', () => {
+    const roleModal = document.getElementById('role-modal');
+    const roleForm = document.getElementById('role-form');
+    const siswaFields = document.getElementById('siswa-fields');
+    const guruFields = document.getElementById('guru-fields');
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('username, phone')
-      .eq('id', user.id)
-      .maybeSingle();
-
-    if (!profile?.username || !profile?.phone) {
-      document.getElementById('user-info-modal')?.classList.add('open');
-      document.getElementById('overlay')?.classList.add('open');
-    }
-
-    document.querySelectorAll('#user-info-form .btn, #role-form .btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.preventDefault();
+    document.querySelectorAll('input[name="role"]').forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.value === 'siswa') {
+          siswaFields.style.display = 'block';
+          guruFields.style.display = 'none';
+          document.getElementById('nis').required = true;
+          document.getElementById('nisn').required = true;
+          document.getElementById('nik').required = false;
+          document.getElementById('nip').required = false;
+        } else if (input.value === 'guru') {
+          siswaFields.style.display = 'none';
+          guruFields.style.display = 'block';
+          document.getElementById('nis').required = false;
+          document.getElementById('nisn').required = false;
+          document.getElementById('nik').required = true;
+          document.getElementById('nip').required = true;
+        }
       });
     });
+
+    document.getElementById('cancel-role').addEventListener('click', () => {
+      roleModal.classList.remove('open');
+    });
+
+    roleForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const role = new FormData(roleForm).get('role');
+      const payload = { role };
+      if (role === 'siswa') {
+        payload.nis = document.getElementById('nis').value;
+        payload.nisn = document.getElementById('nisn').value;
+      } else if (role === 'guru') {
+        payload.nik = document.getElementById('nik').value;
+        payload.nip = document.getElementById('nip').value;
+      }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return alert('Login diperlukan.');
+      await supabase.from('akun').update(payload).eq('id', user.id);
+      roleModal.classList.remove('open');
+    });
+
+    const userInfoModal = document.getElementById('user-info-modal');
+    const userInfoForm = document.getElementById('user-info-form');
+
+    document.getElementById('cancel-user').addEventListener('click', () => {
+      userInfoModal.classList.remove('open');
+    });
+
+    userInfoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const phone = document.getElementById('phone').value;
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return alert('Login diperlukan.');
+      await supabase.from('profiles').update({ username, phone }).eq('id', user.id);
+      userInfoModal.classList.remove('open');
+    });
+
+    // Check user info on load
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: profile } = await supabase.from('profiles').select('username, phone').eq('id', user.id).maybeSingle();
+      if (!profile?.username || !profile?.phone) {
+        userInfoModal.classList.add('open');
+      }
+    })();
   });
 </script>
+
 
 
 </body>
