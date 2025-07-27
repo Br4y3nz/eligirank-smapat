@@ -219,28 +219,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  document.getElementById('btn-add-mapel').addEventListener('click', async () => {
-    console.log('btn-add-mapel clicked');
-    await populateMapelSelects();
-    const addModal = document.getElementById('modal-add-mapel');
-    if (!addModal) return;
-    addModal.classList.remove('hidden');
-    addModal.setAttribute('aria-hidden', 'false');
+document.getElementById('btn-add-mapel').addEventListener('click', async () => {
+  await populateMapelSelects();
 
-    // Reset add form
-    const formAdd = document.getElementById('form-add-mapel');
-    if (formAdd) {
-      console.log('Resetting form-add-mapel');
-      formAdd.reset();
+  const addModal = document.getElementById('modal-add-mapel');
+  const siswaInput = document.getElementById('add-siswa-id');
+  const semesterInput = document.getElementById('add-semester');
+  const infoText = document.getElementById('form-info-text');
+  const formAdd = document.getElementById('form-add-mapel');
 
-      // Pre-fill and disable semester select in add form
-      const selectSemester = document.getElementById('add-semester-select');
-      if (selectSemester) {
-        selectSemester.value = currentSemester;
-        selectSemester.disabled = true;
-      }
-    }
-  });
+  if (!addModal || !siswaInput || !semesterInput || !formAdd) return;
+
+  // Reset + Set hidden inputs
+  formAdd.reset();
+  siswaInput.value = currentSiswaId;
+  semesterInput.value = currentSemester;
+
+  // Show readable info
+  const namaElem = document.getElementById('student-name');
+  const kelasElem = document.getElementById('student-class');
+  const namaText = namaElem ? namaElem.textContent : '';
+  const kelasText = kelasElem ? kelasElem.textContent : '';
+
+  infoText.innerHTML = `Data akan disimpan ke <strong>Semester ${currentSemester}</strong> untuk siswa <strong>${namaText}</strong> (${kelasText})`;
+
+  // Show modal
+  addModal.classList.remove('hidden');
+  addModal.setAttribute('aria-hidden', 'false');
+});
 
   document.getElementById('btn-cancel-add').addEventListener('click', () => {
     console.log('btn-cancel-add clicked');

@@ -96,15 +96,6 @@
         <label for="edit-mapel-nilai">Nilai (0-100):</label>
         <input type="number" id="edit-mapel-nilai" name="nilai" min="0" max="100" required aria-required="true" aria-describedby="edit-mapel-nilai-error" />
         <span id="edit-mapel-nilai-error" class="error-message" aria-live="polite"></span>
-        <label for="edit-semester-select">Semester:</label>
-        <select id="edit-semester-select" name="semester" required aria-required="true" aria-describedby="edit-semester-select-error">
-          <option value="1">Semester 1</option>
-          <option value="2">Semester 2</option>
-          <option value="3">Semester 3</option>
-          <option value="4">Semester 4</option>
-          <option value="5">Semester 5</option>
-          <option value="6">Semester 6</option>
-        </select>
         <span id="edit-semester-select-error" class="error-message" aria-live="polite"></span>
         <div class="modal-buttons">
           <button type="submit" class="btn-submit">Simpan</button>
@@ -115,10 +106,15 @@
   </div>
 
   <!-- Modal for adding mapel -->
-  <div id="modal-add-mapel" class="modal hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-add-title" aria-modal="true">
+  <div id="modal-add-mapel" class="modal hidden z-50 fixed inset-0 flex items-center justify-center bg-black bg-opacity-40" aria-hidden="true" role="dialog" aria-labelledby="modal-add-title" aria-modal="true">
     <div class="modal-content" role="document">
       <h2 id="modal-add-title">Tambah Mapel</h2>
+      <p id="form-info-text" class="text-sm text-gray-500 mb-4">
+        Data akan disimpan ke <strong>Semester 1</strong> untuk siswa <strong>Brayen Marcell</strong>
+      </p>
       <form id="form-add-mapel" novalidate>
+        <input type="hidden" id="add-siswa-id" name="siswa_id" />
+        <input type="hidden" id="add-semester" name="semester" />
         <label for="add-mapel-select">Pilih Mapel:</label>
         <select id="add-mapel-select" name="mapel" required aria-required="true" aria-describedby="add-mapel-select-error">
           <!-- Options will be populated dynamically -->
@@ -127,16 +123,6 @@
         <label for="add-mapel-nilai">Nilai (0-100):</label>
         <input type="number" id="add-mapel-nilai" name="nilai" min="0" max="100" required aria-required="true" aria-describedby="add-mapel-nilai-error" />
         <span id="add-mapel-nilai-error" class="error-message" aria-live="polite"></span>
-        <label for="add-semester-select">Semester:</label>
-        <select id="add-semester-select" name="semester" required aria-required="true" aria-describedby="add-semester-select-error">
-          <option value="1">Semester 1</option>
-          <option value="2">Semester 2</option>
-          <option value="3">Semester 3</option>
-          <option value="4">Semester 4</option>
-          <option value="5">Semester 5</option>
-          <option value="6">Semester 6</option>
-        </select>
-        <span id="add-semester-select-error" class="error-message" aria-live="polite"></span>
         <div class="modal-buttons">
           <button type="submit" class="btn-submit">Tambah</button>
           <button type="button" id="btn-cancel-add" class="btn-cancel">Batal</button>
