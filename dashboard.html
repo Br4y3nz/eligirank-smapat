@@ -1,278 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id" data-theme="light">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dashboard - EligiRank SMAPAT</title>
-    <script type="module" src="/Supabase/client.js" defer></script>
-<script type="module" src="/Script/sidebar.js" defer></script>
-    <script type="module" src="/Script/dashboard.js" defer></script>
-    <link rel="stylesheet" href="Style/sidebar.css" />
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="Style/role-modal.css" />
-    <link rel="stylesheet" href="Style/user-info-modal.css" />
-    <link rel="stylesheet" href="Style/dashboard.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - EligiRank SMAPAT</title>
+  <script type="module" src="/Supabase/client.js" defer></script>
+  <script type="module" src="/Script/sidebar.js" defer></script>
+  <script type="module" src="/Script/dashboard.js" defer></script>
+  <link rel="stylesheet" href="Style/sidebar.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="Style/role-modal.css" />
+  <link rel="stylesheet" href="Style/user-info-modal.css" />
+  <link rel="stylesheet" href="Style/dashboard.css" />
 </head>
-
 <body>
-    <div id="sidebar-container"></div>
+  <div id="sidebar-container"></div>
+  <div class="overlay" id="overlay"></div>
 
-    <div class="overlay" id="overlay"></div>
+  <main class="main-content">
+    <section class="greeting scroll-fade">
+      <div class="greeting-card">
+        <h1><i class='bx bx-smile'></i> Selamat datang, <span id="dashboard-username">...</span> 👋</h1>
+        <p class="quote">"Setiap hari adalah kesempatan untuk menjadi lebih baik — jangan sia-siakan peluang hari ini."</p>
+      </div>
+    </section>
 
-    <!-- Role selection modal -->
-    <div id="role-modal" class="modal close" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
-        <div class="modal-content">
-            <!-- Removed close button as per user request -->
-            <!-- <button class="close-button" id="close-role-modal" aria-label="Close role selection modal">&times;</button> -->
-            <h2 id="role-modal-title">Select Your Role</h2>
-            <form id="role-form">
-            <label>
-                <input type="radio" name="role" value="student" required />
-                Student
-            </label>
-            <div id="student-fields" style="display:none; margin-left: 20px;">
-                <label for="nis">NIS:</label>
-                <input type="text" id="nis" name="nis" />
-                <label for="nisn">NISN:</label>
-                <input type="text" id="nisn" name="nisn" />
-                <label for="class-select">Class:</label>
-                <select id="class-select" name="class" required>
-                  <option value="" disabled selected>Select your class</option>
-                  <option value="X Macca 1">X Macca 1</option>
-                  <option value="X Macca 2">X Macca 2</option>
-                  <option value="X Macca 3">X Macca 3</option>
-                  <option value="X Macca 4">X Macca 4</option>
-                  <option value="X Macca 5">X Macca 5</option>
-                  <option value="X Macca 6">X Macca 6</option>
-                  <option value="X Macca 7">X Macca 7</option>
-                  <option value="XI Mattinulu 1">XI Mattinulu 1</option>
-                  <option value="XI Mattinulu 2">XI Mattinulu 2</option>
-                  <option value="XI Mattinulu 3">XI Mattinulu 3</option>
-                  <option value="XI Mattinulu 4">XI Mattinulu 4</option>
-                  <option value="XI Mattinulu 5">XI Mattinulu 5</option>
-                  <option value="XI Mattinulu 6">XI Mattinulu 6</option>
-                  <option value="XI Mattinulu 7">XI Mattinulu 7</option>
-                  <option value="XII Malempu 1">XII Malempu 1</option>
-                  <option value="XII Malempu 2">XII Malempu 2</option>
-                  <option value="XII Malempu 3">XII Malempu 3</option>
-                  <option value="XII Malempu 4">XII Malempu 4</option>
-                  <option value="XII Malempu 5">XII Malempu 5</option>
-                  <option value="XII Malempu 6">XII Malempu 6</option>
-                  <option value="XII Malempu 7">XII Malempu 7</option>
-                </select>
+    <section class="stats">
+      <div id="stat-siswa" class="stat-card siswa">
+        <div><div class="stat-value">0</div><p class="stat-label">Siswa</p></div>
+        <div class="stat-icon"><i class='bx bxs-graduation'></i></div>
+      </div>
+      <div id="stat-guru" class="stat-card guru">
+        <div><div class="stat-value">0</div><p class="stat-label">Guru</p></div>
+        <div class="stat-icon"><i class='bx bxs-user'></i></div>
+      </div>
+      <div id="stat-prestasi" class="stat-card prestasi">
+        <div><div class="stat-value">0</div><p class="stat-label">Prestasi</p></div>
+        <div class="stat-icon"><i class='bx bxs-trophy'></i></div>
+      </div>
+      <div id="stat-organisasi" class="stat-card organisasi">
+        <div><div class="stat-value">0</div><p class="stat-label">Organisasi</p></div>
+        <div class="stat-icon"><i class='bx bxs-group'></i></div>
+      </div>
+    </section>
+
+    <div class="dashboard-main-content">
+            <div class="left-section">
+        <section class="announcements scroll-fade">
+          <div class="announcement-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="text-align: center; flex-grow: 1;"><i class='bx bxs-megaphone'></i> Pengumuman</h2>
+            <div class="announcement-buttons" style="flex-shrink: 0;">
+              <button id="edit-announcements-btn" class="btn btn-primary">Edit</button>
+              <button id="save-announcements-btn" class="btn btn-primary" style="display:none;">Simpan</button>
             </div>
-            <label>
-                <input type="radio" name="role" value="teacher" required />
-                Teacher
-            </label>
-                <div id="teacher-fields" style="display:none; margin-left: 20px;">
-                    <label for="nik">NIK:</label>
-                    <input type="text" id="nik" name="nik" />
-                    <label for="nip">NIP:</label>
-                    <input type="text" id="nip" name="nip" />
-                    <label>Subjects you teach:</label>
-                    <div id="subject-checkboxes" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 5px 10px; border-radius: 5px;">
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="PAIBP" /> PAIBP</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Indonesia" /> Bahasa Indonesia</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Inggris" /> Bahasa Inggris</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Matematika Wajib" /> Matematika Wajib</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="PKN" /> PKN</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Sejarah Indonesia" /> Sejarah Indonesia</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Seni Budaya" /> Seni Budaya</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Penjasorkes" /> Penjasorkes</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="BK" /> BK</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="TIK" /> TIK</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="PKW" /> PKW</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Biologi" /> Biologi</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Fisika" /> Fisika</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Kimia" /> Kimia</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Matematika TL" /> Matematika TL</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Ekonomi" /> Ekonomi</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Sosiologi" /> Sosiologi</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Geografi" /> Geografi</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Jerman" /> Bahasa Jerman</label>
-                      <label style="margin-bottom: 4px; display: block;"><input type="checkbox" name="subjects" value="Bahasa Inggris TL" /> Bahasa Inggris TL</label>
-                    </div>
-                </div>
-            <button type="submit">Save</button>
-        </form>
-        </div>
-    </div>
-
-    <!-- Username and Phone Number modal -->
-    <div id="user-info-modal" class="modal close" role="dialog" aria-modal="true" aria-labelledby="user-info-modal-title">
-        <div class="modal-content">
-            <button class="close-button" id="close-user-info-modal" aria-label="Close user info modal">&times;</button>
-            <h2 id="user-info-modal-title">Complete Your Profile</h2>
-            <form id="user-info-form">
-                <label for="username-input">Username:</label>
-                <input type="text" id="username-input" name="username" required />
-                <label for="phone-input">Phone Number:</label>
-                <input type="tel" id="phone-input" name="phone" required />
-                <button type="submit">Save</button>
-            </form>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeSidebar } from '/Script/sidebar.js';
-        import supabase from './Supabase/client.js';
-
-        // Dynamically load sidebar component HTML into sidebar-container
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('sidebar.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('sidebar-container').innerHTML = html;
-                    initializeSidebar();
-
-                    // Highlight active page link based on current URL
-                    const currentPath = window.location.pathname.split('/').pop();
-                    const sidebarLinks = document.querySelectorAll('#sidebar-menu a');
-                    sidebarLinks.forEach(link => {
-                        if (link.getAttribute('href') === currentPath) {
-                            link.classList.add('active');
-                        }
-                    });
-
-                    // Check profile completeness and show user info modal if needed
-                    async function checkAndShowUserInfoModal() {
-                        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-                        if (!session || sessionError) {
-                            console.error("No session or session error:", sessionError);
-                            return;
-                        }
-
-                        try {
-                            const { data: profileData, error } = await supabase
-                                .from("profiles")
-                                .select("username, phone")
-                                .eq("id", session.user.id)
-                                .maybeSingle();
-
-                            if (error) {
-                                console.error("Error fetching profile:", error);
-                                return;
-                            }
-
-                            if (!profileData?.username?.trim() || !profileData?.phone?.trim()) {
-                                const userInfoModal = document.getElementById("user-info-modal");
-                                const overlay = document.getElementById("overlay");
-                                if (userInfoModal && overlay) {
-                                    userInfoModal.classList.add("open");
-                                    userInfoModal.classList.remove("close");
-                                    overlay.classList.add("open");
-                                    overlay.classList.remove("close");
-                                }
-                            }
-                        } catch (err) {
-                            console.error("Error checking profile completeness:", err);
-                        }
-                    }
-
-                    checkAndShowUserInfoModal();
-                })
-                .catch(err => console.error('Failed to load sidebar:', err));
-        });
-    </script>
-
-    <main class="main-content">
-        <!-- Greeting -->
-        <section class="greeting scroll-fade" aria-label="Greeting section">
-            <div class="greeting-card">
-                <h1><i class='bx bx-smile'></i> Selamat datang, <span id="dashboard-username" class="text-blue-600">...</span> 👋</h1>
-                <p class="quote">"Setiap hari adalah kesempatan untuk menjadi lebih baik — jangan sia-siakan peluang hari ini."</p>
-            </div>
-        </section>
-
-        <!-- Stat Cards -->
-        <section class="stats" aria-label="Statistics cards">
-            <div id="stat-siswa" class="stat-card siswa bg-gradient-to-r from-white to-blue-400 text-blue-900 p-5 rounded-xl shadow-md flex flex-row items-center justify-between transform transition duration-300 hover:scale-105" role="region" aria-live="polite">
-                <div class="flex flex-col items-start order-1">
-                    <div class="stat-value text-3xl font-bold">0</div>
-                    <p class="text-sm mt-1 tracking-widest">SISWA</p>
-                </div>
-                <div class="stat-icon bg-white text-blue-600 rounded-full w-14 h-14 flex items-center justify-center text-4xl shadow-md order-2">
-                    <i class='bx bxs-graduation'></i>
-                </div>
-            </div>
-            <div id="stat-guru" class="stat-card guru bg-gradient-to-r from-white to-indigo-400 text-indigo-900 p-5 rounded-xl shadow-md flex flex-row items-center justify-between transform transition duration-300 hover:scale-105" role="region" aria-live="polite">
-                <div class="flex flex-col items-start order-1">
-                    <div class="stat-value text-3xl font-bold">0</div>
-                    <p class="text-sm mt-1 tracking-widest">GURU</p>
-                </div>
-                <div class="stat-icon bg-white text-indigo-600 rounded-full w-14 h-14 flex items-center justify-center text-4xl shadow-md order-2">
-                    <i class='bx bxs-user'></i>
-                </div>
-            </div>
-            <div id="stat-prestasi" class="stat-card prestasi bg-gradient-to-r from-white to-amber-400 text-amber-900 p-5 rounded-xl shadow-md flex flex-row items-center justify-between transform transition duration-300 hover:scale-105" role="region" aria-live="polite">
-                <div class="flex flex-col items-start order-1">
-                    <div class="stat-value text-3xl font-bold">0</div>
-                    <p class="text-sm mt-1 tracking-widest">PRESTASI</p>
-                </div>
-                <div class="stat-icon bg-white text-amber-600 rounded-full w-14 h-14 flex items-center justify-center text-4xl shadow-md order-2">
-                    <i class='bx bxs-trophy'></i>
-                </div>
-            </div>
-            <div id="stat-organisasi" class="stat-card organisasi bg-gradient-to-r from-white to-green-400 text-green-900 p-5 rounded-xl shadow-md flex flex-row items-center justify-between transform transition duration-300 hover:scale-105" role="region" aria-live="polite">
-                <div class="flex flex-col items-start order-1">
-                    <div class="stat-value text-3xl font-bold">0</div>
-                    <p class="text-sm mt-1 tracking-widest">ORGANISASI</p>
-                </div>
-                <div class="stat-icon bg-white text-green-600 rounded-full w-14 h-14 flex items-center justify-center text-4xl shadow-md order-2">
-                    <i class='bx bxs-group'></i>
-                </div>
-            </div>
-        </section>
-
-        <div class="dashboard-main-content">
-        <!-- Announcements -->
-        <section class="announcements scroll-fade" aria-label="Pengumuman">
-          <h2><i class='bx bxs-megaphone'></i> Pengumuman</h2>
-          <div class="announcement-vertical" id="announcement-list">
-            <!-- Cards will be inserted by JS -->
           </div>
-          <div class="announcement-buttons">
-            <button id="edit-announcements-btn" class="btn btn-primary">Edit</button>
-            <button id="save-announcements-btn" class="btn btn-primary" style="display:none;">Save</button>
-          </div>
-        </section>
-
-          <!-- Highlights -->
-          <section class="highlights" aria-label="Highlights section">
-              <div class="highlight-card" id="top-siswa" tabindex="0"><i class='bx bxs-star'></i> Top Siswa Bulan Ini</div>
-              <div class="highlight-card" id="chart-nilai" tabindex="0">
-                  <i class='bx bxs-bar-chart-alt-2'></i> Nilai Rata-rata Siswa per Kelas
-                  <canvas id="chart-nilai-canvas" width="300" height="180" aria-label="Bar chart showing average student scores per class" role="img"></canvas>
+          <div class="announcement-container">
+            <div class="announcement-vertical" id="announcement-list">
+              <div class="announcement-card">
+                <div class="announcement-content">
+                  <input type="text" value="Contoh Pengumuman" class="announcement-title" />
+                  <input type="date" value="2025-08-01" class="announcement-date" />
+                </div>
+                <button class="edit-btn" title="Edit Pengumuman"><i class='bx bx-pencil'></i></button>
               </div>
-          </section>
-        </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
-<footer class="dashboard-footer scroll-fade" aria-label="Footer">
-  <div class="footer-grid">
-    <!-- Tentang Sekolah -->
-                <div class="footer-about">
-                  <h3>Tentang Sekolah</h3>
-                  <p>SMA Negeri 4 Parepare (SMAPAT) adalah institusi pendidikan unggulan yang berfokus pada pengembangan akademik berkualitas dan pembentukan karakter siswa yang kuat, siap menghadapi tantangan masa depan dengan integritas dan inovasi.</p>
-                </div>
-
-
-    <!-- Lokasi -->
-    <div class="footer-map">
-      <h3>Lokasi</h3>
-      <iframe src="https://maps.google.com/maps?q=SMA%204%20Parepare&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="120" style="border:0;" allowfullscreen loading="lazy"></iframe>
     </div>
-  </div>
 
-  <!-- Sosial Media -->
-  <div class="footer-social">
-    <a href="https://instagram.com/smapatpare" target="_blank" aria-label="Instagram SMAPAT">
-      <i class='bx bxl-instagram'></i> @smapatpare
-    </a>
-  </div>
-</footer>
-    </main>
+
+      <div class="right-section">
+        <section class="highlights scroll-fade">
+          <h2 style="text-align: center;"><i class='bx bxs-star'></i> Siswa Teratas</h2>
+          <div class="podium-wrapper">
+            <div class="podium-card second-place">
+              <span class="rank">2</span>
+              <div class="student-info">Siswa 2</div>
+            </div>
+            <div class="podium-card first-place">
+              <span class="rank">1</span>
+              <div class="student-info">Siswa 1</div>
+            </div>
+            <div class="podium-card third-place">
+              <span class="rank">3</span>
+              <div class="student-info">Siswa 3</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="average-chart scroll-fade">
+          <h2 style="text-align: center;"><i class='bx bxs-bar-chart-alt-2'></i> Rata-rata Nilai</h2>
+          <div class="highlight-card">
+            <canvas id="chart-nilai-canvas" width="300" height="180"></canvas>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer class="dashboard-footer scroll-fade">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <h3>Tentang Sekolah</h3>
+          <p>SMA Negeri 4 Parepare (SMAPAT) adalah institusi pendidikan unggulan yang berfokus pada pengembangan akademik berkualitas dan pembentukan karakter siswa yang kuat, siap menghadapi tantangan masa depan dengan integritas dan inovasi.</p>
+        </div>
+        <div class="footer-map">
+          <h3>Lokasi</h3>
+          <iframe src="https://maps.google.com/maps?q=SMA%204%20Parepare&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="120" style="border:0;" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="footer-social">
+        <a href="https://instagram.com/smapatpare" target="_blank">
+          <i class='bx bxl-instagram'></i> @smapatpare
+        </a>
+      </div>
+    </footer>
+  </main>
 </body>
-
 </html>

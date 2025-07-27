@@ -1,18 +1,22 @@
+/* School-Friendly User Info Modal CSS for 359px width */
+
 #user-info-modal {
-  z-index: 1201; /* same as role-modal */
+  z-index: 1201;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
-  background-color: #F1F5F9;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background-color: #EFF6FF;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
   padding: 24px;
   font-family: "Poppins", sans-serif;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  /* remove display:none */
+  width: 90%;
+  max-width: 359px;
+  border: 2px solid #3B82F6;
 }
 
 #user-info-modal.open {
@@ -20,7 +24,6 @@
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
   animation: modalFadeIn 0.3s forwards;
-  /* no display:block */
 }
 
 #user-info-modal.close {
@@ -28,7 +31,6 @@
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.9);
   animation: modalFadeOut 0.3s forwards;
-  /* no display:none */
 }
 
 @keyframes modalFadeIn {
@@ -56,64 +58,77 @@
 #user-info-modal label {
   display: block;
   font-size: 14px;
-  color: #1E293B;
+  color: #1E3A8A;
   margin-top: 12px;
+  font-weight: 600;
 }
 
 #user-info-modal input {
   width: 100%;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #CBD5E1;
+  border: 1px solid #93C5FD;
   background-color: #FFFFFF;
   color: #1E293B;
   font-size: 14px;
   margin-top: 4px;
+  transition: border-color 0.3s;
+}
+
+#user-info-modal input:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 
 #user-info-modal button[type="submit"] {
   margin-top: 20px;
   width: 100%;
   padding: 12px 0;
-  background-color: #2563EB;
+  background-color: #3B82F6;
   border: none;
   border-radius: 12px;
   color: #F8FAFC;
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
 #user-info-modal button[type="submit"]:hover {
-  background-color: #1E40AF;
+  background-color: #2563EB;
+  transform: translateY(-1px);
 }
 
-/* Modal base style */
+/* General Modal & Overlay Styles */
 .modal {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  /* Remove any display: none/block here */
 }
 
 .modal.open {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
-  /* Add your fade/scale-in animation if desired */
 }
 
 .modal.close {
   opacity: 0;
   pointer-events: none;
-  /* Optionally add scale-out or fade-out animation */
 }
 
 #overlay {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1200;
 }
 
 #overlay.open {
