@@ -212,24 +212,37 @@
     });
   </script>
 
-  <script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
     const siswaFields = document.getElementById('siswa-fields');
     const guruFields = document.getElementById('guru-fields');
     const roleInputs = document.querySelectorAll('input[name="role"]');
+    const nisInput = document.getElementById('nis');
+    const nisnInput = document.getElementById('nisn');
+    const nikInput = document.getElementById('nik');
+    const nipInput = document.getElementById('nip');
 
     roleInputs.forEach(input => {
       input.addEventListener('change', () => {
-        if (input.value === 'siswa') {
-          siswaFields.style.display = 'block';
-          guruFields.style.display = 'none';
-        } else if (input.value === 'guru') {
-          guruFields.style.display = 'block';
-          siswaFields.style.display = 'none';
-        }
+        const isSiswa = input.value === 'siswa';
+        const isGuru = input.value === 'guru';
+
+        siswaFields.style.display = isSiswa ? 'block' : 'none';
+        guruFields.style.display = isGuru ? 'block' : 'none';
+
+        nisInput.required = isSiswa;
+        nisnInput.required = isSiswa;
+        nikInput.required = isGuru;
+        nipInput.required = isGuru;
+
+        nisInput.disabled = !isSiswa;
+        nisnInput.disabled = !isSiswa;
+        nikInput.disabled = !isGuru;
+        nipInput.disabled = !isGuru;
       });
     });
   });
 </script>
+
 </body>
 </html>

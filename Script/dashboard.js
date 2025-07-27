@@ -374,34 +374,4 @@ export function initializeRoleModal() {
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const siswaFields = document.getElementById('siswa-fields');
-    const guruFields = document.getElementById('guru-fields');
-    const roleInputs = document.querySelectorAll('input[name="role"]');
-    const nisInput = document.getElementById('nis');
-    const nisnInput = document.getElementById('nisn');
-    const nikInput = document.getElementById('nik');
-    const nipInput = document.getElementById('nip');
-
-    roleInputs.forEach(input => {
-      input.addEventListener('change', () => {
-        if (input.value === 'siswa') {
-          siswaFields.style.display = 'block';
-          guruFields.style.display = 'none';
-
-          nisInput.required = true;
-          nisnInput.required = true;
-          nikInput.required = false;
-          nipInput.required = false;
-        } else if (input.value === 'guru') {
-          siswaFields.style.display = 'none';
-          guruFields.style.display = 'block';
-
-          nisInput.required = false;
-          nisnInput.required = false;
-          nikInput.required = true;
-          nipInput.required = true;
-        }
-      });
-    });
-  });}
+}
