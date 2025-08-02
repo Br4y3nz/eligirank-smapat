@@ -247,11 +247,14 @@ function konversiGrade(nilai) {
 }
 
 function attachMapelRowEvents() {
+  console.log('attachMapelRowEvents called, isAuthorized:', isAuthorized());
   if (!isAuthorized()) return;
 
+  console.log('Attaching event listeners to edit/delete buttons');
   document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
+      console.log('Edit button clicked, raporId:', raporId);
       const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
       const form = document.getElementById('form-edit-mapel');
 
@@ -270,6 +273,7 @@ function attachMapelRowEvents() {
   document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
+      console.log('Delete button clicked, raporId:', raporId);
       if (confirm('Yakin ingin menghapus data ini?')) {
         await supabase.from('rapor').delete().eq('id', raporId);
         await loadCurrentRapor();
