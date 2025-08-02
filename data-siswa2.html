@@ -56,45 +56,55 @@
     </section>
   </main>
 
-  <!-- MODAL ADD -->
-  <div id="modal-add-mapel" class="modal hidden">
-    <div class="modal-content">
-      <button type="button" id="btn-close-add" class="modal-close">&times;</button>
-      <h2>Tambah Mapel</h2>
-      <p id="form-info-text">Data akan disimpan ke <strong id="semester-info">Semester 1</strong> untuk siswa <strong id="siswa-info">-</strong></p>
-      <form id="form-add-mapel">
-        <input type="hidden" id="add-siswa-id" name="siswa_id" />
-        <input type="hidden" id="add-semester" name="semester" />
-        <label for="add-mapel-select">Mapel:</label>
-        <select id="add-mapel-select" required></select>
-        <label for="add-mapel-nilai">Nilai:</label>
-        <input type="number" id="add-mapel-nilai" min="0" max="100" required />
-        <div class="modal-buttons">
-          <button type="submit">Tambah</button>
-          <button type="button" id="btn-cancel-add">Batal</button>
-        </div>
-      </form>
-    </div>
-  </div>
+<!-- MODAL ADD -->
+<div id="modal-add-mapel" class="modal hidden">
+  <div class="modal-content">
+    <button type="button" id="btn-close-add" class="modal-close">&times;</button>
+    <h2>Tambah Mapel</h2>
+    <p id="form-info-text">
+      Data akan disimpan ke <strong id="semester-info">Semester 1</strong> untuk siswa <strong id="siswa-info">-</strong>
+    </p>
+    <form id="form-add-mapel">
+      <input type="hidden" id="add-siswa-id" name="siswa_id" />
+      <input type="hidden" id="add-semester" name="semester" />
 
-  <!-- MODAL EDIT -->
-  <div id="modal-edit-mapel" class="modal hidden">
-    <div class="modal-content">
-      <button type="button" id="btn-close-edit" class="modal-close">&times;</button>
-      <h2>Edit Mapel</h2>
-      <form id="form-edit-mapel">
-        <input type="hidden" id="edit-rapor-id" />
-        <label for="edit-mapel-select">Mapel:</label>
-        <select id="edit-mapel-select" required></select>
-        <label for="edit-mapel-nilai">Nilai:</label>
-        <input type="number" id="edit-mapel-nilai" min="0" max="100" required />
-        <div class="modal-buttons">
-          <button type="submit">Simpan</button>
-          <button type="button" id="btn-cancel-edit">Batal</button>
-        </div>
-      </form>
-    </div>
+      <label for="add-mapel-select">Mapel:</label>
+      <select id="add-mapel-select" required></select>
+
+      <label for="add-mapel-nilai">Nilai:</label>
+      <input type="number" id="add-mapel-nilai" min="0" max="100" required />
+
+      <!-- Vertical Buttons -->
+      <div class="modal-buttons">
+        <button type="submit" class="btn btn-primary">Tambah</button>
+        <button type="button" id="btn-cancel-add" class="btn btn-secondary">Batal</button>
+      </div>
+    </form>
   </div>
+</div>
+
+<!-- MODAL EDIT -->
+<div id="modal-edit-mapel" class="modal hidden">
+  <div class="modal-content">
+    <button type="button" id="btn-close-edit" class="modal-close">&times;</button>
+    <h2>Edit Mapel</h2>
+    <form id="form-edit-mapel">
+      <input type="hidden" id="edit-rapor-id" />
+
+      <label for="edit-mapel-select">Mapel:</label>
+      <select id="edit-mapel-select" required></select>
+
+      <label for="edit-mapel-nilai">Nilai:</label>
+      <input type="number" id="edit-mapel-nilai" min="0" max="100" required />
+
+      <!-- Vertical Buttons -->
+      <div class="modal-buttons">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" id="btn-cancel-edit" class="btn btn-secondary">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
 
     <script type="module">
     import { initializeSidebar } from '/Script/sidebar.js';
