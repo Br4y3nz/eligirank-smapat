@@ -247,8 +247,8 @@ body {
   margin-top: 1rem;
 }
 
-.btn-submit,
-.btn-cancel {
+.btn-submit-add,
+.btn-cancel-add {
   padding: 0.45rem 1.2rem;
   font-size: 0.8rem;
   font-weight: 600;
