@@ -1,273 +1,339 @@
 import supabase from '../Supabase/client.js';
 
-const urlParams = new URLSearchParams(window.location.search);
-const currentSiswaId = urlParams.get('id') || null;
-const currentSemester = parseInt(urlParams.get('semester')) || 1;
+class RaporManager {
+  constructor() {
+    this.urlParams = new URLSearchParams(window.location.search);
+    this.currentSiswaId = this.urlParams.get('id') || null;
+    this.currentSemester = parseInt(this.urlParams.get('semester')) || 1;
+    this.userRole = null;
+  }
 
-let userRole = null;
+  async initializePage() {
+    try {
+      await this.getUserRole();
+      this.setupEventListeners();
+      await this.loadPageData();
+      this.configureUIBasedOnRole();
+    } catch (error) {
+      console.error('Page initialization error:', error);
+      alert('Gagal memuat halaman. Silakan coba lagi.');
+    }
+  }
 
-async function getUserRole() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return;
-  const userId = session.user.id;
-  const { data, error } = await supabase
-    .from('akun')
-    .select('role')
-    .eq('id', userId)
-    .single();
-  if (error || !data) return;
-  userRole = data.role;
-  return userRole;
-}
+  async getUserRole() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      this.userRole = null;
+      return null;
+    }
 
-function isAuthorized() {
-  return userRole === 'admin' || userRole === 'guru';
-}
+    const userId = session.user.id;
+    const { data, error } = await supabase
+      .from('akun')
+      .select('role')
+      .eq('id', userId)
+      .single();
 
-document.addEventListener('DOMContentLoaded', async () => {
-  await getUserRole();
+    if (error || !data) {
+      this.userRole = null;
+      return null;
+    }
 
-  if (currentSiswaId) {
-    document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
-      const baseUrl = link.getAttribute('href').split('?')[0];
-      link.setAttribute('href', `${baseUrl}?id=${currentSiswaId}&semester=${currentSemester}`);
+    this.userRole = data.role;
+    return this.userRole;
+  }
+
+  isAuthorized() {
+    return ['admin', 'guru'].includes(this.userRole);
+  }
+
+  setupEventListeners() {
+    this.updateStudentLinks();
+    this.setupSemesterDropdown();
+    this.setupModalListeners();
+  }
+
+  updateStudentLinks() {
+    if (this.currentSiswaId) {
+      document.querySelectorAll('a[href^="data-siswa2.html"]').forEach(link => {
+        const baseUrl = link.getAttribute('href').split('?')[0];
+        link.setAttribute('href', `${baseUrl}?id=${this.currentSiswaId}&semester=${this.currentSemester}`);
+      });
+    }
+  }
+
+  setupSemesterDropdown() {
+    const semSelect = document.getElementById('semester-select');
+    if (!semSelect) return;
+
+    const semesterStr = this.currentSemester.toString();
+    const optionExists = Array.from(semSelect.options).some(opt => opt.value === semesterStr);
+
+    semSelect.value = optionExists ? semesterStr : semSelect.options[0].value;
+
+    semSelect.addEventListener('change', e => {
+      const newSemester = parseInt(e.target.value);
+      if (!isNaN(newSemester) && this.currentSiswaId) {
+        window.location.href = `data-siswa2.html?id=${this.currentSiswaId}&semester=${newSemester}`;
+      }
     });
   }
 
-  await loadStudentInfo();
-  await populateMapelSelects();
-  await loadCurrentRapor();
-  syncSemesterDropdown();
-  attachModalListeners();
+  setupModalListeners() {
+    const modalConfig = {
+      'btn-add-mapel': { 
+        modalId: 'modal-add-mapel', 
+        formId: 'form-add-mapel', 
+        handler: this.openAddModal.bind(this) 
+      },
+      'btn-cancel-add': { modalId: 'modal-add-mapel', handler: this.closeModal },
+      'btn-close-add': { modalId: 'modal-add-mapel', handler: this.closeModal },
+      'btn-cancel-edit': { modalId: 'modal-edit-mapel', handler: this.closeModal },
+      'btn-close-edit': { modalId: 'modal-edit-mapel', handler: this.closeModal }
+    };
 
-  if (!isAuthorized()) {
-    document.getElementById('btn-add-mapel')?.remove();
-    const aksiHeader = document.querySelector('th.aksi') || document.querySelector('th:last-child');
-    aksiHeader?.remove();
+    Object.entries(modalConfig).forEach(([btnId, config]) => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.addEventListener('click', () => {
+          if (config.handler) config.handler(config.modalId);
+        });
+      }
+    });
+
+    const formAdd = document.getElementById('form-add-mapel');
+    const formEdit = document.getElementById('form-edit-mapel');
+
+    if (formAdd) formAdd.addEventListener('submit', this.handleAddSubmit.bind(this));
+    if (formEdit) formEdit.addEventListener('submit', this.handleEditSubmit.bind(this));
   }
-});
 
-function syncSemesterDropdown() {
-  const semSelect = document.getElementById('semester-select');
-  if (!semSelect) return;
+  async loadPageData() {
+    await Promise.all([
+      this.loadStudentInfo(),
+      this.populateMapelSelects(),
+      this.loadCurrentRapor()
+    ]);
+  }
 
-  const semesterStr = currentSemester.toString();
-  const optionExists = Array.from(semSelect.options).some(opt => opt.value === semesterStr);
-
-  semSelect.value = optionExists ? semesterStr : semSelect.options[0].value;
-
-  semSelect.addEventListener('change', e => {
-    const newSemester = parseInt(e.target.value);
-    if (!isNaN(newSemester) && currentSiswaId) {
-      window.location.href = `data-siswa2.html?id=${currentSiswaId}&semester=${newSemester}`;
+  configureUIBasedOnRole() {
+    if (!this.isAuthorized()) {
+      document.getElementById('btn-add-mapel')?.remove();
+      const aksiHeader = document.querySelector('th.aksi') || document.querySelector('th:last-child');
+      aksiHeader?.remove();
     }
-  });
-}
+  }
 
-function attachModalListeners() {
-  const btnAdd = document.getElementById('btn-add-mapel');
-  const formAdd = document.getElementById('form-add-mapel');
-  const formEdit = document.getElementById('form-edit-mapel');
-
-  btnAdd?.addEventListener('click', openAddModal);
-
-  document.getElementById('btn-cancel-add')?.addEventListener('click', closeModal('modal-add-mapel'));
-  document.getElementById('btn-cancel-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
-  document.getElementById('btn-close-add')?.addEventListener('click', closeModal('modal-add-mapel'));
-  document.getElementById('btn-close-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
-
-  formAdd?.addEventListener('submit', handleAddSubmit);
-  formEdit?.addEventListener('submit', handleEditSubmit);
-}
-
-function closeModal(modalId) {
-  return () => {
+  closeModal(modalId) {
     const modal = document.getElementById(modalId);
     modal?.classList.add('hidden');
     modal?.setAttribute('aria-hidden', 'true');
-  };
-}
-
-async function openAddModal() {
-  await populateMapelSelects();
-  const modal = document.getElementById('modal-add-mapel');
-  const form = document.getElementById('form-add-mapel');
-  const infoText = document.getElementById('form-info-text');
-
-  form.reset();
-  document.getElementById('add-siswa-id').value = currentSiswaId;
-  document.getElementById('add-semester').value = currentSemester;
-
-  const nama = document.getElementById('student-name')?.textContent || '';
-  const kelas = document.getElementById('student-class')?.textContent || '';
-  infoText.innerHTML = `Data akan disimpan ke <strong>Semester ${currentSemester}</strong> untuk siswa <strong>${nama}</strong> (${kelas})`;
-
-  modal.classList.remove('hidden');
-  modal.setAttribute('aria-hidden', 'false');
-}
-
-async function handleAddSubmit(e) {
-  e.preventDefault();
-
-  const siswa_id = document.getElementById('add-siswa-id').value;
-  const mapel_id = document.getElementById('add-mapel-select').value;
-  const nilai = parseFloat(document.getElementById('add-mapel-nilai').value);
-  const semester = parseInt(document.getElementById('add-semester').value);
-
-  if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100 || isNaN(semester)) {
-    alert('Pastikan semua field valid.');
-    return;
   }
 
-  const { error } = await supabase.from('rapor').insert([{ siswa_id, mapel_id, nilai, semester }]);
-  if (error) return alert('Gagal menambahkan.');
+  async openAddModal() {
+    await this.populateMapelSelects();
+    const modal = document.getElementById('modal-add-mapel');
+    const form = document.getElementById('form-add-mapel');
+    const infoText = document.getElementById('form-info-text');
 
-  closeModal('modal-add-mapel')();
-  await loadCurrentRapor();
-}
+    form.reset();
+    document.getElementById('add-siswa-id').value = this.currentSiswaId;
+    document.getElementById('add-semester').value = this.currentSemester;
 
-async function handleEditSubmit(e) {
-  e.preventDefault();
+    const nama = document.getElementById('student-name')?.textContent || '';
+    const kelas = document.getElementById('student-class')?.textContent || '';
+    infoText.innerHTML = `Data akan disimpan ke <strong>Semester ${this.currentSemester}</strong> untuk siswa <strong>${nama}</strong> (${kelas})`;
 
-  const raporId = document.getElementById('edit-rapor-id').value;
-
-  if (!raporId) {
-    alert('ID rapor tidak ditemukan.');
-    return;
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
   }
 
-  const mapel_id = document.getElementById('edit-mapel-select').value;
-  const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
+  async handleAddSubmit(e) {
+    e.preventDefault();
+    const formData = this.validateFormData('add');
+    if (!formData) return;
 
-  if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100) {
-    alert('Pastikan semua field valid.');
-    return;
+    const { error } = await supabase.from('rapor').insert([formData]);
+    if (error) {
+      console.error('Add error:', error);
+      return alert('Gagal menambahkan.');
+    }
+
+    this.closeModal('modal-add-mapel');
+    await this.loadCurrentRapor();
   }
 
-  const { error } = await supabase.from('rapor').update({ mapel_id, nilai }).eq('id', raporId);
-  if (error) return alert('Gagal mengupdate.');
+  async handleEditSubmit(e) {
+    e.preventDefault();
+    const formData = this.validateFormData('edit');
+    if (!formData) return;
 
-  closeModal('modal-edit-mapel')();
-  await loadCurrentRapor();
-}
+    const { error } = await supabase
+      .from('rapor')
+      .update(formData)
+      .eq('id', formData.id);
 
-async function populateMapelSelects() {
-  const { data: options } = await supabase.from('mapel').select('id, nama').order('nama');
-  const selects = ['add-mapel-select', 'edit-mapel-select'];
-  selects.forEach(id => {
-    const select = document.getElementById(id);
-    if (!select) return;
-    select.innerHTML = '';
-    options?.forEach(opt => {
-      const option = document.createElement('option');
-      option.value = opt.id;
-      option.textContent = opt.nama;
-      select.appendChild(option);
+    if (error) {
+      console.error('Edit error:', error);
+      return alert('Gagal mengupdate.');
+    }
+
+    this.closeModal('modal-edit-mapel');
+    await this.loadCurrentRapor();
+  }
+
+  validateFormData(type) {
+    const idField = `${type}-rapor-id`;
+    const mapelField = `${type}-mapel-select`;
+    const nilaiField = `${type}-mapel-nilai`;
+
+    const raporId = type === 'edit' ? document.getElementById(idField).value : null;
+    const siswa_id = type === 'add' ? this.currentSiswaId : null;
+    const mapel_id = document.getElementById(mapelField).value;
+    const nilai = parseFloat(document.getElementById(nilaiField).value);
+    const semester = type === 'add' ? this.currentSemester : null;
+
+    if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100) {
+      alert('Pastikan semua field valid.');
+      return null;
+    }
+
+    return {
+      ...(raporId && { id: raporId }),
+      ...(siswa_id && { siswa_id }),
+      mapel_id,
+      nilai,
+      ...(semester && { semester })
+    };
+  }
+
+  async populateMapelSelects() {
+    const { data: options } = await supabase.from('mapel').select('id, nama').order('nama');
+    const selects = ['add-mapel-select', 'edit-mapel-select'];
+    selects.forEach(id => {
+      const select = document.getElementById(id);
+      if (!select) return;
+      select.innerHTML = '';
+      options?.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.id;
+        option.textContent = opt.nama;
+        select.appendChild(option);
+      });
     });
-  });
-}
-
-async function loadCurrentRapor() {
-  if (!currentSiswaId) return;
-  const { data, error } = await supabase
-    .from('rapor')
-    .select('*, mapel(nama)')
-    .eq('siswa_id', currentSiswaId)
-    .eq('semester', currentSemester);
-  if (error) return alert('Gagal mengambil rapor.');
-  tampilkanRapor(data);
-}
-
-function tampilkanRapor(data = []) {
-  const theadRow = document.querySelector('.rapor-table thead tr');
-  if (!isAuthorized() && theadRow.children.length === 4) {
-    theadRow.removeChild(theadRow.lastElementChild);
   }
 
-  const tbody = document.getElementById('tabel-rapor');
-  tbody.innerHTML = '';
-  let total = 0;
+  async loadCurrentRapor() {
+    if (!this.currentSiswaId) return;
+    const { data, error } = await supabase
+      .from('rapor')
+      .select('*, mapel(nama)')
+      .eq('siswa_id', this.currentSiswaId)
+      .eq('semester', this.currentSemester);
+    if (error) return alert('Gagal mengambil rapor.');
+    this.tampilkanRapor(data);
+  }
 
-  data.forEach(item => {
-    const tr = document.createElement('tr');
-    const grade = konversiGrade(item.nilai);
-    const gradeClass = `grade-${grade.replace('+', 'plus').replace('-', 'minus')}`;
+  tampilkanRapor(data = []) {
+    const theadRow = document.querySelector('.rapor-table thead tr');
+    if (!this.isAuthorized() && theadRow.children.length === 4) {
+      theadRow.removeChild(theadRow.lastElementChild);
+    }
 
-    tr.innerHTML = `
-      <td>${item.mapel?.nama || '-'}</td>
-      <td>${item.nilai}</td>
-      <td class="${gradeClass}">${grade}</td>
-      ${isAuthorized() ? `<td>
-        <button class="btn-edit-mapel" data-id="${item.id}"><i class='bx bx-edit'></i></button>
-        <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
-      </td>` : ''}
-    `;
+    const tbody = document.getElementById('tabel-rapor');
+    tbody.innerHTML = '';
+    let total = 0;
 
-    tbody.appendChild(tr);
-    total += item.nilai;
-  });
+    data.forEach(item => {
+      const tr = document.createElement('tr');
+      const grade = this.konversiGrade(item.nilai);
+      const gradeClass = `grade-${grade.replace('+', 'plus').replace('-', 'minus')}`;
 
-  document.getElementById('rata-rata-unique').textContent = (total / data.length || 0).toFixed(2);
-  attachMapelRowEvents();
-}
+      tr.innerHTML = `
+        <td>${item.mapel?.nama || '-'}</td>
+        <td>${item.nilai}</td>
+        <td class="${gradeClass}">${grade}</td>
+        ${this.isAuthorized() ? `<td>
+          <button class="btn-edit-mapel" data-id="${item.id}"><i class='bx bx-edit'></i></button>
+          <button class="btn-delete-mapel" data-id="${item.id}"><i class='bx bx-trash'></i></button>
+        </td>` : ''}
+      `;
 
-function konversiGrade(nilai) {
-  if (nilai >= 98) return 'A+';
-  if (nilai >= 94) return 'A';
-  if (nilai >= 90) return 'A-';
-  if (nilai >= 86) return 'B+';
-  if (nilai >= 82) return 'B';
-  if (nilai >= 78) return 'B-';
-  if (nilai >= 74) return 'C+';
-  if (nilai >= 70) return 'C';
-  if (nilai >= 66) return 'C-';
-  if (nilai >= 50) return 'D';
-  return 'F';
-}
+      tbody.appendChild(tr);
+      total += item.nilai;
+    });
 
-function attachMapelRowEvents() {
-  if (!isAuthorized()) return;
+    document.getElementById('rata-rata-unique').textContent = (total / data.length || 0).toFixed(2);
+    this.attachMapelRowEvents();
+  }
 
-  document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
-    btn.onclick = async () => {
-      const raporId = btn.dataset.id;
-      const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
-      await populateMapelSelects();
+  konversiGrade(nilai) {
+    if (nilai >= 98) return 'A+';
+    if (nilai >= 94) return 'A';
+    if (nilai >= 90) return 'A-';
+    if (nilai >= 86) return 'B+';
+    if (nilai >= 82) return 'B';
+    if (nilai >= 78) return 'B-';
+    if (nilai >= 74) return 'C+';
+    if (nilai >= 70) return 'C';
+    if (nilai >= 66) return 'C-';
+    if (nilai >= 50) return 'D';
+    return 'F';
+  }
 
-      document.getElementById('edit-rapor-id').value = raporId;
-      document.getElementById('edit-mapel-select').value = data.mapel_id;
-      document.getElementById('edit-mapel-nilai').value = data.nilai;
+  attachMapelRowEvents() {
+    if (!this.isAuthorized()) return;
 
-      const modal = document.getElementById('modal-edit-mapel');
-      modal.classList.remove('hidden');
-      modal.setAttribute('aria-hidden', 'false');
-    };
-  });
+    document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
+      btn.onclick = async () => {
+        const raporId = btn.dataset.id;
+        const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
+        await this.populateMapelSelects();
 
-  document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
-    btn.onclick = async () => {
-      const raporId = btn.dataset.id;
-      if (confirm('Yakin ingin menghapus data ini?')) {
-        await supabase.from('rapor').delete().eq('id', raporId);
-        await loadCurrentRapor();
-      }
-    };
-  });
-}
+        document.getElementById('edit-rapor-id').value = raporId;
+        document.getElementById('edit-mapel-select').value = data.mapel_id;
+        document.getElementById('edit-mapel-nilai').value = data.nilai;
 
-async function loadStudentInfo() {
-  const { data: siswa } = await supabase.from('siswa').select('nama, kelas_id').eq('id', currentSiswaId).single();
-  if (!siswa) return;
+        const modal = document.getElementById('modal-edit-mapel');
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+      };
+    });
 
-  const namaElem = document.getElementById('student-name');
-  const kelasElem = document.getElementById('student-class');
+    document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
+      btn.onclick = async () => {
+        const raporId = btn.dataset.id;
+        if (confirm('Yakin ingin menghapus data ini?')) {
+          await supabase.from('rapor').delete().eq('id', raporId);
+          await this.loadCurrentRapor();
+        }
+      };
+    });
+  }
 
-  namaElem.textContent = siswa.nama || '-';
+  async loadStudentInfo() {
+    const { data: siswa } = await supabase.from('siswa').select('nama, kelas_id').eq('id', this.currentSiswaId).single();
+    if (!siswa) return;
 
-  if (siswa.kelas_id) {
-    const { data: kelas } = await supabase.from('kelas').select('nama').eq('id', siswa.kelas_id).single();
-    kelasElem.textContent = kelas?.nama || '-';
-  } else {
-    kelasElem.textContent = '-';
+    const namaElem = document.getElementById('student-name');
+    const kelasElem = document.getElementById('student-class');
+
+    namaElem.textContent = siswa.nama || '-';
+
+    if (siswa.kelas_id) {
+      const { data: kelas } = await supabase.from('kelas').select('nama').eq('id', siswa.kelas_id).single();
+      kelasElem.textContent = kelas?.nama || '-';
+    } else {
+      kelasElem.textContent = '-';
+    }
   }
 }
+
+// Initialize the page when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const raporManager = new RaporManager();
+  raporManager.initializePage();
+});
+
+// Export the class if needed for testing or external use
+export default RaporManager;
