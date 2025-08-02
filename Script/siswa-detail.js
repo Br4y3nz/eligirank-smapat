@@ -168,6 +168,7 @@ class RaporManager {
 
     this.closeModal('modal-add-mapel');
     await this.loadCurrentRapor();
+    this.attachMapelRowEvents(); // force reattach after add
   }
 
   async handleEditSubmit(e) {
