@@ -413,15 +413,15 @@ class RaporManager {
         const raporId = btn.dataset.id;
         if (confirm('Yakin ingin menghapus data ini?')) {
           console.log('Deleting rapor with ID:', raporId);
-          const { error } = await supabase.from('rapor').delete().eq('id', raporId);
+          const { data, error } = await supabase.from('rapor').delete().eq('id', raporId).select();
           
           if (error) {
             console.error('Delete error:', error);
-            alert('Gagal menghapus data.');
+            alert('Gagal menghapus data: ' + error.message);
             return;
           }
           
-          console.log('Delete successful for rapor ID:', raporId);
+          console.log('Delete successful for rapor ID:', raporId, 'Response data:', data);
           await this.loadCurrentRapor();
           this.attachMapelRowEvents(); // force reattach after delete
         }
