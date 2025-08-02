@@ -8,32 +8,20 @@ let userRole = null;
 
 async function getUserRole() {
   const { data: { session } } = await supabase.auth.getSession();
-  console.log('Session data:', session);
-  if (!session) {
-    console.log('No session found');
-    return;
-  }
+  if (!session) return;
   const userId = session.user.id;
-  console.log('User ID:', userId);
   const { data, error } = await supabase
     .from('akun')
     .select('role')
     .eq('id', userId)
     .single();
-  console.log('Role data:', data, 'Error:', error);
-  if (error || !data) {
-    console.log('Error fetching role or no role data found');
-    return;
-  }
+  if (error || !data) return;
   userRole = data.role;
-  console.log('User role set to:', userRole);
   return userRole;
 }
 
 function isAuthorized() {
-  const authorized = userRole === 'admin' || userRole === 'guru';
-  console.log('isAuthorized check:', authorized, 'userRole:', userRole);
-  return authorized;
+  return userRole === 'admin' || userRole === 'guru';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -83,13 +71,11 @@ function attachModalListeners() {
 
   btnAdd?.addEventListener('click', openAddModal);
 
-  // Cancel and Close buttons
   document.getElementById('btn-cancel-add')?.addEventListener('click', closeModal('modal-add-mapel'));
-  document.getElementById('btn-close-add')?.addEventListener('click', closeModal('modal-add-mapel'));
   document.getElementById('btn-cancel-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
+  document.getElementById('btn-close-add')?.addEventListener('click', closeModal('modal-add-mapel'));
   document.getElementById('btn-close-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
 
-  // Form submits
   formAdd?.addEventListener('submit', handleAddSubmit);
   formEdit?.addEventListener('submit', handleEditSubmit);
 }
@@ -108,12 +94,9 @@ async function openAddModal() {
   const form = document.getElementById('form-add-mapel');
   const infoText = document.getElementById('form-info-text');
 
-  const siswaInput = document.getElementById('add-siswa-id');
-  const semesterInput = document.getElementById('add-semester');
-
   form.reset();
-  siswaInput.value = currentSiswaId;
-  semesterInput.value = currentSemester;
+  document.getElementById('add-siswa-id').value = currentSiswaId;
+  document.getElementById('add-semester').value = currentSemester;
 
   const nama = document.getElementById('student-name')?.textContent || '';
   const kelas = document.getElementById('student-class')?.textContent || '';
@@ -145,7 +128,7 @@ async function handleAddSubmit(e) {
 
 async function handleEditSubmit(e) {
   e.preventDefault();
-  const form = e.target;
+
   const raporId = document.getElementById('edit-rapor-id').value;
 
   if (!raporId) {
@@ -161,20 +144,10 @@ async function handleEditSubmit(e) {
     return;
   }
 
-  const { error } = await supabase
-    .from('rapor')
-    .update({ mapel_id, nilai })
-    .eq('id', raporId);
+  const { error } = await supabase.from('rapor').update({ mapel_id, nilai }).eq('id', raporId);
+  if (error) return alert('Gagal mengupdate.');
 
-  if (error) {
-    alert('Gagal mengupdate data.');
-    return;
-  }
-
-  // Manually close the modal
   closeModal('modal-edit-mapel')();
-
-  // Reload updated rapor
   await loadCurrentRapor();
 }
 
@@ -259,20 +232,12 @@ function attachMapelRowEvents() {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
       const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
-      const form = document.getElementById('form-edit-mapel');
-
-      if (!data) {
-        alert('Data rapor tidak ditemukan.');
-        return;
-      }
-
       await populateMapelSelects();
 
-      form.dataset.raporId = raporId;
+      document.getElementById('edit-rapor-id').value = raporId;
       document.getElementById('edit-mapel-select').value = data.mapel_id;
       document.getElementById('edit-mapel-nilai').value = data.nilai;
 
-      // Show modal manually
       const modal = document.getElementById('modal-edit-mapel');
       modal.classList.remove('hidden');
       modal.setAttribute('aria-hidden', 'false');
@@ -282,18 +247,10 @@ function attachMapelRowEvents() {
   document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
-      if (!raporId) return;
-
-      const confirmDelete = confirm('Yakin ingin menghapus data ini?');
-      if (!confirmDelete) return;
-
-      const { error } = await supabase.from('rapor').delete().eq('id', raporId);
-      if (error) {
-        alert('Gagal menghapus data.');
-        return;
+      if (confirm('Yakin ingin menghapus data ini?')) {
+        await supabase.from('rapor').delete().eq('id', raporId);
+        await loadCurrentRapor();
       }
-
-      await loadCurrentRapor();
     };
   });
 }
