@@ -86,10 +86,10 @@ class RaporManager {
         formId: 'form-add-mapel', 
         handler: this.openAddModal.bind(this) 
       },
-      'btn-cancel-add': { modalId: 'modal-add-mapel', handler: this.closeModal },
-      'btn-close-add': { modalId: 'modal-add-mapel', handler: this.closeModal },
-      'btn-cancel-edit': { modalId: 'modal-edit-mapel', handler: this.closeModal },
-      'btn-close-edit': { modalId: 'modal-edit-mapel', handler: this.closeModal }
+      'btn-cancel-add': { modalId: 'modal-add-mapel', handler: this.closeModal.bind(this) },
+      'btn-close-add': { modalId: 'modal-add-mapel', handler: this.closeModal.bind(this) },
+      'btn-cancel-edit': { modalId: 'modal-edit-mapel', handler: this.closeModal.bind(this) },
+      'btn-close-edit': { modalId: 'modal-edit-mapel', handler: this.closeModal.bind(this) }
     };
 
     Object.entries(modalConfig).forEach(([btnId, config]) => {
@@ -286,6 +286,7 @@ class RaporManager {
 
     document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
       btn.onclick = async () => {
+        console.log('Edit button clicked, raporId:', btn.dataset.id);
         const raporId = btn.dataset.id;
         const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
         await this.populateMapelSelects();
@@ -302,6 +303,7 @@ class RaporManager {
 
     document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
       btn.onclick = async () => {
+        console.log('Delete button clicked, raporId:', btn.dataset.id);
         const raporId = btn.dataset.id;
         if (confirm('Yakin ingin menghapus data ini?')) {
           await supabase.from('rapor').delete().eq('id', raporId);
