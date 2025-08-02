@@ -253,16 +253,18 @@ function konversiGrade(nilai) {
 }
 
 function attachMapelRowEvents() {
-  console.log('attachMapelRowEvents called, isAuthorized:', isAuthorized());
   if (!isAuthorized()) return;
 
-  console.log('Attaching event listeners to edit/delete buttons');
   document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
-      console.log('Edit button clicked, raporId:', raporId);
       const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
       const form = document.getElementById('form-edit-mapel');
+
+      if (!data) {
+        alert('Data rapor tidak ditemukan.');
+        return;
+      }
 
       await populateMapelSelects();
 
@@ -270,6 +272,7 @@ function attachMapelRowEvents() {
       document.getElementById('edit-mapel-select').value = data.mapel_id;
       document.getElementById('edit-mapel-nilai').value = data.nilai;
 
+      // Show modal manually
       const modal = document.getElementById('modal-edit-mapel');
       modal.classList.remove('hidden');
       modal.setAttribute('aria-hidden', 'false');
@@ -279,11 +282,18 @@ function attachMapelRowEvents() {
   document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
     btn.onclick = async () => {
       const raporId = btn.dataset.id;
-      console.log('Delete button clicked, raporId:', raporId);
-      if (confirm('Yakin ingin menghapus data ini?')) {
-        await supabase.from('rapor').delete().eq('id', raporId);
-        await loadCurrentRapor();
+      if (!raporId) return;
+
+      const confirmDelete = confirm('Yakin ingin menghapus data ini?');
+      if (!confirmDelete) return;
+
+      const { error } = await supabase.from('rapor').delete().eq('id', raporId);
+      if (error) {
+        alert('Gagal menghapus data.');
+        return;
       }
+
+      await loadCurrentRapor();
     };
   });
 }
