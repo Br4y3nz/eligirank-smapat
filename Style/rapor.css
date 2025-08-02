@@ -259,13 +259,24 @@ body {
   flex: 1;
 }
 
-.btn-submit {
+.btn-submit-add {
   background-color: #2563eb;
   color: white;
   box-shadow: 0 3px 8px rgba(37, 99, 235, 0.4);
 }
 
-.btn-submit:hover {
+.btn-submit-add:hover {
+  background-color: #1e40af;
+  transform: scale(1.05);
+}
+
+.btn-cancel-add {
+  background-color: #2563eb;
+  color: white;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.4);
+}
+
+.btn-cancel-add:hover {
   background-color: #1e40af;
   transform: scale(1.05);
 }
