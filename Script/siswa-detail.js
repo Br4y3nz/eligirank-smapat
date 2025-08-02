@@ -184,25 +184,31 @@ class RaporManager {
 
   async handleEditSubmit(e) {
     e.preventDefault();
+    console.log('Handle edit submit called');
     const formData = this.validateFormData('edit');
-    if (!formData) return;
+    if (!formData) {
+      console.log('Form validation failed, not submitting');
+      return;
+    }
 
     // Extract the ID and create data object without ID for update
     const { id, ...updateData } = formData;
     
     console.log('Updating rapor with ID:', id, 'Data:', updateData);
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('rapor')
       .update(updateData)
-      .eq('id', id);
+      .eq('id', id)
+      .select();
 
     if (error) {
       console.error('Edit error:', error);
-      return alert('Gagal mengupdate.');
+      alert('Gagal mengupdate: ' + error.message);
+      return;
     }
 
-    console.log('Update successful for rapor ID:', id);
+    console.log('Update successful for rapor ID:', id, 'Response data:', data);
     this.closeModal('modal-edit-mapel');
     await this.loadCurrentRapor();
     this.attachMapelRowEvents(); // force reattach after edit
