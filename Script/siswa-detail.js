@@ -146,7 +146,7 @@ async function handleAddSubmit(e) {
 async function handleEditSubmit(e) {
   e.preventDefault();
   const form = e.target;
-  const raporId = form.dataset.raporId;
+  const raporId = document.getElementById('edit-rapor-id').value;
 
   if (!raporId) {
     alert('ID rapor tidak ditemukan.');
