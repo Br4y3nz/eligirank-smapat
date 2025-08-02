@@ -83,11 +83,13 @@ function attachModalListeners() {
 
   btnAdd?.addEventListener('click', openAddModal);
 
+  // Cancel and Close buttons
   document.getElementById('btn-cancel-add')?.addEventListener('click', closeModal('modal-add-mapel'));
-  document.getElementById('btn-cancel-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
   document.getElementById('btn-close-add')?.addEventListener('click', closeModal('modal-add-mapel'));
+  document.getElementById('btn-cancel-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
   document.getElementById('btn-close-edit')?.addEventListener('click', closeModal('modal-edit-mapel'));
 
+  // Form submits
   formAdd?.addEventListener('submit', handleAddSubmit);
   formEdit?.addEventListener('submit', handleEditSubmit);
 }
@@ -146,7 +148,6 @@ async function handleEditSubmit(e) {
   const form = e.target;
   const raporId = form.dataset.raporId;
 
-  // Check if raporId is present
   if (!raporId) {
     alert('ID rapor tidak ditemukan.');
     return;
@@ -155,20 +156,25 @@ async function handleEditSubmit(e) {
   const mapel_id = document.getElementById('edit-mapel-select').value;
   const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
 
-  // Validate input fields
   if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100) {
     alert('Pastikan semua field valid.');
     return;
   }
 
-  // Update the rapor entry in Supabase
-  const { error } = await supabase.from('rapor').update({ mapel_id, nilai }).eq('id', raporId);
-  if (error) return alert('Gagal mengupdate.');
+  const { error } = await supabase
+    .from('rapor')
+    .update({ mapel_id, nilai })
+    .eq('id', raporId);
 
-  // Close the modal after successful update
+  if (error) {
+    alert('Gagal mengupdate data.');
+    return;
+  }
+
+  // Manually close the modal
   closeModal('modal-edit-mapel')();
-  
-  // Reload the rapor data to reflect the changes
+
+  // Reload updated rapor
   await loadCurrentRapor();
 }
 
