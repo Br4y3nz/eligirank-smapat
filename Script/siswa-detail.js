@@ -8,15 +8,25 @@ let userRole = null;
 
 async function getUserRole() {
   const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return;
+  console.log('Session data:', session);
+  if (!session) {
+    console.log('No session found');
+    return;
+  }
   const userId = session.user.id;
+  console.log('User ID:', userId);
   const { data, error } = await supabase
     .from('akun')
     .select('role')
     .eq('id', userId)
     .single();
-  if (error || !data) return;
+  console.log('Role data:', data, 'Error:', error);
+  if (error || !data) {
+    console.log('Error fetching role or no role data found');
+    return;
+  }
   userRole = data.role;
+  console.log('User role set to:', userRole);
   return userRole;
 }
 
