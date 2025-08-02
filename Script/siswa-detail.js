@@ -126,8 +126,15 @@ class RaporManager {
 
   closeModal(modalId) {
     const modal = document.getElementById(modalId);
-    modal?.classList.add('hidden');
-    modal?.setAttribute('aria-hidden', 'true');
+    if (!modal) return;
+
+    // Actively blur the focused element first
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
+
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden', 'true');
   }
 
   async openAddModal() {
