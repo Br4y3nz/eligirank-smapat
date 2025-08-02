@@ -289,6 +289,7 @@ class RaporManager {
   }
 
   attachMapelRowEvents() {
+    console.log('Attaching events. Role:', this.userRole);
     if (!this.isAuthorized()) return;
 
     document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
@@ -315,6 +316,7 @@ class RaporManager {
         if (confirm('Yakin ingin menghapus data ini?')) {
           await supabase.from('rapor').delete().eq('id', raporId);
           await this.loadCurrentRapor();
+          this.attachMapelRowEvents(); // force reattach after delete
         }
       };
     });
