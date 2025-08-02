@@ -31,7 +31,9 @@ async function getUserRole() {
 }
 
 function isAuthorized() {
-  return userRole === 'admin' || userRole === 'guru';
+  const authorized = userRole === 'admin' || userRole === 'guru';
+  console.log('isAuthorized check:', authorized, 'userRole:', userRole);
+  return authorized;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
