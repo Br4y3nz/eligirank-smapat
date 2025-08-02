@@ -104,8 +104,16 @@ class RaporManager {
     const formAdd = document.getElementById('form-add-mapel');
     const formEdit = document.getElementById('form-edit-mapel');
 
-    if (formAdd) formAdd.addEventListener('submit', this.handleAddSubmit.bind(this));
-    if (formEdit) formEdit.addEventListener('submit', this.handleEditSubmit.bind(this));
+    console.log('Setting up form listeners. Form add exists:', !!formAdd, 'Form edit exists:', !!formEdit);
+    
+    if (formAdd) {
+      formAdd.addEventListener('submit', this.handleAddSubmit.bind(this));
+      console.log('Added submit listener to form-add-mapel');
+    }
+    if (formEdit) {
+      formEdit.addEventListener('submit', this.handleEditSubmit.bind(this));
+      console.log('Added submit listener to form-edit-mapel');
+    }
   }
 
   async loadPageData() {
@@ -157,15 +165,18 @@ class RaporManager {
 
   async handleAddSubmit(e) {
     e.preventDefault();
+    console.log('Handle add submit called');
     const formData = this.validateFormData('add');
     if (!formData) return;
 
+    console.log('Inserting new rapor:', formData);
     const { error } = await supabase.from('rapor').insert([formData]);
     if (error) {
       console.error('Add error:', error);
       return alert('Gagal menambahkan.');
     }
 
+    console.log('Add successful');
     this.closeModal('modal-add-mapel');
     await this.loadCurrentRapor();
     this.attachMapelRowEvents(); // force reattach after add
@@ -176,16 +187,22 @@ class RaporManager {
     const formData = this.validateFormData('edit');
     if (!formData) return;
 
+    // Extract the ID and create data object without ID for update
+    const { id, ...updateData } = formData;
+    
+    console.log('Updating rapor with ID:', id, 'Data:', updateData);
+
     const { error } = await supabase
       .from('rapor')
-      .update(formData)
-      .eq('id', formData.id);
+      .update(updateData)
+      .eq('id', id);
 
     if (error) {
       console.error('Edit error:', error);
       return alert('Gagal mengupdate.');
     }
 
+    console.log('Update successful for rapor ID:', id);
     this.closeModal('modal-edit-mapel');
     await this.loadCurrentRapor();
     this.attachMapelRowEvents(); // force reattach after edit
@@ -196,24 +213,38 @@ class RaporManager {
     const mapelField = `${type}-mapel-select`;
     const nilaiField = `${type}-mapel-nilai`;
 
-    const raporId = type === 'edit' ? document.getElementById(idField).value : null;
+    // Get values from form elements
+    const raporId = type === 'edit' ? document.getElementById(idField)?.value : null;
     const siswa_id = type === 'add' ? this.currentSiswaId : null;
-    const mapel_id = document.getElementById(mapelField).value;
-    const nilai = parseFloat(document.getElementById(nilaiField).value);
+    const mapel_id = document.getElementById(mapelField)?.value;
+    const nilaiInput = document.getElementById(nilaiField)?.value;
+    const nilai = parseFloat(nilaiInput);
     const semester = type === 'add' ? this.currentSemester : null;
 
-    if (!mapel_id || isNaN(nilai) || nilai < 0 || nilai > 100) {
-      alert('Pastikan semua field valid.');
+    // Validate required fields
+    if (!mapel_id || !nilaiInput) {
+      alert('Pastikan semua field diisi.');
       return null;
     }
 
-    return {
+    // Validate nilai range
+    if (isNaN(nilai) || nilai < 0 || nilai > 100) {
+      alert('Nilai harus antara 0 dan 100.');
+      return null;
+    }
+
+    console.log(`Form data for ${type}:`, { raporId, siswa_id, mapel_id, nilai, semester });
+
+    const result = {
       ...(raporId && { id: raporId }),
       ...(siswa_id && { siswa_id }),
       mapel_id,
       nilai,
       ...(semester && { semester })
     };
+
+    console.log(`Validated form data for ${type}:`, result);
+    return result;
   }
 
   async populateMapelSelects() {
@@ -233,23 +264,37 @@ class RaporManager {
   }
 
   async loadCurrentRapor() {
-    if (!this.currentSiswaId) return;
+    console.log('Loading current rapor for siswa:', this.currentSiswaId, 'semester:', this.currentSemester);
+    if (!this.currentSiswaId) {
+      console.log('No currentSiswaId, skipping rapor load');
+      return;
+    }
     const { data, error } = await supabase
       .from('rapor')
       .select('*, mapel(nama)')
       .eq('siswa_id', this.currentSiswaId)
       .eq('semester', this.currentSemester);
-    if (error) return alert('Gagal mengambil rapor.');
+    if (error) {
+      console.error('Error loading rapor:', error);
+      return alert('Gagal mengambil rapor.');
+    }
+    console.log('Loaded rapor data:', data);
     this.tampilkanRapor(data);
   }
 
   tampilkanRapor(data = []) {
+    console.log('Rendering rapor data:', data);
     const theadRow = document.querySelector('.rapor-table thead tr');
     if (!this.isAuthorized() && theadRow.children.length === 4) {
       theadRow.removeChild(theadRow.lastElementChild);
     }
 
     const tbody = document.getElementById('tabel-rapor');
+    if (!tbody) {
+      console.error('Table body element not found');
+      return;
+    }
+    
     tbody.innerHTML = '';
     let total = 0;
 
@@ -272,6 +317,7 @@ class RaporManager {
       total += item.nilai;
     });
 
+    console.log('Rendered', data.length, 'rapor items');
     document.getElementById('rata-rata-unique').textContent = (total / data.length || 0).toFixed(2);
     this.attachMapelRowEvents();
   }
@@ -292,36 +338,91 @@ class RaporManager {
 
   attachMapelRowEvents() {
     console.log('Attaching events. Role:', this.userRole);
-    if (!this.isAuthorized()) return;
+    if (!this.isAuthorized()) {
+      console.log('User not authorized, skipping event attachment');
+      return;
+    }
 
-    document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
+    const editButtons = document.querySelectorAll('.btn-edit-mapel');
+    const deleteButtons = document.querySelectorAll('.btn-delete-mapel');
+    
+    console.log('Found', editButtons.length, 'edit buttons and', deleteButtons.length, 'delete buttons');
+    
+    editButtons.forEach(btn => {
       btn.onclick = async () => {
         console.log('Edit button clicked, raporId:', btn.dataset.id);
         const raporId = btn.dataset.id;
-        const { data } = await supabase.from('rapor').select('*').eq('id', raporId).single();
+        if (!raporId) {
+          console.error('No raporId found in button data');
+          alert('ID data tidak ditemukan.');
+          return;
+        }
+        
+        const { data, error } = await supabase.from('rapor').select('*').eq('id', raporId).single();
+        
+        if (error) {
+          console.error('Error fetching rapor data:', error);
+          alert('Gagal mengambil data.');
+          return;
+        }
+        
+        console.log('Fetched rapor data:', data);
         await this.populateMapelSelects();
 
-        document.getElementById('edit-rapor-id').value = raporId;
-        document.getElementById('edit-mapel-select').value = data.mapel_id;
-        document.getElementById('edit-mapel-nilai').value = data.nilai;
+        const idElement = document.getElementById('edit-rapor-id');
+        const mapelElement = document.getElementById('edit-mapel-select');
+        const nilaiElement = document.getElementById('edit-mapel-nilai');
+        
+        if (!idElement || !mapelElement || !nilaiElement) {
+          console.error('Edit form elements not found');
+          alert('Form edit tidak ditemukan.');
+          return;
+        }
+        
+        idElement.value = raporId;
+        mapelElement.value = data.mapel_id;
+        nilaiElement.value = data.nilai;
+        
+        console.log('Pre-filled edit form with:', { 
+          id: raporId, 
+          mapel_id: data.mapel_id, 
+          nilai: data.nilai 
+        });
 
         const modal = document.getElementById('modal-edit-mapel');
+        if (!modal) {
+          console.error('Edit modal not found');
+          alert('Modal edit tidak ditemukan.');
+          return;
+        }
+        
         modal.classList.remove('hidden');
         modal.setAttribute('aria-hidden', 'false');
       };
     });
 
-    document.querySelectorAll('.btn-delete-mapel').forEach(btn => {
+    deleteButtons.forEach(btn => {
       btn.onclick = async () => {
         console.log('Delete button clicked, raporId:', btn.dataset.id);
         const raporId = btn.dataset.id;
         if (confirm('Yakin ingin menghapus data ini?')) {
-          await supabase.from('rapor').delete().eq('id', raporId);
+          console.log('Deleting rapor with ID:', raporId);
+          const { error } = await supabase.from('rapor').delete().eq('id', raporId);
+          
+          if (error) {
+            console.error('Delete error:', error);
+            alert('Gagal menghapus data.');
+            return;
+          }
+          
+          console.log('Delete successful for rapor ID:', raporId);
           await this.loadCurrentRapor();
           this.attachMapelRowEvents(); // force reattach after delete
         }
       };
     });
+    
+    console.log('Finished attaching events');
   }
 
   async loadStudentInfo() {
