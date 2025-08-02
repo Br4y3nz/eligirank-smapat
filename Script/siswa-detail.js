@@ -134,6 +134,11 @@ async function handleEditSubmit(e) {
   const form = e.target;
   const raporId = form.dataset.raporId;
 
+  if (!raporId) {
+    alert('ID rapor tidak ditemukan.');
+    return;
+  }
+
   const mapel_id = document.getElementById('edit-mapel-select').value;
   const nilai = parseFloat(document.getElementById('edit-mapel-nilai').value);
 
