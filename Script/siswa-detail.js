@@ -188,6 +188,7 @@ class RaporManager {
 
     this.closeModal('modal-edit-mapel');
     await this.loadCurrentRapor();
+    this.attachMapelRowEvents(); // force reattach after edit
   }
 
   validateFormData(type) {
