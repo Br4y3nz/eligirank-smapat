@@ -1,23 +1,10 @@
 // Supabase client initialization
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// Use environment variables (Vite: import.meta.env.VITE_*, Node: process.env.*)
-const SUPABASE_URL =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
-  (typeof process !== 'undefined' && process.env.SUPABASE_URL) ||
-  'https://yauwsxvgjmmyleheclpi.supabase.co';
+const supabaseUrl = 'https://yauwsxvgjmmyleheclpi.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdXdzeHZnam1teWxlaGVjbHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDY3NjUsImV4cCI6MjA2MDQ4Mjc2NX0.sIXEAS4gW2WLB7vk_359Jp3QB6R9NT3Qv9gGdE9u2JY';
 
-const SUPABASE_ANON_KEY =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
-  (typeof process !== 'undefined' && process.env.SUPABASE_ANON_KEY);
-
-if (!SUPABASE_ANON_KEY) {
-  throw new Error(
-    'Missing SUPABASE_ANON_KEY. Set VITE_SUPABASE_ANON_KEY (for Vite) or SUPABASE_ANON_KEY in your environment.'
-  );
-}
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 window.supabaseClient = supabase;
 
