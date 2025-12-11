@@ -12,13 +12,14 @@ async function ensureAuthClientReady(timeoutMs = 5000) {
     ) {
       return; // ready
     }
-    // small delay
     await new Promise((r) => setTimeout(r, interval));
   }
   throw new Error('Supabase AuthClient not ready after timeout');
 }
 
 async function login() {
+  await ensureAuthClientReady(5000);
+
   const usernameOrEmail = document.getElementById('usernameOrEmail').value.trim();
   const password = document.getElementById('password').value;
   const errorMessageEl = document.getElementById('loginErrorModal').querySelector('p');
@@ -37,21 +38,28 @@ async function login() {
   try {
     let email = usernameOrEmail;
 
-    // If input does not contain '@', treat as display name and fetch email
+    // If input does not contain '@', treat as username and fetch email from profiles table
     if (!usernameOrEmail.includes('@')) {
-      const { data: user, error: userError } = await supabase
-        .from('auth.users')
-        .select('email, user_metadata')
-        .eq('user_metadata->>username', usernameOrEmail)
-        .single();
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('username', usernameOrEmail)
+        .maybeSingle();
 
-      if (userError || !user) {
+      if (profileError) {
+        console.error('Error fetching profile by username:', profileError);
+        errorMessageEl.textContent = 'Terjadi kesalahan saat mencari username.';
+        showLoginErrorModal();
+        return;
+      }
+
+      if (!profile || !profile.email) {
         errorMessageEl.textContent = 'Display Name tidak ditemukan.';
         showLoginErrorModal();
         return;
       }
 
-      email = user.email;
+      email = profile.email;
     }
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -72,6 +80,7 @@ async function login() {
       window.location.href = 'dashboard.html';
     }, 2000);
   } catch (error) {
+    console.error('Unexpected login error:', error);
     errorMessageEl.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
     showLoginErrorModal();
   }
@@ -87,12 +96,17 @@ const googleLoginBtn = document.getElementById('google-signin-btn');
 googleLoginBtn.addEventListener('click', async () => {
   try {
     await ensureAuthClientReady(5000);
-    const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
-    if (error) throw error;
-    // rest of flow...
-  } catch (err) {
-    console.error('OAuth init failed:', err);
-    alert('Tidak dapat memulai login Google: ' + err.message);
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/dashboard.html',
+      },
+    });
+    if (error) {
+      alert('Login dengan Google gagal: ' + error.message);
+    }
+  } catch (error) {
+    alert('Terjadi kesalahan saat login dengan Google: ' + (error.message || error));
   }
 });
 
@@ -100,37 +114,39 @@ googleLoginBtn.addEventListener('click', async () => {
 const togglePassword = document.getElementById('togglePassword');
 const passwordInput = document.getElementById('password');
 
-togglePassword.addEventListener('click', () => {
-  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-  passwordInput.setAttribute('type', type);
-  if (type === 'password') {
-    togglePassword.classList.remove('bx-show');
-    togglePassword.classList.add('bx-low-vision');
-  } else {
-    togglePassword.classList.remove('bx-low-vision');
-    togglePassword.classList.add('bx-show');
-  }
-});
+if (togglePassword && passwordInput) {
+  togglePassword.addEventListener('click', () => {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    if (type === 'password') {
+      togglePassword.classList.remove('bx-show');
+      togglePassword.classList.add('bx-low-vision');
+    } else {
+      togglePassword.classList.remove('bx-low-vision');
+      togglePassword.classList.add('bx-show');
+    }
+  });
+}
 
 // Modal helper functions
 function showLoginErrorModal() {
   const modal = document.getElementById('loginErrorModal');
-  modal.style.display = 'flex';
+  if (modal) modal.style.display = 'flex';
 }
 
 function closeLoginErrorModal() {
   const modal = document.getElementById('loginErrorModal');
-  modal.style.display = 'none';
+  if (modal) modal.style.display = 'none';
 }
 
 function showLoginSuccessModal() {
   const modal = document.getElementById('loginSuccessModal');
-  modal.style.display = 'flex';
+  if (modal) modal.style.display = 'flex';
 }
 
 function closeLoginSuccessModal() {
   const modal = document.getElementById('loginSuccessModal');
-  modal.style.display = 'none';
+  if (modal) modal.style.display = 'none';
 }
 
 // Close modals on outside click
