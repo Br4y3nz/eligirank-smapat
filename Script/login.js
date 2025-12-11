@@ -1,5 +1,23 @@
 import supabase from '../Supabase/client.js';
 
+// Wait until window.supabaseClient.auth is ready (polling with timeout)
+async function ensureAuthClientReady(timeoutMs = 5000) {
+  const start = Date.now();
+  const interval = 100;
+  while (Date.now() - start < timeoutMs) {
+    if (
+      window.supabaseClient &&
+      window.supabaseClient.auth &&
+      typeof window.supabaseClient.auth.getUser === 'function'
+    ) {
+      return; // ready
+    }
+    // small delay
+    await new Promise((r) => setTimeout(r, interval));
+  }
+  throw new Error('Supabase AuthClient not ready after timeout');
+}
+
 async function login() {
   const usernameOrEmail = document.getElementById('usernameOrEmail').value.trim();
   const password = document.getElementById('password').value;
@@ -68,17 +86,13 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
 const googleLoginBtn = document.getElementById('google-signin-btn');
 googleLoginBtn.addEventListener('click', async () => {
   try {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin + '/dashboard.html',
-      },
-    });
-    if (error) {
-      alert('Login dengan Google gagal: ' + error.message);
-    }
-  } catch (error) {
-    alert('Terjadi kesalahan saat login dengan Google.');
+    await ensureAuthClientReady(5000);
+    const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (error) throw error;
+    // rest of flow...
+  } catch (err) {
+    console.error('OAuth init failed:', err);
+    alert('Tidak dapat memulai login Google: ' + err.message);
   }
 });
 

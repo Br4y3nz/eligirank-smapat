@@ -1,5 +1,23 @@
 import supabase from '../Supabase/client.js';
 
+// Wait until window.supabaseClient.auth is ready (polling with timeout)
+async function ensureAuthClientReady(timeoutMs = 5000) {
+  const start = Date.now();
+  const interval = 100;
+  while (Date.now() - start < timeoutMs) {
+    if (
+      window.supabaseClient &&
+      window.supabaseClient.auth &&
+      typeof window.supabaseClient.auth.getUser === 'function'
+    ) {
+      return; // ready
+    }
+    // small delay
+    await new Promise((r) => setTimeout(r, interval));
+  }
+  throw new Error('Supabase AuthClient not ready after timeout');
+}
+
 async function signUp() {
   const fullName = document.getElementById('fullName').value.trim();
   const username = document.getElementById('username').value.trim();
@@ -108,44 +126,45 @@ document.getElementById('registrationForm').addEventListener('submit', function 
 const googleSignUpBtn = document.getElementById('google-signup-btn');
 
 googleSignUpBtn.addEventListener('click', async () => {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-  });
-  if (error) {
-    alert('Error: ' + error.message);
-    return;
-  }
-  // After successful OAuth sign-in, get the user
-  const { data: { user } } = await supabase.auth.getUser();
-  if (user) {
-    // Check if username and phone exist in profiles
-    const { data: profileData, error: profileFetchError } = await supabase
-      .from('profiles')
-      .select('username, phone')
-      .eq('id', user.id)
-      .single();
+  try {
+    await ensureAuthClientReady(5000);
+    const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (error) throw error;
+    // After successful OAuth sign-in, get the user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      // Check if username and phone exist in profiles
+      const { data: profileData, error: profileFetchError } = await supabase
+        .from('profiles')
+        .select('username, phone')
+        .eq('id', user.id)
+        .single();
 
-    if (profileFetchError || !profileData || !profileData.username || !profileData.phone) {
-      // Missing username or phone, prompt user to complete profile
-      alert('Please complete your profile by providing username and phone number.');
-      // Here you can redirect to a profile completion page or show a modal/form
-      // For simplicity, redirect to a profile completion page (e.g., profile.html)
-      window.location.href = 'profile.html';
-      return;
-    }
+      if (profileFetchError || !profileData || !profileData.username || !profileData.phone) {
+        // Missing username or phone, prompt user to complete profile
+        alert('Please complete your profile by providing username and phone number.');
+        // Here you can redirect to a profile completion page or show a modal/form
+        // For simplicity, redirect to a profile completion page (e.g., profile.html)
+        window.location.href = 'profile.html';
+        return;
+      }
 
-    // Upsert user profile data if profile exists and is complete
-    const { error: upsertError } = await supabase.from('profiles').upsert({
-      id: user.id,
-      full_name: user.user_metadata.full_name || user.user_metadata.name || '',
-      username: profileData.username,
-      email: user.email,
-      phone: profileData.phone,
-      role_id: null,
-    });
-    if (upsertError) {
-      alert('Error saving profile data: ' + upsertError.message);
+      // Upsert user profile data if profile exists and is complete
+      const { error: upsertError } = await supabase.from('profiles').upsert({
+        id: user.id,
+        full_name: user.user_metadata.full_name || user.user_metadata.name || '',
+        username: profileData.username,
+        email: user.email,
+        phone: profileData.phone,
+        role_id: null,
+      });
+      if (upsertError) {
+        alert('Error saving profile data: ' + upsertError.message);
+      }
     }
+  } catch (err) {
+    console.error('OAuth init failed:', err);
+    alert('Tidak dapat memulai login Google: ' + err.message);
   }
 });
 
